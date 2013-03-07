@@ -1,0 +1,49 @@
+prefs?
+
+site preferences
+	danbooru/hijiribe
+		name
+		password
+		local filtering
+			yes no default
+	yande.re
+		name
+		password
+		local filtering
+			yes no default
+	behoimi
+		name
+		password
+		local filtering
+			yes no default
+	etc...
+	
+general preferences
+	cache to sd/external
+	cache size
+	clear cache
+	purge cache files older than # days
+	
+content
+	posts per page
+		15 20 25 30 40 50
+	pools per page
+		15 20 25 30 40 50
+	pool posts per page
+		15 20 25 30 40 50
+		
+blacklist
+	enable blacklist
+	blacklisted tags (hides/covers posts containing these tags)
+	warn opening blacklisted posts (displays a confirmation when attempting to access blacklisted items)
+	hide blacklisted tags (hide blacklisted items)
+	
+ratings
+	ratings to filter (hides/covers high rated posts, a dialog will pop up when attempting to access a filtered post)
+		s q e
+	hide filtered posts (don't display filtered items)
+	warn opening filtered posts (displays a confirmation when attempting to access filtered items)
+	
+other
+	local filtering (filter tags locally. good if you want to search for more than two tags on imageboards that requires a premium account)
+		yes no

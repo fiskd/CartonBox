@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+	<PreferenceCategory
+		android:title="@string/pref_general" >
+		<CheckBoxPreference
+			android:title="@string/pref_general_cacheexternal" />
+		<EditTextPreference
+			android:title="@string/pref_general_cachesize"
+			android:summary="@string/pref_general_cachesize_desc" />
+		<Preference
+			android:title="@string/pref_general_clearcache"
+			android:summary="@string/pref_general_clearcache_desc" />
+	</PreferenceCategory>
+	<PreferenceCategory
+		android:title="@string/pref_content" >
+		<ListPreference
+			android:title="@string/pref_content_postsperpage"
+			android:entries="@array/pref_content_pages"
+			android:entryValues="@array/pref_content_pages_values" />
+		<ListPreference
+			android:title="@string/pref_content_poolsperpage"
+			android:entries="@array/pref_content_pages"
+			android:entryValues="@array/pref_content_pages_values" />
+		<ListPreference
+			android:title="@string/pref_content_poolpostsperpage"
+			android:entries="@array/pref_content_pages"
+			android:entryValues="@array/pref_content_pages_values" />
+		<CheckBoxPreference
+			android:title="@string/pref_content_localfilter"
+			android:summary="@string/pref_content_localfilter_desc" />
+		<CheckBoxPreference
+			android:title="@string/pref_content_warning"
+			android:summary="@string/pref_content_warning_desc" />
+	</PreferenceCategory>
+	<PreferenceCategory
+		android:title="@string/pref_blacklist" >
+		<CheckBoxPreference
+			android:title="@string/pref_blacklist_enabled" />
+		<EditTextPreference
+			android:title="@string/pref_blacklist_tags"
+			android:summary="@string/pref_blacklist_tags_desc" />
+		<CheckBoxPreference
+			android:title="@string/pref_blacklist_hide"
+			android:summaryOn="@string/pref_blacklist_hide_desc_on"
+			android:summaryOff="@string/pref_blacklist_hide_desc_off" />
+	</PreferenceCategory>
+	<PreferenceCategory
+		android:title="@string/pref_ratings" >
+		<!--
+		<MultiSelectListPreference
+			android:title="@string/pref_ratings_todisplay"
+			android:summary="@string/pref_ratings_todisplay_desc" />
+		-->
+		<PreferenceScreen
+			android:title="@string/pref_ratings_todisplay"
+			android:summary="@string/pref_ratings_todisplay_desc" >
+			<CheckBoxPreference
+				android:title="@string/pref_ratings_todisplay_safe" />
+			<CheckBoxPreference
+				android:title="@string/pref_ratings_todisplay_questionable" />
+			<CheckBoxPreference
+				android:title="@string/pref_ratings_todisplay_explicit" />
+		</PreferenceScreen>
+		<CheckBoxPreference
+			android:title="@string/pref_ratings_hide"
+			android:summaryOn="@string/pref_ratings_hide_desc_on"
+			android:summaryOff="@string/pref_ratings_hide_desc_off" />
+	</PreferenceCategory>
+</PreferenceScreen>

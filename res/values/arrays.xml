@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string-array name="danbooru_sections">
+		<item>Posts</item>
+		<item>Pools</item>
+		<item>Tags</item>
+		<item>Artists</item>
+	</string-array>
+	
+	<string-array name="danbooru_site_urls">
+		<item>http://danbooru.donmai.us/</item>
+		<item>http://hijiribe.donmai.us/</item>
+		<item>https://yande.re/</item>
+		<!--
+		<item>http://chan.sankakucomplex.com/</item>
+		<item>http://idol.sankakucomplex.com/</item>
+		-->
+		<item>http://behoimi.org/</item>
+	</string-array>
+	
+	<string-array name="danbooru_site_names">
+		<item>Danbooru</item>
+		<item>Hijiribe (mirror)</item>
+		<item>Yande.re</item>
+		<!--
+		<item>Sankaku chan</item>
+		<item>Sankaku idol</item>
+		-->
+		<item>3DBooru</item>
+	</string-array>
+</resources>

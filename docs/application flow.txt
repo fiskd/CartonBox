@@ -1,0 +1,12 @@
+CartonBox application flow
+
+MainActivity (has the available sites listing)
+	SiteIndexActivity (the site index, can access posts, pools, etc fom here)
+		PostsListFragment (list of searchable posts in a grid)
+			PostViewActivity (a single post to show, the user can swipe left/right to see the next post listed)
+		TagsListFragment (list of tags, tags can be queried and checked on the list to perform a more complex query later on)
+		ArtistsListFragment (list of artists)
+		PoolsListFragment (list of searchable pools in a grid)
+			PoolViewFragment (list of posts on a pool)
+				PostViewActivity (a single post to show, the user can swipe left/right to see the next post in the pool)
+	SettingsActivity (set up things here, see preferences.txt)

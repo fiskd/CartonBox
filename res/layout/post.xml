@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="100dp"
+	android:layout_height="100dp"
+	android:padding="5dp" >
+	
+	<TextView
+		android:id="@+id/post_tvloading"
+		android:background="#808080"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:gravity="center"
+		android:text="@string/loading"
+		android:textColor="#ffffff" />
+	
+	<ImageView
+		android:id="@+id/post_ivpreview"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:contentDescription="@string/app_name" />
+	
+	<LinearLayout
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="right|bottom"
+		android:layout_marginRight="2dp"
+		android:layout_marginBottom="2dp" >
+		
+		<ImageView
+			android:id="@+id/post_ivred"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginRight="2dp"
+			android:src="@drawable/circle_red"
+			android:contentDescription="@string/app_name" />
+		
+		<ImageView
+			android:id="@+id/post_ivblue"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginRight="2dp"
+			android:src="@drawable/circle_blue"
+			android:contentDescription="@string/app_name" />
+		
+		<ImageView
+			android:id="@+id/post_ivgreen"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginRight="2dp"
+			android:src="@drawable/circle_green"
+			android:contentDescription="@string/app_name" />
+		
+		<ImageView
+			android:id="@+id/post_ivyellow"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:src="@drawable/circle_yellow"
+			android:contentDescription="@string/app_name" />
+		
+	</LinearLayout>
+	
+	<!--
+	<CheckBox
+		android:id="@+id/post_cbxselect"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="right|bottom"
+		android:focusable="false"
+		android:checked="false" />
+	-->
+</FrameLayout>

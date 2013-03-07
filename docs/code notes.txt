@@ -1,0 +1,41 @@
+// some big listener
+interface ResponseListener
+{
+	// 200
+	public void onSuccess();
+	// 403
+	public void onAccessDenied();
+	// 404
+	public void onNotFound();
+	// 420
+	public void onInvalidRecord();
+	// 421
+	public void onUserThrottled();
+	// 422
+	public void onResourceLocked();
+	// 423
+	public void onAlreadyExists();
+	// 424
+	public void onInvalidParameter();
+	// 500
+	public void onError();
+	// 503
+}
+
+// how to get internal/external files/cache dir
+// external needs permission: android.permission.WRITE_EXTERNAL_STORAGE
+{
+	String cachedir = null;
+	String filesdir = null;
+	String ex_cache = null;
+	String ex_files = null;
+	
+	if(this.getCacheDir() != null)
+		cachedir = this.getCacheDir().getAbsolutePath();
+	if(this.getFilesDir() != null)
+		filesdir = this.getFilesDir().getAbsolutePath();
+	if(this.getExternalCacheDir() != null)
+		ex_cache = this.getExternalCacheDir().getAbsolutePath();
+	if(this.getExternalFilesDir(null) != null)
+	ex_files = this.getExternalFilesDir(null).getAbsolutePath();
+}

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">CartonBox</string>
+	
+	<string name="login_details">Login details</string>
+	
+	<string name="username">Name</string>
+	<string name="password">Password</string>
+	
+	<string name="settings">Settings</string>
+	<string name="search">Search</string>
+	<string name="addsite">Add site</string>
+	
+	<string name="searchtags">Search tags</string>
+	<string name="searchposts">Search posts</string>
+	<string name="searchpools">Search pools</string>
+	<string name="searchartists">Search artists</string>
+	
+	<string name="loading">Loading&#8230;</string>
+	
+	<string name="empty">This part is not available yet&#8230; but it will be! I hope.\n\nRead this while I actually work on the rest.</string>
+	
+	<string name="pref_general">General</string>
+	<string name="pref_general_cacheexternal">Cache to SD/External</string>
+	<string name="pref_general_cachesize">Maximum cache size</string>
+	<string name="pref_general_cachesize_desc">Current is %s</string>
+	<string name="pref_general_clearcache">Clear cache</string>
+	<string name="pref_general_clearcache_desc">Cache uses %s</string>
+	<string name="pref_general_clearcacheonstartup">Clear cache on startup</string>
+	
+	<string name="pref_content">Content</string>
+	<string name="pref_content_postsperpage">Posts per page</string>
+	<string name="pref_content_poolsperpage">Pools per page</string>
+	<string name="pref_content_poolpostsperpage">Pool posts per page</string>
+	<string name="pref_content_localfilter">Local filtering</string>
+	<string name="pref_content_localfilter_desc">Good if you want to search for more than two tags with limited accounts</string>
+	<string name="pref_content_warning">Content warning</string>
+	<string name="pref_content_warning_desc">Display a confirmation when attempting to access high rated posts</string>
+	
+	<string name="pref_blacklist">Blacklist</string>
+	<string name="pref_blacklist_enabled">Enable</string>
+	<string name="pref_blacklist_tags">Tags list</string>
+	<string name="pref_blacklist_tags_desc">Images of posts\' containing these tags are not loaded.</string>
+	<string name="pref_blacklist_hide">Hide posts from grid</string>
+	<string name="pref_blacklist_hide_desc_on">Posts are completely hidden from view</string>
+	<string name="pref_blacklist_hide_desc_off">Posts are shown normally</string>
+	<string name="pref_ratings">Ratings filter</string>
+	<string name="pref_ratings_todisplay">Ratings to display</string>
+	<string name="pref_ratings_todisplay_desc">Images of posts\' with these ratings are not loaded</string>
+	
+	<string name="pref_ratings_todisplay_safe">Safe</string>
+	<string name="pref_ratings_todisplay_questionable">Questionable</string>
+	<string name="pref_ratings_todisplay_explicit">Explicit</string>
+	
+	<string name="pref_ratings_hide">Hide posts from grid</string>
+	<string name="pref_ratings_hide_desc_on">Posts are completely hidden from view</string>
+	<string name="pref_ratings_hide_desc_off">Posts are shown normally</string>
+</resources>
