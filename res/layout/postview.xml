@@ -4,10 +4,11 @@
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	android:orientation="vertical"
-	tools:context=".view.activities.SiteIndexActivity" >
+	tools:context=".view.activities.PostViewActivity" >
 	
 	<android.support.v4.view.ViewPager
-		android:id="@+id/siteindex_vpsections"
+		android:id="@+id/postview_vpposts"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent" />
+	
 </LinearLayout>

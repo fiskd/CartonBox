@@ -51,7 +51,7 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 		//String password = this.getIntent().getStringExtra(EXTRA_PASSWORD);
 		
 		this.tabs = this.getResources().getStringArray(R.array.danbooru_sections);
-		this.mPageAdapter = new SiteIndexPageAdapter(this.getSupportFragmentManager(), this.tabs);
+		this.mPageAdapter = new SiteIndexPageAdapter(this.getSupportFragmentManager(), this);
 		this.mVpSections = (ViewPager)this.findViewById(R.id.siteindex_vpsections);
 		this.mVpSections.setAdapter(this.mPageAdapter);
 		this.mVpSections.setOnPageChangeListener(this);
@@ -90,9 +90,9 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 		switch(item.getItemId())
 		{
 		case android.R.id.home:
-			Intent ntn = new Intent(this, MainActivity.class);
-			ntn.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			this.startActivity(ntn);
+			Intent ntnMain = new Intent(this, MainActivity.class);
+			ntnMain.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			this.startActivity(ntnMain);
 			this.finish();
 			// event handled
 			return true;
@@ -100,7 +100,8 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 			/* what to put here? */
 			return true;
 		case R.id.menu_siteindex_settings:
-			/* TODO: open site settings */
+			Intent ntnPrefs = new Intent(this, GeneralPreferencesActivity.class);
+			this.startActivity(ntnPrefs);
 			return true;
 		}
 		

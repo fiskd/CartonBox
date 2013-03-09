@@ -25,8 +25,9 @@
 			</intent-filter>
 		</activity>
 		<activity android:name="org.shujito.cartonbox.view.activities.SiteIndexActivity" />
+		<activity android:name="org.shujito.cartonbox.view.activities.GeneralPreferencesActivity"/>
+		<activity android:name="org.shujito.cartonbox.view.activities.PostViewActivity"></activity>
 		<!--
-		<activity android:name="org.shujito.cartonbox.activities.GeneralPreferencesActivity"></activity>
 		
 		<activity android:name="org.shujito.cartonbox.activities.SitesActivity" />
 		<activity android:name="org.shujito.cartonbox.activities.SiteIndexActivity" />

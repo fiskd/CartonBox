@@ -1,7 +1,10 @@
 package org.shujito.cartonbox.view.adapters;
 
+import org.shujito.cartonbox.R;
 import org.shujito.cartonbox.view.fragments.EmptyFragment;
+import org.shujito.cartonbox.view.fragments.PostsFragment;
 
+import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -9,16 +12,21 @@ import android.support.v4.app.FragmentPagerAdapter;
 public class SiteIndexPageAdapter extends FragmentPagerAdapter
 {
 	String[] pages = null;
+	Context context = null;
 	
-	public SiteIndexPageAdapter(FragmentManager fm, String[] pages)
+	public SiteIndexPageAdapter(FragmentManager fm, Context context)
 	{
 		super(fm);
-		this.pages = pages;
+		this.context = context;
+		this.pages = this.context.getResources().getStringArray(R.array.danbooru_sections);
 	}
 	
 	@Override
 	public Fragment getItem(int pos)
 	{
+		if(this.context.getResources().getString(R.string.section_posts).equals(this.pages[pos]))
+			return new PostsFragment();
+		
 		return new EmptyFragment();
 	}
 	

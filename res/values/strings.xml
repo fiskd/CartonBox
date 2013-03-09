@@ -17,6 +17,7 @@
 	<string name="searchartists">Search artists</string>
 	
 	<string name="loading">Loading&#8230;</string>
+	<string name="no_posts">No posts!</string>
 	
 	<string name="empty">This part is not available yet&#8230; but it will be! I hope.\n\nRead this while I actually work on the rest.</string>
 	
@@ -55,4 +56,11 @@
 	<string name="pref_ratings_hide">Hide posts from grid</string>
 	<string name="pref_ratings_hide_desc_on">Posts are completely hidden from view</string>
 	<string name="pref_ratings_hide_desc_off">Posts are shown normally</string>
+	
+	<string name="section_posts">Posts</string>
+	<string name="section_pools">Pools</string>
+	<string name="section_tags">Tags</string>
+	<string name="section_artists">Artists</string>
+	<string name="section_comments">Comments</string>
+	<string name="section_notes">Notes</string>
 </resources>
