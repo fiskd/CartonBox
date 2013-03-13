@@ -11,6 +11,12 @@
 	<string name="search">Search</string>
 	<string name="addsite">Add site</string>
 	
+	<string name="save">Save</string>
+	<string name="browser">Open in browser</string>
+	<string name="viewparent">Parent post</string>
+	<string name="viewchildren">Child posts</string>
+	<string name="viewpools">Pools containig this post</string>
+	
 	<string name="searchtags">Search tags</string>
 	<string name="searchposts">Search posts</string>
 	<string name="searchpools">Search pools</string>

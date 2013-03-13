@@ -5,7 +5,7 @@
 	android:padding="5dp" >
 	
 	<TextView
-		android:id="@+id/post_tvloading"
+		android:id="@+id/post_item_grid_tvloading"
 		android:background="#808080"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
@@ -14,7 +14,7 @@
 		android:textColor="#ffffff" />
 	
 	<ImageView
-		android:id="@+id/post_ivpreview"
+		android:id="@+id/post_item_grid_ivpreview"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		android:contentDescription="@string/app_name" />
@@ -27,7 +27,7 @@
 		android:layout_marginBottom="2dp" >
 		
 		<ImageView
-			android:id="@+id/post_ivred"
+			android:id="@+id/post_item_grid_ivred"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_marginRight="2dp"
@@ -35,7 +35,7 @@
 			android:contentDescription="@string/app_name" />
 		
 		<ImageView
-			android:id="@+id/post_ivblue"
+			android:id="@+id/post_item_grid_ivblue"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_marginRight="2dp"
@@ -43,7 +43,7 @@
 			android:contentDescription="@string/app_name" />
 		
 		<ImageView
-			android:id="@+id/post_ivgreen"
+			android:id="@+id/post_item_grid_ivgreen"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_marginRight="2dp"
@@ -51,7 +51,7 @@
 			android:contentDescription="@string/app_name" />
 		
 		<ImageView
-			android:id="@+id/post_ivyellow"
+			android:id="@+id/post_item_grid_ivyellow"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:src="@drawable/circle_yellow"
@@ -61,7 +61,7 @@
 	
 	<!--
 	<CheckBox
-		android:id="@+id/post_cbxselect"
+		android:id="@+id/post_item_grid_cbxselect"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_gravity="right|bottom"

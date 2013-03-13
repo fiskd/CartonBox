@@ -31,6 +31,7 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 	public static String EXTRA_SITEURL = "org.shujito.cartonbox.SITEURL";
 	public static String EXTRA_USERNAME = "org.shujito.cartonbox.USERNAME";
 	public static String EXTRA_PASSWORD = "org.shujito.cartonbox.PASSWORD";
+	public static String EXTRA_SECTIONPAGE = "org.shujito.cartonbox.SECTIONPAGE";
 	
 	SiteIndexPageAdapter mPageAdapter = null;
 	ViewPager mVpSections = null;
@@ -66,6 +67,39 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 			tab.setTabListener(this);
 			this.getSupportActionBar().addTab(tab);
 		}
+		
+		//String url = this.getIntent().getStringExtra(EXTRA_SITEURL);
+		//Toast.makeText(this, url, Toast.LENGTH_SHORT).show();
+	}
+	
+	@Override
+	protected void onResume()
+	{
+		super.onResume();
+		
+		int page = 0;
+		int sectionid = this.getIntent().getIntExtra(EXTRA_SECTIONPAGE, 0);
+		
+		if(sectionid != 0)
+		{
+			String sectionstring = this.getResources().getString(sectionid);
+			for(int idx = 0; idx < this.tabs.length; idx++)
+			{
+				if(sectionstring.equals(this.tabs[idx]))
+				{
+					page = idx;
+					break;
+				}
+			}
+			
+			this.mVpSections.setCurrentItem(page);
+		}
+	}
+	
+	@Override
+	protected void onDestroy()
+	{
+		super.onDestroy();
 	}
 	
 	@Override
@@ -93,7 +127,7 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 			Intent ntnMain = new Intent(this, MainActivity.class);
 			ntnMain.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			this.startActivity(ntnMain);
-			this.finish();
+			//this.finish();
 			// event handled
 			return true;
 		case R.id.menu_siteindex_search:

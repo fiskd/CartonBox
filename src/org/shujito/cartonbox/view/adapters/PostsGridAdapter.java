@@ -10,12 +10,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-public class PostsAdapter extends BaseAdapter
+public class PostsGridAdapter extends BaseAdapter
 {
 	Context context = null;
 	SparseArray<Post> posts = null;
 	
-	public PostsAdapter(Context context)
+	public PostsGridAdapter(Context context)
 	{
 		this.context = context;
 	}
@@ -46,7 +46,7 @@ public class PostsAdapter extends BaseAdapter
 		if(v == null)
 		{
 			LayoutInflater inf = LayoutInflater.from(this.context);
-			v = inf.inflate(R.layout.post, dad, false);
+			v = inf.inflate(R.layout.post_item_grid, dad, false);
 		}
 		
 		return v;

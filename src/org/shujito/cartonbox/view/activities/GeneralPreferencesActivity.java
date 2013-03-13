@@ -1,5 +1,7 @@
 package org.shujito.cartonbox.view.activities;
 
+import java.util.List;
+
 import org.shujito.cartonbox.R;
 
 import android.os.Build;
@@ -19,5 +21,10 @@ public class GeneralPreferencesActivity extends SherlockPreferenceActivity
 		{
 			this.addPreferencesFromResource(R.xml.generalpreferences);
 		}
+	}
+	
+	@Override
+	public void onBuildHeaders(List<Header> target)
+	{
 	}
 }

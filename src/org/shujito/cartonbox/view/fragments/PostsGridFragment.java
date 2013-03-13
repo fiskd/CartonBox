@@ -2,7 +2,7 @@ package org.shujito.cartonbox.view.fragments;
 
 import org.shujito.cartonbox.R;
 import org.shujito.cartonbox.view.activities.PostViewActivity;
-import org.shujito.cartonbox.view.adapters.PostsAdapter;
+import org.shujito.cartonbox.view.adapters.PostsGridAdapter;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,20 +18,20 @@ import android.widget.GridView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-public class PostsFragment extends Fragment implements OnItemClickListener, OnScrollListener
+public class PostsGridFragment extends Fragment implements OnItemClickListener, OnScrollListener
 {
 	GridView mGvPosts = null;
 	ProgressBar mPbProgress = null;
 	TextView mTvNoposts = null;
 	
-	PostsAdapter mPostsAdapter = null;
+	PostsGridAdapter mPostsAdapter = null;
 	
 	@Override
 	public View onCreateView(LayoutInflater inf, ViewGroup dad, Bundle cirno)
 	{
-		this.mPostsAdapter = new PostsAdapter(this.getActivity());
+		this.mPostsAdapter = new PostsGridAdapter(this.getActivity());
 		
-		View v = inf.inflate(R.layout.posts, dad, false);
+		View v = inf.inflate(R.layout.posts_section, dad, false);
 		this.mGvPosts = (GridView)v.findViewById(R.id.posts_gvposts);
 		this.mGvPosts.setAdapter(this.mPostsAdapter);
 		this.mGvPosts.setOnItemClickListener(this);
@@ -64,6 +64,7 @@ public class PostsFragment extends Fragment implements OnItemClickListener, OnSc
 	public void onItemClick(AdapterView<?> dad, View v, int pos, long id)
 	{
 		Intent ntn = new Intent(this.getActivity(), PostViewActivity.class);
+		ntn.putExtra(PostViewActivity.EXTRA_POST_INDEX, pos);
 		this.startActivity(ntn);
 	}
 	/* OnClickListener methods */

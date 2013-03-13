@@ -48,14 +48,6 @@ public class MainActivity extends SherlockActivity implements OnItemClickListene
 	}
 	
 	@Override
-	public void onItemClick(AdapterView<?> dad, View v, int pos, long id)
-	{
-		Intent ntn = new Intent(this, SiteIndexActivity.class);
-		ntn.putExtra(SiteIndexActivity.EXTRA_SITEURL, this.mSites[pos]);
-		this.startActivity(ntn);
-	}
-	
-	@Override
 	public boolean onCreateOptionsMenu(Menu menu)
 	{
 		this.getSupportMenuInflater().inflate(R.menu.main, menu);
@@ -70,9 +62,22 @@ public class MainActivity extends SherlockActivity implements OnItemClickListene
 		case R.id.menu_main_addsite:
 			return true;
 		case R.id.menu_main_settings:
+			Intent ntnPrefs = new Intent(this, GeneralPreferencesActivity.class);
+			this.startActivity(ntnPrefs);
 			return true;
 		}
 		
 		return super.onOptionsItemSelected(item);
 	}
+	
+	/* OnItemClickListener methods */
+	@Override
+	public void onItemClick(AdapterView<?> dad, View v, int pos, long id)
+	{
+		Intent ntn = new Intent(this, SiteIndexActivity.class);
+		ntn.putExtra(SiteIndexActivity.EXTRA_SITEURL, this.mSites[pos]);
+		ntn.putExtra(SiteIndexActivity.EXTRA_SECTIONPAGE, R.string.section_pools);
+		this.startActivity(ntn);
+	}
+	/* OnItemClickListener methods */
 }
