@@ -68,15 +68,6 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 			this.getSupportActionBar().addTab(tab);
 		}
 		
-		//String url = this.getIntent().getStringExtra(EXTRA_SITEURL);
-		//Toast.makeText(this, url, Toast.LENGTH_SHORT).show();
-	}
-	
-	@Override
-	protected void onResume()
-	{
-		super.onResume();
-		
 		int page = 0;
 		int sectionid = this.getIntent().getIntExtra(EXTRA_SECTIONPAGE, 0);
 		
@@ -94,6 +85,8 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 			
 			this.mVpSections.setCurrentItem(page);
 		}
+		//String url = this.getIntent().getStringExtra(EXTRA_SITEURL);
+		//Toast.makeText(this, url, Toast.LENGTH_SHORT).show();
 	}
 	
 	@Override

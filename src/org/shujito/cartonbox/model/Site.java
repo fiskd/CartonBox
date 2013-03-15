@@ -7,6 +7,7 @@ public class Site
 	String postsApi;
 	String poolsApi;
 	String commentsApi;
+	String notesApi;
 	String artistsApi;
 	String tagsApi;
 	
@@ -19,6 +20,8 @@ public class Site
 	{ return this.poolsApi; }
 	public String getCommentsApi()
 	{ return this.commentsApi; }
+	public String getNotesApi()
+	{ return this.notesApi; }
 	public String getArtistsApi()
 	{ return this.artistsApi; }
 	public String getTagsApi()
@@ -43,6 +46,11 @@ public class Site
 	public Site setCommentsApi(String s)
 	{
 		this.commentsApi = s;
+		return this;
+	}
+	public Site setNotesApi(String s)
+	{
+		this.notesApi = s;
 		return this;
 	}
 	public Site setArtistsApi(String s)

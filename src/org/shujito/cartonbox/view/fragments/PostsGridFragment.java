@@ -27,6 +27,12 @@ public class PostsGridFragment extends Fragment implements OnItemClickListener, 
 	PostsGridAdapter mPostsAdapter = null;
 	
 	@Override
+	public void onActivityCreated(Bundle cirno)
+	{
+		super.onActivityCreated(cirno);
+	}
+	
+	@Override
 	public View onCreateView(LayoutInflater inf, ViewGroup dad, Bundle cirno)
 	{
 		this.mPostsAdapter = new PostsGridAdapter(this.getActivity());

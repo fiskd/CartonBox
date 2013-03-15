@@ -76,7 +76,7 @@ public class MainActivity extends SherlockActivity implements OnItemClickListene
 	{
 		Intent ntn = new Intent(this, SiteIndexActivity.class);
 		ntn.putExtra(SiteIndexActivity.EXTRA_SITEURL, this.mSites[pos]);
-		ntn.putExtra(SiteIndexActivity.EXTRA_SECTIONPAGE, R.string.section_pools);
+		//ntn.putExtra(SiteIndexActivity.EXTRA_SECTIONPAGE, R.string.section_pools);
 		this.startActivity(ntn);
 	}
 	/* OnItemClickListener methods */

@@ -2,6 +2,7 @@ package org.shujito.cartonbox.view.adapters;
 
 import org.shujito.cartonbox.R;
 import org.shujito.cartonbox.view.fragments.EmptyFragment;
+import org.shujito.cartonbox.view.fragments.PoolsListFragment;
 import org.shujito.cartonbox.view.fragments.PostsGridFragment;
 
 import android.content.Context;
@@ -26,6 +27,8 @@ public class SiteIndexPageAdapter extends FragmentPagerAdapter
 	{
 		if(this.context.getResources().getString(R.string.section_posts).equals(this.pages[pos]))
 			return new PostsGridFragment();
+		if(this.context.getResources().getString(R.string.section_pools).equals(this.pages[pos]))
+			return new PoolsListFragment(); // TODO: here
 		
 		return new EmptyFragment();
 	}
