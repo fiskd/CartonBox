@@ -9,7 +9,6 @@ public class Post
 	// thumbnail
 	public static String URL_PREVIEW_FORMAT = "/ssd/data/preview/%d.%s";
 	
-	
 	// sexual rating
 	public enum Rating
 	{
@@ -163,6 +162,6 @@ public class Post
 		this.site = site;
 		return this;
 	}
-
+	
 	/* meth */
 }
