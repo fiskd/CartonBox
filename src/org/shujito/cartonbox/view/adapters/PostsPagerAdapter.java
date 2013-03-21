@@ -22,7 +22,6 @@ public class PostsPagerAdapter extends FragmentPagerAdapter
 	@Override
 	public int getCount()
 	{
-		return 50;
+		return 0;
 	}
-
 }

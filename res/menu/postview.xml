@@ -8,6 +8,12 @@
 		android:title="@string/save" />
 	
 	<item
+		android:id="@+id/menu_postview_preferences"
+		android:icon="@android:drawable/ic_menu_preferences"
+		android:showAsAction="ifRoom"
+		android:title="@string/settings" />
+	
+	<item
 		android:id="@+id/menu_postview_browser"
 		android:icon="@android:drawable/ic_menu_view"
 		android:showAsAction="never"

@@ -13,10 +13,6 @@
 		<item>http://danbooru.donmai.us/</item>
 		<item>http://hijiribe.donmai.us/</item>
 		<item>https://yande.re/</item>
-		<!--
-		<item>http://chan.sankakucomplex.com/</item>
-		<item>http://idol.sankakucomplex.com/</item>
-		-->
 		<item>http://behoimi.org/</item>
 	</string-array>
 	
@@ -24,10 +20,13 @@
 		<item>Danbooru</item>
 		<item>Hijiribe (mirror)</item>
 		<item>Yande.re</item>
-		<!--
-		<item>Sankaku chan</item>
-		<item>Sankaku idol</item>
-		-->
 		<item>3DBooru</item>
 	</string-array>
+	
+	<integer-array name="danbooru_site_types">
+		<item>210</item>
+		<item>210</item>
+		<item>118</item>
+		<item>118</item>
+	</integer-array>
 </resources>

@@ -1,8 +1,14 @@
 package org.shujito.cartonbox.model;
 
-public class Site
+import java.io.Serializable;
+
+public class Site implements Serializable
 {
+	/* Static */
+	private static final long serialVersionUID = 1L;
+	
 	/* fields */
+	int id;
 	String url;
 	String postsApi;
 	String poolsApi;
@@ -12,6 +18,8 @@ public class Site
 	String tagsApi;
 	
 	/* getters */
+	public int getId()
+	{ return id; }
 	public String getUrl()
 	{ return this.url; }
 	public String getPostsApi()
@@ -28,9 +36,14 @@ public class Site
 	{ return this.tagsApi; }
 
 	/* setters */
-	public Site setUrl(String url)
+	public Site setId(int i)
 	{
-		this.url = url;
+		this.id = i;
+		return this;
+	}
+	public Site setUrl(String s)
+	{
+		this.url = s;
 		return this;
 	}
 	public Site setPostsApi(String s)

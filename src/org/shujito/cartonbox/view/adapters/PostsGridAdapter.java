@@ -25,7 +25,7 @@ public class PostsGridAdapter extends BaseAdapter
 	{
 		if(this.posts != null)
 			return this.posts.size();
-		return 50;
+		return 0;
 	}
 	
 	@Override

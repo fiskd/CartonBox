@@ -1,6 +1,7 @@
 package org.shujito.cartonbox.view.activities;
 
 import org.shujito.cartonbox.R;
+import org.shujito.cartonbox.controller.Danbooru2ImageBoard;
 import org.shujito.cartonbox.controller.Imageboard;
 import org.shujito.cartonbox.view.adapters.SiteIndexPageAdapter;
 
@@ -47,7 +48,7 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 		super.onCreate(cirno);
 		this.setContentView(R.layout.siteindex);
 		
-		//String siteUrl = this.getIntent().getStringExtra(EXTRA_SITEURL);
+		String siteUrl = this.getIntent().getStringExtra(EXTRA_SITEURL);
 		//String username = this.getIntent().getStringExtra(EXTRA_USERNAME);
 		//String password = this.getIntent().getStringExtra(EXTRA_PASSWORD);
 		
@@ -87,12 +88,18 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 		}
 		//String url = this.getIntent().getStringExtra(EXTRA_SITEURL);
 		//Toast.makeText(this, url, Toast.LENGTH_SHORT).show();
+		
+		this.api = new Danbooru2ImageBoard(siteUrl); // TODO: new
+		//this.api.setUsername(null);
+		//this.api.setPasswordHash(null);
+		
 	}
 	
 	@Override
 	protected void onDestroy()
 	{
 		super.onDestroy();
+		this.api = null;
 	}
 	
 	@Override
@@ -204,6 +211,7 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 					imm.showSoftInput(mMactvQueryPosts, InputMethodManager.SHOW_IMPLICIT);
 				}
 			});
+		
 		// should be true, or else the item won't expand
 		return true;
 	}
@@ -219,6 +227,13 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 			if(this.api != null)
 			{
 				// TODO: api things
+				this.api.clear();
+				String[] tags = v.getText().toString().split("\\s+");
+				for(String tag : tags)
+				{
+					this.api.putTag(tag);
+				}
+				this.api.requestPosts();
 			}
 			return true;
 		}

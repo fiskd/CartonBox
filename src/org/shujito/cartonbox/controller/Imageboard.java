@@ -2,6 +2,7 @@ package org.shujito.cartonbox.controller;
 
 import java.util.ArrayList;
 
+import org.shujito.cartonbox.URLEncoder;
 import org.shujito.cartonbox.model.Post;
 
 import android.util.SparseArray;
@@ -16,13 +17,16 @@ import android.util.SparseArray;
 // step 3: give posts
 public abstract class Imageboard
 {
-	/* fields */
-	Downloader<?> jsonDownloader = null;
-	Downloader<?> xmlDownloader = null;
+	/* Static */
+	
+	/* Fields */
+	Downloader<?> downloader = null;
+	//Downloader<?> xmlDownloader = null;
 	SparseArray<Post> posts = null;
 	ArrayList<String> tags = null;
+	//Site site = null;
+	String siteUrl = null;
 	
-	String hostSiteUrl = null;
 	String username = null;
 	String password = null;
 	String passwordHash = null;
@@ -33,21 +37,16 @@ public abstract class Imageboard
 	int postsPerPage = 20;
 	int page = 1;
 	
-	/* constructor */
+	/* Constructor */
 	
-	protected Imageboard(String hostSiteUrl)
+	protected Imageboard(String siteUrl)
 	{
-		this.hostSiteUrl = hostSiteUrl;
+		this.siteUrl = siteUrl;
 		this.posts = new SparseArray<Post>();
 		this.tags = new ArrayList<String>();
 	}
 	
 	/* Getters */
-	
-	public String getHostSiteUrl()
-	{
-		return hostSiteUrl;
-	}
 	
 	public String getUsername()
 	{
@@ -116,10 +115,27 @@ public abstract class Imageboard
 		{
 			if(!this.working)
 			{
-				this.jsonDownloader = this.createDownloader();
-				this.jsonDownloader.execute();
+				this.downloader = this.createDownloader();
+				this.downloader.execute();
 				this.working = true;
 			}
 		}
+	}
+	
+	public String buildTags()
+	{
+		String tags = null;
+		for(String s : this.tags)
+		{
+			if(tags == null)
+				tags = URLEncoder.encode(s);
+			else
+			{
+				tags = tags.concat("+");
+				tags = tags.concat(URLEncoder.encode(s));
+			}
+		}
+		
+		return tags;
 	}
 }
