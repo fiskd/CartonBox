@@ -13,7 +13,6 @@ public class EmptyFragment extends Fragment
 	@Override
 	public View onCreateView(LayoutInflater inf, ViewGroup dad, Bundle cirno)
 	{
-		View v = inf.inflate(R.layout.empty, dad, false);
-		return v;
+		return inf.inflate(R.layout.empty, dad, false);
 	}
 }

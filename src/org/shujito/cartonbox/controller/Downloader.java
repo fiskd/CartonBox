@@ -21,14 +21,12 @@ public abstract class Downloader<T> extends AsyncTask<Void, Void, T>
 	{ this.onErrorListener = l; }
 	
 	/* Fields */
-	
 	private String url = null;
 	private String message = null;
 	private URI uri = null;
 	int code = 0;
 	
 	/* Constructor */
-	
 	public Downloader(String url)
 	{
 		this.url = url;
@@ -96,17 +94,17 @@ public abstract class Downloader<T> extends AsyncTask<Void, Void, T>
 			this.onRequestFailed(this.code, result);
 			if(this.onErrorListener != null)
 				this.onErrorListener.onError(this.code, this.message);
+			Logger.e("Downloader::onPostExecute", this.message);
 		}
 		else if(this.code >= HttpURLConnection.HTTP_OK)
 		{
 			this.onRequestSuccessful(this.code, result);
+			Logger.i("Downloader::onPostExecute", String.format("Download for %s completed", this.url));
 		}
 		
-		Logger.i("Downloader::onPostExecute", String.format("Download for %s completed", this.url));
 	}
 	
 	/* Meth */
-	
 	protected abstract T doInBackground(InputStream is) throws Exception;
 	protected abstract void onRequestSuccessful(int code, T result);
 	protected abstract void onRequestFailed(int code, T result);

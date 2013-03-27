@@ -7,9 +7,10 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class SitesDatabase extends SQLiteOpenHelper
 {
 	private static int VERSION = 0x00000001;
+	private static String DB_NAME = "favorites.db3";
 	
 	private static String TABLE_SITES = "sites";
-
+	
 	private static String KEY_ID = "id";
 	private static String KEY_URL = "url";
 	private static String KEY_POSTS_API = "posts_api";
@@ -27,7 +28,7 @@ public class SitesDatabase extends SQLiteOpenHelper
 	
 	public SitesDatabase(Context context)
 	{
-		super(context, null, null, VERSION);
+		super(context, DB_NAME, null, VERSION);
 	}
 	
 	@Override

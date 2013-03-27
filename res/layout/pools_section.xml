@@ -17,12 +17,14 @@
 		android:baselineAligned="false" >
 		
 		<fragment
+			class="org.shujito.cartonbox.view.fragments.PoolsListFragment"
 			android:id="@+id/pools_fg_list"
 			android:layout_width="0dp"
 			android:layout_height="match_parent"
 			android:layout_weight="1" />
 		
 		<fragment
+			class="org.shujito.cartonbox.view.fragments.PoolViewFragment"
 			android:id="@+id/pools_fg_content"
 			android:layout_width="0dp"
 			android:layout_height="match_parent"

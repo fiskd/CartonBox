@@ -7,15 +7,12 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
-public class PostViewFragment extends Fragment
+public class PoolViewFragment extends Fragment
 {
-	ImageView mImageView = null;
-	
 	@Override
 	public View onCreateView(LayoutInflater inf, ViewGroup dad, Bundle cirno)
 	{
-		return inf.inflate(R.layout.post_item_pager, dad, false);
+		return inf.inflate(R.layout.empty, dad, false);
 	}
 }

@@ -1,9 +1,21 @@
 package org.shujito.cartonbox.controller;
 
+import java.net.HttpURLConnection;
+import java.security.MessageDigest;
 import java.util.ArrayList;
+import java.util.List;
 
+import org.shujito.cartonbox.Logger;
 import org.shujito.cartonbox.URLEncoder;
+import org.shujito.cartonbox.controller.listeners.OnAccessDeniedListener;
+import org.shujito.cartonbox.controller.listeners.OnErrorListener;
+import org.shujito.cartonbox.controller.listeners.OnInternalServerErrorListener;
+import org.shujito.cartonbox.controller.listeners.OnPoolsFetchedListener;
+import org.shujito.cartonbox.controller.listeners.OnPostsFetchedListener;
+import org.shujito.cartonbox.controller.listeners.OnResponseReceivedListener;
+import org.shujito.cartonbox.model.JsonParser;
 import org.shujito.cartonbox.model.Post;
+import org.shujito.cartonbox.model.Response;
 
 import android.util.SparseArray;
 
@@ -14,10 +26,59 @@ import android.util.SparseArray;
 // step 2a: build query
 // step 2b: download
 // step 2c: filters
-// step 3: give posts
-public abstract class Imageboard
+// step 3: give result
+// step 4: give posts
+public abstract class Imageboard implements
+	OnResponseReceivedListener,
+	OnErrorListener,
+	OnAccessDeniedListener,
+	OnInternalServerErrorListener
 {
 	/* Static */
+	public static final String API_DANBOORU_PASSWORD = "choujin-steiner--%s--";
+	
+	/* Listeners */
+	List<OnErrorListener> onErrorListeners = null;
+	List<OnPostsFetchedListener> onPostsFetchedListeners = null;
+	List<OnPoolsFetchedListener> onPoolsFetchedListeners = null;
+	
+	public void addOnErrorListener(OnErrorListener l)
+	{
+		if(this.onErrorListeners == null)
+			this.onErrorListeners = new ArrayList<OnErrorListener>();
+		this.onErrorListeners.add(l);
+	}
+	public void addOnPostsFetchedListener(OnPostsFetchedListener l)
+	{
+		if(this.onPostsFetchedListeners == null)
+			this.onPostsFetchedListeners = new ArrayList<OnPostsFetchedListener>();
+		this.onPostsFetchedListeners.add(l);
+	}
+	public void addOnPoolsFetchedListener(OnPoolsFetchedListener l)
+	{
+		if(this.onPoolsFetchedListeners == null)
+			this.onPoolsFetchedListeners = new ArrayList<OnPoolsFetchedListener>();
+		this.onPoolsFetchedListeners.add(l);
+	}
+	
+	public void removeOnErrorListener(OnErrorListener l)
+	{
+		if(this.onErrorListeners == null)
+			this.onErrorListeners = new ArrayList<OnErrorListener>();
+		this.onErrorListeners.remove(l);
+	}
+	public void removeOnPostsFetchedListener(OnPostsFetchedListener l)
+	{
+		if(this.onPostsFetchedListeners == null)
+			this.onPostsFetchedListeners = new ArrayList<OnPostsFetchedListener>();
+		this.onPostsFetchedListeners.remove(l);
+	}
+	public void removeOnPoolsFetchedListener(OnPoolsFetchedListener l)
+	{
+		if(this.onPoolsFetchedListeners == null)
+			this.onPoolsFetchedListeners = new ArrayList<OnPoolsFetchedListener>();
+		this.onPoolsFetchedListeners.remove(l);
+	}
 	
 	/* Fields */
 	Downloader<?> downloader = null;
@@ -29,7 +90,6 @@ public abstract class Imageboard
 	
 	String username = null;
 	String password = null;
-	String passwordHash = null;
 	
 	boolean working = false;
 	boolean doneDownloadingPosts = false;
@@ -58,11 +118,6 @@ public abstract class Imageboard
 		return password;
 	}
 	
-	public String getPasswordHash()
-	{
-		return passwordHash;
-	}
-	
 	public SparseArray<Post> getPosts()
 	{
 		return posts;
@@ -82,12 +137,27 @@ public abstract class Imageboard
 	
 	public void setPassword(String password)
 	{
-		this.password = password;
-	}
-	
-	public void setPasswordHash(String passwordHash)
-	{
-		this.passwordHash = passwordHash;
+		MessageDigest msgdig = null;
+		
+		try
+		{ msgdig = MessageDigest.getInstance("SHA-1"); }
+		catch(Exception ex)
+		{ ex.printStackTrace(); }
+		
+		byte[] buff = String.format(API_DANBOORU_PASSWORD, password).getBytes();
+		buff = msgdig.digest(buff);
+		
+		StringBuffer sbuff = new StringBuffer();
+		for(int idx = 0; idx < buff.length; idx++)
+		{
+			String part = Integer.toHexString(0xff & buff[idx]);
+			if(part.length() == 1)
+				sbuff.append("0");
+			sbuff.append(part);
+		}
+		this.password = sbuff.toString();
+		
+		//this.password = password;
 	}
 	
 	public void setPostsPerPage(int postsPerPage)
@@ -106,7 +176,14 @@ public abstract class Imageboard
 	
 	public void clear()
 	{
+		if(this.working && this.downloader != null)
+			this.downloader.cancel(true);
 		
+		this.tags.clear();
+		this.posts.clear();
+		this.doneDownloadingPosts = false;
+		this.working = false;
+		this.page = 1;
 	}
 	
 	public void requestPosts()
@@ -137,5 +214,76 @@ public abstract class Imageboard
 		}
 		
 		return tags;
+	}
+	
+	@Override
+	public void onError(int errCode, String message)
+	{
+		if(this.onErrorListeners != null)
+		{
+			for(OnErrorListener l : this.onErrorListeners)
+			{
+				l.onError(errCode, message);
+			}
+		}
+	}
+	
+	@Override
+	public void onAccessDenied()
+	{
+		if(this.onErrorListeners != null)
+		{
+			for(OnErrorListener l : this.onErrorListeners)
+			{
+				l.onError(HttpURLConnection.HTTP_FORBIDDEN, "Access denied");
+			}
+		}
+	}
+	
+	@Override
+	public void onInternalServerError(JsonParser<?> jarr)
+	{
+		Response response = (Response)jarr.getAtIndex(0);
+		
+		if(this.onErrorListeners != null)
+		{
+			for(OnErrorListener l : this.onErrorListeners)
+			{
+				l.onError(HttpURLConnection.HTTP_INTERNAL_ERROR, response.getReason());
+			}
+		}
+	}
+	
+	@Override
+	public void onResponseReceived(JsonParser<?> jp)
+	{
+		Post p = null;
+		int index = 0;
+		while((p = (Post)jp.getAtIndex(index)) != null)
+		{
+			index++;
+			// TODO: rating filters
+			this.posts.append(p.getId(), p);
+		}
+		
+		if(index < this.postsPerPage)
+		{
+			this.doneDownloadingPosts = true;
+			Logger.i("ImageboardApi::onResponseReceived", "I'm done downloading, nothing more to load...");
+		}
+		
+		if(this.onPostsFetchedListeners != null)
+		{
+			for(OnPostsFetchedListener l : this.onPostsFetchedListeners)
+			{
+				if(l != null)
+					l.onPostsFetched(this);
+			}
+		}
+		
+		// increase page
+		this.page++;
+		// I'm done
+		this.working= false;
 	}
 }

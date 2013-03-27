@@ -1,11 +1,11 @@
 package org.shujito.cartonbox.controller;
 
-public class Danbooru2ImageBoard extends Imageboard
+public class DanbooruImageBoard extends Imageboard
 {
 	/* Static */
-	public static final String API_DANBOORU_PASSWORD = "choujin-steiner--%s--";
 	public static final String API_LOGIN = "login=%s";
 	public static final String API_PASSWORD_HASH = "password_hash=%s";
+	public static final String API_KEY = "api_key=%s";
 	public static final String API_LIMIT = "limit=%d";
 	public static final String API_PAGE = "page=%d";
 	public static final String API_TAGS = "tags=%s";
@@ -18,9 +18,18 @@ public class Danbooru2ImageBoard extends Imageboard
 	/* Fields */
 	
 	/* Constructor */
-	public Danbooru2ImageBoard(String siteUrl)
+	public DanbooruImageBoard(String siteUrl)
 	{
 		super(siteUrl);
+	}
+	
+	/* Setters */
+	
+	// TODO: bcrypt password, or api key
+	@Override
+	public void setPassword(String password)
+	{
+		this.password = password;
 	}
 	
 	/* Meth */
@@ -28,7 +37,11 @@ public class Danbooru2ImageBoard extends Imageboard
 	@Override
 	protected Downloader<?> createDownloader()
 	{
-		Downloader<?> downloader = new JsonDownloader(this.buildPostsUrl());
+		JsonDownloader downloader = new DanbooruJsonPostDownloader(this.buildPostsUrl());
+		downloader.setOnResponseReceivedListener(this);
+		downloader.setOnErrorListener(this);
+		downloader.setOnAccessDeniedListener(this);
+		downloader.setOnInternalServerErrorListener(this);
 		return downloader;
 	}
 	
@@ -37,7 +50,13 @@ public class Danbooru2ImageBoard extends Imageboard
 		StringBuilder url = new StringBuilder();
 		
 		url.append(String.format(API_POSTS_JSON, this.siteUrl));
-
+		
+		url.append(String.format(API_LOGIN, this.username));
+		url.append("&");
+		url.append(String.format(API_KEY, this.password));
+		url.append("&");
+		
+		
 		url.append(String.format(API_PAGE, this.page));
 		url.append("&");
 		url.append(String.format(API_LIMIT, this.postsPerPage));

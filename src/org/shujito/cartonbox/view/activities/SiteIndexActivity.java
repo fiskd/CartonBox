@@ -1,12 +1,16 @@
 package org.shujito.cartonbox.view.activities;
 
 import org.shujito.cartonbox.R;
-import org.shujito.cartonbox.controller.Danbooru2ImageBoard;
+import org.shujito.cartonbox.controller.DanbooruImageBoard;
 import org.shujito.cartonbox.controller.Imageboard;
+import org.shujito.cartonbox.controller.listeners.OnErrorListener;
+import org.shujito.cartonbox.controller.listeners.OnFragmentAttachedListener;
 import org.shujito.cartonbox.view.adapters.SiteIndexPageAdapter;
+import org.shujito.cartonbox.view.fragments.PostsSectionFragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
@@ -15,8 +19,8 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.MultiAutoCompleteTextView;
 import android.widget.TextView;
-import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
+import android.widget.TextView.OnEditorActionListener;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.ActionBar.Tab;
@@ -27,7 +31,8 @@ import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.MenuItem.OnActionExpandListener;
 
 public class SiteIndexActivity extends SherlockFragmentActivity implements
-	OnPageChangeListener, TabListener, OnActionExpandListener, OnEditorActionListener
+	OnPageChangeListener, TabListener, OnActionExpandListener, OnEditorActionListener,
+	OnFragmentAttachedListener, OnErrorListener
 {
 	public static String EXTRA_SITEURL = "org.shujito.cartonbox.SITEURL";
 	public static String EXTRA_USERNAME = "org.shujito.cartonbox.USERNAME";
@@ -89,10 +94,12 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 		//String url = this.getIntent().getStringExtra(EXTRA_SITEURL);
 		//Toast.makeText(this, url, Toast.LENGTH_SHORT).show();
 		
-		this.api = new Danbooru2ImageBoard(siteUrl); // TODO: new
-		//this.api.setUsername(null);
-		//this.api.setPasswordHash(null);
-		
+		this.api = new DanbooruImageBoard(siteUrl);
+		this.api.addOnErrorListener(this);
+		// XXX: removing secret stuff
+		this.api.putTag("touhou");
+		this.api.putTag("mamo");
+		this.api.putTag("loli");
 	}
 	
 	@Override
@@ -223,10 +230,9 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 	{
 		if(action == EditorInfo.IME_ACTION_SEARCH)
 		{
-			Toast.makeText(this, v.getText().toString(), Toast.LENGTH_SHORT).show();
+			//Toast.makeText(this, v.getText().toString(), Toast.LENGTH_SHORT).show();
 			if(this.api != null)
 			{
-				// TODO: api things
 				this.api.clear();
 				String[] tags = v.getText().toString().split("\\s+");
 				for(String tag : tags)
@@ -240,4 +246,25 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 		return false;
 	}
 	/* OnEditorActionListener methods */
+	
+	/* OnFragmentAttachedListener<Imageboard> */
+	@Override
+	public Object onFragmentAttached(Fragment f)
+	{
+		if(f instanceof PostsSectionFragment)
+		{
+			return this.api;
+		}
+		
+		return null;
+	}
+	/* OnFragmentAttachedListener<Imageboard> */
+	
+	/* OnErrorListener methods */
+	@Override
+	public void onError(int errCode, String message)
+	{
+		Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+	}
+	/* OnErrorListener methods */
 }

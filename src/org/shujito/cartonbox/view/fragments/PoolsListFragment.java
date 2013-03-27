@@ -1,13 +1,18 @@
 package org.shujito.cartonbox.view.fragments;
 
-import android.os.Bundle;
-import android.support.v4.app.ListFragment;
+import org.shujito.cartonbox.R;
 
-public class PoolsListFragment extends ListFragment
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+public class PoolsListFragment extends Fragment
 {
 	@Override
-	public void onActivityCreated(Bundle cirno)
+	public View onCreateView(LayoutInflater inf, ViewGroup dad, Bundle cirno)
 	{
-		super.onActivityCreated(cirno);
+		return inf.inflate(R.layout.empty, dad, false);
 	}
 }
