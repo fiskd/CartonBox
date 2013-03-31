@@ -1,6 +1,7 @@
 package org.shujito.cartonbox.view.activities;
 
 import org.shujito.cartonbox.R;
+import org.shujito.cartonbox.model.Site;
 import org.shujito.cartonbox.view.adapters.SitesAdapter;
 
 import android.content.Intent;
@@ -75,8 +76,9 @@ public class MainActivity extends SherlockActivity implements OnItemClickListene
 	public void onItemClick(AdapterView<?> dad, View v, int pos, long id)
 	{
 		Intent ntn = new Intent(this, SiteIndexActivity.class);
-		ntn.putExtra(SiteIndexActivity.EXTRA_SITEURL, this.mSites[0]);
+		//ntn.putExtra(SiteIndexActivity.EXTRA_SITEURL, this.mSites[0]);
 		//ntn.putExtra(SiteIndexActivity.EXTRA_SECTIONPAGE, R.string.section_pools);
+		ntn.putExtra(SiteIndexActivity.EXTRA_SITE, new Site().setUrl("http://danbooru.donmai.us").setPostsApi("%s/posts.json"));
 		this.startActivity(ntn);
 	}
 	/* OnItemClickListener methods */

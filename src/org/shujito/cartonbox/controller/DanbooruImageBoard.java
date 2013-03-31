@@ -1,5 +1,7 @@
 package org.shujito.cartonbox.controller;
 
+import org.shujito.cartonbox.model.Site;
+
 public class DanbooruImageBoard extends Imageboard
 {
 	/* Static */
@@ -10,17 +12,20 @@ public class DanbooruImageBoard extends Imageboard
 	public static final String API_PAGE = "page=%d";
 	public static final String API_TAGS = "tags=%s";
 	
-	public static final String API_POSTS_JSON = "%s/posts.json?";
-	//public static final String API_POSTS_XML = "%s/posts.xml?";
-	//public static final String API_POOLS_JSON = "%s/pool/index.json?";
-	//public static final String API_POOLS_XML = "%s/pool/index.xml?";
+	//public static final String API_POSTS_JSON = "%s/posts.json";
+	//public static final String API_POSTS_XML = "%s/posts.xml";
+	//public static final String API_POOLS_JSON = "%s/pool/index.json";
+	//public static final String API_POOLS_XML = "%s/pool/index.xml";
 	
 	/* Fields */
 	
 	/* Constructor */
-	public DanbooruImageBoard(String siteUrl)
+	public DanbooruImageBoard(Site site)
 	{
-		super(siteUrl);
+		super(site);
+		
+		//this.site = new Site();
+		//this.site.setUrl(siteUrl);
 	}
 	
 	/* Setters */
@@ -49,13 +54,14 @@ public class DanbooruImageBoard extends Imageboard
 	{
 		StringBuilder url = new StringBuilder();
 		
-		url.append(String.format(API_POSTS_JSON, this.siteUrl));
+		//url.append(String.format(API_POSTS_JSON, this.site.getUrl()));
+		url.append(String.format(this.site.getPostsApi(), this.site.getUrl()));
+		url.append("?");
 		
 		url.append(String.format(API_LOGIN, this.username));
 		url.append("&");
 		url.append(String.format(API_KEY, this.password));
 		url.append("&");
-		
 		
 		url.append(String.format(API_PAGE, this.page));
 		url.append("&");
@@ -69,4 +75,6 @@ public class DanbooruImageBoard extends Imageboard
 		
 		return url.toString();
 	}
+	
+	
 }

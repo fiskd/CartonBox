@@ -1,13 +1,17 @@
 package org.shujito.cartonbox.model;
 
-public class Post
+import java.io.Serializable;
+
+public class Post implements Serializable
 {
+	private static final long serialVersionUID = 1L;
+	
 	// original
-	public static String URL_FILE_FORMAT = "/data/%d.%s";
+	public static String URL_FILE_FORMAT = "/data/%s.%s";
 	// scaled down
-	public static String URL_SAMPLE_FORMAT = "/data/sample/sample-%d.%s";
+	public static String URL_SAMPLE_FORMAT = "/data/sample/sample-%s.jpg";
 	// thumbnail
-	public static String URL_PREVIEW_FORMAT = "/ssd/data/preview/%d.%s";
+	public static String URL_PREVIEW_FORMAT = "/ssd/data/preview/%s.jpg";
 	
 	// sexual rating
 	public enum Rating
@@ -23,30 +27,33 @@ public class Post
 	/* fields */
 	
 	// meta
-	int id;
-	int parentId;
-	String md5;
+	private int id;
+	private int parentId;
+	private String md5;
+	private String fileExt;
+	private int fileSize;
 	// actual image
-	String url;
-	int width;
-	int height;
+	private String url;
+	private int width;
+	private int height;
 	// sample
-	String sampleUrl;
+	private String sampleUrl;
 	// preview (thumbnail)
-	String previewUrl;
+	private String previewUrl;
 	// post properties
-	Rating rating;
-	boolean deleted;
-	boolean flagged;
-	boolean pending;
-	boolean hasChildren;
+	private Rating rating;
+	private boolean deleted;
+	private boolean flagged;
+	private boolean pending;
+	private boolean hasChildren;
+	private boolean hasLarge;
 	// has comments
-	String lastCommentedAt;
+	private String lastCommentedAt;
 	// has notes
-	String lastNotedAt;
-	// useful when the url lacks on information
-	Site site;
-
+	private String lastNotedAt;
+	// useful when the post lacks on information
+	private Site site;
+	
 	/* getters */
 	public int getId()
 	{ return this.id; }
@@ -54,16 +61,47 @@ public class Post
 	{ return this.parentId; }
 	public String getMd5()
 	{ return this.md5; }
+	public String getFileExt()
+	{ return this.fileExt; }
+	public int getFileSize()
+	{ return this.fileSize; }
 	public String getUrl()
-	{ return this.url; }
+	{
+		if(this.url == null && this.site != null)
+		{
+			this.url = this.site.getUrl().concat(
+				String.format(URL_FILE_FORMAT, this.md5, this.fileExt));
+		}
+		
+		return this.url;
+	}
 	public int getWidth()
 	{ return this.width; }
 	public int getHeight()
 	{ return this.height; }
 	public String getSampleUrl()
-	{ return this.sampleUrl; }
+	{
+		if(!this.hasLarge)
+			return this.getUrl();
+		
+		if(this.sampleUrl == null && this.site != null)
+		{
+			this.sampleUrl = this.site.getUrl().concat(
+				String.format(URL_SAMPLE_FORMAT, this.md5));
+		}
+		
+		return this.sampleUrl;
+	}
 	public String getPreviewUrl()
-	{ return this.previewUrl; }
+	{
+		if(this.previewUrl == null && this.site != null)
+		{
+			this.previewUrl = this.site.getUrl().concat(
+				String.format(URL_PREVIEW_FORMAT, this.md5));
+		}
+		
+		return this.previewUrl;
+	}
 	public Rating getRating()
 	{ return this.rating; }
 	public boolean isDeleted()
@@ -74,6 +112,8 @@ public class Post
 	{ return this.pending; }
 	public boolean isHasChildren()
 	{ return this.hasChildren; }
+	public boolean isHasLarge()
+	{ return this.hasLarge; }
 	public String getLastCommentedAt()
 	{ return this.lastCommentedAt; }
 	public String getLastNotedAt()
@@ -95,6 +135,16 @@ public class Post
 	public Post setMd5(String s)
 	{
 		this.md5 = s;
+		return this;
+	}
+	public Post setFileExt(String s)
+	{
+		this.fileExt = s;
+		return this;
+	}
+	public Post setFileSize(int i)
+	{
+		this.fileSize = i;
 		return this;
 	}
 	public Post setUrl(String s)
@@ -122,9 +172,9 @@ public class Post
 		this.previewUrl = s;
 		return this;
 	}
-	public Post setRating(Rating s)
+	public Post setRating(Rating r)
 	{
-		this.rating = s;
+		this.rating = r;
 		return this;
 	}
 	public Post setDeleted(boolean b)
@@ -147,6 +197,11 @@ public class Post
 		this.hasChildren = b;
 		return this;
 	}
+	public Post setHasLarge(boolean b)
+	{
+		this.hasLarge = b;
+		return this;
+	}
 	public Post setLastCommentedAt(String s)
 	{
 		this.lastCommentedAt = s;
@@ -157,9 +212,9 @@ public class Post
 		this.lastNotedAt = s;
 		return this;
 	}
-	public Post setSite(Site site)
+	public Post setSite(Site s)
 	{
-		this.site = site;
+		this.site = s;
 		return this;
 	}
 	

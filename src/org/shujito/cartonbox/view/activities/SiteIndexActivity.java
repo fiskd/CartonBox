@@ -1,10 +1,13 @@
 package org.shujito.cartonbox.view.activities;
 
+import org.shujito.cartonbox.CartonBox;
+import org.shujito.cartonbox.Logger;
 import org.shujito.cartonbox.R;
 import org.shujito.cartonbox.controller.DanbooruImageBoard;
 import org.shujito.cartonbox.controller.Imageboard;
 import org.shujito.cartonbox.controller.listeners.OnErrorListener;
 import org.shujito.cartonbox.controller.listeners.OnFragmentAttachedListener;
+import org.shujito.cartonbox.model.Site;
 import org.shujito.cartonbox.view.adapters.SiteIndexPageAdapter;
 import org.shujito.cartonbox.view.fragments.PostsSectionFragment;
 
@@ -19,7 +22,6 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.MultiAutoCompleteTextView;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.TextView.OnEditorActionListener;
 
 import com.actionbarsherlock.app.ActionBar;
@@ -34,7 +36,7 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 	OnPageChangeListener, TabListener, OnActionExpandListener, OnEditorActionListener,
 	OnFragmentAttachedListener, OnErrorListener
 {
-	public static String EXTRA_SITEURL = "org.shujito.cartonbox.SITEURL";
+	public static String EXTRA_SITE = "org.shujito.cartonbox.SITE";
 	public static String EXTRA_USERNAME = "org.shujito.cartonbox.USERNAME";
 	public static String EXTRA_PASSWORD = "org.shujito.cartonbox.PASSWORD";
 	public static String EXTRA_SECTIONPAGE = "org.shujito.cartonbox.SECTIONPAGE";
@@ -53,9 +55,10 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 		super.onCreate(cirno);
 		this.setContentView(R.layout.siteindex);
 		
-		String siteUrl = this.getIntent().getStringExtra(EXTRA_SITEURL);
+		//String siteUrl = this.getIntent().getStringExtra(EXTRA_SITEURL);
 		//String username = this.getIntent().getStringExtra(EXTRA_USERNAME);
 		//String password = this.getIntent().getStringExtra(EXTRA_PASSWORD);
+		Site site = (Site)this.getIntent().getSerializableExtra(EXTRA_SITE);
 		
 		this.tabs = this.getResources().getStringArray(R.array.danbooru_sections);
 		this.mPageAdapter = new SiteIndexPageAdapter(this.getSupportFragmentManager(), this);
@@ -94,18 +97,38 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 		//String url = this.getIntent().getStringExtra(EXTRA_SITEURL);
 		//Toast.makeText(this, url, Toast.LENGTH_SHORT).show();
 		
-		this.api = new DanbooruImageBoard(siteUrl);
-		this.api.addOnErrorListener(this);
-		// XXX: removing secret stuff
-		this.api.putTag("touhou");
-		this.api.putTag("mamo");
-		this.api.putTag("loli");
+		//Site site = new Site()
+			//.setUrl("http://danbooru.donmai.us")
+			//.setPostsApi("%s/posts.json?");
+		
+		// get the api
+		CartonBox carton = (CartonBox)this.getApplication();
+		this.api = carton.getImageboard();
+		
+		if(this.api == null)
+		{
+			// create the api
+			this.api = new DanbooruImageBoard(site);
+			this.api.addOnErrorListener(this);
+		}
+	}
+	
+	@Override
+	protected void onPause()
+	{
+		super.onPause();
+		// save the api
+		CartonBox carton = (CartonBox)this.getApplication();
+		carton.setImageboard(this.api);
 	}
 	
 	@Override
 	protected void onDestroy()
 	{
 		super.onDestroy();
+		// kill the api
+		CartonBox carton = (CartonBox)this.getApplication();
+		carton.setImageboard(null);
 		this.api = null;
 	}
 	
@@ -165,6 +188,7 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 	{
 		// select the tab
 		this.getSupportActionBar().getTabAt(pos).select();
+		Logger.i("SiteIndexActivity::onPageSelected", String.format("%s", pos));
 	}
 	/* OnPageChangeListener methods */
 	
@@ -264,7 +288,7 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 	@Override
 	public void onError(int errCode, String message)
 	{
-		Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+		//Toast.makeText(this, message, Toast.LENGTH_LONG).show();
 	}
 	/* OnErrorListener methods */
 }

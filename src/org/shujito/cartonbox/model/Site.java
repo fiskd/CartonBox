@@ -4,22 +4,32 @@ import java.io.Serializable;
 
 public class Site implements Serializable
 {
+	public enum Type
+	{
+		Danbooru1,
+		Danbooru2,
+		Gelbooru
+	}
+	
 	/* Static */
 	private static final long serialVersionUID = 1L;
 	
 	/* fields */
-	int id;
-	String url;
-	String postsApi;
-	String poolsApi;
-	String commentsApi;
-	String notesApi;
-	String artistsApi;
-	String tagsApi;
+	private int id;
+	private Type type;
+	private String url;
+	private String postsApi;
+	private String poolsApi;
+	private String commentsApi;
+	private String notesApi;
+	private String artistsApi;
+	private String tagsApi;
 	
 	/* getters */
 	public int getId()
-	{ return id; }
+	{ return this.id; }
+	public Type getType()
+	{ return this.type; }
 	public String getUrl()
 	{ return this.url; }
 	public String getPostsApi()
@@ -39,6 +49,11 @@ public class Site implements Serializable
 	public Site setId(int i)
 	{
 		this.id = i;
+		return this;
+	}
+	public Site setType(Type e)
+	{
+		this.type = e;
 		return this;
 	}
 	public Site setUrl(String s)

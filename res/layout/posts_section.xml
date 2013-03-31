@@ -20,11 +20,13 @@
 		android:layout_gravity="center" />
 	
 	<TextView
-		android:id="@+id/posts_tvnoposts"
+		android:id="@+id/posts_tvmessage"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_gravity="center_horizontal"
-		android:text="@string/no_posts"
+		android:gravity="center"
+		android:padding="10dp"
+		android:textIsSelectable="false"
 		android:textAppearance="?android:attr/textAppearanceLarge" />
 	
 </FrameLayout>

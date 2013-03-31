@@ -2,6 +2,7 @@ package org.shujito.cartonbox.controller;
 
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.net.SocketTimeoutException;
 import java.net.URI;
 import java.net.URL;
 
@@ -66,6 +67,11 @@ public abstract class Downloader<T> extends AsyncTask<Void, Void, T>
 				is = http.getInputStream();
 			
 			t = this.doInBackground(is);
+		}
+		catch(SocketTimeoutException ex)
+		{
+			this.message = "Connection timed out";
+			this.code = HttpURLConnection.HTTP_CLIENT_TIMEOUT;
 		}
 		catch(Exception ex)
 		{

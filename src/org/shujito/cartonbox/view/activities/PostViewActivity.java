@@ -1,9 +1,10 @@
 package org.shujito.cartonbox.view.activities;
 
+import org.shujito.cartonbox.CartonBox;
 import org.shujito.cartonbox.R;
+import org.shujito.cartonbox.controller.Imageboard;
 import org.shujito.cartonbox.view.adapters.PostsPagerAdapter;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
@@ -15,7 +16,9 @@ import com.actionbarsherlock.view.MenuItem;
 public class PostViewActivity extends SherlockFragmentActivity
 	implements OnPageChangeListener
 {
-	public static String EXTRA_POST_INDEX = "org.shujito.cartonbox.view.activities.PostViewActivity.POST_INDEX";
+	public static String EXTRA_POST_INDEX = "org.shujito.cartonbox.POST_INDEX";
+	
+	Imageboard api = null;
 	
 	ViewPager mVpPosts = null;
 	PostsPagerAdapter mPostsAdapter = null;
@@ -32,14 +35,50 @@ public class PostViewActivity extends SherlockFragmentActivity
 		
 		this.mPostsAdapter = new PostsPagerAdapter(this.getSupportFragmentManager());
 		
-		int page = this.getIntent().getIntExtra(EXTRA_POST_INDEX, 0);
-		
 		this.mVpPosts = (ViewPager)this.findViewById(R.id.postview_vpposts);
 		this.mVpPosts.setAdapter(this.mPostsAdapter);
-		this.mVpPosts.setCurrentItem(page);
 		this.mVpPosts.setOnPageChangeListener(this);
 		
 		this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		
+		CartonBox carton = (CartonBox)this.getApplication();
+		this.api = carton.getImageboard();
+		
+		if(this.api == null)
+			this.finish();
+		
+		this.api.addOnPostsFetchedListener(this.mPostsAdapter);
+	}
+	
+	@Override
+	protected void onResume()
+	{
+		super.onResume();
+		// XXX: hacky...
+		if(this.mPostsAdapter != null)
+			this.mPostsAdapter.onPostsFetched(this.api);
+		
+		int page = this.getIntent().getIntExtra(EXTRA_POST_INDEX, 0);
+		this.mVpPosts.setCurrentItem(page);
+	}
+	
+	@Override
+	protected void onPause()
+	{
+		super.onPause();
+		this.getIntent().putExtra(EXTRA_POST_INDEX, this.mVpPosts.getCurrentItem());
+	}
+	
+	@Override
+	protected void onDestroy()
+	{
+		super.onDestroy();
+		
+		// remove this listener
+		this.api.removeOnPostsFetchedListener(this.mPostsAdapter);
+		
+		CartonBox carton = (CartonBox)this.getApplication();
+		carton.setImageboard(this.api);
 	}
 	
 	@Override
@@ -48,11 +87,7 @@ public class PostViewActivity extends SherlockFragmentActivity
 		switch(item.getItemId())
 		{
 		case android.R.id.home:
-			Intent ntn = new Intent(this, SiteIndexActivity.class);
-			ntn.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			ntn.putExtra(SiteIndexActivity.EXTRA_SECTIONPAGE, R.string.section_posts);
-			this.startActivity(ntn);
-			//this.finish();
+			this.finish();
 			// handle the event
 			return true;
 		}
@@ -92,9 +127,9 @@ public class PostViewActivity extends SherlockFragmentActivity
 	public void onPageSelected(int pos)
 	{
 		// DEMO: hide or show optionsmenu items
-		this.bChildren = (pos % 2) == 0;
-		this.bParent = (pos % 3) == 0;
-		this.bPools = (pos % 4) == 0;
+		//this.bChildren = (pos % 2) == 0;
+		//this.bParent = (pos % 3) == 0;
+		//this.bPools = (pos % 4) == 0;
 	}
 	/* OnPageChangeListener methods */
 }

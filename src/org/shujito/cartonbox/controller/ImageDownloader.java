@@ -66,15 +66,16 @@ public class ImageDownloader extends AsyncTask<Void, Void, Bitmap>
 	@Override
 	protected Bitmap doInBackground(Void... params)
 	{
+		if(this.url == null)
+			return null;
+		
 		int count = 0;
 		int secondslash = 0;
 		int thirdslash = 0;
-		int lastslash = 0;
 		for(int idx = 0; idx < this.url.length(); idx++)
 		{
 			if(this.url.charAt(idx) == '/')
 			{
-				lastslash = idx;
 				count++;
 			}
 			if(count == 2 && secondslash == 0)
@@ -83,7 +84,6 @@ public class ImageDownloader extends AsyncTask<Void, Void, Bitmap>
 				thirdslash = idx;
 		}
 		secondslash++;
-		lastslash++;
 		
 		Bitmap bmp = null;
 		// domain
@@ -91,7 +91,7 @@ public class ImageDownloader extends AsyncTask<Void, Void, Bitmap>
 		// separator
 		filename = filename.concat(" - ");
 		// file
-		filename = filename.concat(this.url.substring(lastslash));
+		filename = filename.concat(this.url.substring(thirdslash + 1).replace('/', '-'));
 		
 		try
 		{

@@ -16,6 +16,8 @@ import org.shujito.cartonbox.controller.listeners.OnResponseReceivedListener;
 import org.shujito.cartonbox.model.JsonParser;
 import org.shujito.cartonbox.model.Post;
 import org.shujito.cartonbox.model.Response;
+import org.shujito.cartonbox.model.Site;
+import org.shujito.cartonbox.model.Post.Rating;
 
 import android.util.SparseArray;
 
@@ -85,8 +87,8 @@ public abstract class Imageboard implements
 	//Downloader<?> xmlDownloader = null;
 	SparseArray<Post> posts = null;
 	ArrayList<String> tags = null;
-	//Site site = null;
-	String siteUrl = null;
+	Site site = null;
+	//String siteUrl = null;
 	
 	String username = null;
 	String password = null;
@@ -97,11 +99,17 @@ public abstract class Imageboard implements
 	int postsPerPage = 20;
 	int page = 1;
 	
+	boolean showSafePosts = true;
+	boolean showQuestionablePosts = false;
+	boolean showExplicitPosts = false;
+	
 	/* Constructor */
 	
-	protected Imageboard(String siteUrl)
+	protected Imageboard(Site site)
 	{
-		this.siteUrl = siteUrl;
+		//this.siteUrl = siteUrl;
+		this.site = site;
+		
 		this.posts = new SparseArray<Post>();
 		this.tags = new ArrayList<String>();
 	}
@@ -110,22 +118,44 @@ public abstract class Imageboard implements
 	
 	public String getUsername()
 	{
-		return username;
+		return this.username;
 	}
 	
 	public String getPassword()
 	{
-		return password;
+		return this.password;
 	}
 	
 	public SparseArray<Post> getPosts()
 	{
-		return posts;
+		return this.posts;
 	}
 	
 	public int getPostsPerPage()
 	{
-		return postsPerPage;
+		return this.postsPerPage;
+	}
+	
+	public Site getSite()
+	{
+		return this.site;
+	}
+	
+	/* are's */
+	
+	public boolean isShowSafePosts()
+	{
+		return this.showSafePosts;
+	}
+	
+	public boolean isShowQuestionablePosts()
+	{
+		return this.showQuestionablePosts;
+	}
+	
+	public boolean isShowExplicitPosts()
+	{
+		return this.showExplicitPosts;
 	}
 	
 	/* Setters */
@@ -165,6 +195,26 @@ public abstract class Imageboard implements
 		this.postsPerPage = postsPerPage;
 	}
 	
+	public void setSite(Site site)
+	{
+		this.site = site;
+	}
+	
+	public void setShowSafePosts(boolean showSafePosts)
+	{
+		this.showSafePosts = showSafePosts;
+	}
+	
+	public void setShowQuestionablePosts(boolean showQuestionablePosts)
+	{
+		this.showQuestionablePosts = showQuestionablePosts;
+	}
+	
+	public void setShowExplicitPosts(boolean showExplicitPosts)
+	{
+		this.showExplicitPosts = showExplicitPosts;
+	}
+	
 	/* Meth */
 	
 	protected abstract Downloader<?> createDownloader();
@@ -192,6 +242,7 @@ public abstract class Imageboard implements
 		{
 			if(!this.working)
 			{
+				Logger.i("Imageboard::requestPosts", "Request job, page " + this.page);
 				this.downloader = this.createDownloader();
 				this.downloader.execute();
 				this.working = true;
@@ -226,6 +277,8 @@ public abstract class Imageboard implements
 				l.onError(errCode, message);
 			}
 		}
+		
+		this.working = false;
 	}
 	
 	@Override
@@ -238,6 +291,8 @@ public abstract class Imageboard implements
 				l.onError(HttpURLConnection.HTTP_FORBIDDEN, "Access denied");
 			}
 		}
+		
+		this.working = false;
 	}
 	
 	@Override
@@ -252,6 +307,8 @@ public abstract class Imageboard implements
 				l.onError(HttpURLConnection.HTTP_INTERNAL_ERROR, response.getReason());
 			}
 		}
+		
+		this.working = false;
 	}
 	
 	@Override
@@ -263,7 +320,15 @@ public abstract class Imageboard implements
 		{
 			index++;
 			// TODO: rating filters
-			this.posts.append(p.getId(), p);
+			if(
+					this.showSafePosts && p.getRating() == Rating.Safe ||
+					this.showQuestionablePosts && p.getRating() == Rating.Questionable ||
+					this.showExplicitPosts && p.getRating() == Rating.Explicit
+				)
+			{
+				this.posts.append(p.getId(), p);
+				p.setSite(this.site);
+			}
 		}
 		
 		if(index < this.postsPerPage)

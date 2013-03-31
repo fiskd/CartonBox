@@ -2,8 +2,8 @@ package org.shujito.cartonbox.model;
 
 public class Response
 {
-	String reason;
-	boolean success;
+	private String reason;
+	private boolean success;
 	
 	/* constructor */
 	public Response()
