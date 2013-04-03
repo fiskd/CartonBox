@@ -1,36 +1,48 @@
 package org.shujito.cartonbox.controller;
 
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.net.URL;
+import java.net.URLConnection;
 
 import org.shujito.cartonbox.Logger;
+import org.shujito.cartonbox.controller.listeners.OnDownloadProgressListener;
 import org.shujito.cartonbox.controller.listeners.OnImageFetchedListener;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 
-public class ImageDownloader extends AsyncTask<Void, Void, Bitmap>
+public class ImageDownloader extends AsyncTask<Void, Float, Bitmap>
 {
 	/* listeners */
 	
 	private OnImageFetchedListener onImageFetchedListener = null;
+	private OnDownloadProgressListener onDownloadProgressListener = null;
 	
 	public OnImageFetchedListener getOnImageFetchedListener()
 	{ return this.onImageFetchedListener; }
+	public OnDownloadProgressListener getOnDownloadProgressListener()
+	{ return this.onDownloadProgressListener; }
+	
 	public void setOnImageFetchedListener(OnImageFetchedListener l)
 	{ this.onImageFetchedListener = l; }
+	public void setOnDownloadProgressListener(OnDownloadProgressListener l)
+	{ this.onDownloadProgressListener = l; }
 	
 	/* fields */
 	
 	private String url = null;
 	private Context context = null;
 	private boolean cachingToExternal;
+	private boolean alreadyExecuted;
+	
+	int width, height;
 	
 	/* getters */
 	
@@ -46,11 +58,26 @@ public class ImageDownloader extends AsyncTask<Void, Void, Bitmap>
 		this.cachingToExternal = cacheToExternal;
 	}
 	
+	public void setWidth(int width)
+	{
+		this.width = width;
+	}
+	
+	public void setHeight(int height)
+	{
+		this.height = height;
+	}
+	
 	/* are's */
 	
 	public boolean isCachingToExternal()
 	{
-		return cachingToExternal;
+		return this.cachingToExternal;
+	}
+	
+	public boolean isAlreadyExecuted()
+	{
+		return this.alreadyExecuted;
 	}
 	
 	/* constructor */
@@ -64,27 +91,35 @@ public class ImageDownloader extends AsyncTask<Void, Void, Bitmap>
 	/* meth */
 	
 	@Override
+	protected void onPreExecute()
+	{
+		super.onPreExecute();
+		this.alreadyExecuted = true;
+	}
+	
+	@Override
 	protected Bitmap doInBackground(Void... params)
 	{
 		if(this.url == null)
 			return null;
 		
-		int count = 0;
+		int slashCount = 0;
 		int secondslash = 0;
 		int thirdslash = 0;
 		for(int idx = 0; idx < this.url.length(); idx++)
 		{
 			if(this.url.charAt(idx) == '/')
 			{
-				count++;
+				slashCount++;
 			}
-			if(count == 2 && secondslash == 0)
+			if(slashCount == 2 && secondslash == 0)
 				secondslash = idx;
-			if(count == 3 && thirdslash == 0)
+			if(slashCount == 3 && thirdslash == 0)
 				thirdslash = idx;
 		}
 		secondslash++;
 		
+		// bitmap
 		Bitmap bmp = null;
 		// domain
 		String filename = this.url.substring(secondslash, thirdslash);
@@ -95,28 +130,80 @@ public class ImageDownloader extends AsyncTask<Void, Void, Bitmap>
 		
 		try
 		{
-			/* TODO: make this a preference
-			boolean useexternal = PreferenceManager.getDefaultSharedPreferences(this.context).getBoolean("use_external", false);
-			File dir = this.context.getCacheDir();
-			if(this.context.getExternalCacheDir() != null && useexternal)
-				dir = this.context.getExternalCacheDir();
-			//*/
-			
+			// file
 			File file = new File(this.context.getCacheDir(), filename);
+			// source stream
+			InputStream input = null;
+			// file or stream size
+			int size = 0;
+			
 			if(file.exists())
 			{
-				bmp = BitmapFactory.decodeStream(new FileInputStream(file));
+				//bmp = BitmapFactory.decodeStream(new FileInputStream(file));
+				// there's file, open it
+				input = new FileInputStream(file);
+				// get file size
+				size = (int)file.length();
+			}
+			else
+			{
+				// have an url
+				URL url = new URL(this.url);
+				// connect to it
+				URLConnection urlconnection = url.openConnection();
+				// get the content size
+				size = urlconnection.getContentLength();
+				// put the network stream into a buffer
+				input = new BufferedInputStream(url.openStream());
 			}
 			
-			if(bmp == null)
+			// this stream runs on memory, it will hold the file or downloaded file
+			ByteArrayOutputStream output = null;
+			
+			try
 			{
-				InputStream is = new URL(this.url).openStream();
-				bmp = BitmapFactory.decodeStream(is);
-				is.close();
-				FileOutputStream fos = new FileOutputStream(file);
-				bmp.compress(CompressFormat.PNG, 0, fos);
-				fos.close();
+				// initialize it with the stream size
+				output = new ByteArrayOutputStream(size);
+				
+				byte[] data = new byte[1024];
+				int total = 0;
+				int bytesRead;
+				// start reading the stream
+				while((bytesRead = input.read(data)) > 0)
+				{
+					if(this.isCancelled())
+					{
+						// PANIC!
+						return null;
+					}
+					total += bytesRead;
+					//
+					this.publishProgress( (float)total / size );
+					output.write(data, 0, bytesRead);
+				}
+				
+				// put image bytes here
+				byte[] bitmapData = output.toByteArray();
+				bmp = ImageUtils.decodeSampledBitmap(bitmapData, this.width, this.height);
+				
+				if(!file.exists() && bmp != null) // save!
+				{
+					FileOutputStream fos = new FileOutputStream(file);
+					bmp.compress(CompressFormat.PNG, 0, fos);
+					fos.close();
+				}
 			}
+			finally
+			{
+				output.flush();
+				output.close();
+				input.close();
+			}
+		}
+		catch(OutOfMemoryError ex)
+		{
+			Logger.e("ImageDownloader::doInBackground", ex.toString(), ex);
+			System.gc();
 		}
 		catch(Exception ex)
 		{
@@ -126,7 +213,21 @@ public class ImageDownloader extends AsyncTask<Void, Void, Bitmap>
 				Logger.e("ImageDownloader::doInBackground", "whatever did happen", ex);
 		}
 		
+		
 		return bmp;
+	}
+	
+	@Override
+	protected void onProgressUpdate(Float... values)
+	{
+		if(this.onDownloadProgressListener != null)
+		{
+			if(values != null && values.length > 0)
+			{
+				float progress = values[0];
+				this.onDownloadProgressListener.onDownloadProgress(progress);
+			}
+		}
 	}
 	
 	@Override

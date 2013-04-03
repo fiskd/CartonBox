@@ -245,6 +245,7 @@ public abstract class Imageboard implements
 				Logger.i("Imageboard::requestPosts", "Request job, page " + this.page);
 				this.downloader = this.createDownloader();
 				this.downloader.execute();
+				//ConcurrentTask.execute(this.downloader);
 				this.working = true;
 			}
 		}
@@ -319,12 +320,17 @@ public abstract class Imageboard implements
 		while((p = (Post)jp.getAtIndex(index)) != null)
 		{
 			index++;
-			// TODO: rating filters
-			if(
-					this.showSafePosts && p.getRating() == Rating.Safe ||
-					this.showQuestionablePosts && p.getRating() == Rating.Questionable ||
-					this.showExplicitPosts && p.getRating() == Rating.Explicit
-				)
+			boolean shouldAdd = false;
+			
+			//shouldAdd = shouldAdd && (this.showSafePosts && p.getRating() == Rating.Safe);
+			//shouldAdd = shouldAdd && (this.showQuestionablePosts && p.getRating() == Rating.Questionable);
+			//shouldAdd = shouldAdd && (this.showExplicitPosts && p.getRating() == Rating.Explicit);
+			shouldAdd = (this.showSafePosts && p.getRating() == Rating.Safe) || shouldAdd;
+			shouldAdd = (this.showQuestionablePosts && p.getRating() == Rating.Questionable) || shouldAdd;
+			shouldAdd = (this.showExplicitPosts && p.getRating() == Rating.Explicit) || shouldAdd;
+			
+			// TODO: BETTER rating filters
+			if(shouldAdd)
 			{
 				this.posts.append(p.getId(), p);
 				p.setSite(this.site);

@@ -3,21 +3,27 @@ package org.shujito.cartonbox.view.adapters;
 import org.shujito.cartonbox.R;
 import org.shujito.cartonbox.controller.ImageDownloader;
 import org.shujito.cartonbox.controller.Imageboard;
+import org.shujito.cartonbox.controller.listeners.OnDownloadProgressListener;
 import org.shujito.cartonbox.controller.listeners.OnImageFetchedListener;
 import org.shujito.cartonbox.controller.listeners.OnPostsFetchedListener;
 import org.shujito.cartonbox.model.Post;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
+@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class PostsGridAdapter extends BaseAdapter implements OnPostsFetchedListener
 {
 	Context context = null;
@@ -66,9 +72,10 @@ public class PostsGridAdapter extends BaseAdapter implements OnPostsFetchedListe
 		Post one = this.posts.get(key);
 		// getting out early...
 		if(one == null) return v;
-		
-		final TextView tvloading = (TextView)v.findViewById(R.id.post_item_grid_tvloading);
+
 		final ImageView ivpreview = (ImageView)v.findViewById(R.id.post_item_grid_ivpreview);
+		final ProgressBar pbprogress = (ProgressBar)v.findViewById(R.id.post_item_grid_pbprogress);
+		final TextView tvloading = (TextView)v.findViewById(R.id.post_item_grid_tvloading);
 		// flagged
 		ImageView ivred = (ImageView)v.findViewById(R.id.post_item_grid_ivred);
 		// pending
@@ -98,8 +105,6 @@ public class PostsGridAdapter extends BaseAdapter implements OnPostsFetchedListe
 		else
 			ivyellow.setVisibility(View.GONE);
 		
-		tvloading.setText(String.valueOf(one.getId()));
-		
 		ImageDownloader downloader = new ImageDownloader(this.context, one.getPreviewUrl());
 		
 		if(ivpreview.getTag() instanceof ImageDownloader)
@@ -112,6 +117,30 @@ public class PostsGridAdapter extends BaseAdapter implements OnPostsFetchedListe
 		ivpreview.setImageBitmap(null);
 		ivpreview.setBackgroundColor(Color.TRANSPARENT);
 		
+		pbprogress.setVisibility(View.GONE);
+		pbprogress.setProgress(0);
+		
+		//tvloading.setText(String.valueOf(one.getId()));
+		tvloading.setVisibility(View.VISIBLE);
+		tvloading.setText(R.string.loading);
+		//tvloading.setText(String.format("w:%s h:%s", v.getWidth(), v.getHeight()));
+		//tvloading.setText(String.valueOf(one.getRating()));
+		
+		downloader.setWidth(150);
+		downloader.setHeight(150);
+		downloader.setOnDownloadProgressListener(new OnDownloadProgressListener()
+		{
+			@Override
+			public void onDownloadProgress(float progress)
+			{
+				float percentProgress = progress * 100;
+				
+				pbprogress.setVisibility(View.VISIBLE);
+				pbprogress.setProgress((int)percentProgress);
+				tvloading.setVisibility(View.VISIBLE);
+				tvloading.setText(String.format("%.2f%%", percentProgress));
+			}
+		});
 		downloader.setOnImageFetchedListener(new OnImageFetchedListener()
 		{
 			@Override
@@ -125,10 +154,18 @@ public class PostsGridAdapter extends BaseAdapter implements OnPostsFetchedListe
 				{
 					ivpreview.setImageBitmap(b);
 					ivpreview.setBackgroundColor(Color.BLACK);
+					pbprogress.setVisibility(View.GONE);
+					tvloading.setVisibility(View.GONE);
 				}
 			}
 		});
-		downloader.execute();
+		
+		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+			downloader.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+		else
+			downloader.execute();
+		
+		//ConcurrentTask.execute(downloader);
 		
 		return v;
 	}

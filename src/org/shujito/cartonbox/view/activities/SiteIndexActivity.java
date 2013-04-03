@@ -1,7 +1,6 @@
 package org.shujito.cartonbox.view.activities;
 
 import org.shujito.cartonbox.CartonBox;
-import org.shujito.cartonbox.Logger;
 import org.shujito.cartonbox.R;
 import org.shujito.cartonbox.controller.DanbooruImageBoard;
 import org.shujito.cartonbox.controller.Imageboard;
@@ -94,6 +93,7 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 			
 			this.mVpSections.setCurrentItem(page);
 		}
+		
 		//String url = this.getIntent().getStringExtra(EXTRA_SITEURL);
 		//Toast.makeText(this, url, Toast.LENGTH_SHORT).show();
 		
@@ -188,7 +188,7 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 	{
 		// select the tab
 		this.getSupportActionBar().getTabAt(pos).select();
-		Logger.i("SiteIndexActivity::onPageSelected", String.format("%s", pos));
+		//Logger.i("SiteIndexActivity::onPageSelected", String.format("%s", pos));
 	}
 	/* OnPageChangeListener methods */
 	

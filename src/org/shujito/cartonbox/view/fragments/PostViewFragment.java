@@ -1,14 +1,20 @@
 package org.shujito.cartonbox.view.fragments;
 
-import org.shujito.cartonbox.Logger;
 import org.shujito.cartonbox.R;
 import org.shujito.cartonbox.controller.ImageDownloader;
+import org.shujito.cartonbox.controller.listeners.OnDownloadProgressListener;
 import org.shujito.cartonbox.controller.listeners.OnImageFetchedListener;
 import org.shujito.cartonbox.model.Post;
 
+import android.annotation.TargetApi;
 import android.graphics.Bitmap;
+import android.graphics.Point;
+import android.os.AsyncTask.Status;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +22,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-public class PostViewFragment extends Fragment
+public class PostViewFragment extends Fragment implements OnDownloadProgressListener
 {
 	/* static */
 	static String EXTRA_POST = "org.shujito.cartonbox.POST";
@@ -36,17 +42,18 @@ public class PostViewFragment extends Fragment
 	/* fields */
 	
 	// logic
-	ImageDownloader sampleDownloader = null;
 	ImageDownloader thumbDownloader = null;
+	ImageDownloader sampleDownloader = null;
 	Post post = null;
 	// components
-	ProgressBar pbloading = null;
+	ProgressBar pbprogress = null;
 	TextView tvmessage = null;
 	ImageView ivpreview = null;
 	ImageView ivred = null;
 	ImageView ivblue = null;
 	ImageView ivgreen = null;
 	ImageView ivyellow = null;
+	
 	/* constructor */
 	
 	@Override
@@ -56,6 +63,8 @@ public class PostViewFragment extends Fragment
 	}
 	
 	@Override
+	@SuppressWarnings("deprecation")
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
 	public void onViewCreated(View view, Bundle savedInstanceState)
 	{
 		this.post = (Post)this.getArguments().getSerializable(EXTRA_POST);
@@ -63,16 +72,41 @@ public class PostViewFragment extends Fragment
 		if(this.post == null)
 			return;
 		
-		Logger.i("POST ID", String.valueOf(this.post.getId()));
+		//Logger.i("POST ID", String.valueOf(this.post.getId()));
 		
-		this.pbloading = (ProgressBar)view.findViewById(R.id.post_item_pager_pbloading);
+		this.pbprogress = (ProgressBar)view.findViewById(R.id.post_item_pager_pbprogress);
 		//this.pbloading.setVisibility(View.VISIBLE);
+		
+		//Point size = new Point();
+		//int width = this.getActivity().getWindowManager().getDefaultDisplay().getWidth();
+		//int height = this.getActivity().getWindowManager().getDefaultDisplay().getHeight();
+		
+		int width = 0;
+		int height = 0;
+		
+		Display display = this.getActivity().getWindowManager().getDefaultDisplay();
+		
+		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2)
+		{
+			Point size = new Point();
+			display.getSize(size);
+			width = size.x;
+			height = size.y;
+		}
+		else
+		{
+			width = display.getWidth();
+			height = display.getHeight();
+		}
 		
 		this.tvmessage = (TextView)view.findViewById(R.id.post_item_pager_tvmessage);
 		this.tvmessage.setVisibility(View.GONE);
+		//this.tvmessage.setVisibility(View.VISIBLE);
+		//this.tvmessage.setText(String.format("w:%s h:%s", width, height));
 		
 		// build the view appearance here
 		this.ivpreview = (ImageView)view.findViewById(R.id.post_item_pager_ivsample);
+		
 		// flagged
 		this.ivred = (ImageView)view.findViewById(R.id.post_item_pager_ivred);
 		// pending
@@ -102,45 +136,77 @@ public class PostViewFragment extends Fragment
 		else
 			this.ivyellow.setVisibility(View.GONE);
 		
-		this.sampleDownloader = new ImageDownloader(this.getActivity(), this.post.getSampleUrl());
-		this.sampleDownloader.setOnImageFetchedListener(new OnImageFetchedListener()
-		{
-			@Override
-			public void onImageFetched(Bitmap b)
-			{
-				if(b == null)
-				{
-					tvmessage.setVisibility(View.VISIBLE);
-				}
-				else
-				{
-					ivpreview.setImageBitmap(b);
-				}
-			}
-		});
-		
 		this.thumbDownloader = new ImageDownloader(this.getActivity(), this.post.getPreviewUrl());
+		this.thumbDownloader.setOnDownloadProgressListener(this);
+		this.thumbDownloader.setWidth(150);
+		this.thumbDownloader.setHeight(150);
 		this.thumbDownloader.setOnImageFetchedListener(new OnImageFetchedListener()
 		{
 			@Override
 			public void onImageFetched(Bitmap b)
 			{
-				pbloading.setVisibility(View.GONE);
-				
 				if(b == null)
 				{
-					tvmessage.setVisibility(View.VISIBLE);
+					//tvmessage.setVisibility(View.VISIBLE);
+					tvmessage.setText(R.string.download_failed);
 				}
 				else
 				{
 					ivpreview.setImageBitmap(b);
+					tvmessage.setText(R.string.loading_sample);
 					// start downloading sample
-					if(sampleDownloader != null)
-						sampleDownloader.execute();
+					if(sampleDownloader != null && !sampleDownloader.isAlreadyExecuted())
+					{
+						if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+							sampleDownloader.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+						else
+							sampleDownloader.execute();
+						
+						//sampleDownloader.execute();
+						//ConcurrentTask.execute(sampleDownloader);
+					}
 				}
 			}
 		});
-		thumbDownloader.execute();
+		
+		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+			this.thumbDownloader.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+		else
+			this.thumbDownloader.execute();
+		
+		//this.thumbDownloader.execute();
+		//ConcurrentTask.execute(this.thumbDownloader);
+		
+		this.sampleDownloader = new ImageDownloader(this.getActivity(), this.post.getSampleUrl());
+		this.sampleDownloader.setOnDownloadProgressListener(this);
+		this.sampleDownloader.setWidth(width);
+		this.sampleDownloader.setHeight(height);
+		this.sampleDownloader.setOnImageFetchedListener(new OnImageFetchedListener()
+		{
+			@Override
+			public void onImageFetched(Bitmap b)
+			{
+				pbprogress.setVisibility(View.GONE);
+				
+				if(b == null)
+				{
+					//tvmessage.setVisibility(View.VISIBLE);
+					tvmessage.setText(R.string.download_failed);
+				}
+				else
+				{
+					ivpreview.setImageBitmap(b);
+					tvmessage.setVisibility(View.GONE);
+				}
+			}
+		});
+	}
+	
+	@Override
+	public void onResume()
+	{
+		super.onResume();
+		
 	}
 	
 	@Override
@@ -149,11 +215,24 @@ public class PostViewFragment extends Fragment
 		super.onDestroy();
 		// why, ask your mother
 		if(this.thumbDownloader != null)
-			this.thumbDownloader.cancel(true);
+			if(this.thumbDownloader.getStatus() == Status.RUNNING)
+				this.thumbDownloader.cancel(true);
 		this.thumbDownloader = null;
 		
 		if(this.sampleDownloader != null)
-			this.sampleDownloader.cancel(true);
+			if(this.sampleDownloader.getStatus() == Status.RUNNING)
+				this.sampleDownloader.cancel(true);
 		this.sampleDownloader = null;
+	}
+	
+	/* meth */
+	
+	@Override
+	public void onDownloadProgress(float progress)
+	{
+		float percentProgress = progress * 100;
+		
+		this.pbprogress.setVisibility(View.VISIBLE);
+		this.pbprogress.setProgress((int)percentProgress);
 	}
 }

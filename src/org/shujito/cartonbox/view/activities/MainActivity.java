@@ -77,7 +77,7 @@ public class MainActivity extends SherlockActivity implements OnItemClickListene
 	{
 		Intent ntn = new Intent(this, SiteIndexActivity.class);
 		//ntn.putExtra(SiteIndexActivity.EXTRA_SITEURL, this.mSites[0]);
-		//ntn.putExtra(SiteIndexActivity.EXTRA_SECTIONPAGE, R.string.section_pools);
+		ntn.putExtra(SiteIndexActivity.EXTRA_SECTIONPAGE, R.string.section_posts);
 		ntn.putExtra(SiteIndexActivity.EXTRA_SITE, new Site().setUrl("http://danbooru.donmai.us").setPostsApi("%s/posts.json"));
 		this.startActivity(ntn);
 	}

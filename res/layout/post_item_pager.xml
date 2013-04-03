@@ -4,32 +4,34 @@
 	android:layout_height="match_parent"
 	android:orientation="vertical" >
 	
-	<ProgressBar
-		android:id="@+id/post_item_pager_pbloading"
-		style="@android:style/Widget.ProgressBar.Large"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_gravity="center" />
-	
 	<ImageView
 		android:id="@+id/post_item_pager_ivsample"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		android:adjustViewBounds="false"
 		android:contentDescription="@string/app_name" />
+	
+	<ProgressBar
+		android:id="@+id/post_item_pager_pbprogress"
+		style="@android:style/Widget.ProgressBar.Horizontal"
+		android:layout_width="match_parent"
+		android:layout_height="10dp"
+		android:layout_gravity="bottom" />
 	
 	<TextView
 		android:id="@+id/post_item_pager_tvmessage"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_gravity="center"
-		android:text="@string/download_failed"
+		android:background="#55000000"
+		android:padding="5dp"
+		android:text="@string/loading"
 		android:textIsSelectable="false"
 		android:textAppearance="@android:style/TextAppearance.Large" />
 	
 	<LinearLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
+		android:layout_gravity="top"
 		android:background="#55000000"
 		android:gravity="center"
 		android:padding="5dp"

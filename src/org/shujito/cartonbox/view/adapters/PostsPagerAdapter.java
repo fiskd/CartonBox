@@ -34,9 +34,6 @@ public class PostsPagerAdapter extends FragmentPagerAdapter implements OnPostsFe
 		// create the fragment here
 		fragment = PostViewFragment.create(one);
 		
-		//if(one == null)
-			//return fragment;
-		
 		return fragment;
 	}
 	

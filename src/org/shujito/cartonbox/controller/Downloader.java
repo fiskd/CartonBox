@@ -11,7 +11,7 @@ import org.shujito.cartonbox.controller.listeners.OnErrorListener;
 
 import android.os.AsyncTask;
 
-public abstract class Downloader<T> extends AsyncTask<Void, Void, T>
+public abstract class Downloader<T> extends AsyncTask<Void, Integer, T>
 {
 	/* Listeners */
 	private OnErrorListener onErrorListener = null;

@@ -4,20 +4,32 @@
 	android:layout_height="100dp"
 	android:padding="5dp" >
 	
-	<TextView
-		android:id="@+id/post_item_grid_tvloading"
-		android:background="#808080"
+	<View
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		android:gravity="center"
-		android:text="@string/loading"
-		android:textColor="#ffffff" />
+		android:background="#808080" />
 	
 	<ImageView
 		android:id="@+id/post_item_grid_ivpreview"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		android:contentDescription="@string/app_name" />
+	
+	<ProgressBar
+		android:id="@+id/post_item_grid_pbprogress"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:progress="77"
+		android:layout_gravity="center"
+		style="@android:style/Widget.ProgressBar.Horizontal" />
+	
+	<TextView
+		android:id="@+id/post_item_grid_tvloading"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="center"
+		android:text="@string/loading"
+		android:textColor="#ffffff" />
 	
 	<LinearLayout
 		android:layout_width="wrap_content"
