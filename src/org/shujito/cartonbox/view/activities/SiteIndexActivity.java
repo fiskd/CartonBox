@@ -120,6 +120,7 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 		// save the api
 		CartonBox carton = (CartonBox)this.getApplication();
 		carton.setImageboard(this.api);
+		// TODO: save the query on the search box when changing to landscape/portrait
 	}
 	
 	@Override

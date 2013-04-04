@@ -1,8 +1,10 @@
-package org.shujito.cartonbox.controller;
+package org.shujito.cartonbox;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
+// I got this code from android documentation
+// http://developer.android.com/training/displaying-bitmaps/load-bitmap.html
 public class ImageUtils
 {
 	public static int calculateSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight)

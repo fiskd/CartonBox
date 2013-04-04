@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 
+import org.shujito.cartonbox.ImageUtils;
 import org.shujito.cartonbox.Logger;
 import org.shujito.cartonbox.controller.listeners.OnDownloadProgressListener;
 import org.shujito.cartonbox.controller.listeners.OnImageFetchedListener;
