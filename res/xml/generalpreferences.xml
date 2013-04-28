@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 	<PreferenceCategory
+		android:title="@string/pref_sites"
+		android:key="@string/pref_sites" />
+	<PreferenceCategory
 		android:title="@string/pref_general" >
 		<CheckBoxPreference
 			android:title="@string/pref_general_cacheexternal" />

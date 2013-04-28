@@ -1,6 +1,10 @@
 package org.shujito.cartonbox.view.adapters;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.shujito.cartonbox.R;
+import org.shujito.cartonbox.model.Site;
 
 import android.content.Context;
 import android.view.Gravity;
@@ -12,12 +16,15 @@ import android.widget.TextView;
 public class SitesAdapter extends BaseAdapter
 {
 	Context context = null;
-	String[] sites = null;
+	//String[] sites = null;
+	List<Site> mLsSites = null;
 	
 	public SitesAdapter(Context context)
 	{
 		this.context = context;
-		this.sites = this.context.getResources().getStringArray(R.array.danbooru_site_names);
+		this.mLsSites = new ArrayList<Site>();
+		
+		//this.sites = this.context.getResources().getStringArray(R.array.danbooru_site_names);
 	}
 	
 	@Override
@@ -31,10 +38,15 @@ public class SitesAdapter extends BaseAdapter
 			v = new TextView(this.context);
 		}
 		
+		Site one = this.mLsSites.get(pos);
+		if(one == null)
+			return v; // get out quick
+		
 		//((ImageView)v).setImageResource(R.drawable.icon_unknown);
 		((TextView)v).setTextAppearance(this.context, android.R.style.TextAppearance_Medium);
 		((TextView)v).setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.icon_unknown, 0, 0);
-		((TextView)v).setText(this.sites[pos]);
+		((TextView)v).setText(one.getName());
+		//((TextView)v).setText(this.sites[pos]);
 		((TextView)v).setGravity(Gravity.CENTER);
 		
 		return v;
@@ -43,7 +55,9 @@ public class SitesAdapter extends BaseAdapter
 	@Override
 	public int getCount()
 	{
-		return this.sites.length;
+		if(this.mLsSites != null)
+			return this.mLsSites.size();
+		return 0;
 	}
 	
 	@Override

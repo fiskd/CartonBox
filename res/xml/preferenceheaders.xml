@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preference-headers xmlns:android="http://schemas.android.com/apk/res/android" >
+	<header
+		android:fragment="org.shujito.cartonbox.view.fragments.PreferencesFragment"
+		android:title="@string/pref_header_general" >
+		<extra android:name="org.shujito.cartonbox.PREF_HEADER" android:value="@string/pref_general" />
+	</header>
+	<header
+		android:fragment="org.shujito.cartonbox.view.fragments.PreferencesFragment"
+		android:title="@string/pref_header_content" >
+		<extra android:name="org.shujito.cartonbox.PREF_HEADER" android:value="@string/pref_content" />
+	</header>
+	<header
+		android:fragment="org.shujito.cartonbox.view.fragments.PreferencesFragment"
+		android:title="@string/pref_header_blacklist" >
+		<extra android:name="org.shujito.cartonbox.PREF_HEADER" android:value="@string/pref_blacklist" />
+	</header>
+	<header
+		android:fragment="org.shujito.cartonbox.view.fragments.PreferencesFragment"
+		android:title="@string/pref_header_ratings" >
+		<extra android:name="org.shujito.cartonbox.PREF_HEADER" android:value="@string/pref_ratings" />
+	</header>
+</preference-headers>

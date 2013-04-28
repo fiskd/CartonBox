@@ -18,7 +18,7 @@ public class SiteIndexPageAdapter extends FragmentPagerAdapter
 	{
 		super(fm);
 		this.context = context;
-		this.pages = this.context.getResources().getStringArray(R.array.danbooru_sections);
+		//this.pages = this.context.getResources().getStringArray(R.array.danbooru_sections);
 	}
 	
 	@Override

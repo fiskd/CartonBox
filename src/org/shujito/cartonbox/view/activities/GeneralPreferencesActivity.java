@@ -1,9 +1,9 @@
 package org.shujito.cartonbox.view.activities;
 
-import java.util.List;
-
 import org.shujito.cartonbox.R;
+import org.shujito.cartonbox.view.fragments.PreferencesFragment;
 
+import android.annotation.TargetApi;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -13,6 +13,7 @@ public class GeneralPreferencesActivity extends SherlockPreferenceActivity
 {
 	@Override
 	@SuppressWarnings("deprecation")
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	protected void onCreate(Bundle cirno)
 	{
 		super.onCreate(cirno);
@@ -21,10 +22,9 @@ public class GeneralPreferencesActivity extends SherlockPreferenceActivity
 		{
 			this.addPreferencesFromResource(R.xml.generalpreferences);
 		}
-	}
-	
-	@Override
-	public void onBuildHeaders(List<Header> target)
-	{
+		else
+		{
+			this.getFragmentManager().beginTransaction().add(android.R.id.content, new PreferencesFragment()).commit();
+		}
 	}
 }

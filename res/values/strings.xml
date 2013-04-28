@@ -30,6 +30,18 @@
 	
 	<string name="empty">This part is not available yet&#8230; but it will be! I hope.\n\nRead this while I actually work on the rest.</string>
 	
+	<string name="pref_header_general">General settings</string>
+	<string name="pref_header_content">Customize content</string>
+	<string name="pref_header_blacklist">Set blacklists</string>
+	<string name="pref_header_ratings">Display ratings</string>
+	
+	<string name="pref_header_summary_general"></string>
+	<string name="pref_header_summary_content">Customize content</string>
+	<string name="pref_header_summary_blacklist">Set blacklists</string>
+	<string name="pref_header_summary_ratings">Display ratings</string>
+	
+	<string name="pref_sites">Sites</string>
+	
 	<string name="pref_general">General</string>
 	<string name="pref_general_cacheexternal">Cache to SD/External</string>
 	<string name="pref_general_cachesize">Maximum cache size</string>

@@ -1,0 +1,147 @@
+package org.shujito.cartonbox.model.db;
+
+import java.util.List;
+
+import org.shujito.cartonbox.model.Site;
+
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+
+public class SitesDB extends SQLiteDatabaseCommon
+{
+	/* static */
+	static String TABLE_SITES = "sites";
+	
+	static final String KEY_ID = "id";
+	static final String KEY_URL = "url";
+	static final String KEY_TYPE = "type";
+	static final String KEY_NAME = "name";
+	static final String KEY_POSTS_API = "posts_api";
+	static final String KEY_POOLS_API = "pools_api";
+	static final String KEY_COMMENTS_API = "comments_api";
+	static final String KEY_NOTES_API = "notes_api";
+	static final String KEY_ARTISTS_API = "artists_api";
+	static final String KEY_TAGS_API = "tags_api";
+	
+	/* constructor */
+	public SitesDB(Context context)
+	{
+		super(context);
+	}
+	
+	/* override */
+	@Override
+	public void onCreate(SQLiteDatabase db)
+	{
+		String[][] fields =
+			{
+				{ SQL_PK, KEY_ID },
+				{ SQL_TEXT, KEY_URL },
+				{ SQL_INTEGER, KEY_TYPE },
+				{ SQL_TEXT, KEY_NAME },
+				{ SQL_TEXT, KEY_POSTS_API },
+				{ SQL_TEXT, KEY_POOLS_API },
+				{ SQL_TEXT, KEY_COMMENTS_API },
+				{ SQL_TEXT, KEY_NOTES_API },
+				{ SQL_TEXT, KEY_ARTISTS_API },
+				{ SQL_TEXT, KEY_TAGS_API }
+			};
+		
+		this.createTable(db, fields, TABLE_SITES);
+	}
+	
+	@Override
+	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
+	{
+		db.execSQL(String.format(SQL_DROP, TABLE_SITES));
+		this.onCreate(db);
+	}
+	
+	/* meth */
+	public void add(Site site)
+	{
+		SQLiteDatabase db = this.getWritableDatabase();
+		
+		ContentValues values = new ContentValues();
+		//values.put(KEY_ID, site.getId());
+		values.put(KEY_URL, site.getUrl());
+		values.put(KEY_TYPE, site.getType().getValue());
+		values.put(KEY_NAME, site.getName());
+		values.put(KEY_POSTS_API, site.getPostsApi());
+		values.put(KEY_POOLS_API, site.getPoolsApi());
+		values.put(KEY_COMMENTS_API, site.getCommentsApi());
+		values.put(KEY_NOTES_API, site.getNotesApi());
+		values.put(KEY_ARTISTS_API, site.getArtistsApi());
+		values.put(KEY_TAGS_API, site.getTagsApi());
+		
+		// insert entry
+		db.insert(TABLE_SITES, null, values);
+		db.close();
+	}
+	
+	public Site get(int id)
+	{
+		SQLiteDatabase db = this.getReadableDatabase();
+		
+		Cursor cursor = db.query(
+				TABLE_SITES,
+				new String[] {  },
+				String.format("%s=?", KEY_ID),
+				new String[]{ String.valueOf(id) },
+				null,
+				null,
+				String.format("%s ASC", KEY_NAME)
+			);
+		
+		if(cursor != null)
+		{
+			cursor.moveToFirst();
+			
+			int iType = cursor.getInt(cursor.getColumnIndex(KEY_URL));
+			Site.Type type = null;
+			
+			switch(iType)
+			{
+			case 1: type = Site.Type.Danbooru1; break;
+			case 2: type = Site.Type.Danbooru2; break;
+			case 3: type = Site.Type.Gelbooru; break;
+			}
+			
+			Site site = new Site()
+				.setId(id)
+				.setUrl(cursor.getString(cursor.getColumnIndex(KEY_URL)))
+				.setType(type)
+				.setName(cursor.getString(cursor.getColumnIndex(KEY_NAME)))
+				.setPostsApi(cursor.getString(cursor.getColumnIndex(KEY_POSTS_API)))
+				.setPoolsApi(cursor.getString(cursor.getColumnIndex(KEY_POOLS_API)))
+				.setCommentsApi(cursor.getString(cursor.getColumnIndex(KEY_COMMENTS_API)))
+				.setNotesApi(cursor.getString(cursor.getColumnIndex(KEY_NOTES_API)))
+				.setArtistsApi(cursor.getString(cursor.getColumnIndex(KEY_ARTISTS_API)))
+				.setTagsApi(cursor.getString(cursor.getColumnIndex(KEY_TAGS_API)));
+			
+			return site;
+		}
+		
+		return null;
+	}
+	
+	public void update(Site site)
+	{
+	}
+	
+	public void delete(Site site)
+	{
+	}
+	
+	public List<Site> getAll()
+	{
+		return null;
+	}
+	
+	public int getCount()
+	{
+		return 0;
+	}
+}

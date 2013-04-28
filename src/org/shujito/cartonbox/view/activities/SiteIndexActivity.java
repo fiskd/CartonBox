@@ -1,6 +1,7 @@
 package org.shujito.cartonbox.view.activities;
 
 import org.shujito.cartonbox.CartonBox;
+import org.shujito.cartonbox.Logger;
 import org.shujito.cartonbox.R;
 import org.shujito.cartonbox.controller.DanbooruImageBoard;
 import org.shujito.cartonbox.controller.Imageboard;
@@ -8,6 +9,8 @@ import org.shujito.cartonbox.controller.listeners.OnErrorListener;
 import org.shujito.cartonbox.controller.listeners.OnFragmentAttachedListener;
 import org.shujito.cartonbox.model.Site;
 import org.shujito.cartonbox.view.adapters.SiteIndexPageAdapter;
+import org.shujito.cartonbox.view.fragments.LoginDialogFragment;
+import org.shujito.cartonbox.view.fragments.LoginDialogFragment.LoginDialogCallback;
 import org.shujito.cartonbox.view.fragments.PostsSectionFragment;
 
 import android.content.Intent;
@@ -33,7 +36,7 @@ import com.actionbarsherlock.view.MenuItem.OnActionExpandListener;
 
 public class SiteIndexActivity extends SherlockFragmentActivity implements
 	OnPageChangeListener, TabListener, OnActionExpandListener, OnEditorActionListener,
-	OnFragmentAttachedListener, OnErrorListener
+	OnFragmentAttachedListener, OnErrorListener, LoginDialogCallback
 {
 	public static String EXTRA_SITE = "org.shujito.cartonbox.SITE";
 	public static String EXTRA_USERNAME = "org.shujito.cartonbox.USERNAME";
@@ -59,7 +62,7 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 		//String password = this.getIntent().getStringExtra(EXTRA_PASSWORD);
 		Site site = (Site)this.getIntent().getSerializableExtra(EXTRA_SITE);
 		
-		this.tabs = this.getResources().getStringArray(R.array.danbooru_sections);
+		//this.tabs = this.getResources().getStringArray(R.array.danbooru_sections);
 		this.mPageAdapter = new SiteIndexPageAdapter(this.getSupportFragmentManager(), this);
 		this.mVpSections = (ViewPager)this.findViewById(R.id.siteindex_vpsections);
 		this.mVpSections.setAdapter(this.mPageAdapter);
@@ -272,7 +275,7 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 	}
 	/* OnEditorActionListener methods */
 	
-	/* OnFragmentAttachedListener<Imageboard> */
+	/* OnFragmentAttachedListener methods */
 	@Override
 	public Object onFragmentAttached(Fragment f)
 	{
@@ -283,13 +286,32 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 		
 		return null;
 	}
-	/* OnFragmentAttachedListener<Imageboard> */
+	/* OnFragmentAttachedListener methods */
 	
 	/* OnErrorListener methods */
 	@Override
 	public void onError(int errCode, String message)
 	{
 		//Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+		if(errCode == 403)
+		{
+			Logger.e("SiteIndexActivity::onError", message);
+			LoginDialogFragment login = new LoginDialogFragment();
+			login.show(this.getSupportFragmentManager(), LoginDialogFragment.TAG);
+		}
 	}
 	/* OnErrorListener methods */
+	
+	/* LoginDialogCallback methods */
+	@Override
+	public void onFinishEditLogin(String username, String password)
+	{
+		//Toast.makeText(this, String.format("username:%s password:%s", username, password), Toast.LENGTH_SHORT).show();
+		if(this.api != null)
+		{
+			this.api.setUsername(username);
+			this.api.setPassword(password);
+		}
+	}
+	/* LoginDialogCallback methods */
 }

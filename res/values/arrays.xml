@@ -1,32 +1,3 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string-array name="danbooru_sections">
-		<item>@string/section_posts</item>
-		<item>@string/section_pools</item>
-		<item>@string/section_comments</item>
-		<item>@string/section_notes</item>
-		<item>@string/section_tags</item>
-		<item>@string/section_artists</item>
-	</string-array>
-	
-	<string-array name="danbooru_site_urls">
-		<item>http://danbooru.donmai.us/</item>
-		<item>http://hijiribe.donmai.us/</item>
-		<item>https://yande.re/</item>
-		<item>http://behoimi.org/</item>
-	</string-array>
-	
-	<string-array name="danbooru_site_names">
-		<item>Danbooru</item>
-		<item>Hijiribe (mirror)</item>
-		<item>Yande.re</item>
-		<item>3DBooru</item>
-	</string-array>
-	
-	<integer-array name="danbooru_site_types">
-		<item>210</item>
-		<item>210</item>
-		<item>118</item>
-		<item>118</item>
-	</integer-array>
 </resources>

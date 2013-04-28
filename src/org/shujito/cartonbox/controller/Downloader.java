@@ -79,7 +79,6 @@ public abstract class Downloader<T> extends AsyncTask<Void, Integer, T>
 			{
 				Logger.e("Downloader::doInBackground", ex.toString());
 				this.message = ex.getMessage();
-				this.code = HttpURLConnection.HTTP_BAD_REQUEST;
 			}
 		}
 		finally
@@ -95,7 +94,7 @@ public abstract class Downloader<T> extends AsyncTask<Void, Integer, T>
 	@Override
 	protected void onPostExecute(T result)
 	{
-		if(this.code >= HttpURLConnection.HTTP_BAD_REQUEST)
+		if(this.code >= HttpURLConnection.HTTP_BAD_REQUEST || this.code == 0)
 		{
 			this.onRequestFailed(this.code, result);
 			if(this.onErrorListener != null)

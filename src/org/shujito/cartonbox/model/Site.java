@@ -6,9 +6,20 @@ public class Site implements Serializable
 {
 	public enum Type
 	{
-		Danbooru1,
-		Danbooru2,
-		Gelbooru
+		Danbooru1(1),
+		Danbooru2(2),
+		Gelbooru(3)
+		;
+		
+		private int value;
+		
+		Type(int value)
+		{
+			this.value = value;
+		}
+		
+		public int getValue()
+		{ return this.value; }
 	}
 	
 	/* Static */
@@ -17,6 +28,7 @@ public class Site implements Serializable
 	/* fields */
 	private int id;
 	private Type type;
+	private String name;
 	private String url;
 	private String postsApi;
 	private String poolsApi;
@@ -30,6 +42,8 @@ public class Site implements Serializable
 	{ return this.id; }
 	public Type getType()
 	{ return this.type; }
+	public String getName()
+	{ return this.name; }
 	public String getUrl()
 	{ return this.url; }
 	public String getPostsApi()
@@ -54,6 +68,11 @@ public class Site implements Serializable
 	public Site setType(Type e)
 	{
 		this.type = e;
+		return this;
+	}
+	public Site setName(String s)
+	{
+		this.name = s;
 		return this;
 	}
 	public Site setUrl(String s)

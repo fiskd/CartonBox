@@ -24,7 +24,8 @@ import android.widget.GridView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-public class PostsSectionFragment extends Fragment implements OnErrorListener, OnItemClickListener, OnScrollListener, OnPostsFetchedListener
+public class PostsSectionFragment extends Fragment implements
+	OnErrorListener, OnItemClickListener, OnScrollListener, OnPostsFetchedListener
 {
 	/* Listeners */
 	OnFragmentAttachedListener onFragmentAttachedListener = null;

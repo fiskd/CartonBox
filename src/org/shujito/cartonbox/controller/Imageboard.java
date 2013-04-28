@@ -190,6 +190,11 @@ public abstract class Imageboard implements
 		//this.password = password;
 	}
 	
+	public void setPasswordHash(String passwordHash)
+	{
+		this.password = passwordHash;
+	}
+	
 	public void setPostsPerPage(int postsPerPage)
 	{
 		this.postsPerPage = postsPerPage;

@@ -1,7 +1,6 @@
 package org.shujito.cartonbox.view.activities;
 
 import org.shujito.cartonbox.R;
-import org.shujito.cartonbox.model.Site;
 import org.shujito.cartonbox.view.adapters.SitesAdapter;
 
 import android.content.Intent;
@@ -22,14 +21,14 @@ public class MainActivity extends SherlockActivity implements OnItemClickListene
 {
 	GridView mGridView = null;
 	SitesAdapter mSitesAdapter = null;
-	String[] mSites = null;
+	//String[] mSites = null;
 	
 	@Override
 	protected void onCreate(Bundle cirno)
 	{
 		super.onCreate(cirno);
 		
-		this.mSites = this.getResources().getStringArray(R.array.danbooru_site_urls);
+		//this.mSites = this.getResources().getStringArray(R.array.danbooru_site_urls);
 		this.mSitesAdapter = new SitesAdapter(this);
 		
 		this.mGridView = new GridView(this);
@@ -46,6 +45,7 @@ public class MainActivity extends SherlockActivity implements OnItemClickListene
 		this.mGridView.setOnItemClickListener(this);
 		
 		this.setContentView(this.mGridView);
+		
 	}
 	
 	@Override
@@ -75,11 +75,11 @@ public class MainActivity extends SherlockActivity implements OnItemClickListene
 	@Override
 	public void onItemClick(AdapterView<?> dad, View v, int pos, long id)
 	{
-		Intent ntn = new Intent(this, SiteIndexActivity.class);
+		//Intent ntn = new Intent(this, SiteIndexActivity.class);
 		//ntn.putExtra(SiteIndexActivity.EXTRA_SITEURL, this.mSites[0]);
-		ntn.putExtra(SiteIndexActivity.EXTRA_SECTIONPAGE, R.string.section_posts);
-		ntn.putExtra(SiteIndexActivity.EXTRA_SITE, new Site().setUrl("http://danbooru.donmai.us").setPostsApi("%s/posts.json"));
-		this.startActivity(ntn);
+		//ntn.putExtra(SiteIndexActivity.EXTRA_SECTIONPAGE, R.string.section_posts);
+		//ntn.putExtra(SiteIndexActivity.EXTRA_SITE, new Site().setUrl("http://danbooru.donmai.us").setPostsApi("%s/posts.json"));
+		//this.startActivity(ntn);
 	}
 	/* OnItemClickListener methods */
 }

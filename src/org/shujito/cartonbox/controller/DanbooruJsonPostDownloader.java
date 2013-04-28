@@ -1,7 +1,7 @@
 package org.shujito.cartonbox.controller;
 
-import org.shujito.cartonbox.model.JsonParser;
 import org.shujito.cartonbox.model.DanbooruJsonPostParser;
+import org.shujito.cartonbox.model.JsonParser;
 
 public class DanbooruJsonPostDownloader extends JsonDownloader
 {
@@ -11,7 +11,7 @@ public class DanbooruJsonPostDownloader extends JsonDownloader
 	}
 	
 	@Override
-	protected JsonParser<?> makeParser(String s) throws Exception
+	protected JsonParser<?> parse(String s) throws Exception
 	{
 		return new DanbooruJsonPostParser(s);
 	}

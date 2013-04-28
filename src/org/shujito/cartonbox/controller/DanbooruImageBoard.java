@@ -30,13 +30,6 @@ public class DanbooruImageBoard extends Imageboard
 	
 	/* Setters */
 	
-	// TODO: bcrypt password, or api key
-	@Override
-	public void setPassword(String password)
-	{
-		this.password = password;
-	}
-	
 	/* Meth */
 	
 	@Override
@@ -44,7 +37,7 @@ public class DanbooruImageBoard extends Imageboard
 	{
 		JsonDownloader downloader = new DanbooruJsonPostDownloader(this.buildPostsUrl());
 		downloader.setOnResponseReceivedListener(this);
-		downloader.setOnErrorListener(this);
+		//downloader.setOnErrorListener(this);
 		downloader.setOnAccessDeniedListener(this);
 		downloader.setOnInternalServerErrorListener(this);
 		return downloader;
@@ -58,10 +51,17 @@ public class DanbooruImageBoard extends Imageboard
 		url.append(String.format(this.site.getPostsApi(), this.site.getUrl()));
 		url.append("?");
 		
-		url.append(String.format(API_LOGIN, this.username));
-		url.append("&");
-		url.append(String.format(API_KEY, this.password));
-		url.append("&");
+		if(this.username != null)
+		{
+			url.append(String.format(API_LOGIN, this.username));
+			url.append("&");
+		}
+		if(this.password != null)
+		{
+			url.append(String.format(API_PASSWORD_HASH, this.password));
+			//url.append(String.format(API_KEY, this.password));
+			url.append("&");
+		}
 		
 		url.append(String.format(API_PAGE, this.page));
 		url.append("&");
@@ -75,6 +75,4 @@ public class DanbooruImageBoard extends Imageboard
 		
 		return url.toString();
 	}
-	
-	
 }
