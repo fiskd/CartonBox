@@ -1,9 +1,7 @@
 package org.shujito.cartonbox.view.adapters;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import org.shujito.cartonbox.R;
 import org.shujito.cartonbox.model.Site;
 
 import android.content.Context;
@@ -19,10 +17,10 @@ public class SitesAdapter extends BaseAdapter
 	//String[] sites = null;
 	List<Site> mLsSites = null;
 	
-	public SitesAdapter(Context context)
+	public SitesAdapter(Context context, List<Site> sites)
 	{
 		this.context = context;
-		this.mLsSites = new ArrayList<Site>();
+		this.mLsSites = sites;
 		
 		//this.sites = this.context.getResources().getStringArray(R.array.danbooru_site_names);
 	}
@@ -42,9 +40,8 @@ public class SitesAdapter extends BaseAdapter
 		if(one == null)
 			return v; // get out quick
 		
-		//((ImageView)v).setImageResource(R.drawable.icon_unknown);
 		((TextView)v).setTextAppearance(this.context, android.R.style.TextAppearance_Medium);
-		((TextView)v).setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.icon_unknown, 0, 0);
+		((TextView)v).setCompoundDrawablesWithIntrinsicBounds(0, one.getIconid(), 0, 0);
 		((TextView)v).setText(one.getName());
 		//((TextView)v).setText(this.sites[pos]);
 		((TextView)v).setGravity(Gravity.CENTER);

@@ -18,7 +18,9 @@
 		android:theme="@style/Theme.Sherlock"
 		android:name="org.shujito.cartonbox.CartonBox" >
 		
-		<activity android:name="org.shujito.cartonbox.view.activities.MainActivity" >
+		<activity
+			android:name="org.shujito.cartonbox.view.activities.MainActivity"
+			android:theme="@style/Theme.Sherlock.Light.DarkActionBar" >
 			<intent-filter >
 				<action android:name="android.intent.action.MAIN"/>
 				<category android:name="android.intent.category.LAUNCHER"/>

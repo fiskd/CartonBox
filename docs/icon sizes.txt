@@ -1,0 +1,4 @@
+ldpi	72
+mdpi	96
+hdpi	144
+xhdpi	192

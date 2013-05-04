@@ -1,5 +1,6 @@
 package org.shujito.cartonbox.model.db;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.shujito.cartonbox.model.Site;
@@ -13,8 +14,9 @@ public class SitesDB extends SQLiteDatabaseCommon
 {
 	/* static */
 	static String TABLE_SITES = "sites";
-	
+
 	static final String KEY_ID = "id";
+	static final String KEY_ICONID = "iconid";
 	static final String KEY_URL = "url";
 	static final String KEY_TYPE = "type";
 	static final String KEY_NAME = "name";
@@ -38,6 +40,7 @@ public class SitesDB extends SQLiteDatabaseCommon
 		String[][] fields =
 			{
 				{ SQL_PK, KEY_ID },
+				{ SQL_INTEGER, KEY_ICONID },
 				{ SQL_TEXT, KEY_URL },
 				{ SQL_INTEGER, KEY_TYPE },
 				{ SQL_TEXT, KEY_NAME },
@@ -66,6 +69,7 @@ public class SitesDB extends SQLiteDatabaseCommon
 		
 		ContentValues values = new ContentValues();
 		//values.put(KEY_ID, site.getId());
+		values.put(KEY_ICONID, site.getIconid());
 		values.put(KEY_URL, site.getUrl());
 		values.put(KEY_TYPE, site.getType().getValue());
 		values.put(KEY_NAME, site.getName());
@@ -87,7 +91,7 @@ public class SitesDB extends SQLiteDatabaseCommon
 		
 		Cursor cursor = db.query(
 				TABLE_SITES,
-				new String[] {  },
+				new String[] { }, // KEY_URL, KEY_NAME, KEY_POSTS_API, KEY_POOLS_API, KEY_COMMENTS_API, KEY_NOTES_API, KEY_ARTISTS_API, KEY_TAGS_API },
 				String.format("%s=?", KEY_ID),
 				new String[]{ String.valueOf(id) },
 				null,
@@ -95,22 +99,21 @@ public class SitesDB extends SQLiteDatabaseCommon
 				String.format("%s ASC", KEY_NAME)
 			);
 		
-		if(cursor != null)
+		if(cursor != null && cursor.moveToFirst())
 		{
-			cursor.moveToFirst();
-			
-			int iType = cursor.getInt(cursor.getColumnIndex(KEY_URL));
+			int iType = cursor.getInt(cursor.getColumnIndex(KEY_TYPE));
 			Site.Type type = null;
 			
 			switch(iType)
 			{
-			case 1: type = Site.Type.Danbooru1; break;
-			case 2: type = Site.Type.Danbooru2; break;
-			case 3: type = Site.Type.Gelbooru; break;
+				case 1: type = Site.Type.Danbooru1; break;
+				case 2: type = Site.Type.Danbooru2; break;
+				case 3: type = Site.Type.Gelbooru; break;
 			}
 			
 			Site site = new Site()
 				.setId(id)
+				.setIconid(cursor.getInt(cursor.getColumnIndex(KEY_ICONID)))
 				.setUrl(cursor.getString(cursor.getColumnIndex(KEY_URL)))
 				.setType(type)
 				.setName(cursor.getString(cursor.getColumnIndex(KEY_NAME)))
@@ -137,11 +140,67 @@ public class SitesDB extends SQLiteDatabaseCommon
 	
 	public List<Site> getAll()
 	{
-		return null;
+		SQLiteDatabase db = this.getReadableDatabase();
+		List<Site> sites = new ArrayList<Site>();
+		
+		Cursor cursor = db.query(
+				TABLE_SITES,
+				new String[] { },
+				null,
+				null,
+				null,
+				null,
+				String.format("%s ASC", KEY_NAME)
+			);
+		
+		if(cursor.moveToFirst())
+		{
+			while(true)
+			{
+				int iType = cursor.getInt(cursor.getColumnIndex(KEY_TYPE));
+				Site.Type type = null;
+				
+				switch(iType)
+				{
+					case 1: type = Site.Type.Danbooru1; break;
+					case 2: type = Site.Type.Danbooru2; break;
+					case 3: type = Site.Type.Gelbooru; break;
+				}
+				
+				Site site = new Site()
+					.setId(cursor.getInt(cursor.getColumnIndex(KEY_ID)))
+					.setIconid(cursor.getInt(cursor.getColumnIndex(KEY_ICONID)))
+					.setUrl(cursor.getString(cursor.getColumnIndex(KEY_URL)))
+					.setType(type)
+					.setName(cursor.getString(cursor.getColumnIndex(KEY_NAME)))
+					.setPostsApi(cursor.getString(cursor.getColumnIndex(KEY_POSTS_API)))
+					.setPoolsApi(cursor.getString(cursor.getColumnIndex(KEY_POOLS_API)))
+					.setCommentsApi(cursor.getString(cursor.getColumnIndex(KEY_COMMENTS_API)))
+					.setNotesApi(cursor.getString(cursor.getColumnIndex(KEY_NOTES_API)))
+					.setArtistsApi(cursor.getString(cursor.getColumnIndex(KEY_ARTISTS_API)))
+					.setTagsApi(cursor.getString(cursor.getColumnIndex(KEY_TAGS_API)));
+				
+				sites.add(site);
+				
+				if(!cursor.moveToNext())
+					break;
+			}
+		}
+		
+		db.close();
+		return sites;
 	}
 	
 	public int getCount()
 	{
-		return 0;
+		SQLiteDatabase db = this.getReadableDatabase();
+		
+		//Cursor cursor = db.rawQuery("SELECT * FROM ?", new String[]{ TABLE_SITES });
+		Cursor cursor = db.query(TABLE_SITES, new String[]{ KEY_NAME }, null, null, null, null, null);
+		
+		int count = cursor.getCount();
+		cursor.close();
+		db.close();
+		return count;
 	}
 }

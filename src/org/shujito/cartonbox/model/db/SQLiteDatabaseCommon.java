@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+// TODO: generics
 public abstract class SQLiteDatabaseCommon extends SQLiteOpenHelper
 {
 	/* static */
@@ -37,4 +38,12 @@ public abstract class SQLiteDatabaseCommon extends SQLiteOpenHelper
 		String query = String.format(SQL_CREATE, tableName, struct.toString());
 		db.execSQL(query);
 	}
+	
+	// TODO: add abstract methods
+	//public abstract void add(T record);
+	//public abstract T get();
+	//public abstract List<T> getAll();
+	//public abstract int getCount();
+	//public abstract void update(T record);
+	//public abstract void delete(T record);
 }

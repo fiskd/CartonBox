@@ -1,6 +1,10 @@
 package org.shujito.cartonbox.view.activities;
 
+import java.util.List;
+
 import org.shujito.cartonbox.R;
+import org.shujito.cartonbox.model.Site;
+import org.shujito.cartonbox.model.db.SitesDB;
 import org.shujito.cartonbox.view.adapters.SitesAdapter;
 
 import android.content.Intent;
@@ -21,15 +25,19 @@ public class MainActivity extends SherlockActivity implements OnItemClickListene
 {
 	GridView mGridView = null;
 	SitesAdapter mSitesAdapter = null;
-	//String[] mSites = null;
+	List<Site> sites = null;
 	
 	@Override
 	protected void onCreate(Bundle cirno)
 	{
 		super.onCreate(cirno);
 		
-		//this.mSites = this.getResources().getStringArray(R.array.danbooru_site_urls);
-		this.mSitesAdapter = new SitesAdapter(this);
+		// get sites stored on the db
+		SitesDB sitesdb = new SitesDB(this);
+		this.sites = sitesdb.getAll();
+		
+		// init views
+		this.mSitesAdapter = new SitesAdapter(this, this.sites);
 		
 		this.mGridView = new GridView(this);
 		LayoutParams lparams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
@@ -45,7 +53,6 @@ public class MainActivity extends SherlockActivity implements OnItemClickListene
 		this.mGridView.setOnItemClickListener(this);
 		
 		this.setContentView(this.mGridView);
-		
 	}
 	
 	@Override
@@ -60,12 +67,12 @@ public class MainActivity extends SherlockActivity implements OnItemClickListene
 	{
 		switch(item.getItemId())
 		{
-		case R.id.menu_main_addsite:
-			return true;
-		case R.id.menu_main_settings:
-			Intent ntnPrefs = new Intent(this, GeneralPreferencesActivity.class);
-			this.startActivity(ntnPrefs);
-			return true;
+			case R.id.menu_main_addsite:
+				return true;
+			case R.id.menu_main_settings:
+				Intent ntnPrefs = new Intent(this, GeneralPreferencesActivity.class);
+				this.startActivity(ntnPrefs);
+				return true;
 		}
 		
 		return super.onOptionsItemSelected(item);
@@ -75,11 +82,11 @@ public class MainActivity extends SherlockActivity implements OnItemClickListene
 	@Override
 	public void onItemClick(AdapterView<?> dad, View v, int pos, long id)
 	{
-		//Intent ntn = new Intent(this, SiteIndexActivity.class);
-		//ntn.putExtra(SiteIndexActivity.EXTRA_SITEURL, this.mSites[0]);
-		//ntn.putExtra(SiteIndexActivity.EXTRA_SECTIONPAGE, R.string.section_posts);
+		Intent ntn = new Intent(this, SiteIndexActivity.class);
+		ntn.putExtra(SiteIndexActivity.EXTRA_SITE, this.sites.get(pos));
+		ntn.putExtra(SiteIndexActivity.EXTRA_SECTIONPAGE, R.string.section_posts);
 		//ntn.putExtra(SiteIndexActivity.EXTRA_SITE, new Site().setUrl("http://danbooru.donmai.us").setPostsApi("%s/posts.json"));
-		//this.startActivity(ntn);
+		this.startActivity(ntn);
 	}
 	/* OnItemClickListener methods */
 }

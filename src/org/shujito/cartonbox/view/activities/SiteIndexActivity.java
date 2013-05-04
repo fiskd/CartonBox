@@ -157,20 +157,20 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 	{
 		switch(item.getItemId())
 		{
-		case android.R.id.home:
-			Intent ntnMain = new Intent(this, MainActivity.class);
-			ntnMain.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			this.startActivity(ntnMain);
-			//this.finish();
-			// event handled
-			return true;
-		case R.id.menu_siteindex_search:
-			/* what to put here? */
-			return true;
-		case R.id.menu_siteindex_settings:
-			Intent ntnPrefs = new Intent(this, GeneralPreferencesActivity.class);
-			this.startActivity(ntnPrefs);
-			return true;
+			case android.R.id.home:
+				Intent ntnMain = new Intent(this, MainActivity.class);
+				ntnMain.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				this.startActivity(ntnMain);
+				//this.finish();
+				// event handled
+				return true;
+			case R.id.menu_siteindex_search:
+				/* what to put here? */
+				return true;
+			case R.id.menu_siteindex_settings:
+				Intent ntnPrefs = new Intent(this, GeneralPreferencesActivity.class);
+				this.startActivity(ntnPrefs);
+				return true;
 		}
 		
 		return super.onOptionsItemSelected(item);

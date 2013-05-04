@@ -27,6 +27,7 @@ public class Site implements Serializable
 	
 	/* fields */
 	private int id;
+	private int iconid;
 	private Type type;
 	private String name;
 	private String url;
@@ -40,6 +41,8 @@ public class Site implements Serializable
 	/* getters */
 	public int getId()
 	{ return this.id; }
+	public int getIconid()
+	{ return this.iconid; }
 	public Type getType()
 	{ return this.type; }
 	public String getName()
@@ -63,6 +66,11 @@ public class Site implements Serializable
 	public Site setId(int i)
 	{
 		this.id = i;
+		return this;
+	}
+	public Site setIconid(int i)
+	{
+		this.iconid = i;
 		return this;
 	}
 	public Site setType(Type e)
