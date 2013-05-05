@@ -2,7 +2,10 @@ package org.shujito.cartonbox.view.activities;
 
 import java.util.List;
 
+import org.shujito.cartonbox.CartonBox;
 import org.shujito.cartonbox.R;
+import org.shujito.cartonbox.controller.DanbooruImageBoard;
+import org.shujito.cartonbox.controller.Imageboard;
 import org.shujito.cartonbox.model.Site;
 import org.shujito.cartonbox.model.db.SitesDB;
 import org.shujito.cartonbox.view.adapters.SitesAdapter;
@@ -56,6 +59,14 @@ public class MainActivity extends SherlockActivity implements OnItemClickListene
 	}
 	
 	@Override
+	protected void onResume()
+	{
+		super.onResume();
+		// get rid of the api in the application
+		CartonBox.getInstance().setImageboard(null);
+	}
+	
+	@Override
 	public boolean onCreateOptionsMenu(Menu menu)
 	{
 		this.getSupportMenuInflater().inflate(R.menu.main, menu);
@@ -82,10 +93,15 @@ public class MainActivity extends SherlockActivity implements OnItemClickListene
 	@Override
 	public void onItemClick(AdapterView<?> dad, View v, int pos, long id)
 	{
+		Site currentSite = this.sites.get(pos);
+		
+		// create api here
+		Imageboard api = new DanbooruImageBoard(currentSite);
+		// place it on the application
+		CartonBox.getInstance().setImageboard(api);
+		
 		Intent ntn = new Intent(this, SiteIndexActivity.class);
-		ntn.putExtra(SiteIndexActivity.EXTRA_SITE, this.sites.get(pos));
 		ntn.putExtra(SiteIndexActivity.EXTRA_SECTIONPAGE, R.string.section_posts);
-		//ntn.putExtra(SiteIndexActivity.EXTRA_SITE, new Site().setUrl("http://danbooru.donmai.us").setPostsApi("%s/posts.json"));
 		this.startActivity(ntn);
 	}
 	/* OnItemClickListener methods */

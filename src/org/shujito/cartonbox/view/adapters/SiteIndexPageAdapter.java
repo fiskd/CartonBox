@@ -14,10 +14,11 @@ public class SiteIndexPageAdapter extends FragmentPagerAdapter
 	String[] pages = null;
 	Context context = null;
 	
-	public SiteIndexPageAdapter(FragmentManager fm, Context context)
+	public SiteIndexPageAdapter(FragmentManager fm, Context context, String[] pages)
 	{
 		super(fm);
 		this.context = context;
+		this.pages = pages;
 		//this.pages = this.context.getResources().getStringArray(R.array.danbooru_sections);
 	}
 	

@@ -3,11 +3,9 @@ package org.shujito.cartonbox.view.activities;
 import org.shujito.cartonbox.CartonBox;
 import org.shujito.cartonbox.Logger;
 import org.shujito.cartonbox.R;
-import org.shujito.cartonbox.controller.DanbooruImageBoard;
 import org.shujito.cartonbox.controller.Imageboard;
 import org.shujito.cartonbox.controller.listeners.OnErrorListener;
 import org.shujito.cartonbox.controller.listeners.OnFragmentAttachedListener;
-import org.shujito.cartonbox.model.Site;
 import org.shujito.cartonbox.view.adapters.SiteIndexPageAdapter;
 import org.shujito.cartonbox.view.fragments.LoginDialogFragment;
 import org.shujito.cartonbox.view.fragments.LoginDialogFragment.LoginDialogCallback;
@@ -38,16 +36,13 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 	OnPageChangeListener, TabListener, OnActionExpandListener, OnEditorActionListener,
 	OnFragmentAttachedListener, OnErrorListener, LoginDialogCallback
 {
-	public static String EXTRA_SITE = "org.shujito.cartonbox.SITE";
-	public static String EXTRA_USERNAME = "org.shujito.cartonbox.USERNAME";
-	public static String EXTRA_PASSWORD = "org.shujito.cartonbox.PASSWORD";
 	public static String EXTRA_SECTIONPAGE = "org.shujito.cartonbox.SECTIONPAGE";
 	
 	SiteIndexPageAdapter mPageAdapter = null;
 	ViewPager mVpSections = null;
 	MenuItem mMenuItemSearch = null;
 	MultiAutoCompleteTextView mMactvQueryPosts = null;
-	
+	// tab titles
 	String[] tabs = null;
 	Imageboard api = null;
 	
@@ -60,10 +55,10 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 		//String siteUrl = this.getIntent().getStringExtra(EXTRA_SITEURL);
 		//String username = this.getIntent().getStringExtra(EXTRA_USERNAME);
 		//String password = this.getIntent().getStringExtra(EXTRA_PASSWORD);
-		Site site = (Site)this.getIntent().getSerializableExtra(EXTRA_SITE);
+		//Site site = (Site)this.getIntent().getSerializableExtra(EXTRA_SITE);
 		
-		//this.tabs = this.getResources().getStringArray(R.array.danbooru_sections);
-		this.mPageAdapter = new SiteIndexPageAdapter(this.getSupportFragmentManager(), this);
+		this.tabs = this.getResources().getStringArray(R.array.danbooru_sections);
+		this.mPageAdapter = new SiteIndexPageAdapter(this.getSupportFragmentManager(), this, this.tabs);
 		this.mVpSections = (ViewPager)this.findViewById(R.id.siteindex_vpsections);
 		this.mVpSections.setAdapter(this.mPageAdapter);
 		this.mVpSections.setOnPageChangeListener(this);
@@ -104,14 +99,22 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 			//.setUrl("http://danbooru.donmai.us")
 			//.setPostsApi("%s/posts.json?");
 		
-		// get the api
-		CartonBox carton = (CartonBox)this.getApplication();
-		this.api = carton.getImageboard();
+	}
+	
+	@Override
+	protected void onResume()
+	{
+		super.onResume();
+		// get the imageboard
+		this.api = CartonBox.getInstance().getImageboard();
 		
 		if(this.api == null)
 		{
-			// create the api
-			this.api = new DanbooruImageBoard(site);
+			// close the activity
+			this.finish();
+		}
+		else
+		{
 			this.api.addOnErrorListener(this);
 		}
 	}
@@ -120,9 +123,6 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 	protected void onPause()
 	{
 		super.onPause();
-		// save the api
-		CartonBox carton = (CartonBox)this.getApplication();
-		carton.setImageboard(this.api);
 		// TODO: save the query on the search box when changing to landscape/portrait
 	}
 	
@@ -130,10 +130,6 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 	protected void onDestroy()
 	{
 		super.onDestroy();
-		// kill the api
-		CartonBox carton = (CartonBox)this.getApplication();
-		carton.setImageboard(null);
-		this.api = null;
 	}
 	
 	@Override
@@ -311,6 +307,7 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 		{
 			this.api.setUsername(username);
 			this.api.setPassword(password);
+			this.api.requestPosts();
 		}
 	}
 	/* LoginDialogCallback methods */

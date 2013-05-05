@@ -48,7 +48,11 @@ public class DanbooruImageBoard extends Imageboard
 		StringBuilder url = new StringBuilder();
 		
 		//url.append(String.format(API_POSTS_JSON, this.site.getUrl()));
-		url.append(String.format(this.site.getPostsApi(), this.site.getUrl()));
+		//url.append(String.format(this.site.getPostsApi(), this.site.getUrl()));
+		
+		url.append(this.site.getUrl());
+		url.append(this.site.getPostsApi());
+		
 		url.append("?");
 		
 		if(this.username != null)
