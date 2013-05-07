@@ -10,7 +10,8 @@
 		android:id="@+id/posts_gvposts"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		android:numColumns="3" />
+		android:gravity="center"
+		android:numColumns="@integer/posts_section_numcols" />
 	
 	<ProgressBar
 		android:id="@+id/posts_pbloading"

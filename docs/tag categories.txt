@@ -1,0 +1,10 @@
+tag categories
+
+#	danbooru	yande.re	behoimi		cartonbox
+0	general		general		general		general
+1	artist		artist		artist		artist
+2										reserved
+3	copyright	copyright	copyright	copyright
+4	character	character	character	character
+5				circle		model		other
+6				faults		photoset	other

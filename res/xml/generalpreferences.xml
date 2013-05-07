@@ -6,46 +6,65 @@
 	<PreferenceCategory
 		android:title="@string/pref_general" >
 		<CheckBoxPreference
+			android:key="@string/pref_general_cacheexternal_key"
 			android:title="@string/pref_general_cacheexternal" />
+		<CheckBoxPreference
+			android:key="@string/pref_general_clearcacheonstartup_key"
+			android:title="@string/pref_general_clearcacheonstartup" />
 		<EditTextPreference
+			android:key="@string/pref_general_cachesize_key"
 			android:title="@string/pref_general_cachesize"
 			android:summary="@string/pref_general_cachesize_desc" />
 		<Preference
+			android:key="@string/pref_general_clearcache_key"
 			android:title="@string/pref_general_clearcache"
 			android:summary="@string/pref_general_clearcache_desc" />
 	</PreferenceCategory>
 	<PreferenceCategory
 		android:title="@string/pref_content" >
 		<ListPreference
+			android:key="@string/pref_content_postsperpage_key"
 			android:title="@string/pref_content_postsperpage"
 			android:entries="@array/pref_content_pages"
-			android:entryValues="@array/pref_content_pages_values" />
+			android:entryValues="@array/pref_content_pages"
+			android:defaultValue="20" />
 		<ListPreference
+			android:key="@string/pref_content_poolsperpage_key"
 			android:title="@string/pref_content_poolsperpage"
 			android:entries="@array/pref_content_pages"
-			android:entryValues="@array/pref_content_pages_values" />
+			android:entryValues="@array/pref_content_pages"
+			android:defaultValue="20" />
 		<ListPreference
+			android:key="@string/pref_content_poolpostsperpage_key"
 			android:title="@string/pref_content_poolpostsperpage"
 			android:entries="@array/pref_content_pages"
-			android:entryValues="@array/pref_content_pages_values" />
+			android:entryValues="@array/pref_content_pages"
+			android:defaultValue="20" />
 		<CheckBoxPreference
+			android:key="@string/pref_content_localfilter_key"
 			android:title="@string/pref_content_localfilter"
 			android:summary="@string/pref_content_localfilter_desc" />
 		<CheckBoxPreference
+			android:key="@string/pref_content_warning_key"
 			android:title="@string/pref_content_warning"
 			android:summary="@string/pref_content_warning_desc" />
 	</PreferenceCategory>
 	<PreferenceCategory
 		android:title="@string/pref_blacklist" >
 		<CheckBoxPreference
+			android:key="@string/pref_blacklist_enabled_key"
 			android:title="@string/pref_blacklist_enabled" />
 		<EditTextPreference
+			android:key="@string/pref_blacklist_tags_desc"
 			android:title="@string/pref_blacklist_tags"
-			android:summary="@string/pref_blacklist_tags_desc" />
+			android:summary="@string/pref_blacklist_tags_desc"
+			android:dependency="@string/pref_blacklist_enabled_key" />
 		<CheckBoxPreference
+			android:key="@string/pref_blacklist_hide_key"
 			android:title="@string/pref_blacklist_hide"
 			android:summaryOn="@string/pref_blacklist_hide_desc_on"
-			android:summaryOff="@string/pref_blacklist_hide_desc_off" />
+			android:summaryOff="@string/pref_blacklist_hide_desc_off"
+			android:dependency="@string/pref_blacklist_enabled_key" />
 	</PreferenceCategory>
 	<PreferenceCategory
 		android:title="@string/pref_ratings" >
@@ -58,13 +77,17 @@
 			android:title="@string/pref_ratings_todisplay"
 			android:summary="@string/pref_ratings_todisplay_desc" >
 			<CheckBoxPreference
+				android:key="@string/pref_ratings_todisplay_safe_key"
 				android:title="@string/pref_ratings_todisplay_safe" />
 			<CheckBoxPreference
+				android:key="@string/pref_ratings_todisplay_questionable_key"
 				android:title="@string/pref_ratings_todisplay_questionable" />
 			<CheckBoxPreference
+				android:key="@string/pref_ratings_todisplay_explicit_key"
 				android:title="@string/pref_ratings_todisplay_explicit" />
 		</PreferenceScreen>
 		<CheckBoxPreference
+			android:key="@string/pref_ratings_hide_key"
 			android:title="@string/pref_ratings_hide"
 			android:summaryOn="@string/pref_ratings_hide_desc_on"
 			android:summaryOff="@string/pref_ratings_hide_desc_off" />

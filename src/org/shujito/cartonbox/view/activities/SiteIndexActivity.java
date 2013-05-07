@@ -106,7 +106,8 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 	{
 		super.onResume();
 		// get the imageboard
-		this.api = CartonBox.getInstance().getImageboard();
+		if(this.api == null)
+			this.api = CartonBox.getInstance().getImageboard();
 		
 		if(this.api == null)
 		{
@@ -123,6 +124,7 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 	protected void onPause()
 	{
 		super.onPause();
+		this.api = null;
 		// TODO: save the query on the search box when changing to landscape/portrait
 	}
 	
@@ -188,7 +190,6 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 	{
 		// select the tab
 		this.getSupportActionBar().getTabAt(pos).select();
-		//Logger.i("SiteIndexActivity::onPageSelected", String.format("%s", pos));
 	}
 	/* OnPageChangeListener methods */
 	
@@ -254,7 +255,10 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 	{
 		if(action == EditorInfo.IME_ACTION_SEARCH)
 		{
-			//Toast.makeText(this, v.getText().toString(), Toast.LENGTH_SHORT).show();
+			// collapse search view
+			if(this.mMenuItemSearch != null)
+				this.mMenuItemSearch.collapseActionView();
+			
 			if(this.api != null)
 			{
 				this.api.clear();
@@ -277,6 +281,9 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 	{
 		if(f instanceof PostsSectionFragment)
 		{
+			// this should fix the NPE caused when rotating the device
+			if(this.api == null)
+				this.api = CartonBox.getInstance().getImageboard();
 			return this.api;
 		}
 		

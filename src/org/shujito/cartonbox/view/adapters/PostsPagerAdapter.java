@@ -49,5 +49,6 @@ public class PostsPagerAdapter extends FragmentPagerAdapter implements OnPostsFe
 	public void onPostsFetched(Imageboard api)
 	{
 		this.posts = api.getPosts();
+		this.notifyDataSetChanged();
 	}
 }

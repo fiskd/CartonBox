@@ -43,8 +43,7 @@ public class PostViewActivity extends SherlockFragmentActivity
 		this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		
 		// get the api from the context (handy, but hacky, should have made this a singleton?)
-		CartonBox carton = (CartonBox)this.getApplication();
-		this.api = carton.getImageboard();
+		this.api = CartonBox.getInstance().getImageboard();
 		// no api, no job
 		if(this.api == null)
 			this.finish();
@@ -78,9 +77,6 @@ public class PostViewActivity extends SherlockFragmentActivity
 		
 		// remove this listener
 		this.api.removeOnPostsFetchedListener(this.mPostsAdapter);
-		// make sure this is set again
-		CartonBox carton = (CartonBox)this.getApplication();
-		carton.setImageboard(this.api);
 		// use it or lose it...
 		this.api = null;
 	}
@@ -134,6 +130,7 @@ public class PostViewActivity extends SherlockFragmentActivity
 		//this.bChildren = (pos % 2) == 0;
 		//this.bParent = (pos % 3) == 0;
 		//this.bPools = (pos % 4) == 0;
+		
 	}
 	/* OnPageChangeListener methods */
 }

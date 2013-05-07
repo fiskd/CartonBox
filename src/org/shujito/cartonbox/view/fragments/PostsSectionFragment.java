@@ -6,6 +6,7 @@ import org.shujito.cartonbox.controller.Imageboard;
 import org.shujito.cartonbox.controller.listeners.OnErrorListener;
 import org.shujito.cartonbox.controller.listeners.OnFragmentAttachedListener;
 import org.shujito.cartonbox.controller.listeners.OnPostsFetchedListener;
+import org.shujito.cartonbox.controller.listeners.OnPostsRequestListener;
 import org.shujito.cartonbox.view.activities.PostViewActivity;
 import org.shujito.cartonbox.view.adapters.PostsGridAdapter;
 
@@ -25,7 +26,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public class PostsSectionFragment extends Fragment implements
-	OnErrorListener, OnItemClickListener, OnScrollListener, OnPostsFetchedListener
+	OnErrorListener, OnItemClickListener, OnScrollListener,
+	OnPostsFetchedListener, OnPostsRequestListener
 {
 	/* Listeners */
 	OnFragmentAttachedListener onFragmentAttachedListener = null;
@@ -80,6 +82,7 @@ public class PostsSectionFragment extends Fragment implements
 			this.api.addOnErrorListener(this);
 			this.api.addOnPostsFetchedListener(this.mPostsAdapter);
 			this.api.addOnPostsFetchedListener(this);
+			this.api.addOnPostsRequestListener(this);
 		}
 		
 		this.mGvPosts = (GridView)view.findViewById(R.id.posts_gvposts);
@@ -108,6 +111,22 @@ public class PostsSectionFragment extends Fragment implements
 		// XXX: HACKY!!
 		if(this.mPostsAdapter != null)
 			this.mPostsAdapter.onPostsFetched(this.api);
+	}
+	
+	@Override
+	public void onPause()
+	{
+		super.onPause();
+		// remove these listeners
+		if(this.api != null)
+		{
+			this.api.removeOnErrorListener(this);
+			this.api.removeOnPostsFetchedListener(this.mPostsAdapter);
+			this.api.removeOnPostsFetchedListener(this);
+			this.api.removeOnPostsRequestListener(this);
+		}
+		// disable scroll loading (remove listener)
+		
 	}
 	
 	@Override
@@ -142,6 +161,14 @@ public class PostsSectionFragment extends Fragment implements
 	@Override
 	public void onScrollStateChanged(AbsListView v, int state)
 	{
+		String what = null;
+		if(state == AbsListView.OnScrollListener.SCROLL_STATE_FLING)
+			what = "fling";
+		if(state == AbsListView.OnScrollListener.SCROLL_STATE_IDLE)
+			what = "idle";
+		if(state == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL)
+			what = "touch";
+		Logger.i("PostsSectionFragment::onScrollStateChanged", what);
 	}
 	/* OnScrollListener methods */
 	
@@ -164,12 +191,27 @@ public class PostsSectionFragment extends Fragment implements
 		this.mPbProgress.setVisibility(View.GONE);
 		this.mTvMessage.setVisibility(View.GONE);
 		
-		if(api.getPosts().size() == 0)
+		if(this.api.getPosts().size() == 0)
 		{
 			this.mGvPosts.setVisibility(View.GONE);
 			this.mTvMessage.setVisibility(View.VISIBLE);
 			this.mTvMessage.setText(R.string.no_posts);
 		}
 	}
-	/* OnPostsFetchedListener */
+	/* OnPostsFetchedListener methods */
+	
+	/* OnPostsRequestListener methods */
+	@Override
+	public void onPostsRequest()
+	{
+		Logger.i("PostsSectionFragment::onPostsRequest", "Posts requested");
+		if(this.api != null && this.api.getPosts().size() == 0)
+		{
+			if(this.mGvPosts != null)
+				this.mGvPosts.setVisibility(View.GONE);
+			if(this.mPbProgress != null)
+				this.mPbProgress.setVisibility(View.VISIBLE);
+		}
+	}
+	/* OnPostsRequestListener methods */
 }

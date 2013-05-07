@@ -42,7 +42,7 @@ public class Preferences
 		
 		db.add(new Site()
 			//.setId(1)
-			.setIconid(R.drawable.icon_unknown)
+			.setIconid(R.drawable.icon_danbooru)
 			.setName("Danbooru")
 			.setType(Type.Danbooru2)
 			.setUrl("http://danbooru.donmai.us/")
@@ -55,7 +55,7 @@ public class Preferences
 		
 		db.add(new Site()
 			//.setId(2)
-			.setIconid(R.drawable.icon_unknown)
+			.setIconid(R.drawable.icon_danbooru)
 			.setName("Danbooru (hijiribe)")
 			.setType(Type.Danbooru2)
 			.setUrl("http://hijiribe.donmai.us/")
@@ -65,7 +65,7 @@ public class Preferences
 			.setNotesApi("/notes.json")
 			.setArtistsApi("/artists.json")
 			.setTagsApi("/tags.json"));
-
+		
 		db.add(new Site()
 			//.setId(3)
 			.setIconid(R.drawable.icon_behoimi)
@@ -80,7 +80,7 @@ public class Preferences
 			.setTagsApi("/tag/index.json"));
 		
 		db.add(new Site()
-			//.setId(3)
+			//.setId(4)
 			.setIconid(R.drawable.icon_yande_re)
 			.setName("Yande.re")
 			.setType(Type.Danbooru1)
@@ -91,6 +91,31 @@ public class Preferences
 			.setNotesApi("/note/index.json")
 			.setArtistsApi("/artist/index.json")
 			.setTagsApi("/tag/index.json"));
-		
+	}
+	
+	public static boolean getBoolean(int id)
+	{
+		return getBoolean(id, false);
+	}
+	
+	public static boolean getBoolean(int id, boolean def)
+	{
+		Context context = CartonBox.getInstance();
+		String key = context.getString(id);
+		return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(key, def);
+	}
+	
+	public static String getString(int id, String def)
+	{
+		Context context = CartonBox.getInstance();
+		String key = context.getString(id);
+		return PreferenceManager.getDefaultSharedPreferences(context).getString(key, def);
+	}
+	
+	public static int getInt(int id, int def)
+	{
+		Context context = CartonBox.getInstance();
+		String key = context.getString(id);
+		return PreferenceManager.getDefaultSharedPreferences(context).getInt(key, def);
 	}
 }

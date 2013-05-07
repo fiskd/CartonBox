@@ -3,15 +3,16 @@ package org.shujito.cartonbox.view.activities;
 import java.util.List;
 
 import org.shujito.cartonbox.CartonBox;
+import org.shujito.cartonbox.Preferences;
 import org.shujito.cartonbox.R;
 import org.shujito.cartonbox.controller.DanbooruImageBoard;
+import org.shujito.cartonbox.controller.DanbooruOldImageBoard;
 import org.shujito.cartonbox.controller.Imageboard;
 import org.shujito.cartonbox.model.Site;
 import org.shujito.cartonbox.model.db.SitesDB;
 import org.shujito.cartonbox.view.adapters.SitesAdapter;
 
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -47,10 +48,18 @@ public class MainActivity extends SherlockActivity implements OnItemClickListene
 		this.mGridView.setLayoutParams(lparams);
 		this.mGridView.setGravity(Gravity.CENTER);
 		
+		int numcols = Preferences.getInt(R.integer.siteindex_numcols, 1);
+		
+		this.setTitle(String.valueOf(numcols));
+		
+		this.mGridView.setNumColumns(numcols);
+		
+		/*
 		if(this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
 			this.mGridView.setNumColumns(2);
 		else
 			this.mGridView.setNumColumns(4);
+		//*/
 		
 		this.mGridView.setAdapter(this.mSitesAdapter);
 		this.mGridView.setOnItemClickListener(this);
@@ -96,13 +105,26 @@ public class MainActivity extends SherlockActivity implements OnItemClickListene
 		Site currentSite = this.sites.get(pos);
 		
 		// create api here
-		Imageboard api = new DanbooruImageBoard(currentSite);
-		// place it on the application
-		CartonBox.getInstance().setImageboard(api);
+		Imageboard api = null; // new DanbooruImageBoard(currentSite);
 		
-		Intent ntn = new Intent(this, SiteIndexActivity.class);
-		ntn.putExtra(SiteIndexActivity.EXTRA_SECTIONPAGE, R.string.section_posts);
-		this.startActivity(ntn);
+		if(currentSite.getType() == Site.Type.Danbooru1)
+			api = new DanbooruOldImageBoard(currentSite);
+		else if(currentSite.getType() == Site.Type.Danbooru2)
+		{
+			api = new DanbooruImageBoard(currentSite);
+			api.setUsername("*daisu~");
+			api.setPassword("silverwing");
+		}
+		
+		if(api != null)
+		{
+			// place it on the application
+			CartonBox.getInstance().setImageboard(api);
+			
+			Intent ntn = new Intent(this, SiteIndexActivity.class);
+			ntn.putExtra(SiteIndexActivity.EXTRA_SECTIONPAGE, R.string.section_posts);
+			this.startActivity(ntn);
+		}
 	}
 	/* OnItemClickListener methods */
 }

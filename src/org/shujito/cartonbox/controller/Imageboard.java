@@ -12,12 +12,13 @@ import org.shujito.cartonbox.controller.listeners.OnErrorListener;
 import org.shujito.cartonbox.controller.listeners.OnInternalServerErrorListener;
 import org.shujito.cartonbox.controller.listeners.OnPoolsFetchedListener;
 import org.shujito.cartonbox.controller.listeners.OnPostsFetchedListener;
+import org.shujito.cartonbox.controller.listeners.OnPostsRequestListener;
 import org.shujito.cartonbox.controller.listeners.OnResponseReceivedListener;
 import org.shujito.cartonbox.model.JsonParser;
 import org.shujito.cartonbox.model.Post;
+import org.shujito.cartonbox.model.Post.Rating;
 import org.shujito.cartonbox.model.Response;
 import org.shujito.cartonbox.model.Site;
-import org.shujito.cartonbox.model.Post.Rating;
 
 import android.util.SparseArray;
 
@@ -37,12 +38,20 @@ public abstract class Imageboard implements
 	OnInternalServerErrorListener
 {
 	/* Static */
+	public static final String API_LOGIN = "login=%s";
+	public static final String API_PASSWORD_HASH = "password_hash=%s";
+	public static final String API_KEY = "api_key=%s";
+	public static final String API_LIMIT = "limit=%d";
+	public static final String API_PAGE = "page=%d";
+	public static final String API_TAGS = "tags=%s";
 	public static final String API_DANBOORU_PASSWORD = "choujin-steiner--%s--";
 	
 	/* Listeners */
 	List<OnErrorListener> onErrorListeners = null;
 	List<OnPostsFetchedListener> onPostsFetchedListeners = null;
 	List<OnPoolsFetchedListener> onPoolsFetchedListeners = null;
+	List<OnPostsRequestListener> onPostsRequestListeners = null;
+	//List<OnPoolsRequestListener> onPoolsRequestListeners = null;
 	
 	public void addOnErrorListener(OnErrorListener l)
 	{
@@ -61,6 +70,12 @@ public abstract class Imageboard implements
 		if(this.onPoolsFetchedListeners == null)
 			this.onPoolsFetchedListeners = new ArrayList<OnPoolsFetchedListener>();
 		this.onPoolsFetchedListeners.add(l);
+	}
+	public void addOnPostsRequestListener(OnPostsRequestListener l)
+	{
+		if(this.onPostsRequestListeners == null)
+			this.onPostsRequestListeners = new ArrayList<OnPostsRequestListener>();
+		this.onPostsRequestListeners.add(l);
 	}
 	
 	public void removeOnErrorListener(OnErrorListener l)
@@ -81,9 +96,15 @@ public abstract class Imageboard implements
 			this.onPoolsFetchedListeners = new ArrayList<OnPoolsFetchedListener>();
 		this.onPoolsFetchedListeners.remove(l);
 	}
+	public void removeOnPostsRequestListener(OnPostsRequestListener l)
+	{
+		if(this.onPostsRequestListeners == null)
+			this.onPostsRequestListeners = new ArrayList<OnPostsRequestListener>();
+		this.onPostsRequestListeners.remove(l);
+	}
 	
 	/* Fields */
-	Downloader<?> downloader = null;
+	Downloader<?> postsDownloader = null;
 	//Downloader<?> xmlDownloader = null;
 	SparseArray<Post> posts = null;
 	ArrayList<String> tags = null;
@@ -231,8 +252,8 @@ public abstract class Imageboard implements
 	
 	public void clear()
 	{
-		if(this.working && this.downloader != null)
-			this.downloader.cancel(true);
+		if(this.working && this.postsDownloader != null)
+			this.postsDownloader.cancel(true);
 		
 		this.tags.clear();
 		this.posts.clear();
@@ -247,9 +268,17 @@ public abstract class Imageboard implements
 		{
 			if(!this.working)
 			{
+				if(this.onPostsRequestListeners != null)
+				{
+					for(OnPostsRequestListener l : this.onPostsRequestListeners)
+					{
+						l.onPostsRequest();
+					}
+				}
+				
 				Logger.i("Imageboard::requestPosts", "Request job, page " + this.page);
-				this.downloader = this.createDownloader();
-				this.downloader.execute();
+				this.postsDownloader = this.createDownloader();
+				this.postsDownloader.execute();
 				//ConcurrentTask.execute(this.downloader);
 				this.working = true;
 			}
@@ -271,6 +300,40 @@ public abstract class Imageboard implements
 		}
 		
 		return tags;
+	}
+	
+	protected String buildPostsUrl()
+	{
+		StringBuilder url = new StringBuilder();
+		
+		url.append(this.site.getUrl());
+		url.append(this.site.getPostsApi());
+		
+		url.append("?");
+		
+		if(this.username != null)
+		{
+			url.append(String.format(API_LOGIN, this.username));
+			url.append("&");
+		}
+		if(this.password != null)
+		{
+			url.append(String.format(API_PASSWORD_HASH, this.password));
+			//url.append(String.format(API_KEY, this.password));
+			url.append("&");
+		}
+		
+		url.append(String.format(API_PAGE, this.page));
+		url.append("&");
+		url.append(String.format(API_LIMIT, this.postsPerPage));
+		
+		if(this.tags != null && this.tags.size() > 0)
+		{
+			url.append("&");
+			url.append(String.format(API_TAGS, this.buildTags()));
+		}
+		
+		return url.toString();
 	}
 	
 	@Override
@@ -327,14 +390,10 @@ public abstract class Imageboard implements
 			index++;
 			boolean shouldAdd = false;
 			
-			//shouldAdd = shouldAdd && (this.showSafePosts && p.getRating() == Rating.Safe);
-			//shouldAdd = shouldAdd && (this.showQuestionablePosts && p.getRating() == Rating.Questionable);
-			//shouldAdd = shouldAdd && (this.showExplicitPosts && p.getRating() == Rating.Explicit);
 			shouldAdd = (this.showSafePosts && p.getRating() == Rating.Safe) || shouldAdd;
 			shouldAdd = (this.showQuestionablePosts && p.getRating() == Rating.Questionable) || shouldAdd;
 			shouldAdd = (this.showExplicitPosts && p.getRating() == Rating.Explicit) || shouldAdd;
 			
-			// TODO: BETTER rating filters
 			if(shouldAdd)
 			{
 				this.posts.append(p.getId(), p);

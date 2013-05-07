@@ -10,6 +10,7 @@
 		<item >50</item>
 	</string-array>
 	
+	<!--
 	<integer-array name="pref_content_pages_values">
 		<item >15</item>
 		<item >20</item>
@@ -18,4 +19,24 @@
 		<item >40</item>
 		<item >50</item>
 	</integer-array>
+	-->
+	
+	<string name="pref_general_cacheexternal_key">org.shujito.cartonbox.pref_general_cacheexternal_key</string>
+	<string name="pref_general_clearcacheonstartup_key">org.shujito.cartonbox.pref_general_clearcacheonstartup_key</string>
+	<string name="pref_general_cachesize_key">org.shujito.cartonbox.pref_general_cachesize_key</string>
+	<string name="pref_general_clearcache_key">org.shujito.cartonbox.pref_general_clearcache_key</string>
+	<string name="pref_content_postsperpage_key">org.shujito.cartonbox.pref_content_postsperpage_key</string>
+	<string name="pref_content_poolsperpage_key">org.shujito.cartonbox.pref_content_poolsperpage_key</string>
+	<string name="pref_content_poolpostsperpage_key">org.shujito.cartonbox.pref_content_poolpostsperpage_key</string>
+	<string name="pref_content_localfilter_key">org.shujito.cartonbox.pref_content_localfilter_key</string>
+	<string name="pref_content_warning_key">org.shujito.cartonbox.pref_content_warning_key</string>
+	<string name="pref_blacklist_enabled_key">org.shujito.cartonbox.pref_blacklist_enabled_key</string>
+	<string name="pref_blacklist_tags_key">org.shujito.cartonbox.pref_blacklist_tags_key</string>
+	<string name="pref_blacklist_hide_key">org.shujito.cartonbox.pref_blacklist_hide_key</string>
+	<string name="pref_ratings_todisplay_key">org.shujito.cartonbox.pref_ratings_todisplay_key</string>
+	<string name="pref_ratings_hide_key">org.shujito.cartonbox.pref_ratings_hide_key</string>
+	<string name="pref_ratings_todisplay_safe_key">org.shujito.cartonbox.pref_ratings_todisplay_safe_key</string>
+	<string name="pref_ratings_todisplay_questionable_key">org.shujito.cartonbox.pref_ratings_todisplay_questionable_key</string>
+	<string name="pref_ratings_todisplay_explicit_key">org.shujito.cartonbox.pref_ratings_todisplay_explicit_key</string>
+	
 </resources>

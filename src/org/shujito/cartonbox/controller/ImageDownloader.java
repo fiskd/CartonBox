@@ -6,8 +6,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLConnection;
 
 import org.shujito.cartonbox.ImageUtils;
 import org.shujito.cartonbox.Logger;
@@ -45,11 +45,19 @@ public class ImageDownloader extends AsyncTask<Void, Float, Bitmap>
 	
 	int width, height;
 	
+	/* constructor */
+	
+	public ImageDownloader(Context context, String url)
+	{
+		this.context = context;
+		this.url = url;
+	}
+	
 	/* getters */
 	
 	public String getUrl()
 	{
-		return url;
+		return this.url;
 	}
 	
 	/* setters */
@@ -79,14 +87,6 @@ public class ImageDownloader extends AsyncTask<Void, Float, Bitmap>
 	public boolean isAlreadyExecuted()
 	{
 		return this.alreadyExecuted;
-	}
-	
-	/* constructor */
-
-	public ImageDownloader(Context context, String url)
-	{
-		this.context = context;
-		this.url = url;
 	}
 	
 	/* meth */
@@ -124,8 +124,6 @@ public class ImageDownloader extends AsyncTask<Void, Float, Bitmap>
 		Bitmap bmp = null;
 		// domain
 		String filename = this.url.substring(secondslash, thirdslash);
-		// separator
-		filename = filename.concat(" - ");
 		// file
 		filename = filename.concat(this.url.substring(thirdslash + 1).replace('/', '-'));
 		
@@ -150,12 +148,16 @@ public class ImageDownloader extends AsyncTask<Void, Float, Bitmap>
 			{
 				// have an url
 				URL url = new URL(this.url);
-				// connect to it
-				URLConnection urlconnection = url.openConnection();
-				// get the content size
-				size = urlconnection.getContentLength();
+				// open it
+				HttpURLConnection httpurlconn = (HttpURLConnection)url.openConnection();
+				// behoimi has hotlinking protection, bypass it with a referer
+				httpurlconn.setRequestProperty("Referer", this.url);
+				// connect now
+				httpurlconn.connect();
+				// get stream size
+				size = httpurlconn.getContentLength();
 				// put the network stream into a buffer
-				input = new BufferedInputStream(url.openStream());
+				input = new BufferedInputStream(httpurlconn.getInputStream());
 			}
 			
 			// this stream runs on memory, it will hold the file or downloaded file
@@ -164,7 +166,10 @@ public class ImageDownloader extends AsyncTask<Void, Float, Bitmap>
 			try
 			{
 				// initialize it with the stream size
-				output = new ByteArrayOutputStream(size);
+				if(size > 0)
+					output = new ByteArrayOutputStream(size);
+				else
+					output = new ByteArrayOutputStream();
 				
 				byte[] data = new byte[1024];
 				int total = 0;
@@ -178,8 +183,9 @@ public class ImageDownloader extends AsyncTask<Void, Float, Bitmap>
 						return null;
 					}
 					total += bytesRead;
-					//
-					this.publishProgress( (float)total / size );
+					// progress available only when streamsize is available
+					if(size > 0)
+						this.publishProgress( (float)total / size );
 					output.write(data, 0, bytesRead);
 				}
 				

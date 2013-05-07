@@ -7,11 +7,11 @@ public class Post implements Serializable
 	private static final long serialVersionUID = 1L;
 	
 	// original
-	public static String URL_FILE_FORMAT = "/data/%s.%s";
+	public static final String URL_FILE_FORMAT = "/data/%s.%s";
 	// scaled down
-	public static String URL_SAMPLE_FORMAT = "/data/sample/sample-%s.jpg";
+	public static final String URL_SAMPLE_FORMAT = "/data/sample/sample-%s.jpg";
 	// thumbnail
-	public static String URL_PREVIEW_FORMAT = "/ssd/data/preview/%s.jpg";
+	public static final String URL_PREVIEW_FORMAT = "/ssd/data/preview/%s.jpg";
 	
 	// sexual rating
 	public enum Rating
@@ -71,6 +71,10 @@ public class Post implements Serializable
 		{
 			this.url = this.site.getUrl().concat(
 				String.format(URL_FILE_FORMAT, this.md5, this.fileExt));
+		}
+		else if((this.url != null && this.url.charAt(0) == '/') && this.site != null)
+		{
+			
 		}
 		
 		return this.url;
