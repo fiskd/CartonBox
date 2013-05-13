@@ -9,8 +9,10 @@ import android.preference.PreferenceManager;
 
 public class Preferences
 {
-	//public static String <prefname> = "org.shujito.cartonbox.<prefname>";
-	public static String FIRST_RUN = "org.shujito.cartonbox.FIRST_RUN";
+	//public static final String <prefname> = "org.shujito.cartonbox.<prefname>";
+	public static final String FIRST_RUN = "org.shujito.cartonbox.FIRST_RUN";
+	public static final String SITE_USERNAME = "org.shujito.cartonbox.SITE_USERNAME";
+	public static final String SITE_PASSWORD = "org.shujito.cartonbox.SITE_PASSWORD";
 	
 	public static boolean isFirstRun()
 	{

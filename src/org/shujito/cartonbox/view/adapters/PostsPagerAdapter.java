@@ -1,6 +1,6 @@
 package org.shujito.cartonbox.view.adapters;
 
-import org.shujito.cartonbox.controller.Imageboard;
+import org.shujito.cartonbox.controller.ImageboardPosts;
 import org.shujito.cartonbox.controller.listeners.OnPostsFetchedListener;
 import org.shujito.cartonbox.model.Post;
 import org.shujito.cartonbox.view.fragments.PostViewFragment;
@@ -46,7 +46,7 @@ public class PostsPagerAdapter extends FragmentPagerAdapter implements OnPostsFe
 	}
 	
 	@Override
-	public void onPostsFetched(Imageboard api)
+	public void onPostsFetched(ImageboardPosts api)
 	{
 		this.posts = api.getPosts();
 		this.notifyDataSetChanged();

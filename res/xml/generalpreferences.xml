@@ -7,18 +7,23 @@
 		android:title="@string/pref_general" >
 		<CheckBoxPreference
 			android:key="@string/pref_general_cacheexternal_key"
-			android:title="@string/pref_general_cacheexternal" />
+			android:title="@string/pref_general_cacheexternal"
+			android:defaultValue="true" />
 		<CheckBoxPreference
 			android:key="@string/pref_general_clearcacheonstartup_key"
-			android:title="@string/pref_general_clearcacheonstartup" />
+			android:title="@string/pref_general_clearcacheonstartup"
+			android:defaultValue="false" />
 		<EditTextPreference
 			android:key="@string/pref_general_cachesize_key"
 			android:title="@string/pref_general_cachesize"
-			android:summary="@string/pref_general_cachesize_desc" />
+			android:summary="@string/pref_general_cachesize_desc"
+			android:defaultValue="100"
+			android:inputType="number" />
 		<Preference
 			android:key="@string/pref_general_clearcache_key"
 			android:title="@string/pref_general_clearcache"
-			android:summary="@string/pref_general_clearcache_desc" />
+			android:summary="@string/pref_general_clearcache_desc"
+			android:enabled="false" />
 	</PreferenceCategory>
 	<PreferenceCategory
 		android:title="@string/pref_content" >
@@ -55,7 +60,7 @@
 			android:key="@string/pref_blacklist_enabled_key"
 			android:title="@string/pref_blacklist_enabled" />
 		<EditTextPreference
-			android:key="@string/pref_blacklist_tags_desc"
+			android:key="@string/pref_blacklist_tags_key"
 			android:title="@string/pref_blacklist_tags"
 			android:summary="@string/pref_blacklist_tags_desc"
 			android:dependency="@string/pref_blacklist_enabled_key" />

@@ -9,10 +9,10 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import org.shujito.cartonbox.ImageUtils;
 import org.shujito.cartonbox.Logger;
 import org.shujito.cartonbox.controller.listeners.OnDownloadProgressListener;
 import org.shujito.cartonbox.controller.listeners.OnImageFetchedListener;
+import org.shujito.cartonbox.utils.ImageUtils;
 
 import android.content.Context;
 import android.graphics.Bitmap;

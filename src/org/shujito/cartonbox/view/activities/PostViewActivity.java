@@ -2,7 +2,7 @@ package org.shujito.cartonbox.view.activities;
 
 import org.shujito.cartonbox.CartonBox;
 import org.shujito.cartonbox.R;
-import org.shujito.cartonbox.controller.Imageboard;
+import org.shujito.cartonbox.controller.ImageboardPosts;
 import org.shujito.cartonbox.view.adapters.PostsPagerAdapter;
 
 import android.os.Bundle;
@@ -18,7 +18,7 @@ public class PostViewActivity extends SherlockFragmentActivity
 {
 	public static String EXTRA_POST_INDEX = "org.shujito.cartonbox.POST_INDEX";
 	
-	Imageboard api = null;
+	ImageboardPosts api = null;
 	
 	ViewPager mVpPosts = null;
 	PostsPagerAdapter mPostsAdapter = null;

@@ -2,6 +2,6 @@
 <resources>
 
 <integer name="posts_section_numcols">8</integer>
-<integer name="siteindex_numcols">2</integer>
+<integer name="main_gvsites_numcols">2</integer>
 
 </resources>

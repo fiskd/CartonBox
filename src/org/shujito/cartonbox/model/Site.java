@@ -38,6 +38,17 @@ public class Site implements Serializable
 	private String artistsApi;
 	private String tagsApi;
 	
+	/* constructor */
+	public Site()
+	{
+		this.id = -1;
+	}
+	
+	public Site(int id)
+	{
+		this.id = id;
+	}
+	
 	/* getters */
 	public int getId()
 	{ return this.id; }
@@ -63,11 +74,13 @@ public class Site implements Serializable
 	{ return this.tagsApi; }
 
 	/* setters */
-	public Site setId(int i)
+	/*
+	private Site setId(int i)
 	{
 		this.id = i;
 		return this;
 	}
+	//*/
 	public Site setIconid(int i)
 	{
 		this.iconid = i;

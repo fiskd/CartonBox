@@ -1,6 +1,6 @@
 package org.shujito.cartonbox;
 
-import org.shujito.cartonbox.controller.Imageboard;
+import org.shujito.cartonbox.controller.ImageboardPosts;
 
 import android.app.Application;
 
@@ -28,13 +28,13 @@ public class CartonBox extends Application
 		}
 	}
 	
-	private Imageboard imageboard = null;
+	private ImageboardPosts imageboard = null;
 	
-	public Imageboard getImageboard()
+	public ImageboardPosts getImageboard()
 	{
 		return imageboard;
 	}
-	public void setImageboard(Imageboard imageboard)
+	public void setImageboard(ImageboardPosts imageboard)
 	{
 		this.imageboard = imageboard;
 	}

@@ -2,7 +2,7 @@ package org.shujito.cartonbox.view.fragments;
 
 import org.shujito.cartonbox.Logger;
 import org.shujito.cartonbox.R;
-import org.shujito.cartonbox.controller.Imageboard;
+import org.shujito.cartonbox.controller.ImageboardPosts;
 import org.shujito.cartonbox.controller.listeners.OnErrorListener;
 import org.shujito.cartonbox.controller.listeners.OnFragmentAttachedListener;
 import org.shujito.cartonbox.controller.listeners.OnPostsFetchedListener;
@@ -33,7 +33,7 @@ public class PostsSectionFragment extends Fragment implements
 	OnFragmentAttachedListener onFragmentAttachedListener = null;
 	
 	/* Fields */
-	Imageboard api = null;
+	ImageboardPosts api = null;
 	
 	GridView mGvPosts = null;
 	ProgressBar mPbProgress = null;
@@ -72,17 +72,14 @@ public class PostsSectionFragment extends Fragment implements
 	@Override
 	public void onViewCreated(View view, Bundle cirno)
 	{
+		Logger.i("PostsSectionFragment::onViewCreated", "fragment craeted");
 		super.onViewCreated(view, cirno);
 		
 		this.mPostsAdapter = new PostsGridAdapter(this.getActivity());
 		
 		if(this.onFragmentAttachedListener != null)
 		{
-			this.api = (Imageboard)this.onFragmentAttachedListener.onFragmentAttached(this);
-			this.api.addOnErrorListener(this);
-			this.api.addOnPostsFetchedListener(this.mPostsAdapter);
-			this.api.addOnPostsFetchedListener(this);
-			this.api.addOnPostsRequestListener(this);
+			this.api = (ImageboardPosts)this.onFragmentAttachedListener.onFragmentAttached(this);
 		}
 		
 		this.mGvPosts = (GridView)view.findViewById(R.id.posts_gvposts);
@@ -108,15 +105,24 @@ public class PostsSectionFragment extends Fragment implements
 	public void onResume()
 	{
 		super.onResume();
+		Logger.i("PostsSectionFragment::onResume", "fragment resumed");
 		// XXX: HACKY!!
 		if(this.mPostsAdapter != null)
 			this.mPostsAdapter.onPostsFetched(this.api);
+		if(this.api != null)
+		{
+			this.api.addOnErrorListener(this);
+			this.api.addOnPostsFetchedListener(this.mPostsAdapter);
+			this.api.addOnPostsFetchedListener(this);
+			this.api.addOnPostsRequestListener(this);
+		}
 	}
 	
 	@Override
 	public void onPause()
 	{
 		super.onPause();
+		Logger.i("PostsSectionFragment::onPause", "fragment paused");
 		// remove these listeners
 		if(this.api != null)
 		{
@@ -154,7 +160,7 @@ public class PostsSectionFragment extends Fragment implements
 	{
 		if(first + visible >= total)
 		{
-			this.api.requestPosts();
+			this.api.request();
 		}
 	}
 	
@@ -185,7 +191,7 @@ public class PostsSectionFragment extends Fragment implements
 	
 	/* OnPostsFetchedListener */
 	@Override
-	public void onPostsFetched(Imageboard api)
+	public void onPostsFetched(ImageboardPosts api)
 	{
 		this.mGvPosts.setVisibility(View.VISIBLE);
 		this.mPbProgress.setVisibility(View.GONE);

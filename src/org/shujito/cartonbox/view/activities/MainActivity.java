@@ -7,16 +7,15 @@ import org.shujito.cartonbox.Preferences;
 import org.shujito.cartonbox.R;
 import org.shujito.cartonbox.controller.DanbooruImageBoard;
 import org.shujito.cartonbox.controller.DanbooruOldImageBoard;
-import org.shujito.cartonbox.controller.Imageboard;
+import org.shujito.cartonbox.controller.ImageboardPosts;
 import org.shujito.cartonbox.model.Site;
 import org.shujito.cartonbox.model.db.SitesDB;
 import org.shujito.cartonbox.view.adapters.SitesAdapter;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
@@ -35,6 +34,7 @@ public class MainActivity extends SherlockActivity implements OnItemClickListene
 	protected void onCreate(Bundle cirno)
 	{
 		super.onCreate(cirno);
+		this.setContentView(R.layout.main);
 		
 		// get sites stored on the db
 		SitesDB sitesdb = new SitesDB(this);
@@ -42,29 +42,21 @@ public class MainActivity extends SherlockActivity implements OnItemClickListene
 		
 		// init views
 		this.mSitesAdapter = new SitesAdapter(this, this.sites);
+		this.mGridView = (GridView)this.findViewById(R.id.main_gvsites);
+		this.mGridView.setAdapter(this.mSitesAdapter);
+		this.mGridView.setOnItemClickListener(this);
 		
+		/*
 		this.mGridView = new GridView(this);
 		LayoutParams lparams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 		this.mGridView.setLayoutParams(lparams);
 		this.mGridView.setGravity(Gravity.CENTER);
-		
-		int numcols = Preferences.getInt(R.integer.siteindex_numcols, 1);
-		
-		this.setTitle(String.valueOf(numcols));
-		
-		this.mGridView.setNumColumns(numcols);
-		
-		/*
-		if(this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
-			this.mGridView.setNumColumns(2);
-		else
-			this.mGridView.setNumColumns(4);
-		//*/
-		
+		this.mGridView.setNumColumns(2);
 		this.mGridView.setAdapter(this.mSitesAdapter);
 		this.mGridView.setOnItemClickListener(this);
 		
 		this.setContentView(this.mGridView);
+		//*/
 	}
 	
 	@Override
@@ -105,15 +97,19 @@ public class MainActivity extends SherlockActivity implements OnItemClickListene
 		Site currentSite = this.sites.get(pos);
 		
 		// create api here
-		Imageboard api = null; // new DanbooruImageBoard(currentSite);
+		ImageboardPosts api = null; // new DanbooruImageBoard(currentSite);
 		
 		if(currentSite.getType() == Site.Type.Danbooru1)
 			api = new DanbooruOldImageBoard(currentSite);
 		else if(currentSite.getType() == Site.Type.Danbooru2)
 		{
+			SharedPreferences sitePrefs = this.getSharedPreferences(String.valueOf(currentSite.getId()), 0);
+			String username = sitePrefs.getString(Preferences.SITE_USERNAME, null);
+			String password = sitePrefs.getString(Preferences.SITE_PASSWORD, null);
+			
 			api = new DanbooruImageBoard(currentSite);
-			api.setUsername("*daisu~");
-			api.setPassword("silverwing");
+			api.setUsername(username);
+			api.setPassword(password);
 		}
 		
 		if(api != null)

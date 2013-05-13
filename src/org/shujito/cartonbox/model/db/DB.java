@@ -1,11 +1,13 @@
 package org.shujito.cartonbox.model.db;
 
+import java.util.List;
+
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 // TODO: generics
-public abstract class SQLiteDatabaseCommon extends SQLiteOpenHelper
+public abstract class DB<T> extends SQLiteOpenHelper
 {
 	/* static */
 	static final int VERSION = 0x00000001;
@@ -18,7 +20,7 @@ public abstract class SQLiteDatabaseCommon extends SQLiteOpenHelper
 	static final String SQL_INTEGER = "%s INTEGER";
 	static final String SQL_PK = "%s INTEGER PRIMARY KEY AUTOINCREMENT";
 	
-	public SQLiteDatabaseCommon(Context context)
+	public DB(Context context)
 	{
 		super(context, DB_NAME, null, VERSION);
 	}
@@ -39,11 +41,10 @@ public abstract class SQLiteDatabaseCommon extends SQLiteOpenHelper
 		db.execSQL(query);
 	}
 	
-	// TODO: add abstract methods
-	//public abstract void add(T record);
-	//public abstract T get();
-	//public abstract List<T> getAll();
-	//public abstract int getCount();
-	//public abstract void update(T record);
-	//public abstract void delete(T record);
+	public abstract void add(T record);
+	public abstract T get(int id);
+	public abstract List<T> getAll();
+	public abstract int getCount();
+	public abstract void update(T record);
+	public abstract void delete(T record);
 }

@@ -1,6 +1,6 @@
 package org.shujito.cartonbox.controller.listeners;
 
-import org.shujito.cartonbox.controller.Imageboard;
+import org.shujito.cartonbox.controller.ImageboardPosts;
 
 public interface OnPostsFetchedListener
-{ public void onPostsFetched(Imageboard api); }
+{ public void onPostsFetched(ImageboardPosts api); }

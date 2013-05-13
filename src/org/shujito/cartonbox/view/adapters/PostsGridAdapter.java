@@ -1,8 +1,9 @@
 package org.shujito.cartonbox.view.adapters;
 
+import org.shujito.cartonbox.BitmapCache;
 import org.shujito.cartonbox.R;
 import org.shujito.cartonbox.controller.ImageDownloader;
-import org.shujito.cartonbox.controller.Imageboard;
+import org.shujito.cartonbox.controller.ImageboardPosts;
 import org.shujito.cartonbox.controller.listeners.OnDownloadProgressListener;
 import org.shujito.cartonbox.controller.listeners.OnImageFetchedListener;
 import org.shujito.cartonbox.controller.listeners.OnPostsFetchedListener;
@@ -28,10 +29,15 @@ public class PostsGridAdapter extends BaseAdapter implements OnPostsFetchedListe
 {
 	Context context = null;
 	SparseArray<Post> posts = null;
+	// put cached bitmaps here
+	//SparseArray<Bitmap> bitmaps = null;
+	BitmapCache cache = null;
 	
 	public PostsGridAdapter(Context context)
 	{
 		this.context = context;
+		//this.bitmaps = new SparseArray<Bitmap>();
+		this.cache = new BitmapCache();
 	}
 	
 	@Override
@@ -68,7 +74,7 @@ public class PostsGridAdapter extends BaseAdapter implements OnPostsFetchedListe
 		int index = size - pos - 1;
 		
 		// must get a key from the index, that's how SparseArray works
-		int key = this.posts.keyAt(index);
+		final int key = this.posts.keyAt(index);
 		Post one = this.posts.get(key);
 		// getting out early...
 		if(one == null) return v;
@@ -109,61 +115,84 @@ public class PostsGridAdapter extends BaseAdapter implements OnPostsFetchedListe
 		
 		if(ivpreview.getTag() instanceof ImageDownloader)
 		{
-			// get the downloader attached to the imageview so it can be cancelled
-			((ImageDownloader)ivpreview.getTag()).cancel(true);
+			// get the downloader attached to the imageview so it can be cancelled (how about no)
+			//((ImageDownloader)ivpreview.getTag()).cancel(true);
+			ImageDownloader attached = (ImageDownloader)ivpreview.getTag();
+			// remove the listener, have it to download it but don't display it
+			// potential memory waster but whatever
+			attached.setOnDownloadProgressListener(null);
+			attached.setOnImageFetchedListener(null);
 		}
 		
 		ivpreview.setTag(downloader);
 		ivpreview.setImageBitmap(null);
 		ivpreview.setBackgroundColor(Color.TRANSPARENT);
 		
-		pbprogress.setVisibility(View.GONE);
-		pbprogress.setProgress(0);
-		
-		//tvloading.setText(String.valueOf(one.getId()));
-		tvloading.setVisibility(View.VISIBLE);
-		tvloading.setText(R.string.loading);
-		//tvloading.setText(String.format("w:%s h:%s", v.getWidth(), v.getHeight()));
-		//tvloading.setText(String.valueOf(one.getRating()));
-		
-		downloader.setWidth(150);
-		downloader.setHeight(150);
-		downloader.setOnDownloadProgressListener(new OnDownloadProgressListener()
+		//Bitmap cachedBitmap = this.bitmaps.get(key);
+		final Bitmap cachedBitmap = this.cache.getBitmapFromMemCache(key);
+		if(cachedBitmap != null)
 		{
-			@Override
-			public void onDownloadProgress(float progress)
-			{
-				float percentProgress = progress * 100;
-				
-				pbprogress.setVisibility(View.VISIBLE);
-				pbprogress.setProgress((int)percentProgress);
-				tvloading.setVisibility(View.VISIBLE);
-				tvloading.setText(String.format("%.2f%%", percentProgress));
-			}
-		});
-		downloader.setOnImageFetchedListener(new OnImageFetchedListener()
+			ivpreview.setImageBitmap(cachedBitmap);
+			ivpreview.setBackgroundColor(Color.BLACK);
+			pbprogress.setVisibility(View.GONE);
+			tvloading.setVisibility(View.GONE);
+		}
+		else
 		{
-			@Override
-			public void onImageFetched(Bitmap b)
+			pbprogress.setVisibility(View.GONE);
+			pbprogress.setProgress(0);
+			
+			//tvloading.setText(String.valueOf(one.getId()));
+			tvloading.setVisibility(View.VISIBLE);
+			tvloading.setText(R.string.loading);
+			//tvloading.setText(String.format("w:%s h:%s", v.getWidth(), v.getHeight()));
+			//tvloading.setText(String.valueOf(one.getRating()));
+			
+			downloader.setWidth(150);
+			downloader.setHeight(150);
+			downloader.setOnDownloadProgressListener(new OnDownloadProgressListener()
 			{
-				if(b == null)
+				@Override
+				public void onDownloadProgress(float progress)
 				{
-					tvloading.setText("whoops");
+					float percentProgress = progress * 100;
+					
+					pbprogress.setVisibility(View.VISIBLE);
+					pbprogress.setProgress((int)percentProgress);
+					tvloading.setVisibility(View.VISIBLE);
+					tvloading.setText(String.format("%.2f%%", percentProgress));
 				}
-				else
+			});
+			downloader.setOnImageFetchedListener(new OnImageFetchedListener()
+			{
+				@Override
+				public void onImageFetched(Bitmap bitmap)
 				{
-					ivpreview.setImageBitmap(b);
+					if(bitmap == null)
+					{
+						tvloading.setText("whoops");
+						//tvloading.setText(null);
+						ivpreview.setImageBitmap(cachedBitmap);
+					}
+					else
+					{
+						// cache it
+						//bitmaps.append(key, b);
+						cache.addBitmapToMemCache(key, bitmap);
+						ivpreview.setImageBitmap(bitmap);
+					}
+					
 					ivpreview.setBackgroundColor(Color.BLACK);
 					pbprogress.setVisibility(View.GONE);
 					tvloading.setVisibility(View.GONE);
 				}
-			}
-		});
-		
-		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-			downloader.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-		else
-			downloader.execute();
+			});
+			
+			if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+				downloader.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+			else
+				downloader.execute();
+		}
 		
 		//ConcurrentTask.execute(downloader);
 		
@@ -171,7 +200,7 @@ public class PostsGridAdapter extends BaseAdapter implements OnPostsFetchedListe
 	}
 	
 	@Override
-	public void onPostsFetched(Imageboard api)
+	public void onPostsFetched(ImageboardPosts api)
 	{
 		this.posts = api.getPosts();
 		this.notifyDataSetChanged();

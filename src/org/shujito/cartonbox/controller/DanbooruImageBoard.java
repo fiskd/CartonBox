@@ -2,7 +2,7 @@ package org.shujito.cartonbox.controller;
 
 import org.shujito.cartonbox.model.Site;
 
-public class DanbooruImageBoard extends Imageboard
+public class DanbooruImageBoard extends ImageboardPosts
 {
 	/* Fields */
 	

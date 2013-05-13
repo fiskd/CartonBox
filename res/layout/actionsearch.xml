@@ -7,7 +7,6 @@
 	<MultiAutoCompleteTextView
 		android:id="@+id/actionsearch_mactvqueryposts"
 		android:layout_width="0dp"
-		android:maxWidth="300dp"
 		android:layout_height="wrap_content"
 		android:layout_weight="1"
 		android:hint="@string/search"

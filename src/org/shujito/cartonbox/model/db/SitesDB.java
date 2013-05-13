@@ -10,11 +10,11 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-public class SitesDB extends SQLiteDatabaseCommon
+public class SitesDB extends DB<Site>
 {
 	/* static */
 	static String TABLE_SITES = "sites";
-
+	
 	static final String KEY_ID = "id";
 	static final String KEY_ICONID = "iconid";
 	static final String KEY_URL = "url";
@@ -32,6 +32,8 @@ public class SitesDB extends SQLiteDatabaseCommon
 	{
 		super(context);
 	}
+	
+	/* meth */
 	
 	/* override */
 	@Override
@@ -62,29 +64,30 @@ public class SitesDB extends SQLiteDatabaseCommon
 		this.onCreate(db);
 	}
 	
-	/* meth */
-	public void add(Site site)
+	@Override
+	public void add(Site record)
 	{
 		SQLiteDatabase db = this.getWritableDatabase();
 		
 		ContentValues values = new ContentValues();
-		//values.put(KEY_ID, site.getId());
-		values.put(KEY_ICONID, site.getIconid());
-		values.put(KEY_URL, site.getUrl());
-		values.put(KEY_TYPE, site.getType().getValue());
-		values.put(KEY_NAME, site.getName());
-		values.put(KEY_POSTS_API, site.getPostsApi());
-		values.put(KEY_POOLS_API, site.getPoolsApi());
-		values.put(KEY_COMMENTS_API, site.getCommentsApi());
-		values.put(KEY_NOTES_API, site.getNotesApi());
-		values.put(KEY_ARTISTS_API, site.getArtistsApi());
-		values.put(KEY_TAGS_API, site.getTagsApi());
+		//values.put(KEY_ID, record.getId());
+		values.put(KEY_ICONID, record.getIconid());
+		values.put(KEY_URL, record.getUrl());
+		values.put(KEY_TYPE, record.getType().getValue());
+		values.put(KEY_NAME, record.getName());
+		values.put(KEY_POSTS_API, record.getPostsApi());
+		values.put(KEY_POOLS_API, record.getPoolsApi());
+		values.put(KEY_COMMENTS_API, record.getCommentsApi());
+		values.put(KEY_NOTES_API, record.getNotesApi());
+		values.put(KEY_ARTISTS_API, record.getArtistsApi());
+		values.put(KEY_TAGS_API, record.getTagsApi());
 		
 		// insert entry
 		db.insert(TABLE_SITES, null, values);
 		db.close();
 	}
 	
+	@Override
 	public Site get(int id)
 	{
 		SQLiteDatabase db = this.getReadableDatabase();
@@ -111,8 +114,8 @@ public class SitesDB extends SQLiteDatabaseCommon
 				case 3: type = Site.Type.Gelbooru; break;
 			}
 			
-			Site site = new Site()
-				.setId(id)
+			Site site = new Site(id)
+				//.setId(id)
 				.setIconid(cursor.getInt(cursor.getColumnIndex(KEY_ICONID)))
 				.setUrl(cursor.getString(cursor.getColumnIndex(KEY_URL)))
 				.setType(type)
@@ -130,14 +133,7 @@ public class SitesDB extends SQLiteDatabaseCommon
 		return null;
 	}
 	
-	public void update(Site site)
-	{
-	}
-	
-	public void delete(Site site)
-	{
-	}
-	
+	@Override
 	public List<Site> getAll()
 	{
 		SQLiteDatabase db = this.getReadableDatabase();
@@ -167,8 +163,8 @@ public class SitesDB extends SQLiteDatabaseCommon
 					case 3: type = Site.Type.Gelbooru; break;
 				}
 				
-				Site site = new Site()
-					.setId(cursor.getInt(cursor.getColumnIndex(KEY_ID)))
+				Site site = new Site(cursor.getInt(cursor.getColumnIndex(KEY_ID)))
+					//.setId(cursor.getInt(cursor.getColumnIndex(KEY_ID)))
 					.setIconid(cursor.getInt(cursor.getColumnIndex(KEY_ICONID)))
 					.setUrl(cursor.getString(cursor.getColumnIndex(KEY_URL)))
 					.setType(type)
@@ -191,6 +187,7 @@ public class SitesDB extends SQLiteDatabaseCommon
 		return sites;
 	}
 	
+	@Override
 	public int getCount()
 	{
 		SQLiteDatabase db = this.getReadableDatabase();
@@ -202,5 +199,15 @@ public class SitesDB extends SQLiteDatabaseCommon
 		cursor.close();
 		db.close();
 		return count;
+	}
+	
+	@Override
+	public void update(Site record)
+	{
+	}
+	
+	@Override
+	public void delete(Site record)
+	{
 	}
 }

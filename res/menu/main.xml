@@ -5,6 +5,7 @@
 		android:id="@+id/menu_main_addsite"
 		android:icon="@android:drawable/ic_menu_add"
 		android:showAsAction="always"
+		android:visible="false"
 		android:title="@string/addsite" />
 	<item
 		android:id="@+id/menu_main_settings"

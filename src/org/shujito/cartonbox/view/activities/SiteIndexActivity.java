@@ -2,8 +2,9 @@ package org.shujito.cartonbox.view.activities;
 
 import org.shujito.cartonbox.CartonBox;
 import org.shujito.cartonbox.Logger;
+import org.shujito.cartonbox.Preferences;
 import org.shujito.cartonbox.R;
-import org.shujito.cartonbox.controller.Imageboard;
+import org.shujito.cartonbox.controller.ImageboardPosts;
 import org.shujito.cartonbox.controller.listeners.OnErrorListener;
 import org.shujito.cartonbox.controller.listeners.OnFragmentAttachedListener;
 import org.shujito.cartonbox.view.adapters.SiteIndexPageAdapter;
@@ -12,6 +13,7 @@ import org.shujito.cartonbox.view.fragments.LoginDialogFragment.LoginDialogCallb
 import org.shujito.cartonbox.view.fragments.PostsSectionFragment;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -44,7 +46,7 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 	MultiAutoCompleteTextView mMactvQueryPosts = null;
 	// tab titles
 	String[] tabs = null;
-	Imageboard api = null;
+	ImageboardPosts api = null;
 	
 	@Override
 	protected void onCreate(Bundle cirno)
@@ -262,12 +264,13 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 			if(this.api != null)
 			{
 				this.api.clear();
+				this.getSupportActionBar().setSubtitle(v.getText());
 				String[] tags = v.getText().toString().split("\\s+");
 				for(String tag : tags)
 				{
 					this.api.putTag(tag);
 				}
-				this.api.requestPosts();
+				this.api.request();
 			}
 			return true;
 		}
@@ -314,8 +317,18 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 		{
 			this.api.setUsername(username);
 			this.api.setPassword(password);
-			this.api.requestPosts();
+			this.api.request();
+			
+			String prefsName = String.valueOf(this.api.getSite().getId());
+			
+			SharedPreferences sitePrefs = this.getSharedPreferences(prefsName, 0);
+			
+			SharedPreferences.Editor sitePrefsEdit = sitePrefs.edit();
+			sitePrefsEdit.putString(Preferences.SITE_USERNAME, username);
+			sitePrefsEdit.putString(Preferences.SITE_PASSWORD, password);
+			sitePrefsEdit.commit();
 		}
 	}
 	/* LoginDialogCallback methods */
 }
+
