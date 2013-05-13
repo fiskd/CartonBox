@@ -33,7 +33,7 @@ public class PostsSectionFragment extends Fragment implements
 	OnFragmentAttachedListener onFragmentAttachedListener = null;
 	
 	/* Fields */
-	ImageboardPosts api = null;
+	ImageboardPosts postsApi = null;
 	
 	GridView mGvPosts = null;
 	ProgressBar mPbProgress = null;
@@ -53,7 +53,7 @@ public class PostsSectionFragment extends Fragment implements
 		}
 		catch(Exception ex)
 		{
-			Logger.e("PostsSectionFragment::onAttach", "Couldn't get listener from the activity this attached to");
+			Logger.e("PostsSectionFragment::onAttach", "Couldn't get listener from the activity this is attached to");
 		}
 	}
 	
@@ -79,7 +79,7 @@ public class PostsSectionFragment extends Fragment implements
 		
 		if(this.onFragmentAttachedListener != null)
 		{
-			this.api = (ImageboardPosts)this.onFragmentAttachedListener.onFragmentAttached(this);
+			this.postsApi = (ImageboardPosts)this.onFragmentAttachedListener.onFragmentAttached(this);
 		}
 		
 		this.mGvPosts = (GridView)view.findViewById(R.id.posts_gvposts);
@@ -93,7 +93,7 @@ public class PostsSectionFragment extends Fragment implements
 		this.mTvMessage = (TextView)view.findViewById(R.id.posts_tvmessage);
 		this.mTvMessage.setVisibility(View.GONE);
 		
-		if(this.api != null && this.api.getPosts().size() > 0)
+		if(this.postsApi != null && this.postsApi.getPosts().size() > 0)
 		{
 			this.mGvPosts.setVisibility(View.VISIBLE);
 			this.mPbProgress.setVisibility(View.GONE);
@@ -108,13 +108,13 @@ public class PostsSectionFragment extends Fragment implements
 		Logger.i("PostsSectionFragment::onResume", "fragment resumed");
 		// XXX: HACKY!!
 		if(this.mPostsAdapter != null)
-			this.mPostsAdapter.onPostsFetched(this.api);
-		if(this.api != null)
+			this.mPostsAdapter.onPostsFetched(this.postsApi);
+		if(this.postsApi != null)
 		{
-			this.api.addOnErrorListener(this);
-			this.api.addOnPostsFetchedListener(this.mPostsAdapter);
-			this.api.addOnPostsFetchedListener(this);
-			this.api.addOnPostsRequestListener(this);
+			this.postsApi.addOnErrorListener(this);
+			this.postsApi.addOnPostsFetchedListener(this.mPostsAdapter);
+			this.postsApi.addOnPostsFetchedListener(this);
+			this.postsApi.addOnPostsRequestListener(this);
 		}
 	}
 	
@@ -124,12 +124,12 @@ public class PostsSectionFragment extends Fragment implements
 		super.onPause();
 		Logger.i("PostsSectionFragment::onPause", "fragment paused");
 		// remove these listeners
-		if(this.api != null)
+		if(this.postsApi != null)
 		{
-			this.api.removeOnErrorListener(this);
-			this.api.removeOnPostsFetchedListener(this.mPostsAdapter);
-			this.api.removeOnPostsFetchedListener(this);
-			this.api.removeOnPostsRequestListener(this);
+			this.postsApi.removeOnErrorListener(this);
+			this.postsApi.removeOnPostsFetchedListener(this.mPostsAdapter);
+			this.postsApi.removeOnPostsFetchedListener(this);
+			this.postsApi.removeOnPostsRequestListener(this);
 		}
 		// disable scroll loading (remove listener)
 		
@@ -140,7 +140,7 @@ public class PostsSectionFragment extends Fragment implements
 	{
 		super.onDestroy();
 		// get rid of this, quick
-		this.api = null;
+		this.postsApi = null;
 	}
 	
 	/* OnErrorListener methods */
@@ -160,7 +160,7 @@ public class PostsSectionFragment extends Fragment implements
 	{
 		if(first + visible >= total)
 		{
-			this.api.request();
+			this.postsApi.request();
 		}
 	}
 	
@@ -197,7 +197,7 @@ public class PostsSectionFragment extends Fragment implements
 		this.mPbProgress.setVisibility(View.GONE);
 		this.mTvMessage.setVisibility(View.GONE);
 		
-		if(this.api.getPosts().size() == 0)
+		if(this.postsApi.getPosts().size() == 0)
 		{
 			this.mGvPosts.setVisibility(View.GONE);
 			this.mTvMessage.setVisibility(View.VISIBLE);
@@ -211,7 +211,7 @@ public class PostsSectionFragment extends Fragment implements
 	public void onPostsRequest()
 	{
 		Logger.i("PostsSectionFragment::onPostsRequest", "Posts requested");
-		if(this.api != null && this.api.getPosts().size() == 0)
+		if(this.postsApi != null && this.postsApi.getPosts().size() == 0)
 		{
 			if(this.mGvPosts != null)
 				this.mGvPosts.setVisibility(View.GONE);

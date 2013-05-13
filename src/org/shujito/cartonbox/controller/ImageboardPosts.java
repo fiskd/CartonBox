@@ -1,7 +1,6 @@
 package org.shujito.cartonbox.controller;
 
 import java.net.HttpURLConnection;
-import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,22 +29,12 @@ import android.util.SparseArray;
 // step 2c: filters
 // step 3: give result
 // step 4: give posts
-public abstract class ImageboardPosts implements
-	OnResponseReceivedListener,
+public abstract class ImageboardPosts extends Imageboard implements
 	OnErrorListener,
 	OnAccessDeniedListener,
-	OnInternalServerErrorListener
+	OnInternalServerErrorListener,
+	OnResponseReceivedListener
 {
-	/* Static */
-	
-	public static final String API_LOGIN = "login=%s";
-	public static final String API_PASSWORD_HASH = "password_hash=%s";
-	public static final String API_KEY = "api_key=%s";
-	public static final String API_LIMIT = "limit=%d";
-	public static final String API_PAGE = "page=%d";
-	public static final String API_TAGS = "tags=%s";
-	public static final String API_DANBOORU_PASSWORD = "choujin-steiner--%s--";
-	
 	/* Listeners */
 	
 	List<OnErrorListener> onErrorListeners = null;
@@ -95,11 +84,7 @@ public abstract class ImageboardPosts implements
 	Downloader<?> downloader = null;
 	SparseArray<Post> posts = null;
 	ArrayList<String> tags = null;
-	Site site = null;
 	//String siteUrl = null;
-	
-	String username = null;
-	String password = null;
 	
 	boolean working = false;
 	boolean doneDownloadingPosts = false;
@@ -116,23 +101,14 @@ public abstract class ImageboardPosts implements
 	protected ImageboardPosts(Site site)
 	{
 		//this.siteUrl = siteUrl;
-		this.site = site;
+		//this.site = site;
+		super(site);
 		
 		this.posts = new SparseArray<Post>();
 		this.tags = new ArrayList<String>();
 	}
 	
 	/* Getters */
-	
-	public String getUsername()
-	{
-		return this.username;
-	}
-	
-	public String getPassword()
-	{
-		return this.password;
-	}
 	
 	public SparseArray<Post> getPosts()
 	{
@@ -144,73 +120,26 @@ public abstract class ImageboardPosts implements
 		return this.postsPerPage;
 	}
 	
-	public Site getSite()
-	{
-		return this.site;
-	}
-	
-	/* are's */
-	
-	public boolean isShowSafePosts()
+	public boolean getShowSafePosts()
 	{
 		return this.showSafePosts;
 	}
 	
-	public boolean isShowQuestionablePosts()
+	public boolean getShowQuestionablePosts()
 	{
 		return this.showQuestionablePosts;
 	}
 	
-	public boolean isShowExplicitPosts()
+	public boolean getShowExplicitPosts()
 	{
 		return this.showExplicitPosts;
 	}
 	
 	/* Setters */
 	
-	public void setUsername(String username)
-	{
-		this.username = username;
-	}
-	
-	public void setPassword(String password)
-	{
-		MessageDigest msgdig = null;
-		
-		try
-		{ msgdig = MessageDigest.getInstance("SHA-1"); }
-		catch(Exception ex)
-		{ ex.printStackTrace(); }
-		
-		byte[] buff = String.format(API_DANBOORU_PASSWORD, password).getBytes();
-		buff = msgdig.digest(buff);
-		
-		StringBuffer sbuff = new StringBuffer();
-		for(int idx = 0; idx < buff.length; idx++)
-		{
-			String part = Integer.toHexString(0xff & buff[idx]);
-			if(part.length() == 1)
-				sbuff.append("0");
-			sbuff.append(part);
-		}
-		this.password = sbuff.toString();
-		
-		//this.password = password;
-	}
-	
-	public void setPasswordHash(String passwordHash)
-	{
-		this.password = passwordHash;
-	}
-	
 	public void setPostsPerPage(int postsPerPage)
 	{
 		this.postsPerPage = postsPerPage;
-	}
-	
-	public void setSite(Site site)
-	{
-		this.site = site;
 	}
 	
 	public void setShowSafePosts(boolean showSafePosts)

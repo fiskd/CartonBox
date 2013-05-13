@@ -5,10 +5,12 @@ import org.shujito.cartonbox.Logger;
 import org.shujito.cartonbox.Preferences;
 import org.shujito.cartonbox.R;
 import org.shujito.cartonbox.controller.ImageboardPosts;
+import org.shujito.cartonbox.controller.ImageboardTags;
 import org.shujito.cartonbox.controller.listeners.OnErrorListener;
 import org.shujito.cartonbox.controller.listeners.OnFragmentAttachedListener;
 import org.shujito.cartonbox.view.adapters.SiteIndexPageAdapter;
 import org.shujito.cartonbox.view.fragments.LoginDialogFragment;
+import org.shujito.cartonbox.view.fragments.TagsSectionFragment;
 import org.shujito.cartonbox.view.fragments.LoginDialogFragment.LoginDialogCallback;
 import org.shujito.cartonbox.view.fragments.PostsSectionFragment;
 
@@ -46,7 +48,8 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 	MultiAutoCompleteTextView mMactvQueryPosts = null;
 	// tab titles
 	String[] tabs = null;
-	ImageboardPosts api = null;
+	ImageboardPosts postsApi = null;
+	ImageboardTags tagsApi = null;
 	
 	@Override
 	protected void onCreate(Bundle cirno)
@@ -108,17 +111,17 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 	{
 		super.onResume();
 		// get the imageboard
-		if(this.api == null)
-			this.api = CartonBox.getInstance().getImageboard();
+		if(this.postsApi == null)
+			this.postsApi = CartonBox.getInstance().getImageboard();
 		
-		if(this.api == null)
+		if(this.postsApi == null)
 		{
 			// close the activity
 			this.finish();
 		}
 		else
 		{
-			this.api.addOnErrorListener(this);
+			this.postsApi.addOnErrorListener(this);
 		}
 	}
 	
@@ -126,7 +129,7 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 	protected void onPause()
 	{
 		super.onPause();
-		this.api = null;
+		this.postsApi.removeOnErrorListener(this);
 		// TODO: save the query on the search box when changing to landscape/portrait
 	}
 	
@@ -134,6 +137,8 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 	protected void onDestroy()
 	{
 		super.onDestroy();
+		// get rid of this
+		this.postsApi = null;
 	}
 	
 	@Override
@@ -261,16 +266,16 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 			if(this.mMenuItemSearch != null)
 				this.mMenuItemSearch.collapseActionView();
 			
-			if(this.api != null)
+			if(this.postsApi != null)
 			{
-				this.api.clear();
+				this.postsApi.clear();
 				this.getSupportActionBar().setSubtitle(v.getText());
 				String[] tags = v.getText().toString().split("\\s+");
 				for(String tag : tags)
 				{
-					this.api.putTag(tag);
+					this.postsApi.putTag(tag);
 				}
-				this.api.request();
+				this.postsApi.request();
 			}
 			return true;
 		}
@@ -285,9 +290,14 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 		if(f instanceof PostsSectionFragment)
 		{
 			// this should fix the NPE caused when rotating the device
-			if(this.api == null)
-				this.api = CartonBox.getInstance().getImageboard();
-			return this.api;
+			if(this.postsApi == null)
+				this.postsApi = CartonBox.getInstance().getImageboard();
+			return this.postsApi;
+		}
+		
+		if(f instanceof TagsSectionFragment)
+		{
+			
 		}
 		
 		return null;
@@ -313,13 +323,13 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 	public void onFinishEditLogin(String username, String password)
 	{
 		//Toast.makeText(this, String.format("username:%s password:%s", username, password), Toast.LENGTH_SHORT).show();
-		if(this.api != null)
+		if(this.postsApi != null)
 		{
-			this.api.setUsername(username);
-			this.api.setPassword(password);
-			this.api.request();
+			this.postsApi.setUsername(username);
+			this.postsApi.setPassword(password);
+			this.postsApi.request();
 			
-			String prefsName = String.valueOf(this.api.getSite().getId());
+			String prefsName = String.valueOf(this.postsApi.getSite().getId());
 			
 			SharedPreferences sitePrefs = this.getSharedPreferences(prefsName, 0);
 			

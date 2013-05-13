@@ -20,22 +20,30 @@ public class CartonBox extends Application
 		super.onCreate();
 		instance = this;
 		
-		//Logger.i("CartonBox::onCreate", "checking if it has run before");
 		if(Preferences.isFirstRun())
 		{
-			Logger.i("CartonBox::onCreate", "first run");
 			Preferences.init();
 		}
 	}
 	
-	private ImageboardPosts imageboard = null;
+	private ImageboardPosts imageboardPosts = null;
+	private BitmapCache bitmapCache = null;
 	
 	public ImageboardPosts getImageboard()
 	{
-		return imageboard;
+		return this.imageboardPosts;
 	}
+	public BitmapCache getBitmapCache()
+	{
+		return this.bitmapCache;
+	}
+	
 	public void setImageboard(ImageboardPosts imageboard)
 	{
-		this.imageboard = imageboard;
+		this.imageboardPosts = imageboard;
+	}
+	public void setBitmapCache(BitmapCache bitmapCache)
+	{
+		this.bitmapCache = bitmapCache;
 	}
 }

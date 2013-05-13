@@ -68,15 +68,14 @@ public class PostViewActivity extends SherlockFragmentActivity
 	{
 		super.onPause();
 		this.getIntent().putExtra(EXTRA_POST_INDEX, this.mVpPosts.getCurrentItem());
+		// remove this listener
+		this.api.removeOnPostsFetchedListener(this.mPostsAdapter);
 	}
 	
 	@Override
 	protected void onDestroy()
 	{
 		super.onDestroy();
-		
-		// remove this listener
-		this.api.removeOnPostsFetchedListener(this.mPostsAdapter);
 		// use it or lose it...
 		this.api = null;
 	}

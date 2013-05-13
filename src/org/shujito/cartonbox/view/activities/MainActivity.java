@@ -97,25 +97,26 @@ public class MainActivity extends SherlockActivity implements OnItemClickListene
 		Site currentSite = this.sites.get(pos);
 		
 		// create api here
-		ImageboardPosts api = null; // new DanbooruImageBoard(currentSite);
+		ImageboardPosts postsApi = null; // new DanbooruImageBoard(currentSite);
+		
 		
 		if(currentSite.getType() == Site.Type.Danbooru1)
-			api = new DanbooruOldImageBoard(currentSite);
+			postsApi = new DanbooruOldImageBoard(currentSite);
 		else if(currentSite.getType() == Site.Type.Danbooru2)
 		{
 			SharedPreferences sitePrefs = this.getSharedPreferences(String.valueOf(currentSite.getId()), 0);
 			String username = sitePrefs.getString(Preferences.SITE_USERNAME, null);
 			String password = sitePrefs.getString(Preferences.SITE_PASSWORD, null);
 			
-			api = new DanbooruImageBoard(currentSite);
-			api.setUsername(username);
-			api.setPassword(password);
+			postsApi = new DanbooruImageBoard(currentSite);
+			postsApi.setUsername(username);
+			postsApi.setPassword(password);
 		}
 		
-		if(api != null)
+		if(postsApi != null)
 		{
 			// place it on the application
-			CartonBox.getInstance().setImageboard(api);
+			CartonBox.getInstance().setImageboard(postsApi);
 			
 			Intent ntn = new Intent(this, SiteIndexActivity.class);
 			ntn.putExtra(SiteIndexActivity.EXTRA_SECTIONPAGE, R.string.section_posts);
