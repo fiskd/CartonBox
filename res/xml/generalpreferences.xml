@@ -83,7 +83,8 @@
 			android:summary="@string/pref_ratings_todisplay_desc" >
 			<CheckBoxPreference
 				android:key="@string/pref_ratings_todisplay_safe_key"
-				android:title="@string/pref_ratings_todisplay_safe" />
+				android:title="@string/pref_ratings_todisplay_safe"
+				android:defaultValue="true" />
 			<CheckBoxPreference
 				android:key="@string/pref_ratings_todisplay_questionable_key"
 				android:title="@string/pref_ratings_todisplay_questionable" />

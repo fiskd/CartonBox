@@ -17,6 +17,7 @@ import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.CheckBoxPreference;
 import android.preference.EditTextPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
@@ -30,8 +31,11 @@ public class PreferencesFragment extends PreferenceFragment implements
 {
 	static String PREF_HEADER = "org.shujito.cartonbox.PREF_HEADER";
 	
-	EditTextPreference etpCacheSize = null;
+	//EditTextPreference etpCacheSize = null;
 	Preference prefClearCache = null;
+	CheckBoxPreference cbpRatingSafe = null;
+	CheckBoxPreference cbpRatingQuestionable = null;
+	CheckBoxPreference cbpRatingExplicit = null;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -60,6 +64,10 @@ public class PreferencesFragment extends PreferenceFragment implements
 		PreferenceCategory sitesCat = (PreferenceCategory)this.findPreference(this.getString(R.string.pref_sites));
 		sitesCat.addPreference(pref);
 		//sitesCat.setEnabled(false);
+		
+		this.cbpRatingSafe = (CheckBoxPreference)this.findPreference(this.getString(R.string.pref_ratings_todisplay_safe_key));
+		this.cbpRatingQuestionable = (CheckBoxPreference)this.findPreference(this.getString(R.string.pref_ratings_todisplay_questionable_key));
+		this.cbpRatingExplicit = (CheckBoxPreference)this.findPreference(this.getString(R.string.pref_ratings_todisplay_explicit_key));
 		
 		this.displayCacheSizeSummary();
 		this.displayClearCacheSummary();
@@ -91,15 +99,28 @@ public class PreferencesFragment extends PreferenceFragment implements
 				// display value here
 				this.displayCacheSizeSummary();
 			}
+			if(this.getString(R.string.pref_ratings_todisplay_safe_key).equals(key))
+			{
+				if(!this.cbpRatingQuestionable.isChecked() && !this.cbpRatingExplicit.isChecked())
+					this.cbpRatingSafe.setChecked(true);
+			}
+			if(this.getString(R.string.pref_ratings_todisplay_questionable_key).equals(key))
+			{
+				if(!this.cbpRatingSafe.isChecked() && !this.cbpRatingExplicit.isChecked())
+					this.cbpRatingQuestionable.setChecked(true);
+			}
+			if(this.getString(R.string.pref_ratings_todisplay_explicit_key).equals(key))
+			{
+				if(!this.cbpRatingSafe.isChecked() && !this.cbpRatingQuestionable.isChecked())
+					this.cbpRatingExplicit.setChecked(true);
+			}
 		}
 	}
 	
 	void displayCacheSizeSummary()
 	{
-		// better safe than NullPointerException
-		if(this.etpCacheSize == null)
-			this.etpCacheSize = (EditTextPreference)this.findPreference(this.getString(R.string.pref_general_cachesize_key));
-		this.etpCacheSize.setSummary(this.getString(R.string.pref_general_cachesize_desc, this.etpCacheSize.getText()));
+		EditTextPreference etpCacheSize = (EditTextPreference)this.findPreference(this.getString(R.string.pref_general_cachesize_key));
+		etpCacheSize.setSummary(this.getString(R.string.pref_general_cachesize_desc, etpCacheSize.getText()));
 	}
 	
 	void displayClearCacheSummary()
@@ -127,7 +148,7 @@ public class PreferencesFragment extends PreferenceFragment implements
 		
 		getDirSize.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 	}
-
+	
 	@Override
 	public boolean onPreferenceClick(Preference preference)
 	{

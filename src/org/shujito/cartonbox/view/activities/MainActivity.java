@@ -15,6 +15,7 @@ import org.shujito.cartonbox.view.adapters.SitesAdapter;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -108,9 +109,18 @@ public class MainActivity extends SherlockActivity implements OnItemClickListene
 			String username = sitePrefs.getString(Preferences.SITE_USERNAME, null);
 			String password = sitePrefs.getString(Preferences.SITE_PASSWORD, null);
 			
+			SharedPreferences globalPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+			boolean bShowSafe = globalPrefs.getBoolean(this.getString(R.string.pref_ratings_todisplay_safe_key), true);
+			boolean bShowQuestionable = globalPrefs.getBoolean(this.getString(R.string.pref_ratings_todisplay_questionable_key), false);
+			boolean bShowExplicit = globalPrefs.getBoolean(this.getString(R.string.pref_ratings_todisplay_explicit_key), false);
+			
 			postsApi = new DanbooruImageBoard(currentSite);
 			postsApi.setUsername(username);
 			postsApi.setPassword(password);
+			postsApi.setPostsPerPage(20);
+			postsApi.setShowSafePosts(bShowSafe);
+			postsApi.setShowQuestionablePosts(bShowQuestionable);
+			postsApi.setShowExplicitPosts(bShowExplicit);
 		}
 		
 		if(postsApi != null)

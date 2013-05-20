@@ -1,3 +1,4 @@
+.*/
 /bin/
 /gen/
 /proguard/
@@ -6,4 +7,6 @@
 .project
 Thumbs.db
 lint.xml
-.*/
+build.xml
+ant.properties
+local.properties
