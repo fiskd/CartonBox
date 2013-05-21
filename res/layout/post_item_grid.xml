@@ -19,7 +19,6 @@
 		android:id="@+id/post_item_grid_pbprogress"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:progress="77"
 		android:layout_gravity="center"
 		style="@android:style/Widget.ProgressBar.Horizontal" />
 	

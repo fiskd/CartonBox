@@ -6,7 +6,6 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-// TODO: generics
 public abstract class DB<T> extends SQLiteOpenHelper
 {
 	/* static */

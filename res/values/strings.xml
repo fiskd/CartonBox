@@ -3,6 +3,7 @@
 	<string name="app_name">CartonBox</string>
 	
 	<string name="login_details">Login details</string>
+	<string name="login_message">Certain booru boards require registration for outside use.</string>
 	
 	<string name="username">Name</string>
 	<string name="password">Password</string>

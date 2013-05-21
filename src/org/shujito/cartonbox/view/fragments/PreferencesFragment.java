@@ -65,6 +65,8 @@ public class PreferencesFragment extends PreferenceFragment implements
 		sitesCat.addPreference(pref);
 		//sitesCat.setEnabled(false);
 		
+		this.prefClearCache = (Preference)this.findPreference(this.getString(R.string.pref_general_clearcache_key));
+		
 		this.cbpRatingSafe = (CheckBoxPreference)this.findPreference(this.getString(R.string.pref_ratings_todisplay_safe_key));
 		this.cbpRatingQuestionable = (CheckBoxPreference)this.findPreference(this.getString(R.string.pref_ratings_todisplay_questionable_key));
 		this.cbpRatingExplicit = (CheckBoxPreference)this.findPreference(this.getString(R.string.pref_ratings_todisplay_explicit_key));
@@ -77,6 +79,7 @@ public class PreferencesFragment extends PreferenceFragment implements
 	public void onResume()
 	{
 		super.onResume();
+		this.prefClearCache.setOnPreferenceClickListener(this);
 		this.getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
 	}
 	
@@ -84,6 +87,7 @@ public class PreferencesFragment extends PreferenceFragment implements
 	public void onPause()
 	{
 		super.onPause();
+		this.prefClearCache.setOnPreferenceClickListener(null);
 		this.getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
 	}
 	
@@ -125,11 +129,7 @@ public class PreferencesFragment extends PreferenceFragment implements
 	
 	void displayClearCacheSummary()
 	{
-		if(this.prefClearCache == null)
-			this.prefClearCache = (Preference)this.findPreference(this.getString(R.string.pref_general_clearcache_key));
-		
 		this.prefClearCache.setSummary(this.getString(R.string.pref_general_clearcache_calc));
-		this.prefClearCache.setOnPreferenceClickListener(this);
 		
 		DirectorySizeTask getDirSize = new DirectorySizeTask(DiskCacheManager.getCacheDirectory(this.getActivity()));
 		getDirSize.setDirectorySizeCallback(new DirectorySizeCallback()

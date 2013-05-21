@@ -100,9 +100,7 @@ public class PostViewFragment extends Fragment implements OnDownloadProgressList
 		}
 		
 		this.tvmessage = (TextView)view.findViewById(R.id.post_item_pager_tvmessage);
-		this.tvmessage.setVisibility(View.GONE);
-		//this.tvmessage.setVisibility(View.VISIBLE);
-		//this.tvmessage.setText(String.format("w:%s h:%s", width, height));
+		this.tvmessage.setVisibility(View.VISIBLE);
 		
 		// build the view appearance here
 		this.ivpreview = (ImageView)view.findViewById(R.id.post_item_pager_ivsample);
@@ -147,7 +145,7 @@ public class PostViewFragment extends Fragment implements OnDownloadProgressList
 			{
 				if(b == null)
 				{
-					//tvmessage.setVisibility(View.VISIBLE);
+					tvmessage.setVisibility(View.VISIBLE);
 					tvmessage.setText(R.string.download_failed);
 				}
 				else
@@ -190,7 +188,7 @@ public class PostViewFragment extends Fragment implements OnDownloadProgressList
 				
 				if(b == null)
 				{
-					//tvmessage.setVisibility(View.VISIBLE);
+					tvmessage.setVisibility(View.VISIBLE);
 					tvmessage.setText(R.string.download_failed);
 				}
 				else

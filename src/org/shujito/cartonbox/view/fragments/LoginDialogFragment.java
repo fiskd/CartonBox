@@ -75,6 +75,7 @@ public class LoginDialogFragment extends DialogFragment
 		
 		return new AlertDialog.Builder(this.getActivity())
 			.setTitle(R.string.login_details)
+			.setMessage(R.string.login_message)
 			.setPositiveButton(android.R.string.ok, null)
 			.setNegativeButton(android.R.string.cancel, null)
 			.setView(v)

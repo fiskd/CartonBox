@@ -10,9 +10,9 @@ import org.shujito.cartonbox.controller.listeners.OnErrorListener;
 import org.shujito.cartonbox.controller.listeners.OnFragmentAttachedListener;
 import org.shujito.cartonbox.view.adapters.SiteIndexPageAdapter;
 import org.shujito.cartonbox.view.fragments.LoginDialogFragment;
-import org.shujito.cartonbox.view.fragments.TagsSectionFragment;
 import org.shujito.cartonbox.view.fragments.LoginDialogFragment.LoginDialogCallback;
 import org.shujito.cartonbox.view.fragments.PostsSectionFragment;
+import org.shujito.cartonbox.view.fragments.TagsSectionFragment;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -209,6 +209,7 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 			this.mMenuItemSearch.collapseActionView();
 		
 		// clear text
+		// TODO: save this search somewhere for later use (might fix task at line 133)
 		if(this.mMactvQueryPosts != null)
 			this.mMactvQueryPosts.setText(null);
 		

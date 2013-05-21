@@ -167,14 +167,6 @@ public class PostsSectionFragment extends Fragment implements
 	@Override
 	public void onScrollStateChanged(AbsListView v, int state)
 	{
-		String what = null;
-		if(state == AbsListView.OnScrollListener.SCROLL_STATE_FLING)
-			what = "fling";
-		if(state == AbsListView.OnScrollListener.SCROLL_STATE_IDLE)
-			what = "idle";
-		if(state == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL)
-			what = "touch";
-		Logger.i("PostsSectionFragment::onScrollStateChanged", what);
 	}
 	/* OnScrollListener methods */
 	
@@ -182,7 +174,8 @@ public class PostsSectionFragment extends Fragment implements
 	@Override
 	public void onItemClick(AdapterView<?> dad, View v, int pos, long id)
 	{
-		// TODO: add some nice-looking zoom animation
+		// TODO: add some nice-looking zoom animation (not trivial at all but it will look cute)
+		// aid: https://www.youtube.com/watch?v=XNF8pXr6whU
 		Intent ntn = new Intent(this.getActivity(), PostViewActivity.class);
 		ntn.putExtra(PostViewActivity.EXTRA_POST_INDEX, pos);
 		this.startActivity(ntn);

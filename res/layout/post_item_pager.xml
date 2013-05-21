@@ -29,6 +29,7 @@
 		android:textAppearance="@android:style/TextAppearance.Large" />
 	
 	<LinearLayout
+		android:id="@+id/post_item_pager_llstatusdots"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:layout_gravity="top"

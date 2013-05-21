@@ -20,6 +20,8 @@ public class CartonBox extends Application
 		super.onCreate();
 		instance = this;
 		
+		//Logger.i("CartonBox::onCreate", String.format("Total Memory: %s", Formatters.humanReadableByteCount(Runtime.getRuntime().maxMemory())));
+		
 		if(Preferences.isFirstRun())
 		{
 			Preferences.init();

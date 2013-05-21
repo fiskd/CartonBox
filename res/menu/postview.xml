@@ -16,7 +16,7 @@
 	<item
 		android:id="@+id/menu_postview_browser"
 		android:icon="@android:drawable/ic_menu_view"
-		android:showAsAction="never"
+		android:showAsAction="ifRoom"
 		android:title="@string/browser" />
 	
 	<item

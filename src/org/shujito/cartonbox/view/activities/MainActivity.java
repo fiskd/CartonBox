@@ -127,7 +127,6 @@ public class MainActivity extends SherlockActivity implements OnItemClickListene
 		{
 			// place it on the application
 			CartonBox.getInstance().setImageboard(postsApi);
-			
 			Intent ntn = new Intent(this, SiteIndexActivity.class);
 			ntn.putExtra(SiteIndexActivity.EXTRA_SECTIONPAGE, R.string.section_posts);
 			this.startActivity(ntn);

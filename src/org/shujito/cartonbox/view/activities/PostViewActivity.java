@@ -1,8 +1,10 @@
 package org.shujito.cartonbox.view.activities;
 
 import org.shujito.cartonbox.CartonBox;
+import org.shujito.cartonbox.Logger;
 import org.shujito.cartonbox.R;
 import org.shujito.cartonbox.controller.ImageboardPosts;
+import org.shujito.cartonbox.model.Post;
 import org.shujito.cartonbox.view.adapters.PostsPagerAdapter;
 
 import android.os.Bundle;
@@ -18,7 +20,7 @@ public class PostViewActivity extends SherlockFragmentActivity
 {
 	public static String EXTRA_POST_INDEX = "org.shujito.cartonbox.POST_INDEX";
 	
-	ImageboardPosts api = null;
+	ImageboardPosts postsApi = null;
 	
 	ViewPager mVpPosts = null;
 	PostsPagerAdapter mPostsAdapter = null;
@@ -42,22 +44,22 @@ public class PostViewActivity extends SherlockFragmentActivity
 		// enable this so we can navigate with the up button
 		this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		
-		// get the api from the context (handy, but hacky, should have made this a singleton?)
-		this.api = CartonBox.getInstance().getImageboard();
+		// get the api from the context (handy, but hacky, should have made this a singleton? nah...)
+		this.postsApi = CartonBox.getInstance().getImageboard();
 		// no api, no job
-		if(this.api == null)
+		if(this.postsApi == null)
 			this.finish();
-		// hey listen! (the adapter will listen when the api fetches posts)
-		this.api.addOnPostsFetchedListener(this.mPostsAdapter);
 	}
 	
 	@Override
 	protected void onResume()
 	{
 		super.onResume();
+		// hey listen! (the adapter will listen when the api fetches posts)
+		this.postsApi.addOnPostsFetchedListener(this.mPostsAdapter);
 		// XXX: hacky...
 		if(this.mPostsAdapter != null)
-			this.mPostsAdapter.onPostsFetched(this.api);
+			this.mPostsAdapter.onPostsFetched(this.postsApi);
 		
 		int page = this.getIntent().getIntExtra(EXTRA_POST_INDEX, 0);
 		this.mVpPosts.setCurrentItem(page);
@@ -69,7 +71,7 @@ public class PostViewActivity extends SherlockFragmentActivity
 		super.onPause();
 		this.getIntent().putExtra(EXTRA_POST_INDEX, this.mVpPosts.getCurrentItem());
 		// remove this listener
-		this.api.removeOnPostsFetchedListener(this.mPostsAdapter);
+		this.postsApi.removeOnPostsFetchedListener(this.mPostsAdapter);
 	}
 	
 	@Override
@@ -77,7 +79,7 @@ public class PostViewActivity extends SherlockFragmentActivity
 	{
 		super.onDestroy();
 		// use it or lose it...
-		this.api = null;
+		this.postsApi = null;
 	}
 	
 	@Override
@@ -89,7 +91,20 @@ public class PostViewActivity extends SherlockFragmentActivity
 				this.finish();
 				// handle the event
 				return true;
+			case R.id.menu_postview_save:
+				return true;
+			case R.id.menu_postview_preferences:
+				return true;
+			case R.id.menu_postview_browser:
+				return true;
+			case R.id.menu_postview_viewparent:
+				return true;
+			case R.id.menu_postview_viewchildren:
+				return true;
+			case R.id.menu_postview_viewpools:
+				return true;
 		}
+		
 		
 		return super.onOptionsItemSelected(item);
 	}
@@ -104,7 +119,7 @@ public class PostViewActivity extends SherlockFragmentActivity
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu)
 	{
-		// DEMO: hide or show optionsmenu items
+		// this works, there be happiness
 		menu.findItem(R.id.menu_postview_viewchildren).setVisible(this.bChildren);
 		menu.findItem(R.id.menu_postview_viewparent).setVisible(this.bParent);
 		menu.findItem(R.id.menu_postview_viewpools).setVisible(this.bPools);
@@ -125,11 +140,25 @@ public class PostViewActivity extends SherlockFragmentActivity
 	@Override
 	public void onPageSelected(int pos)
 	{
-		// DEMO: hide or show optionsmenu items
-		//this.bChildren = (pos % 2) == 0;
-		//this.bParent = (pos % 3) == 0;
-		//this.bPools = (pos % 4) == 0;
+		// reverse index (how could I forget about this)
+		int size = this.postsApi.getPosts().size();
+		int index = size - pos - 1;
+		int key = this.postsApi.getPosts().keyAt(index);
+		Post one = this.postsApi.getPosts().get(key);
+		Logger.i("PostViewActivity::onPageSelected", String.valueOf(one.getId()));
+		// now this works, I'm happy again (:
+		this.bChildren = one.isHasChildren();
+		this.bParent = one.getParentId() > 0;
 		
+		// hey
+		Logger.i("PostViewActivity::onPageSelected", String.valueOf(pos));
+		Logger.i("PostViewActivity::onPageSelected", String.valueOf(size));
+		
+		// oh hey it became natural! and I didn't had to do much!
+		if(pos + 1 >= size)
+		{
+			this.postsApi.request();
+		}
 	}
 	/* OnPageChangeListener methods */
 }
