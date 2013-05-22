@@ -1,8 +1,8 @@
 package org.shujito.cartonbox.view.fragments;
 
-import org.shujito.cartonbox.Formatters;
 import org.shujito.cartonbox.Logger;
 import org.shujito.cartonbox.R;
+import org.shujito.cartonbox.utils.Formatters;
 import org.shujito.cartonbox.utils.io.ClearDirectoryTask;
 import org.shujito.cartonbox.utils.io.DirectorySizeTask;
 import org.shujito.cartonbox.utils.io.DiskCacheManager;
@@ -137,6 +137,8 @@ public class PreferencesFragment extends PreferenceFragment implements
 			@Override
 			public void directorySize(long sizeInBytes)
 			{
+				Logger.i("PreferencesFragment::displayClearCacheSummary, DirectorySizeCallback::directorySize", Formatters.humanReadableByteCount(sizeInBytes));
+				
 				String calculatedSize = Formatters.humanReadableByteCount(sizeInBytes, true);
 				if(sizeInBytes > 0)
 					prefClearCache.setSummary(getString(R.string.pref_general_clearcache_desc, calculatedSize));

@@ -1,6 +1,8 @@
 package org.shujito.cartonbox;
 
 import org.shujito.cartonbox.controller.ImageboardPosts;
+import org.shujito.cartonbox.utils.BitmapCache;
+import org.shujito.cartonbox.utils.Preferences;
 
 import android.app.Application;
 

@@ -24,7 +24,14 @@ public class GeneralPreferencesActivity extends SherlockPreferenceActivity
 		}
 		else
 		{
-			this.getFragmentManager().beginTransaction().add(android.R.id.content, new PreferencesFragment()).commit();
+			this.getFragmentManager().beginTransaction().replace(android.R.id.content, new PreferencesFragment()).commit();
 		}
+	}
+	
+	@Override
+	protected void onDestroy()
+	{
+		super.onDestroy();
+		
 	}
 }

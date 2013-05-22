@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.shujito.cartonbox.Logger;
-import org.shujito.cartonbox.URLEncoder;
 import org.shujito.cartonbox.controller.listeners.OnAccessDeniedListener;
 import org.shujito.cartonbox.controller.listeners.OnErrorListener;
 import org.shujito.cartonbox.controller.listeners.OnInternalServerErrorListener;
@@ -17,6 +16,7 @@ import org.shujito.cartonbox.model.Post;
 import org.shujito.cartonbox.model.Post.Rating;
 import org.shujito.cartonbox.model.Response;
 import org.shujito.cartonbox.model.Site;
+import org.shujito.cartonbox.utils.URLEncoder;
 
 import android.util.SparseArray;
 
@@ -309,6 +309,7 @@ public abstract class ImageboardPosts extends Imageboard implements
 			shouldAdd = (this.showSafePosts && p.getRating() == Rating.Safe) || shouldAdd;
 			shouldAdd = (this.showQuestionablePosts && p.getRating() == Rating.Questionable) || shouldAdd;
 			shouldAdd = (this.showExplicitPosts && p.getRating() == Rating.Explicit) || shouldAdd;
+			shouldAdd = !p.getFileExt().equals("swf") && shouldAdd;
 			
 			if(shouldAdd)
 			{

@@ -99,7 +99,10 @@ public abstract class Downloader<T> extends AsyncTask<Void, Integer, T>
 			this.onRequestFailed(this.code, result);
 			if(this.onErrorListener != null)
 				this.onErrorListener.onError(this.code, this.message);
-			Logger.e("Downloader::onPostExecute", this.message);
+			if(this.message != null)
+				Logger.e("Downloader::onPostExecute", this.message);
+			else
+				Logger.e("Downloader::onPostExecute", "something wrong happened");
 		}
 		else if(this.code >= HttpURLConnection.HTTP_OK)
 		{

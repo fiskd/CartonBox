@@ -1,4 +1,4 @@
-package org.shujito.cartonbox;
+package org.shujito.cartonbox.utils;
 
 import java.util.Locale;
 

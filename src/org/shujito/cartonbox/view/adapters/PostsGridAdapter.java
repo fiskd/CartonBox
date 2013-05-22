@@ -1,6 +1,5 @@
 package org.shujito.cartonbox.view.adapters;
 
-import org.shujito.cartonbox.BitmapCache;
 import org.shujito.cartonbox.R;
 import org.shujito.cartonbox.controller.ImageDownloader;
 import org.shujito.cartonbox.controller.ImageboardPosts;
@@ -8,6 +7,7 @@ import org.shujito.cartonbox.controller.listeners.OnDownloadProgressListener;
 import org.shujito.cartonbox.controller.listeners.OnImageFetchedListener;
 import org.shujito.cartonbox.controller.listeners.OnPostsFetchedListener;
 import org.shujito.cartonbox.model.Post;
+import org.shujito.cartonbox.utils.BitmapCache;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -173,6 +173,8 @@ public class PostsGridAdapter extends BaseAdapter implements OnPostsFetchedListe
 						tvloading.setText("whoops");
 						//tvloading.setText(null);
 						ivpreview.setImageBitmap(cachedBitmap);
+						// XXX: let's hack here...
+						//notifyDataSetChanged();
 					}
 					else
 					{

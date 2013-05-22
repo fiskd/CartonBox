@@ -3,13 +3,13 @@ package org.shujito.cartonbox.view.activities;
 import java.util.List;
 
 import org.shujito.cartonbox.CartonBox;
-import org.shujito.cartonbox.Preferences;
 import org.shujito.cartonbox.R;
 import org.shujito.cartonbox.controller.DanbooruImageBoard;
 import org.shujito.cartonbox.controller.DanbooruOldImageBoard;
 import org.shujito.cartonbox.controller.ImageboardPosts;
 import org.shujito.cartonbox.model.Site;
 import org.shujito.cartonbox.model.db.SitesDB;
+import org.shujito.cartonbox.utils.Preferences;
 import org.shujito.cartonbox.view.adapters.SitesAdapter;
 
 import android.content.Intent;
