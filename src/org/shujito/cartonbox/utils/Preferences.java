@@ -2,7 +2,6 @@ package org.shujito.cartonbox.utils;
 
 import org.shujito.cartonbox.CartonBox;
 import org.shujito.cartonbox.R;
-import org.shujito.cartonbox.R.drawable;
 import org.shujito.cartonbox.model.Site;
 import org.shujito.cartonbox.model.Site.Type;
 import org.shujito.cartonbox.model.db.SitesDB;

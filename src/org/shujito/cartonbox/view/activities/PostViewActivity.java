@@ -95,6 +95,8 @@ public class PostViewActivity extends SherlockFragmentActivity
 				return true;
 			case R.id.menu_postview_preferences:
 				return true;
+			case R.id.menu_postview_details:
+				return true;
 			case R.id.menu_postview_browser:
 				return true;
 			case R.id.menu_postview_viewparent:
@@ -112,6 +114,9 @@ public class PostViewActivity extends SherlockFragmentActivity
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu)
 	{
+		// XXX, woes!: for whatever reason, when changing orientation from
+		// portrait to landscape, the context menu entries disappear
+		// (parent, child, etc)
 		this.getSupportMenuInflater().inflate(R.menu.postview, menu);
 		return true;
 	}

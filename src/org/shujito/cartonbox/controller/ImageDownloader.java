@@ -202,9 +202,13 @@ public class ImageDownloader extends AsyncTask<Void, Float, Bitmap>
 			}
 			finally
 			{
-				output.flush();
-				output.close();
-				input.close();
+				if(output != null)
+				{
+					output.flush();
+					output.close();
+				}
+				if(input != null)
+					input.close();
 			}
 		}
 		catch(OutOfMemoryError ex)

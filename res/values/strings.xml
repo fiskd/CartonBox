@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<string name="app_name">CartonBox</string>
+	<string name="ziv">Zoom imageView</string>
 	
 	<string name="login_details">Login details</string>
 	<string name="login_message">Certain booru boards require registration for outside use.</string>
@@ -14,6 +15,7 @@
 	
 	<string name="save">Save</string>
 	<string name="browser">Open in browser</string>
+	<string name="details">Details</string>
 	<string name="viewparent">Parent post</string>
 	<string name="viewchildren">Child posts</string>
 	<string name="viewpools">Pools containig this post</string>

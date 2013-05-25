@@ -174,7 +174,7 @@ public class PostsGridAdapter extends BaseAdapter implements OnPostsFetchedListe
 						//tvloading.setText(null);
 						ivpreview.setImageBitmap(cachedBitmap);
 						// XXX: let's hack here...
-						//notifyDataSetChanged();
+						notifyDataSetChanged();
 					}
 					else
 					{

@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<string-array name="danbooru_sections">
+		<item>@string/section_tags</item>
 		<item>@string/section_posts</item>
+		<!--
 		<item>@string/section_pools</item>
 		<item>@string/section_comments</item>
 		<item>@string/section_notes</item>
-		<item>@string/section_tags</item>
 		<item>@string/section_artists</item>
+		-->
 	</string-array>
 </resources>

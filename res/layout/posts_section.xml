@@ -3,8 +3,7 @@
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	android:orientation="vertical"
-	tools:context=".view.fragments.PostsGridFragment" >
+	tools:context=".view.fragments.PostsSectionFragment" >
 	
 	<GridView
 		android:id="@+id/posts_gvposts"
