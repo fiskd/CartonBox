@@ -1,10 +1,10 @@
 package org.shujito.cartonbox.view.fragments;
 
 import org.shujito.cartonbox.R;
-import org.shujito.cartonbox.controller.ImageDownloader;
 import org.shujito.cartonbox.controller.listeners.OnDownloadProgressListener;
 import org.shujito.cartonbox.controller.listeners.OnImageFetchedListener;
 import org.shujito.cartonbox.model.Post;
+import org.shujito.cartonbox.utils.ImageDownloader;
 
 import android.annotation.TargetApi;
 import android.graphics.Bitmap;

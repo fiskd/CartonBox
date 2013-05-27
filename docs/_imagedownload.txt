@@ -1,0 +1,90 @@
+// file
+File file = new File(this.context.getCacheDir(), filename);
+// source stream
+InputStream input = null;
+// file or stream size
+int size = 0;
+
+if(file.exists())
+{
+	//bmp = BitmapFactory.decodeStream(new FileInputStream(file));
+	// there's file, open it
+	input = new FileInputStream(file);
+	// get file size
+	size = (int)file.length();
+}
+else
+{
+	// have an url
+	URL url = new URL(this.url);
+	// open it
+	HttpURLConnection httpurlconn = (HttpURLConnection)url.openConnection();
+	// behoimi has hotlinking protection, bypass it with a referer
+	httpurlconn.setRequestProperty("Referer", this.url);
+	// connect now
+	httpurlconn.connect();
+	// get stream size
+	size = httpurlconn.getContentLength();
+	// put the network stream into a buffer
+	input = new BufferedInputStream(httpurlconn.getInputStream());
+}
+
+// this stream runs on memory, it will hold the file or downloaded file
+// holy fuck, this is so wrong... what was I thinking??
+//ByteArrayOutputStream output = null;
+OutputStream output = null;
+
+try
+{
+	// initialize it with the stream size
+	/*
+	if(size > 0)
+		output = new ByteArrayOutputStream(size);
+	else
+		output = new ByteArrayOutputStream();
+	//*/
+	
+	output = new FileOutputStream(File.createTempFile(null, null, this.context.getCacheDir()));
+	
+	byte[] data = new byte[1024];
+	int total = 0;
+	int bytesRead;
+	// start reading the stream
+	while((bytesRead = input.read(data)) > 0)
+	{
+		if(this.isCancelled())
+		{
+			// PANIC!
+			return null;
+		}
+		total += bytesRead;
+		// progress available only when streamsize is available
+		if(size > 0)
+			this.publishProgress( (float)total / size );
+		output.write(data, 0, bytesRead);
+	}
+	
+	// put image bytes here
+	//byte[] bitmapData = output.toByteArray();
+	//bmp = ImageUtils.decodeSampledBitmap(bitmapData, this.width, this.height);
+	
+	InputStream imageStream = null;
+	bmp = ImageUtils.decodeSampledBitmap(imageStream, this.width, this.height);
+	
+	if(!file.exists() && bmp != null) // save!
+	{
+		FileOutputStream fos = new FileOutputStream(file);
+		bmp.compress(CompressFormat.PNG, 0, fos);
+		fos.close();
+	}
+}
+finally
+{
+	if(output != null)
+	{
+		output.flush();
+		output.close();
+	}
+	if(input != null)
+		input.close();
+}

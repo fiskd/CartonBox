@@ -1,22 +1,23 @@
-package org.shujito.cartonbox.controller;
+package org.shujito.cartonbox.utils;
 
 import java.io.BufferedInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FilterInputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
 import org.shujito.cartonbox.Logger;
 import org.shujito.cartonbox.controller.listeners.OnDownloadProgressListener;
 import org.shujito.cartonbox.controller.listeners.OnImageFetchedListener;
-import org.shujito.cartonbox.utils.ImageUtils;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.Bitmap.CompressFormat;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 
 public class ImageDownloader extends AsyncTask<Void, Float, Bitmap>
@@ -129,23 +130,19 @@ public class ImageDownloader extends AsyncTask<Void, Float, Bitmap>
 		
 		try
 		{
-			// file
+			// file to open or save
 			File file = new File(this.context.getCacheDir(), filename);
-			// source stream
-			InputStream input = null;
-			// file or stream size
-			int size = 0;
-			
 			if(file.exists())
 			{
-				//bmp = BitmapFactory.decodeStream(new FileInputStream(file));
-				// there's file, open it
-				input = new FileInputStream(file);
-				// get file size
-				size = (int)file.length();
+				// there's file, load and that's all for today
+				InputStream input = new _FilterInputStream(new FileInputStream(file));
+				bmp = BitmapFactory.decodeStream(input);
+				//input.close();
 			}
 			else
 			{
+				int size = 0;
+				// no file, download and then save
 				// have an url
 				URL url = new URL(this.url);
 				// open it
@@ -157,58 +154,47 @@ public class ImageDownloader extends AsyncTask<Void, Float, Bitmap>
 				// get stream size
 				size = httpurlconn.getContentLength();
 				// put the network stream into a buffer
-				input = new BufferedInputStream(httpurlconn.getInputStream());
-			}
-			
-			// this stream runs on memory, it will hold the file or downloaded file
-			ByteArrayOutputStream output = null;
-			
-			try
-			{
-				// initialize it with the stream size
-				if(size > 0)
-					output = new ByteArrayOutputStream(size);
-				else
-					output = new ByteArrayOutputStream();
+				InputStream input = new BufferedInputStream(httpurlconn.getInputStream());
 				
-				byte[] data = new byte[1024];
-				int total = 0;
-				int bytesRead;
-				// start reading the stream
-				while((bytesRead = input.read(data)) > 0)
+				// generate random filename
+				//SecureRandom serandom = new SecureRandom();
+				//String randomFilename = new BigInteger(64, serandom).toString();
+				// and a temp file
+				//File tempFile = File.createTempFile(randomFilename, null, this.context.getCacheDir());
+				OutputStream output = null;
+				try
 				{
-					if(this.isCancelled())
+					// create stream from file
+					output = new FileOutputStream(file);
+					// stuff we need for the buffer
+					byte[] data = new byte[8192];
+					int total = 0;
+					int bytesRead;
+					// start reading the stream
+					while((bytesRead = input.read(data)) > 0)
 					{
-						// PANIC!
-						return null;
+						if(this.isCancelled())
+						{
+							// PANIC!
+							return null;
+						}
+						total += bytesRead;
+						// progress available only when streamsize is available
+						if(size > 0)
+							this.publishProgress( (float)total / size );
+						// writting...
+						output.write(data, 0, bytesRead);
 					}
-					total += bytesRead;
-					// progress available only when streamsize is available
-					if(size > 0)
-						this.publishProgress( (float)total / size );
-					output.write(data, 0, bytesRead);
+				}
+				finally
+				{
+					if(output != null)
+						output.close();
 				}
 				
-				// put image bytes here
-				byte[] bitmapData = output.toByteArray();
-				bmp = ImageUtils.decodeSampledBitmap(bitmapData, this.width, this.height);
-				
-				if(!file.exists() && bmp != null) // save!
-				{
-					FileOutputStream fos = new FileOutputStream(file);
-					bmp.compress(CompressFormat.PNG, 0, fos);
-					fos.close();
-				}
-			}
-			finally
-			{
-				if(output != null)
-				{
-					output.flush();
-					output.close();
-				}
-				if(input != null)
-					input.close();
+				InputStream imageStream = new _FilterInputStream(new FileInputStream(file));
+				bmp = BitmapFactory.decodeStream(imageStream);
+				//imageStream.close();
 			}
 		}
 		catch(OutOfMemoryError ex)
@@ -219,11 +205,10 @@ public class ImageDownloader extends AsyncTask<Void, Float, Bitmap>
 		catch(Exception ex)
 		{
 			if(ex != null && ex.getMessage() != null)
-				Logger.e("ImageDownloader::doInBackground", ex.getMessage());
+				Logger.e("ImageDownloader::doInBackground", ex.getMessage(), ex);
 			else
 				Logger.e("ImageDownloader::doInBackground", "whatever did happen", ex);
 		}
-		
 		
 		return bmp;
 	}
@@ -248,5 +233,34 @@ public class ImageDownloader extends AsyncTask<Void, Float, Bitmap>
 			this.onImageFetchedListener.onImageFetched(result);
 		
 		//Logger.i("ImageDownloader::onPostExecute", String.format("Download for %s completed", this.url));
+	}
+	
+	// why: http://code.google.com/p/android/issues/detail?id=6066
+	class _FilterInputStream extends FilterInputStream
+	{
+		public _FilterInputStream(InputStream is)
+		{
+			super(is);
+		}
+		
+		@Override
+		public long skip(long n) throws IOException
+		{
+			long totalBytesSkipped = 0L;
+			while (totalBytesSkipped < n)
+			{
+				long bytesSkipped = in.skip(n - totalBytesSkipped);
+				if (bytesSkipped == 0L)
+				{
+					int _byte = read();
+					if (_byte < 0)
+						break;  // we reached EOF
+					else
+						bytesSkipped = 1; // we read one byte
+				}
+				totalBytesSkipped += bytesSkipped;
+			}
+			return totalBytesSkipped;
+		}
 	}
 }

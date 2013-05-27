@@ -309,7 +309,7 @@ public abstract class ImageboardPosts extends Imageboard implements
 			shouldAdd = (this.showSafePosts && p.getRating() == Rating.Safe) || shouldAdd;
 			shouldAdd = (this.showQuestionablePosts && p.getRating() == Rating.Questionable) || shouldAdd;
 			shouldAdd = (this.showExplicitPosts && p.getRating() == Rating.Explicit) || shouldAdd;
-			shouldAdd = !"swf".equals(p.getFileExt()); //!p.getFileExt().equals("swf") && shouldAdd;
+			shouldAdd = !"swf".equals(p.getFileExt()) && shouldAdd; //!p.getFileExt().equals("swf") && shouldAdd;
 			
 			if(shouldAdd)
 			{

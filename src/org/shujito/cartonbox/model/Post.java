@@ -54,10 +54,6 @@ public class Post implements Serializable
 	// useful when the post lacks on information
 	private Site site;
 	
-	public Post()
-	{
-	}
-	
 	/* getters */
 	public int getId()
 	{ return this.id; }
