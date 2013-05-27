@@ -9,7 +9,6 @@ import org.shujito.cartonbox.utils.ImageDownloader;
 import android.annotation.TargetApi;
 import android.graphics.Bitmap;
 import android.graphics.Point;
-import android.os.AsyncTask.Status;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -22,7 +21,8 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-public class PostViewFragment extends Fragment implements OnDownloadProgressListener
+public class PostViewFragment extends Fragment
+	implements OnDownloadProgressListener
 {
 	/* static */
 	static String EXTRA_POST = "org.shujito.cartonbox.POST";
@@ -136,8 +136,8 @@ public class PostViewFragment extends Fragment implements OnDownloadProgressList
 		
 		this.thumbDownloader = new ImageDownloader(this.getActivity(), this.post.getPreviewUrl());
 		this.thumbDownloader.setOnDownloadProgressListener(this);
-		this.thumbDownloader.setWidth(150);
-		this.thumbDownloader.setHeight(150);
+		this.thumbDownloader.setWidth(width);
+		this.thumbDownloader.setHeight(height);
 		this.thumbDownloader.setOnImageFetchedListener(new OnImageFetchedListener()
 		{
 			@Override
@@ -155,10 +155,12 @@ public class PostViewFragment extends Fragment implements OnDownloadProgressList
 					// start downloading sample
 					if(sampleDownloader != null && !sampleDownloader.isAlreadyExecuted())
 					{
+						//*
 						if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
 							sampleDownloader.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 						else
 							sampleDownloader.execute();
+						//*/
 						
 						//sampleDownloader.execute();
 						//ConcurrentTask.execute(sampleDownloader);
@@ -177,8 +179,8 @@ public class PostViewFragment extends Fragment implements OnDownloadProgressList
 		
 		this.sampleDownloader = new ImageDownloader(this.getActivity(), this.post.getSampleUrl());
 		this.sampleDownloader.setOnDownloadProgressListener(this);
-		this.sampleDownloader.setWidth(width);
-		this.sampleDownloader.setHeight(height);
+		this.sampleDownloader.setWidth(300);
+		this.sampleDownloader.setHeight(300);
 		this.sampleDownloader.setOnImageFetchedListener(new OnImageFetchedListener()
 		{
 			@Override
@@ -212,6 +214,7 @@ public class PostViewFragment extends Fragment implements OnDownloadProgressList
 	{
 		super.onDestroy();
 		// why, ask your mother
+		/*
 		if(this.thumbDownloader != null)
 			if(this.thumbDownloader.getStatus() == Status.RUNNING)
 				this.thumbDownloader.cancel(true);
@@ -221,6 +224,7 @@ public class PostViewFragment extends Fragment implements OnDownloadProgressList
 			if(this.sampleDownloader.getStatus() == Status.RUNNING)
 				this.sampleDownloader.cancel(true);
 		this.sampleDownloader = null;
+		//*/
 	}
 	
 	/* meth */

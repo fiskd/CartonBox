@@ -2,10 +2,7 @@ package org.shujito.cartonbox.utils;
 
 import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FilterInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
@@ -17,7 +14,6 @@ import org.shujito.cartonbox.controller.listeners.OnImageFetchedListener;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 
 public class ImageDownloader extends AsyncTask<Void, Float, Bitmap>
@@ -135,8 +131,9 @@ public class ImageDownloader extends AsyncTask<Void, Float, Bitmap>
 			if(file.exists())
 			{
 				// there's file, load and that's all for today
-				InputStream input = new _FilterInputStream(new FileInputStream(file));
-				bmp = BitmapFactory.decodeStream(input);
+				//InputStream input = new FileInputStream(file);
+				//bmp = BitmapFactory.decodeStream(input);
+				bmp = ImageUtils.decodeSampledBitmap(file, this.width, this.height);
 				//input.close();
 			}
 			else
@@ -192,8 +189,9 @@ public class ImageDownloader extends AsyncTask<Void, Float, Bitmap>
 						output.close();
 				}
 				
-				InputStream imageStream = new _FilterInputStream(new FileInputStream(file));
-				bmp = BitmapFactory.decodeStream(imageStream);
+				//InputStream imageStream = new FileInputStream(file);
+				//bmp = BitmapFactory.decodeStream(imageStream);
+				bmp = ImageUtils.decodeSampledBitmap(file, this.width, this.height);
 				//imageStream.close();
 			}
 		}
@@ -233,34 +231,5 @@ public class ImageDownloader extends AsyncTask<Void, Float, Bitmap>
 			this.onImageFetchedListener.onImageFetched(result);
 		
 		//Logger.i("ImageDownloader::onPostExecute", String.format("Download for %s completed", this.url));
-	}
-	
-	// why: http://code.google.com/p/android/issues/detail?id=6066
-	class _FilterInputStream extends FilterInputStream
-	{
-		public _FilterInputStream(InputStream is)
-		{
-			super(is);
-		}
-		
-		@Override
-		public long skip(long n) throws IOException
-		{
-			long totalBytesSkipped = 0L;
-			while (totalBytesSkipped < n)
-			{
-				long bytesSkipped = in.skip(n - totalBytesSkipped);
-				if (bytesSkipped == 0L)
-				{
-					int _byte = read();
-					if (_byte < 0)
-						break;  // we reached EOF
-					else
-						bytesSkipped = 1; // we read one byte
-				}
-				totalBytesSkipped += bytesSkipped;
-			}
-			return totalBytesSkipped;
-		}
 	}
 }

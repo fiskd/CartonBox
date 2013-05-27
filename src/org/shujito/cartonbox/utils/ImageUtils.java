@@ -1,5 +1,7 @@
 package org.shujito.cartonbox.utils;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
 
 import android.graphics.Bitmap;
@@ -51,6 +53,19 @@ public class ImageUtils
 		BitmapFactory.decodeStream(imageStream, null, options);
 		options.inSampleSize = calculateSampleSize(options, width, height);
 		options.inJustDecodeBounds = false;
-		return BitmapFactory.decodeStream(imageStream, null, options);
+		Bitmap bmp = BitmapFactory.decodeStream(imageStream, null, options);
+		return bmp;
+	}
+	
+	public static Bitmap decodeSampledBitmap(File file, int width, int height) throws Exception
+	{
+		// decode with inJustDecodeBounds=true to check dimensions
+		final BitmapFactory.Options options = new BitmapFactory.Options();
+		options.inJustDecodeBounds = true;
+		BitmapFactory.decodeStream(new FileInputStream(file), null, options);
+		options.inSampleSize = calculateSampleSize(options, width, height);
+		options.inJustDecodeBounds = false;
+		Bitmap bmp = BitmapFactory.decodeStream(new FileInputStream(file), null, options);
+		return bmp;
 	}
 }
