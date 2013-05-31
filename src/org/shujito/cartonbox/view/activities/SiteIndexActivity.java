@@ -112,7 +112,7 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 		super.onResume();
 		// get the imageboard
 		if(this.postsApi == null)
-			this.postsApi = CartonBox.getInstance().getImageboard();
+			this.postsApi = CartonBox.getInstance().getApis().getImageboardPosts();
 		
 		if(this.postsApi == null)
 		{
@@ -225,6 +225,7 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 	@Override
 	public void onTabReselected(Tab tab, FragmentTransaction ft)
 	{
+		// this might not be used
 	}
 	/* TabListener methods */
 	
@@ -292,13 +293,12 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 		{
 			// this should fix the NPE caused when rotating the device
 			if(this.postsApi == null)
-				this.postsApi = CartonBox.getInstance().getImageboard();
+				this.postsApi = CartonBox.getInstance().getApis().getImageboardPosts();
 			return this.postsApi;
 		}
 		
 		if(f instanceof TagsSectionFragment)
 		{
-			
 		}
 		
 		return null;

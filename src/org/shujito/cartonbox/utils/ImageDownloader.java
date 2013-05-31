@@ -15,6 +15,7 @@ import org.shujito.cartonbox.controller.listeners.OnImageFetchedListener;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
+import android.os.Environment;
 
 public class ImageDownloader extends AsyncTask<Void, Float, Bitmap>
 {
@@ -126,8 +127,16 @@ public class ImageDownloader extends AsyncTask<Void, Float, Bitmap>
 		
 		try
 		{
+			// cache dir to write into
+			File cacheDir = this.context.getCacheDir();
+			if(this.cachingToExternal)
+			{
+				// should be rw
+				if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED))
+					cacheDir = this.context.getExternalCacheDir();
+			}
 			// file to open or save
-			File file = new File(this.context.getCacheDir(), filename);
+			File file = new File(cacheDir, filename);
 			if(file.exists())
 			{
 				// there's file, load and that's all for today
@@ -136,7 +145,8 @@ public class ImageDownloader extends AsyncTask<Void, Float, Bitmap>
 				bmp = ImageUtils.decodeSampledBitmap(file, this.width, this.height);
 				//input.close();
 			}
-			else
+			
+			if(bmp == null)
 			{
 				int size = 0;
 				// no file, download and then save
@@ -186,7 +196,10 @@ public class ImageDownloader extends AsyncTask<Void, Float, Bitmap>
 				finally
 				{
 					if(output != null)
+					{
+						output.flush();
 						output.close();
+					}
 				}
 				
 				//InputStream imageStream = new FileInputStream(file);

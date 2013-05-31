@@ -30,9 +30,9 @@ public class PostsPagerAdapter extends FragmentPagerAdapter implements OnPostsFe
 		// get a key from the index
 		int key = this.posts.keyAt(index);
 		// and a post from the key, that's how SparseArray works
-		Post one = this.posts.get(key);
+		Post post = this.posts.get(key);
 		// create the fragment here
-		fragment = PostViewFragment.create(one);
+		fragment = PostViewFragment.create(post);
 		
 		return fragment;
 	}

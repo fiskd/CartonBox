@@ -10,8 +10,12 @@ import org.shujito.cartonbox.controller.listeners.OnPostsRequestListener;
 import org.shujito.cartonbox.view.activities.PostViewActivity;
 import org.shujito.cartonbox.view.adapters.PostsGridAdapter;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -172,13 +176,39 @@ public class PostsSectionFragment extends Fragment implements
 	
 	/* OnClickListener methods */
 	@Override
+	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 	public void onItemClick(AdapterView<?> dad, View v, int pos, long id)
 	{
 		// TODO: add some nice-looking zoom animation (not trivial at all but it will look cute)
 		// aid: https://www.youtube.com/watch?v=XNF8pXr6whU
 		Intent ntn = new Intent(this.getActivity(), PostViewActivity.class);
 		ntn.putExtra(PostViewActivity.EXTRA_POST_INDEX, pos);
-		this.startActivity(ntn);
+		
+		Bundle b = null;
+		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
+		{
+			Bitmap thumb = (Bitmap)this.mPostsAdapter.getItem(pos);
+			
+			if(thumb != null)
+			{
+				// do the fun thing
+				int offsetx = (v.getWidth() - thumb.getWidth()) / 2;
+				int offsety = (v.getHeight() - thumb.getHeight()) / 2;
+				
+				b = ActivityOptions.makeThumbnailScaleUpAnimation(v, thumb, offsetx, offsety).toBundle();
+			}
+			else
+			{
+				// do the other fun thing
+				b = ActivityOptions.makeScaleUpAnimation(v, 0, 0, v.getWidth(), v.getHeight()).toBundle();
+			}
+			this.getActivity().startActivity(ntn, b);
+		}
+		else
+		{
+			// do the boring thing
+			this.startActivity(ntn);
+		}
 	}
 	/* OnClickListener methods */
 	

@@ -51,7 +51,14 @@ public class PostsGridAdapter extends BaseAdapter implements OnPostsFetchedListe
 	@Override
 	public Object getItem(int pos)
 	{
-		return null;
+		// should get reverse index
+		int size = this.getCount();
+		int index = size - pos - 1;
+		
+		// must get a key from the index, that's how SparseArray works
+		final int key = this.posts.keyAt(index);
+		
+		return this.cache.getBitmapFromMemCache(key);
 	}
 	
 	@Override
@@ -75,9 +82,9 @@ public class PostsGridAdapter extends BaseAdapter implements OnPostsFetchedListe
 		
 		// must get a key from the index, that's how SparseArray works
 		final int key = this.posts.keyAt(index);
-		Post one = this.posts.get(key);
+		Post post = this.posts.get(key);
 		// getting out early...
-		if(one == null) return v;
+		if(post == null) return v;
 
 		final ImageView ivpreview = (ImageView)v.findViewById(R.id.post_item_grid_ivpreview);
 		final ProgressBar pbprogress = (ProgressBar)v.findViewById(R.id.post_item_grid_pbprogress);
@@ -91,27 +98,27 @@ public class PostsGridAdapter extends BaseAdapter implements OnPostsFetchedListe
 		// child (belongs to parent)
 		ImageView ivyellow = (ImageView)v.findViewById(R.id.post_item_grid_ivyellow);
 		
-		if(one.isFlagged())
+		if(post.isFlagged())
 			ivred.setVisibility(View.VISIBLE);
 		else
 			ivred.setVisibility(View.GONE);
 		
-		if(one.isPending())
+		if(post.isPending())
 			ivblue.setVisibility(View.VISIBLE);
 		else
 			ivblue.setVisibility(View.GONE);
 		
-		if(one.isHasChildren())
+		if(post.isHasChildren())
 			ivgreen.setVisibility(View.VISIBLE);
 		else
 			ivgreen.setVisibility(View.GONE);
 		
-		if(one.getParentId() != 0)
+		if(post.getParentId() != 0)
 			ivyellow.setVisibility(View.VISIBLE);
 		else
 			ivyellow.setVisibility(View.GONE);
 		
-		ImageDownloader downloader = new ImageDownloader(this.context, one.getPreviewUrl());
+		ImageDownloader downloader = new ImageDownloader(this.context, post.getPreviewUrl());
 		
 		if(ivpreview.getTag() instanceof ImageDownloader)
 		{

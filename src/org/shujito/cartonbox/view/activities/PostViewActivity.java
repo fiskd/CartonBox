@@ -24,10 +24,11 @@ public class PostViewActivity extends SherlockFragmentActivity
 	
 	ViewPager mVpPosts = null;
 	PostsPagerAdapter mPostsAdapter = null;
-	boolean
-		bChildren,
-		bParent,
-		bPools;
+	
+	MenuItem
+		itemViewChildren,
+		itemViewParent,
+		itemViewPools;
 	
 	@Override
 	protected void onCreate(Bundle cirno)
@@ -39,13 +40,15 @@ public class PostViewActivity extends SherlockFragmentActivity
 		
 		this.mVpPosts = (ViewPager)this.findViewById(R.id.postview_vpposts);
 		this.mVpPosts.setAdapter(this.mPostsAdapter);
-		this.mVpPosts.setOnPageChangeListener(this);
 		
 		// enable this so we can navigate with the up button
 		this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		
 		// get the api from the context (handy, but hacky, should have made this a singleton? nah...)
-		this.postsApi = CartonBox.getInstance().getImageboard();
+		//this.postsApi = CartonBox.getInstance().getImageboard();
+		
+		if(CartonBox.getInstance().getApis() != null)
+			this.postsApi = CartonBox.getInstance().getApis().getImageboardPosts();
 		// no api, no job
 		if(this.postsApi == null)
 			this.finish();
@@ -62,6 +65,7 @@ public class PostViewActivity extends SherlockFragmentActivity
 			this.mPostsAdapter.onPostsFetched(this.postsApi);
 		
 		int page = this.getIntent().getIntExtra(EXTRA_POST_INDEX, 0);
+		this.mVpPosts.setOnPageChangeListener(this);
 		this.mVpPosts.setCurrentItem(page);
 	}
 	
@@ -107,27 +111,28 @@ public class PostViewActivity extends SherlockFragmentActivity
 				return true;
 		}
 		
-		
 		return super.onOptionsItemSelected(item);
 	}
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu)
 	{
-		// XXX, woes!: for whatever reason, when changing orientation from
+		// XXX: woes!: for whatever reason, when changing orientation from
 		// portrait to landscape, the context menu entries disappear
 		// (parent, child, etc)
+		// XXX: got it: onPrepareOptionsMenu doesn't run the first time the
+		// button is pressed
 		this.getSupportMenuInflater().inflate(R.menu.postview, menu);
-		return true;
-	}
-	
-	@Override
-	public boolean onPrepareOptionsMenu(Menu menu)
-	{
-		// this works, there be happiness
-		menu.findItem(R.id.menu_postview_viewchildren).setVisible(this.bChildren);
-		menu.findItem(R.id.menu_postview_viewparent).setVisible(this.bParent);
-		menu.findItem(R.id.menu_postview_viewpools).setVisible(this.bPools);
+		
+		this.itemViewChildren = menu.findItem(R.id.menu_postview_viewchildren).setVisible(false);
+		this.itemViewParent = menu.findItem(R.id.menu_postview_viewparent).setVisible(false);
+		this.itemViewPools = menu.findItem(R.id.menu_postview_viewpools).setVisible(false);
+		
+		// XXX: I had to...
+		// this refreshes visible menu items
+		int page = this.getIntent().getIntExtra(EXTRA_POST_INDEX, 0);
+		this.onPageSelected(page);
+		
 		return true;
 	}
 	
@@ -151,13 +156,13 @@ public class PostViewActivity extends SherlockFragmentActivity
 		int key = this.postsApi.getPosts().keyAt(index);
 		Post one = this.postsApi.getPosts().get(key);
 		Logger.i("PostViewActivity::onPageSelected", String.valueOf(one.getId()));
-		// now this works, I'm happy again (:
-		this.bChildren = one.isHasChildren();
-		this.bParent = one.getParentId() > 0;
 		
-		// hey
-		Logger.i("PostViewActivity::onPageSelected", String.valueOf(pos));
-		Logger.i("PostViewActivity::onPageSelected", String.valueOf(size));
+		// now this works, I'm happy again (:
+		// now improved
+		if(this.itemViewChildren != null)
+			this.itemViewChildren.setVisible(one.isHasChildren());
+		if(this.itemViewParent != null)
+			this.itemViewParent.setVisible(one.getParentId() > 0);
 		
 		// oh hey it became natural! and I didn't had to do much!
 		if(pos + 1 >= size)

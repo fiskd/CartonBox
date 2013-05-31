@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 
+import org.shujito.cartonbox.Logger;
+
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
@@ -15,7 +17,7 @@ public class ImageUtils
 	{
 		final int width = options.outWidth;
 		final int height = options.outHeight;
-		int sampleSize = 1;
+		int sampleSize = 0;
 		
 		if((reqWidth > 0 && reqHeight > 0) && (width > reqWidth || height > reqHeight))
 		{
@@ -65,7 +67,16 @@ public class ImageUtils
 		BitmapFactory.decodeStream(new FileInputStream(file), null, options);
 		options.inSampleSize = calculateSampleSize(options, width, height);
 		options.inJustDecodeBounds = false;
-		Bitmap bmp = BitmapFactory.decodeStream(new FileInputStream(file), null, options);
-		return bmp;
+		
+		try
+		{
+			return BitmapFactory.decodeStream(new FileInputStream(file), null, options);
+		}
+		catch(OutOfMemoryError ex)
+		{
+			Logger.e("ImageUtils::decodeSampledBitmap", ex.getMessage(), ex);
+			System.gc();
+			return null;
+		}
 	}
 }

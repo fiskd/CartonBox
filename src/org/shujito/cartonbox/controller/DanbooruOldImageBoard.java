@@ -8,7 +8,7 @@ public class DanbooruOldImageBoard extends ImageboardPosts
 	{
 		super(site);
 	}
-
+	
 	@Override
 	protected Downloader<?> createDownloader()
 	{

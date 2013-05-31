@@ -1,10 +1,12 @@
 package org.shujito.cartonbox;
 
-import org.shujito.cartonbox.controller.ImageboardPosts;
-import org.shujito.cartonbox.utils.BitmapCache;
+import org.shujito.cartonbox.controller.ImageboardApis;
 import org.shujito.cartonbox.utils.Preferences;
 
+import android.annotation.TargetApi;
 import android.app.Application;
+import android.os.Build;
+import android.provider.Settings;
 
 public class CartonBox extends Application
 {
@@ -17,6 +19,8 @@ public class CartonBox extends Application
 	}
 	
 	@Override
+	@SuppressWarnings("deprecation")
+	@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
 	public void onCreate()
 	{
 		super.onCreate();
@@ -28,26 +32,36 @@ public class CartonBox extends Application
 		{
 			Preferences.init();
 		}
+		
+		// detect adb
+		int adb = 0;
+		
+		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1)
+			adb = Settings.Secure.getInt(this.getContentResolver(), Settings.Global.ADB_ENABLED, 0);
+		else
+			adb = Settings.Secure.getInt(this.getContentResolver(), Settings.Secure.ADB_ENABLED, 0);
+		
+		// enable or disable
+		if(adb == 1)
+		{
+			Logger.i("CartonBox::onCreate", "adb detected, logs will be displayed...");
+			Logger.setLoggingEnabled(true);
+		}
+		else
+		{
+			Logger.i("CartonBox::onCreate", "adb not detected, logs will not be displayed...");
+			Logger.setLoggingEnabled(false);
+		}
 	}
 	
-	private ImageboardPosts imageboardPosts = null;
-	private BitmapCache bitmapCache = null;
+	private ImageboardApis apis = null;
 	
-	public ImageboardPosts getImageboard()
+	public ImageboardApis getApis()
 	{
-		return this.imageboardPosts;
+		return apis;
 	}
-	public BitmapCache getBitmapCache()
+	public void setApis(ImageboardApis apis)
 	{
-		return this.bitmapCache;
-	}
-	
-	public void setImageboard(ImageboardPosts imageboard)
-	{
-		this.imageboardPosts = imageboard;
-	}
-	public void setBitmapCache(BitmapCache bitmapCache)
-	{
-		this.bitmapCache = bitmapCache;
+		this.apis = apis;
 	}
 }

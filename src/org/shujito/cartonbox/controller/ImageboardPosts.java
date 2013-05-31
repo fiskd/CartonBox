@@ -159,13 +159,12 @@ public abstract class ImageboardPosts extends Imageboard implements
 	
 	/* Meth */
 	
-	protected abstract Downloader<?> createDownloader();
-	
 	public void putTag(String tag)
 	{
 		this.tags.add(tag);
 	}
 	
+	@Override
 	public void clear()
 	{
 		if(this.working && this.downloader != null)
@@ -178,6 +177,7 @@ public abstract class ImageboardPosts extends Imageboard implements
 		this.page = 1;
 	}
 	
+	@Override
 	public void request()
 	{
 		if(!this.doneDownloadingPosts)

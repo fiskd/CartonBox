@@ -87,4 +87,9 @@ public abstract class Imageboard
 	{
 		this.site = site;
 	}
+	
+	/* meth */
+	protected abstract Downloader<?> createDownloader();
+	public abstract void clear();
+	public abstract void request();
 }

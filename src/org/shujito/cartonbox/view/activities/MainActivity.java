@@ -6,6 +6,7 @@ import org.shujito.cartonbox.CartonBox;
 import org.shujito.cartonbox.R;
 import org.shujito.cartonbox.controller.DanbooruImageBoard;
 import org.shujito.cartonbox.controller.DanbooruOldImageBoard;
+import org.shujito.cartonbox.controller.ImageboardApis;
 import org.shujito.cartonbox.controller.ImageboardPosts;
 import org.shujito.cartonbox.model.Site;
 import org.shujito.cartonbox.model.db.SitesDB;
@@ -64,8 +65,13 @@ public class MainActivity extends SherlockActivity implements OnItemClickListene
 	protected void onResume()
 	{
 		super.onResume();
-		// get rid of the api in the application
-		CartonBox.getInstance().setImageboard(null);
+		// get rid of the apis in the application
+		if(CartonBox.getInstance().getApis() != null)
+		{
+			CartonBox.getInstance().getApis().setImageboardPosts(null);
+			CartonBox.getInstance().getApis().setImageboardTags(null);
+			CartonBox.getInstance().setApis(null);
+		}
 	}
 	
 	@Override
@@ -97,12 +103,19 @@ public class MainActivity extends SherlockActivity implements OnItemClickListene
 	{
 		Site currentSite = this.sites.get(pos);
 		
-		// create api here
-		ImageboardPosts postsApi = null; // new DanbooruImageBoard(currentSite);
+		// create apis here
+		ImageboardApis apis = new ImageboardApis();
+		ImageboardPosts postsApi = null;
+		//ImageboardTags tagsApi = null;
 		
+		// place it on the application
+		CartonBox.getInstance().setApis(apis);
 		
 		if(currentSite.getType() == Site.Type.Danbooru1)
+		{
 			postsApi = new DanbooruOldImageBoard(currentSite);
+			
+		}
 		else if(currentSite.getType() == Site.Type.Danbooru2)
 		{
 			SharedPreferences sitePrefs = this.getSharedPreferences(String.valueOf(currentSite.getId()), 0);
@@ -121,16 +134,19 @@ public class MainActivity extends SherlockActivity implements OnItemClickListene
 			postsApi.setShowSafePosts(bShowSafe);
 			postsApi.setShowQuestionablePosts(bShowQuestionable);
 			postsApi.setShowExplicitPosts(bShowExplicit);
+			
+			
 		}
 		
+		// set apis on the apis class
 		if(postsApi != null)
-		{
-			// place it on the application
-			CartonBox.getInstance().setImageboard(postsApi);
-			Intent ntn = new Intent(this, SiteIndexActivity.class);
-			ntn.putExtra(SiteIndexActivity.EXTRA_SECTIONPAGE, R.string.section_posts);
-			this.startActivity(ntn);
-		}
+			apis.setImageboardPosts(postsApi);
+		//if(tagsApi != null)
+			//apis.setImageboardTags(tagsApi);
+		
+		Intent ntn = new Intent(this, SiteIndexActivity.class);
+		ntn.putExtra(SiteIndexActivity.EXTRA_SECTIONPAGE, R.string.section_posts);
+		this.startActivity(ntn);
 	}
 	/* OnItemClickListener methods */
 }

@@ -10,6 +10,7 @@ import android.annotation.TargetApi;
 import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.os.AsyncTask;
+import android.os.AsyncTask.Status;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -179,8 +180,8 @@ public class PostViewFragment extends Fragment
 		
 		this.sampleDownloader = new ImageDownloader(this.getActivity(), this.post.getSampleUrl());
 		this.sampleDownloader.setOnDownloadProgressListener(this);
-		this.sampleDownloader.setWidth(300);
-		this.sampleDownloader.setHeight(300);
+		this.sampleDownloader.setWidth(width);
+		this.sampleDownloader.setHeight(height);
 		this.sampleDownloader.setOnImageFetchedListener(new OnImageFetchedListener()
 		{
 			@Override
@@ -214,15 +215,27 @@ public class PostViewFragment extends Fragment
 	{
 		super.onDestroy();
 		// why, ask your mother
-		/*
+		//*
 		if(this.thumbDownloader != null)
+		{
 			if(this.thumbDownloader.getStatus() == Status.RUNNING)
+			{
+				this.thumbDownloader.setOnDownloadProgressListener(null);
+				this.thumbDownloader.setOnImageFetchedListener(null);
 				this.thumbDownloader.cancel(true);
+			}
+		}
 		this.thumbDownloader = null;
 		
 		if(this.sampleDownloader != null)
+		{
 			if(this.sampleDownloader.getStatus() == Status.RUNNING)
+			{
+				this.sampleDownloader.setOnDownloadProgressListener(null);
+				this.sampleDownloader.setOnImageFetchedListener(null);
 				this.sampleDownloader.cancel(true);
+			}
+		}
 		this.sampleDownloader = null;
 		//*/
 	}

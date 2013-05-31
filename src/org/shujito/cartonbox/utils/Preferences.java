@@ -96,30 +96,4 @@ public class Preferences
 			.setArtistsApi("/artist/index.json")
 			.setTagsApi("/tag/index.json"));
 	}
-	
-	public static boolean getBoolean(int id)
-	{
-		return getBoolean(id, false);
-	}
-	
-	public static boolean getBoolean(int id, boolean def)
-	{
-		Context context = CartonBox.getInstance();
-		String key = context.getString(id);
-		return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(key, def);
-	}
-	
-	public static String getString(int id, String def)
-	{
-		Context context = CartonBox.getInstance();
-		String key = context.getString(id);
-		return PreferenceManager.getDefaultSharedPreferences(context).getString(key, def);
-	}
-	
-	public static int getInt(int id, int def)
-	{
-		Context context = CartonBox.getInstance();
-		String key = context.getString(id);
-		return PreferenceManager.getDefaultSharedPreferences(context).getInt(key, def);
-	}
 }

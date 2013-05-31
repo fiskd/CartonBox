@@ -4,10 +4,12 @@ import org.shujito.cartonbox.model.Site;
 
 /* tags logic */
 // TODO: figure out
-public class ImageboardTags extends Imageboard
+public abstract class ImageboardTags extends Imageboard
 {
 	public ImageboardTags(Site site)
 	{
 		super(site);
 	}
+	
+	
 }
