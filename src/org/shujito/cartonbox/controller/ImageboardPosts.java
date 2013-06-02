@@ -9,7 +9,7 @@ import org.shujito.cartonbox.controller.listeners.OnAccessDeniedListener;
 import org.shujito.cartonbox.controller.listeners.OnErrorListener;
 import org.shujito.cartonbox.controller.listeners.OnInternalServerErrorListener;
 import org.shujito.cartonbox.controller.listeners.OnPostsFetchedListener;
-import org.shujito.cartonbox.controller.listeners.OnPostsRequestListener;
+import org.shujito.cartonbox.controller.listeners.OnPostsRequestedListener;
 import org.shujito.cartonbox.controller.listeners.OnResponseReceivedListener;
 import org.shujito.cartonbox.model.Post;
 import org.shujito.cartonbox.model.Post.Rating;
@@ -39,7 +39,7 @@ public abstract class ImageboardPosts extends Imageboard implements
 	
 	List<OnErrorListener> onErrorListeners = null;
 	List<OnPostsFetchedListener> onPostsFetchedListeners = null;
-	List<OnPostsRequestListener> onPostsRequestListeners = null;
+	List<OnPostsRequestedListener> onPostsRequestedListeners = null;
 	
 	public void addOnErrorListener(OnErrorListener l)
 	{
@@ -53,11 +53,11 @@ public abstract class ImageboardPosts extends Imageboard implements
 			this.onPostsFetchedListeners = new ArrayList<OnPostsFetchedListener>();
 		this.onPostsFetchedListeners.add(l);
 	}
-	public void addOnPostsRequestListener(OnPostsRequestListener l)
+	public void addOnPostsRequestListener(OnPostsRequestedListener l)
 	{
-		if(this.onPostsRequestListeners == null)
-			this.onPostsRequestListeners = new ArrayList<OnPostsRequestListener>();
-		this.onPostsRequestListeners.add(l);
+		if(this.onPostsRequestedListeners == null)
+			this.onPostsRequestedListeners = new ArrayList<OnPostsRequestedListener>();
+		this.onPostsRequestedListeners.add(l);
 	}
 	
 	public void removeOnErrorListener(OnErrorListener l)
@@ -72,11 +72,11 @@ public abstract class ImageboardPosts extends Imageboard implements
 			this.onPostsFetchedListeners = new ArrayList<OnPostsFetchedListener>();
 		this.onPostsFetchedListeners.remove(l);
 	}
-	public void removeOnPostsRequestListener(OnPostsRequestListener l)
+	public void removeOnPostsRequestListener(OnPostsRequestedListener l)
 	{
-		if(this.onPostsRequestListeners == null)
-			this.onPostsRequestListeners = new ArrayList<OnPostsRequestListener>();
-		this.onPostsRequestListeners.remove(l);
+		if(this.onPostsRequestedListeners == null)
+			this.onPostsRequestedListeners = new ArrayList<OnPostsRequestedListener>();
+		this.onPostsRequestedListeners.remove(l);
 	}
 	
 	/* Fields */
@@ -184,9 +184,9 @@ public abstract class ImageboardPosts extends Imageboard implements
 		{
 			if(!this.working)
 			{
-				if(this.onPostsRequestListeners != null)
+				if(this.onPostsRequestedListeners != null)
 				{
-					for(OnPostsRequestListener l : this.onPostsRequestListeners)
+					for(OnPostsRequestedListener l : this.onPostsRequestedListeners)
 					{
 						l.onPostsRequest();
 					}

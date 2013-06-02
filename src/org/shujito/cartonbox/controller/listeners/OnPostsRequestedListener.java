@@ -1,4 +1,4 @@
 package org.shujito.cartonbox.controller.listeners;
 
-public interface OnPostsRequestListener
+public interface OnPostsRequestedListener
 { public void onPostsRequest(); }

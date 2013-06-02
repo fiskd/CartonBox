@@ -6,7 +6,7 @@ import org.shujito.cartonbox.controller.ImageboardPosts;
 import org.shujito.cartonbox.controller.listeners.OnErrorListener;
 import org.shujito.cartonbox.controller.listeners.OnFragmentAttachedListener;
 import org.shujito.cartonbox.controller.listeners.OnPostsFetchedListener;
-import org.shujito.cartonbox.controller.listeners.OnPostsRequestListener;
+import org.shujito.cartonbox.controller.listeners.OnPostsRequestedListener;
 import org.shujito.cartonbox.view.activities.PostViewActivity;
 import org.shujito.cartonbox.view.adapters.PostsGridAdapter;
 
@@ -31,7 +31,7 @@ import android.widget.TextView;
 
 public class PostsSectionFragment extends Fragment implements
 	OnErrorListener, OnItemClickListener, OnScrollListener,
-	OnPostsFetchedListener, OnPostsRequestListener
+	OnPostsFetchedListener, OnPostsRequestedListener
 {
 	/* Listeners */
 	OnFragmentAttachedListener onFragmentAttachedListener = null;
@@ -179,12 +179,12 @@ public class PostsSectionFragment extends Fragment implements
 	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 	public void onItemClick(AdapterView<?> dad, View v, int pos, long id)
 	{
-		// TODO: add some nice-looking zoom animation (not trivial at all but it will look cute)
-		// aid: https://www.youtube.com/watch?v=XNF8pXr6whU
 		Intent ntn = new Intent(this.getActivity(), PostViewActivity.class);
 		ntn.putExtra(PostViewActivity.EXTRA_POST_INDEX, pos);
 		
 		Bundle b = null;
+		// zoom animation!!
+		// aid used: https://www.youtube.com/watch?v=XNF8pXr6whU
 		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
 		{
 			Bitmap thumb = (Bitmap)this.mPostsAdapter.getItem(pos);
@@ -229,7 +229,7 @@ public class PostsSectionFragment extends Fragment implements
 	}
 	/* OnPostsFetchedListener methods */
 	
-	/* OnPostsRequestListener methods */
+	/* OnPostsRequestedListener methods */
 	@Override
 	public void onPostsRequest()
 	{
@@ -242,5 +242,5 @@ public class PostsSectionFragment extends Fragment implements
 				this.mPbProgress.setVisibility(View.VISIBLE);
 		}
 	}
-	/* OnPostsRequestListener methods */
+	/* OnPostsRequestedListener methods */
 }

@@ -55,7 +55,7 @@ public abstract class Downloader<T> extends AsyncTask<Void, Integer, T>
 			http.setReadTimeout(10000);
 			//http.setInstanceFollowRedirects(true);
 			http.connect();
-			// TODO: handle, http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html
+			// TODO: handle better, http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html
 			this.code = http.getResponseCode();
 			
 			// http://www-01.ibm.com/support/docview.wss?uid=swg21249300

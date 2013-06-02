@@ -6,7 +6,7 @@ public class Tag
 	{
 		General(0),
 		Artist(1),
-		Reserved3(2),
+		Reserved(2),
 		Copyright(3),
 		Character(4),
 		Other1(5),
@@ -22,12 +22,31 @@ public class Tag
 		
 		public int getValue()
 		{ return this.value; }
+		public void setValue(int value)
+		{ this.value = value; }
+		
+		public static Category fromInt(int value)
+		{
+			switch(value)
+			{
+				case 0: return General;
+				case 1: return Artist;
+				case 2: return Reserved;
+				case 3: return Copyright;
+				case 4: return Character;
+				case 5: return Other1;
+				case 6: return Other2;
+				default: return null;
+			}
+		}
+		
 	}
 	
 	int id;
 	int count;
 	String name;
-	Category category; // legacy: type
+	// this also means type
+	Category category;
 	
 	public int getId()
 	{ return this.id; }
@@ -35,6 +54,8 @@ public class Tag
 	{ return this.count; }
 	public String getName()
 	{ return this.name; }
+	public Category getCategory()
+	{ return this.category; }
 	
 	public Tag setId(int id)
 	{
@@ -49,6 +70,11 @@ public class Tag
 	public Tag setName(String name)
 	{
 		this.name = name;
+		return this;
+	}
+	public Tag setCategory(Category category)
+	{
+		this.category = category;
 		return this;
 	}
 }
