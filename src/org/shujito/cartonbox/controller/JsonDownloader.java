@@ -9,8 +9,8 @@ import org.shujito.cartonbox.controller.listeners.OnAccessDeniedListener;
 import org.shujito.cartonbox.controller.listeners.OnInternalServerErrorListener;
 import org.shujito.cartonbox.controller.listeners.OnPageNotFoundListener;
 import org.shujito.cartonbox.controller.listeners.OnResponseReceivedListener;
-import org.shujito.cartonbox.model.DanbooruJsonResponseParser;
-import org.shujito.cartonbox.model.JsonParser;
+import org.shujito.cartonbox.model.parser.DanbooruJsonResponseParser;
+import org.shujito.cartonbox.model.parser.JsonParser;
 
 public abstract class JsonDownloader extends Downloader<JsonParser<?>>
 {

@@ -1,7 +1,8 @@
-package org.shujito.cartonbox.model;
+package org.shujito.cartonbox.model.parser;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.shujito.cartonbox.model.Response;
 
 public class DanbooruOldJsonResponseParser implements JsonParser<Response>
 {

@@ -1,7 +1,7 @@
 package org.shujito.cartonbox.controller;
 
-import org.shujito.cartonbox.model.DanbooruOldJsonPostParser;
-import org.shujito.cartonbox.model.JsonParser;
+import org.shujito.cartonbox.model.parser.DanbooruOldJsonPostParser;
+import org.shujito.cartonbox.model.parser.JsonParser;
 
 public class DanbooruOldJsonPostDownloader extends JsonDownloader
 {

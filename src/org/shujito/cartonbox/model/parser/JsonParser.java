@@ -1,4 +1,4 @@
-package org.shujito.cartonbox.model;
+package org.shujito.cartonbox.model.parser;
 
 public interface JsonParser<T>
 {
