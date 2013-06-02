@@ -47,18 +47,6 @@ public class MainActivity extends SherlockActivity implements OnItemClickListene
 		this.mGridView = (GridView)this.findViewById(R.id.main_gvsites);
 		this.mGridView.setAdapter(this.mSitesAdapter);
 		this.mGridView.setOnItemClickListener(this);
-		
-		/*
-		this.mGridView = new GridView(this);
-		LayoutParams lparams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-		this.mGridView.setLayoutParams(lparams);
-		this.mGridView.setGravity(Gravity.CENTER);
-		this.mGridView.setNumColumns(2);
-		this.mGridView.setAdapter(this.mSitesAdapter);
-		this.mGridView.setOnItemClickListener(this);
-		
-		this.setContentView(this.mGridView);
-		//*/
 	}
 	
 	@Override

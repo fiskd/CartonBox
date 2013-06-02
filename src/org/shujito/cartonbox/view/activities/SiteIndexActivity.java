@@ -8,7 +8,9 @@ import org.shujito.cartonbox.controller.ImageboardTags;
 import org.shujito.cartonbox.controller.listeners.OnErrorListener;
 import org.shujito.cartonbox.controller.listeners.OnFragmentAttachedListener;
 import org.shujito.cartonbox.utils.Preferences;
+import org.shujito.cartonbox.view.SpaceTokenizer;
 import org.shujito.cartonbox.view.adapters.SiteIndexPageAdapter;
+import org.shujito.cartonbox.view.adapters.TagsAdapter;
 import org.shujito.cartonbox.view.fragments.LoginDialogFragment;
 import org.shujito.cartonbox.view.fragments.LoginDialogFragment.LoginDialogCallback;
 import org.shujito.cartonbox.view.fragments.PostsSectionFragment;
@@ -46,6 +48,7 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 	ViewPager mVpSections = null;
 	MenuItem mMenuItemSearch = null;
 	MultiAutoCompleteTextView mMactvQueryPosts = null;
+	TagsAdapter mTagsAdapter = null;
 	// tab titles
 	String[] tabs = null;
 	ImageboardPosts postsApi = null;
@@ -96,14 +99,6 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 			
 			this.mVpSections.setCurrentItem(page);
 		}
-		
-		//String url = this.getIntent().getStringExtra(EXTRA_SITEURL);
-		//Toast.makeText(this, url, Toast.LENGTH_SHORT).show();
-		
-		//Site site = new Site()
-			//.setUrl("http://danbooru.donmai.us")
-			//.setPostsApi("%s/posts.json?");
-		
 	}
 	
 	@Override
@@ -153,6 +148,8 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 				.getActionView()
 				.findViewById(R.id.actionsearch_mactvqueryposts);
 		this.mMactvQueryPosts.setOnEditorActionListener(this);
+		this.mMactvQueryPosts.setAdapter(new TagsAdapter(this));
+		this.mMactvQueryPosts.setTokenizer(new SpaceTokenizer());
 		
 		return true;
 	}
