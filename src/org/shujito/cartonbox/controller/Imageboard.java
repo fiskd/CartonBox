@@ -1,10 +1,22 @@
 package org.shujito.cartonbox.controller;
 
+import java.net.HttpURLConnection;
 import java.security.MessageDigest;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.shujito.cartonbox.controller.listeners.OnAccessDeniedListener;
+import org.shujito.cartonbox.controller.listeners.OnErrorListener;
+import org.shujito.cartonbox.controller.listeners.OnInternalServerErrorListener;
+import org.shujito.cartonbox.controller.listeners.OnPostsFetchedListener;
+import org.shujito.cartonbox.model.Response;
 import org.shujito.cartonbox.model.Site;
+import org.shujito.cartonbox.model.parser.JsonParser;
 
-public abstract class Imageboard
+public abstract class Imageboard implements
+	OnErrorListener,
+	OnAccessDeniedListener,
+	OnInternalServerErrorListener
 {
 	/* Static */
 	
@@ -16,11 +28,44 @@ public abstract class Imageboard
 	public static final String API_PASSWORD_HASH = "password_hash=%s";
 	public static final String API_DANBOORU_PASSWORD = "choujin-steiner--%s--";
 	
+	/* Listeners */
+	
+	List<OnErrorListener> onErrorListeners = null;
+	List<OnPostsFetchedListener> onPostsFetchedListeners = null;
+	
+	public void addOnErrorListener(OnErrorListener l)
+	{
+		if(this.onErrorListeners == null)
+			this.onErrorListeners = new ArrayList<OnErrorListener>();
+		this.onErrorListeners.add(l);
+	}
+	public void addOnPostsFetchedListener(OnPostsFetchedListener l)
+	{
+		if(this.onPostsFetchedListeners == null)
+			this.onPostsFetchedListeners = new ArrayList<OnPostsFetchedListener>();
+		this.onPostsFetchedListeners.add(l);
+	}
+	
+	public void removeOnErrorListener(OnErrorListener l)
+	{
+		if(this.onErrorListeners == null)
+			this.onErrorListeners = new ArrayList<OnErrorListener>();
+		this.onErrorListeners.remove(l);
+	}
+	public void removeOnPostsFetchedListener(OnPostsFetchedListener l)
+	{
+		if(this.onPostsFetchedListeners == null)
+			this.onPostsFetchedListeners = new ArrayList<OnPostsFetchedListener>();
+		this.onPostsFetchedListeners.remove(l);
+	}
+	
 	/* Fields */
 	
-	String username = null;
-	String password = null;
-	Site site = null;
+	protected String username = null;
+	protected String password = null;
+	protected Site site = null;
+	protected Downloader<?> downloader = null;
+	protected boolean working = false;
 	
 	/* Constructor */
 	
@@ -89,6 +134,52 @@ public abstract class Imageboard
 	}
 	
 	/* meth */
+
+	@Override
+	public void onError(int errCode, String message)
+	{
+		if(this.onErrorListeners != null)
+		{
+			for(OnErrorListener l : this.onErrorListeners)
+			{
+				l.onError(errCode, message);
+			}
+		}
+		
+		this.working = false;
+	}
+	
+	@Override
+	public void onAccessDenied()
+	{
+		if(this.onErrorListeners != null)
+		{
+			for(OnErrorListener l : this.onErrorListeners)
+			{
+				l.onError(HttpURLConnection.HTTP_FORBIDDEN, "Access denied");
+			}
+		}
+		
+		this.working = false;
+	}
+	
+	@Override
+	public void onInternalServerError(JsonParser<?> jarr)
+	{
+		Response response = (Response)jarr.getAtIndex(0);
+		
+		if(this.onErrorListeners != null)
+		{
+			for(OnErrorListener l : this.onErrorListeners)
+			{
+				l.onError(HttpURLConnection.HTTP_INTERNAL_ERROR, response.getReason());
+			}
+		}
+		
+		this.working = false;
+	}
+	
+	/* abstract meth */
 	protected abstract Downloader<?> createDownloader();
 	public abstract void clear();
 	public abstract void request();

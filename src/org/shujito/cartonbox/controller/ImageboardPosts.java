@@ -1,21 +1,16 @@
 package org.shujito.cartonbox.controller;
 
-import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.shujito.cartonbox.Logger;
-import org.shujito.cartonbox.controller.listeners.OnAccessDeniedListener;
-import org.shujito.cartonbox.controller.listeners.OnErrorListener;
-import org.shujito.cartonbox.controller.listeners.OnInternalServerErrorListener;
 import org.shujito.cartonbox.controller.listeners.OnPostsFetchedListener;
 import org.shujito.cartonbox.controller.listeners.OnPostsRequestedListener;
 import org.shujito.cartonbox.controller.listeners.OnResponseReceivedListener;
 import org.shujito.cartonbox.model.Post;
 import org.shujito.cartonbox.model.Post.Rating;
-import org.shujito.cartonbox.model.parser.JsonParser;
-import org.shujito.cartonbox.model.Response;
 import org.shujito.cartonbox.model.Site;
+import org.shujito.cartonbox.model.parser.JsonParser;
 import org.shujito.cartonbox.utils.URLEncoder;
 
 import android.util.SparseArray;
@@ -30,29 +25,11 @@ import android.util.SparseArray;
 // step 3: give result
 // step 4: give posts
 public abstract class ImageboardPosts extends Imageboard implements
-	OnErrorListener,
-	OnAccessDeniedListener,
-	OnInternalServerErrorListener,
 	OnResponseReceivedListener
 {
-	/* Listeners */
-	
-	List<OnErrorListener> onErrorListeners = null;
-	List<OnPostsFetchedListener> onPostsFetchedListeners = null;
+	/* Listener */
 	List<OnPostsRequestedListener> onPostsRequestedListeners = null;
 	
-	public void addOnErrorListener(OnErrorListener l)
-	{
-		if(this.onErrorListeners == null)
-			this.onErrorListeners = new ArrayList<OnErrorListener>();
-		this.onErrorListeners.add(l);
-	}
-	public void addOnPostsFetchedListener(OnPostsFetchedListener l)
-	{
-		if(this.onPostsFetchedListeners == null)
-			this.onPostsFetchedListeners = new ArrayList<OnPostsFetchedListener>();
-		this.onPostsFetchedListeners.add(l);
-	}
 	public void addOnPostsRequestListener(OnPostsRequestedListener l)
 	{
 		if(this.onPostsRequestedListeners == null)
@@ -60,18 +37,6 @@ public abstract class ImageboardPosts extends Imageboard implements
 		this.onPostsRequestedListeners.add(l);
 	}
 	
-	public void removeOnErrorListener(OnErrorListener l)
-	{
-		if(this.onErrorListeners == null)
-			this.onErrorListeners = new ArrayList<OnErrorListener>();
-		this.onErrorListeners.remove(l);
-	}
-	public void removeOnPostsFetchedListener(OnPostsFetchedListener l)
-	{
-		if(this.onPostsFetchedListeners == null)
-			this.onPostsFetchedListeners = new ArrayList<OnPostsFetchedListener>();
-		this.onPostsFetchedListeners.remove(l);
-	}
 	public void removeOnPostsRequestListener(OnPostsRequestedListener l)
 	{
 		if(this.onPostsRequestedListeners == null)
@@ -81,12 +46,12 @@ public abstract class ImageboardPosts extends Imageboard implements
 	
 	/* Fields */
 	
-	Downloader<?> downloader = null;
-	SparseArray<Post> posts = null;
-	ArrayList<String> tags = null;
-	//String siteUrl = null;
+	protected SparseArray<Post> posts = null;
+	protected ArrayList<String> tags = null;
+	//protected Downloader<?> downloader = null;
+	//protected boolean working = false;
+	//protected String siteUrl = null;
 	
-	boolean working = false;
 	boolean doneDownloadingPosts = false;
 	
 	int postsPerPage = 20;
@@ -250,50 +215,6 @@ public abstract class ImageboardPosts extends Imageboard implements
 		}
 		
 		return url.toString();
-	}
-	
-	@Override
-	public void onError(int errCode, String message)
-	{
-		if(this.onErrorListeners != null)
-		{
-			for(OnErrorListener l : this.onErrorListeners)
-			{
-				l.onError(errCode, message);
-			}
-		}
-		
-		this.working = false;
-	}
-	
-	@Override
-	public void onAccessDenied()
-	{
-		if(this.onErrorListeners != null)
-		{
-			for(OnErrorListener l : this.onErrorListeners)
-			{
-				l.onError(HttpURLConnection.HTTP_FORBIDDEN, "Access denied");
-			}
-		}
-		
-		this.working = false;
-	}
-	
-	@Override
-	public void onInternalServerError(JsonParser<?> jarr)
-	{
-		Response response = (Response)jarr.getAtIndex(0);
-		
-		if(this.onErrorListeners != null)
-		{
-			for(OnErrorListener l : this.onErrorListeners)
-			{
-				l.onError(HttpURLConnection.HTTP_INTERNAL_ERROR, response.getReason());
-			}
-		}
-		
-		this.working = false;
 	}
 	
 	@Override
