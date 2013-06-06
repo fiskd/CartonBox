@@ -38,9 +38,9 @@ public class PreferencesFragment extends PreferenceFragment implements
 	CheckBoxPreference cbpRatingExplicit = null;
 	
 	@Override
-	public void onCreate(Bundle savedInstanceState)
+	public void onCreate(Bundle cirno)
 	{
-		super.onCreate(savedInstanceState);
+		super.onCreate(cirno);
 		
 		/*
 		String s = this.getArguments().getString(PREF_HEADER);

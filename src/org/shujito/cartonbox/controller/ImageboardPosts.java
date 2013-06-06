@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.shujito.cartonbox.Logger;
 import org.shujito.cartonbox.controller.listeners.OnPostsFetchedListener;
-import org.shujito.cartonbox.controller.listeners.OnPostsRequestedListener;
+import org.shujito.cartonbox.controller.listeners.OnRequestListener;
 import org.shujito.cartonbox.controller.listeners.OnResponseReceivedListener;
 import org.shujito.cartonbox.model.Post;
 import org.shujito.cartonbox.model.Post.Rating;
@@ -23,25 +23,25 @@ import android.util.SparseArray;
 // step 2b: download
 // step 2c: filters
 // step 3: give result
-// step 4: give posts
+// step 4: gather posts
 public abstract class ImageboardPosts extends Imageboard implements
 	OnResponseReceivedListener
 {
 	/* Listener */
-	List<OnPostsRequestedListener> onPostsRequestedListeners = null;
+	List<OnPostsFetchedListener> onPostsFetchedListeners = null;
 	
-	public void addOnPostsRequestListener(OnPostsRequestedListener l)
+	public void addOnPostsFetchedListener(OnPostsFetchedListener l)
 	{
-		if(this.onPostsRequestedListeners == null)
-			this.onPostsRequestedListeners = new ArrayList<OnPostsRequestedListener>();
-		this.onPostsRequestedListeners.add(l);
+		if(this.onPostsFetchedListeners == null)
+			this.onPostsFetchedListeners = new ArrayList<OnPostsFetchedListener>();
+		this.onPostsFetchedListeners.add(l);
 	}
 	
-	public void removeOnPostsRequestListener(OnPostsRequestedListener l)
+	public void removeOnPostsFetchedListener(OnPostsFetchedListener l)
 	{
-		if(this.onPostsRequestedListeners == null)
-			this.onPostsRequestedListeners = new ArrayList<OnPostsRequestedListener>();
-		this.onPostsRequestedListeners.remove(l);
+		if(this.onPostsFetchedListeners == null)
+			this.onPostsFetchedListeners = new ArrayList<OnPostsFetchedListener>();
+		this.onPostsFetchedListeners.remove(l);
 	}
 	
 	/* Fields */
@@ -149,11 +149,11 @@ public abstract class ImageboardPosts extends Imageboard implements
 		{
 			if(!this.working)
 			{
-				if(this.onPostsRequestedListeners != null)
+				if(this.onRequestListeners != null)
 				{
-					for(OnPostsRequestedListener l : this.onPostsRequestedListeners)
+					for(OnRequestListener l : this.onRequestListeners)
 					{
-						l.onPostsRequest();
+						l.onRequest();
 					}
 				}
 				
@@ -220,22 +220,23 @@ public abstract class ImageboardPosts extends Imageboard implements
 	@Override
 	public void onResponseReceived(JsonParser<?> jp)
 	{
-		Post p = null;
+		Post post = null;
 		int index = 0;
-		while((p = (Post)jp.getAtIndex(index)) != null)
+		while((post = (Post)jp.getAtIndex(index)) != null)
 		{
 			index++;
 			boolean shouldAdd = false;
 			
-			shouldAdd = (this.showSafePosts && p.getRating() == Rating.Safe) || shouldAdd;
-			shouldAdd = (this.showQuestionablePosts && p.getRating() == Rating.Questionable) || shouldAdd;
-			shouldAdd = (this.showExplicitPosts && p.getRating() == Rating.Explicit) || shouldAdd;
-			shouldAdd = !"swf".equals(p.getFileExt()) && shouldAdd; //!p.getFileExt().equals("swf") && shouldAdd;
+			shouldAdd = (this.showSafePosts && post.getRating() == Rating.Safe) || shouldAdd;
+			shouldAdd = (this.showQuestionablePosts && post.getRating() == Rating.Questionable) || shouldAdd;
+			shouldAdd = (this.showExplicitPosts && post.getRating() == Rating.Explicit) || shouldAdd;
+			// must now show
+			shouldAdd = !"swf".equals(post.getFileExt()) && shouldAdd; //!p.getFileExt().equals("swf") && shouldAdd;
 			
 			if(shouldAdd)
 			{
-				this.posts.append(p.getId(), p);
-				p.setSite(this.site);
+				this.posts.append(post.getId(), post);
+				post.setSite(this.site);
 			}
 		}
 		
@@ -250,7 +251,7 @@ public abstract class ImageboardPosts extends Imageboard implements
 			for(OnPostsFetchedListener l : this.onPostsFetchedListeners)
 			{
 				if(l != null)
-					l.onPostsFetched(this);
+					l.onPostsFetched(this.posts);
 			}
 		}
 		

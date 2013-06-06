@@ -6,7 +6,8 @@ import org.shujito.cartonbox.controller.ImageboardPosts;
 import org.shujito.cartonbox.controller.listeners.OnErrorListener;
 import org.shujito.cartonbox.controller.listeners.OnFragmentAttachedListener;
 import org.shujito.cartonbox.controller.listeners.OnPostsFetchedListener;
-import org.shujito.cartonbox.controller.listeners.OnPostsRequestedListener;
+import org.shujito.cartonbox.controller.listeners.OnRequestListener;
+import org.shujito.cartonbox.model.Post;
 import org.shujito.cartonbox.view.activities.PostViewActivity;
 import org.shujito.cartonbox.view.adapters.PostsGridAdapter;
 
@@ -18,6 +19,7 @@ import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,7 +33,7 @@ import android.widget.TextView;
 
 public class PostsSectionFragment extends Fragment implements
 	OnErrorListener, OnItemClickListener, OnScrollListener,
-	OnPostsFetchedListener, OnPostsRequestedListener
+	OnPostsFetchedListener, OnRequestListener
 {
 	/* Listeners */
 	OnFragmentAttachedListener onFragmentAttachedListener = null;
@@ -49,6 +51,7 @@ public class PostsSectionFragment extends Fragment implements
 	@Override
 	public void onAttach(Activity activity)
 	{
+		Logger.i("PostsSectionFragment::onAttach", "overly attached fragment");
 		super.onAttach(activity);
 		try
 		{
@@ -112,7 +115,7 @@ public class PostsSectionFragment extends Fragment implements
 		Logger.i("PostsSectionFragment::onResume", "fragment resumed");
 		// XXX: HACKY!!
 		if(this.mPostsAdapter != null)
-			this.mPostsAdapter.onPostsFetched(this.postsApi);
+			this.mPostsAdapter.onPostsFetched(this.postsApi.getPosts());
 		if(this.postsApi != null)
 		{
 			this.postsApi.addOnErrorListener(this);
@@ -145,6 +148,7 @@ public class PostsSectionFragment extends Fragment implements
 		super.onDestroy();
 		// get rid of this, quick
 		this.postsApi = null;
+		this.onFragmentAttachedListener = null;
 	}
 	
 	/* OnErrorListener methods */
@@ -174,7 +178,7 @@ public class PostsSectionFragment extends Fragment implements
 	}
 	/* OnScrollListener methods */
 	
-	/* OnClickListener methods */
+	/* OnItemClickListener methods */
 	@Override
 	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 	public void onItemClick(AdapterView<?> dad, View v, int pos, long id)
@@ -210,17 +214,17 @@ public class PostsSectionFragment extends Fragment implements
 			this.startActivity(ntn);
 		}
 	}
-	/* OnClickListener methods */
+	/* OnItemClickListener methods */
 	
 	/* OnPostsFetchedListener */
 	@Override
-	public void onPostsFetched(ImageboardPosts api)
+	public void onPostsFetched(SparseArray<Post> posts)
 	{
 		this.mGvPosts.setVisibility(View.VISIBLE);
 		this.mPbProgress.setVisibility(View.GONE);
 		this.mTvMessage.setVisibility(View.GONE);
 		
-		if(this.postsApi.getPosts().size() == 0)
+		if(posts != null && posts.size() == 0)
 		{
 			this.mGvPosts.setVisibility(View.GONE);
 			this.mTvMessage.setVisibility(View.VISIBLE);
@@ -231,7 +235,7 @@ public class PostsSectionFragment extends Fragment implements
 	
 	/* OnPostsRequestedListener methods */
 	@Override
-	public void onPostsRequest()
+	public void onRequest()
 	{
 		Logger.i("PostsSectionFragment::onPostsRequest", "Posts requested");
 		if(this.postsApi != null && this.postsApi.getPosts().size() == 0)

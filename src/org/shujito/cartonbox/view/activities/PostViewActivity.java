@@ -62,7 +62,7 @@ public class PostViewActivity extends SherlockFragmentActivity
 		this.postsApi.addOnPostsFetchedListener(this.mPostsAdapter);
 		// XXX: hacky...
 		if(this.mPostsAdapter != null)
-			this.mPostsAdapter.onPostsFetched(this.postsApi);
+			this.mPostsAdapter.onPostsFetched(this.postsApi.getPosts());
 		
 		int page = this.getIntent().getIntExtra(EXTRA_POST_INDEX, 0);
 		this.mVpPosts.setOnPageChangeListener(this);

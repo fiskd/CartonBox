@@ -1,6 +1,8 @@
 package org.shujito.cartonbox.controller.listeners;
 
-import org.shujito.cartonbox.controller.ImageboardPosts;
+import java.util.List;
+
+import org.shujito.cartonbox.model.Pool;
 
 public interface OnPoolsFetchedListener
-{ public void onPoolsFetched(ImageboardPosts api); }
+{ public void onPoolsFetched(List<Pool> pools); }

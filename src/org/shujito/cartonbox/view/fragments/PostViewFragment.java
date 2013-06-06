@@ -66,7 +66,7 @@ public class PostViewFragment extends Fragment
 	@Override
 	@SuppressWarnings("deprecation")
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
-	public void onViewCreated(View view, Bundle savedInstanceState)
+	public void onViewCreated(View view, Bundle cirno)
 	{
 		this.post = (Post)this.getArguments().getSerializable(EXTRA_POST);
 		// get out early

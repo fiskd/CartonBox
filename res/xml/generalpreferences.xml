@@ -38,13 +38,15 @@
 			android:title="@string/pref_content_poolsperpage"
 			android:entries="@array/pref_content_pages"
 			android:entryValues="@array/pref_content_pages"
-			android:defaultValue="20" />
+			android:defaultValue="20"
+			android:enabled="false" />
 		<ListPreference
 			android:key="@string/pref_content_poolpostsperpage_key"
 			android:title="@string/pref_content_poolpostsperpage"
 			android:entries="@array/pref_content_pages"
 			android:entryValues="@array/pref_content_pages"
-			android:defaultValue="20" />
+			android:defaultValue="20"
+			android:enabled="false" />
 		<CheckBoxPreference
 			android:key="@string/pref_content_localfilter_key"
 			android:title="@string/pref_content_localfilter"

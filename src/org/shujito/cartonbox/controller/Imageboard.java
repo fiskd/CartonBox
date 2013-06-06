@@ -8,7 +8,7 @@ import java.util.List;
 import org.shujito.cartonbox.controller.listeners.OnAccessDeniedListener;
 import org.shujito.cartonbox.controller.listeners.OnErrorListener;
 import org.shujito.cartonbox.controller.listeners.OnInternalServerErrorListener;
-import org.shujito.cartonbox.controller.listeners.OnPostsFetchedListener;
+import org.shujito.cartonbox.controller.listeners.OnRequestListener;
 import org.shujito.cartonbox.model.Response;
 import org.shujito.cartonbox.model.Site;
 import org.shujito.cartonbox.model.parser.JsonParser;
@@ -29,34 +29,33 @@ public abstract class Imageboard implements
 	public static final String API_DANBOORU_PASSWORD = "choujin-steiner--%s--";
 	
 	/* Listeners */
-	
+	List<OnRequestListener> onRequestListeners = null;
 	List<OnErrorListener> onErrorListeners = null;
-	List<OnPostsFetchedListener> onPostsFetchedListeners = null;
-	
+
+	public void addOnPostsRequestListener(OnRequestListener l)
+	{
+		if(this.onRequestListeners == null)
+			this.onRequestListeners = new ArrayList<OnRequestListener>();
+		this.onRequestListeners.add(l);
+	}
 	public void addOnErrorListener(OnErrorListener l)
 	{
 		if(this.onErrorListeners == null)
 			this.onErrorListeners = new ArrayList<OnErrorListener>();
 		this.onErrorListeners.add(l);
 	}
-	public void addOnPostsFetchedListener(OnPostsFetchedListener l)
-	{
-		if(this.onPostsFetchedListeners == null)
-			this.onPostsFetchedListeners = new ArrayList<OnPostsFetchedListener>();
-		this.onPostsFetchedListeners.add(l);
-	}
 	
+	public void removeOnPostsRequestListener(OnRequestListener l)
+	{
+		if(this.onRequestListeners == null)
+			this.onRequestListeners = new ArrayList<OnRequestListener>();
+		this.onRequestListeners.remove(l);
+	}
 	public void removeOnErrorListener(OnErrorListener l)
 	{
 		if(this.onErrorListeners == null)
 			this.onErrorListeners = new ArrayList<OnErrorListener>();
 		this.onErrorListeners.remove(l);
-	}
-	public void removeOnPostsFetchedListener(OnPostsFetchedListener l)
-	{
-		if(this.onPostsFetchedListeners == null)
-			this.onPostsFetchedListeners = new ArrayList<OnPostsFetchedListener>();
-		this.onPostsFetchedListeners.remove(l);
 	}
 	
 	/* Fields */
@@ -181,6 +180,6 @@ public abstract class Imageboard implements
 	
 	/* abstract meth */
 	protected abstract Downloader<?> createDownloader();
-	public abstract void clear();
 	public abstract void request();
+	public abstract void clear();
 }

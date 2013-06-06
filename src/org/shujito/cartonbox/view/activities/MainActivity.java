@@ -8,6 +8,7 @@ import org.shujito.cartonbox.controller.DanbooruImageBoard;
 import org.shujito.cartonbox.controller.DanbooruOldImageBoard;
 import org.shujito.cartonbox.controller.ImageboardApis;
 import org.shujito.cartonbox.controller.ImageboardPosts;
+import org.shujito.cartonbox.controller.ImageboardTags;
 import org.shujito.cartonbox.model.Site;
 import org.shujito.cartonbox.model.db.SitesDB;
 import org.shujito.cartonbox.utils.Preferences;
@@ -54,7 +55,7 @@ public class MainActivity extends SherlockActivity implements OnItemClickListene
 	{
 		super.onResume();
 		// get rid of the apis in the application
-		if(CartonBox.getInstance().getApis() != null)
+		if(CartonBox.getInstance() != null && CartonBox.getInstance().getApis() != null)
 		{
 			CartonBox.getInstance().getApis().setImageboardPosts(null);
 			CartonBox.getInstance().getApis().setImageboardTags(null);
@@ -94,7 +95,7 @@ public class MainActivity extends SherlockActivity implements OnItemClickListene
 		// create apis here
 		ImageboardApis apis = new ImageboardApis();
 		ImageboardPosts postsApi = null;
-		//ImageboardTags tagsApi = null;
+		ImageboardTags tagsApi = null;
 		
 		// place it on the application
 		CartonBox.getInstance().setApis(apis);
@@ -115,22 +116,28 @@ public class MainActivity extends SherlockActivity implements OnItemClickListene
 			boolean bShowQuestionable = globalPrefs.getBoolean(this.getString(R.string.pref_ratings_todisplay_questionable_key), false);
 			boolean bShowExplicit = globalPrefs.getBoolean(this.getString(R.string.pref_ratings_todisplay_explicit_key), false);
 			
+			int postsPerPage = globalPrefs.getInt(this.getString(R.string.pref_content_postsperpage_key), 20);
+			//int poolsPerPage = globalPrefs.getInt(this.getString(R.string.pref_content_poolsperpage_key), 20);
+			//int poolPostsPerPage = globalPrefs.getInt(this.getString(R.string.pref_content_poolpostsperpage_key), 20);
+			
 			postsApi = new DanbooruImageBoard(currentSite);
 			postsApi.setUsername(username);
 			postsApi.setPassword(password);
-			postsApi.setPostsPerPage(20);
+			postsApi.setPostsPerPage(postsPerPage);
 			postsApi.setShowSafePosts(bShowSafe);
 			postsApi.setShowQuestionablePosts(bShowQuestionable);
 			postsApi.setShowExplicitPosts(bShowExplicit);
 			
-			
+			tagsApi = new ImageboardTags(currentSite);
+			tagsApi.setPassword(username);
+			tagsApi.setPassword(password);
 		}
 		
 		// set apis on the apis class
 		if(postsApi != null)
 			apis.setImageboardPosts(postsApi);
-		//if(tagsApi != null)
-			//apis.setImageboardTags(tagsApi);
+		if(tagsApi != null)
+			apis.setImageboardTags(tagsApi);
 		
 		Intent ntn = new Intent(this, SiteIndexActivity.class);
 		ntn.putExtra(SiteIndexActivity.EXTRA_SECTIONPAGE, R.string.section_posts);

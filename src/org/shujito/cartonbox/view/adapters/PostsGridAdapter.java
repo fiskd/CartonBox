@@ -1,7 +1,6 @@
 package org.shujito.cartonbox.view.adapters;
 
 import org.shujito.cartonbox.R;
-import org.shujito.cartonbox.controller.ImageboardPosts;
 import org.shujito.cartonbox.controller.listeners.OnDownloadProgressListener;
 import org.shujito.cartonbox.controller.listeners.OnImageFetchedListener;
 import org.shujito.cartonbox.controller.listeners.OnPostsFetchedListener;
@@ -209,9 +208,9 @@ public class PostsGridAdapter extends BaseAdapter implements OnPostsFetchedListe
 	}
 	
 	@Override
-	public void onPostsFetched(ImageboardPosts api)
+	public void onPostsFetched(SparseArray<Post> posts)
 	{
-		this.posts = api.getPosts();
+		this.posts = posts;
 		this.notifyDataSetChanged();
 	}
 }

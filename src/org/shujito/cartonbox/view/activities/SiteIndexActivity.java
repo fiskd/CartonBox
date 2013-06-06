@@ -51,8 +51,8 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 	TagsAdapter mTagsAdapter = null;
 	// tab titles
 	String[] tabs = null;
-	ImageboardPosts postsApi = null;
-	ImageboardTags tagsApi = null;
+	ImageboardPosts mPostsApi = null;
+	ImageboardTags mTagsApi = null;
 	
 	@Override
 	protected void onCreate(Bundle cirno)
@@ -106,17 +106,20 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 	{
 		super.onResume();
 		// get the imageboard
-		if(this.postsApi == null)
-			this.postsApi = CartonBox.getInstance().getApis().getImageboardPosts();
+		if(this.mPostsApi == null)
+			this.mPostsApi = CartonBox.getInstance().getApis().getImageboardPosts();
+		if(this.mTagsApi == null)
+			this.mTagsApi = CartonBox.getInstance().getApis().getImageboardTags();
 		
-		if(this.postsApi == null)
+		if(this.mPostsApi == null || this.mTagsApi == null)
 		{
 			// close the activity
 			this.finish();
 		}
 		else
 		{
-			this.postsApi.addOnErrorListener(this);
+			this.mPostsApi.addOnErrorListener(this);
+			this.mTagsApi.addOnErrorListener(this);
 		}
 	}
 	
@@ -124,7 +127,8 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 	protected void onPause()
 	{
 		super.onPause();
-		this.postsApi.removeOnErrorListener(this);
+		this.mPostsApi.removeOnErrorListener(this);
+		this.mTagsApi.removeOnErrorListener(this);
 		// TODO: save the query on the search box when changing to landscape/portrait
 	}
 	
@@ -133,7 +137,8 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 	{
 		super.onDestroy();
 		// get rid of this
-		this.postsApi = null;
+		this.mPostsApi = null;
+		this.mTagsApi = null;
 	}
 	
 	@Override
@@ -261,20 +266,22 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 	{
 		if(action == EditorInfo.IME_ACTION_SEARCH)
 		{
+			// TODO: find current section page, do searches depending on the page
+			
 			// collapse search view
 			if(this.mMenuItemSearch != null)
 				this.mMenuItemSearch.collapseActionView();
 			
-			if(this.postsApi != null)
+			if(this.mPostsApi != null)
 			{
-				this.postsApi.clear();
+				this.mPostsApi.clear();
 				this.getSupportActionBar().setSubtitle(v.getText());
 				String[] tags = v.getText().toString().split("\\s+");
 				for(String tag : tags)
 				{
-					this.postsApi.putTag(tag);
+					this.mPostsApi.putTag(tag);
 				}
-				this.postsApi.request();
+				this.mPostsApi.request();
 			}
 			return true;
 		}
@@ -289,13 +296,16 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 		if(f instanceof PostsSectionFragment)
 		{
 			// this should fix the NPE caused when rotating the device
-			if(this.postsApi == null)
-				this.postsApi = CartonBox.getInstance().getApis().getImageboardPosts();
-			return this.postsApi;
+			if(this.mPostsApi == null)
+				this.mPostsApi = CartonBox.getInstance().getApis().getImageboardPosts();
+			return this.mPostsApi;
 		}
 		
 		if(f instanceof TagsSectionFragment)
 		{
+			if(this.mTagsApi == null)
+				this.mTagsApi = CartonBox.getInstance().getApis().getImageboardTags();
+			return this.mTagsApi;
 		}
 		
 		return null;
@@ -321,13 +331,14 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 	public void onFinishEditLogin(String username, String password)
 	{
 		//Toast.makeText(this, String.format("username:%s password:%s", username, password), Toast.LENGTH_SHORT).show();
-		if(this.postsApi != null)
+		if(this.mPostsApi != null)
 		{
-			this.postsApi.setUsername(username);
-			this.postsApi.setPassword(password);
-			this.postsApi.request();
+			this.mPostsApi.setUsername(username);
+			this.mPostsApi.setPassword(password);
+			this.mPostsApi.request();
+			this.mTagsApi.request();
 			
-			String prefsName = String.valueOf(this.postsApi.getSite().getId());
+			String prefsName = String.valueOf(this.mPostsApi.getSite().getId());
 			
 			SharedPreferences sitePrefs = this.getSharedPreferences(prefsName, 0);
 			

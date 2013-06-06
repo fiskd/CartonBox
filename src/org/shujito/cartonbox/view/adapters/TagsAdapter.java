@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.shujito.cartonbox.R;
+import org.shujito.cartonbox.controller.listeners.OnTagsFetchedListener;
 import org.shujito.cartonbox.model.Tag;
 import org.shujito.cartonbox.view.FilterCallback;
 import org.shujito.cartonbox.view.TagsFilter;
@@ -18,31 +19,31 @@ import android.widget.Filterable;
 import android.widget.TextView;
 
 public class TagsAdapter extends BaseAdapter
-	implements Filterable, FilterCallback<List<Tag>>
+	implements OnTagsFetchedListener, Filterable, FilterCallback<List<Tag>>
 {
 	Filter filter = null;
 	Context context = null;
-	List<Tag> things = null;
+	List<Tag> tags = null;
 	
 	public TagsAdapter(Context context)
 	{
 		this.context = context;
-		this.things = new ArrayList<Tag>();
+		this.tags = new ArrayList<Tag>();
 	}
 	
 	@Override
 	public int getCount()
 	{
 		// number of entries
-		if(this.things != null)
-			return this.things.size();
+		if(this.tags != null)
+			return this.tags.size();
 		return 0;
 	}
 	
 	@Override
 	public Object getItem(int pos)
 	{
-		Tag tag = this.things.get(pos);
+		Tag tag = this.tags.get(pos);
 		if(tag != null)
 		{
 			// returns the tag name instead of the tags object's tostring value
@@ -50,14 +51,14 @@ public class TagsAdapter extends BaseAdapter
 		}
 		return null;
 	}
-
+	
 	@Override
 	public long getItemId(int pos)
 	{
 		// why do we need this?
-		return this.things.get(pos).hashCode();
+		return this.tags.get(pos).hashCode();
 	}
-
+	
 	@Override
 	public View getView(int pos, View v, ViewGroup dad)
 	{
@@ -68,7 +69,7 @@ public class TagsAdapter extends BaseAdapter
 		}
 		
 		// ah, there we go...
-		Tag tag = this.things.get(pos);
+		Tag tag = this.tags.get(pos);
 		
 		((TextView)v.findViewById(R.id.tag_item_tvname)).setText(tag.getName());
 		((TextView)v.findViewById(R.id.tag_item_tvcount)).setText(String.valueOf(tag.getCount()));
@@ -84,11 +85,18 @@ public class TagsAdapter extends BaseAdapter
 			this.filter = new TagsFilter(this);
 		return this.filter;
 	}
-
+	
 	@Override
 	public void onFilter(List<Tag> result)
 	{
-		this.things = result;
+		this.tags = result;
+		this.notifyDataSetChanged();
+	}
+	
+	@Override
+	public void onTagsFetchedListener(List<Tag> tags)
+	{
+		this.tags = tags;
 		this.notifyDataSetChanged();
 	}
 }
