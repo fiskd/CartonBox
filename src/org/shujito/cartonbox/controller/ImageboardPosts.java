@@ -159,6 +159,7 @@ public abstract class ImageboardPosts extends Imageboard implements
 				
 				Logger.i("Imageboard::requestPosts", "Request job, page " + this.page);
 				this.downloader = this.createDownloader();
+				this.downloader.setOnErrorListener(this);
 				this.downloader.execute();
 				//ConcurrentTask.execute(this.downloader);
 				this.working = true;
