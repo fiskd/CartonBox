@@ -1,6 +1,6 @@
 package org.shujito.cartonbox.controller;
 
-import org.shujito.cartonbox.model.parser.DanbooruJsonPostParser;
+import org.shujito.cartonbox.model.parser.DanbooruJsonTagsParser;
 import org.shujito.cartonbox.model.parser.JsonParser;
 
 public class DanbooruJsonTagDownloader extends JsonDownloader
@@ -13,6 +13,6 @@ public class DanbooruJsonTagDownloader extends JsonDownloader
 	@Override
 	protected JsonParser<?> parse(String s) throws Exception
 	{
-		return new DanbooruJsonPostParser(s);
+		return new DanbooruJsonTagsParser(s);
 	}
 }

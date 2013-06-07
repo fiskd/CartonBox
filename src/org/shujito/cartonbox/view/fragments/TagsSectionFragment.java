@@ -6,10 +6,12 @@ import org.shujito.cartonbox.Logger;
 import org.shujito.cartonbox.R;
 import org.shujito.cartonbox.controller.ImageboardTags;
 import org.shujito.cartonbox.controller.listeners.OnErrorListener;
-import org.shujito.cartonbox.controller.listeners.OnFragmentAttachedListener;
+import org.shujito.cartonbox.controller.listeners.OnRequestListener;
 import org.shujito.cartonbox.controller.listeners.OnTagsFetchedListener;
 import org.shujito.cartonbox.model.Tag;
 import org.shujito.cartonbox.view.adapters.TagsAdapter;
+import org.shujito.cartonbox.view.listeners.OnFragmentAttachedListener;
+import org.shujito.cartonbox.view.listeners.TagListItemSelectedCallback;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -23,11 +25,13 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-public class TagsSectionFragment extends Fragment
-	implements OnItemClickListener, OnErrorListener, OnTagsFetchedListener
+public class TagsSectionFragment extends Fragment implements
+	OnItemClickListener, OnErrorListener, OnTagsFetchedListener,
+	OnRequestListener
 {
 	/* Listeners */
 	OnFragmentAttachedListener onFragmentAttachedListener = null;
+	TagListItemSelectedCallback tagListItemSelectedCallback = null;
 	
 	/* Fields */
 	ImageboardTags tagsApi = null;
@@ -44,14 +48,16 @@ public class TagsSectionFragment extends Fragment
 	{
 		Logger.i("TagsSectionFragment::onAttach", "overly attached fragment");
 		super.onAttach(activity);
+		
 		try
-		{
-			this.onFragmentAttachedListener = (OnFragmentAttachedListener)activity;
-		}
+		{ this.onFragmentAttachedListener = (OnFragmentAttachedListener)activity; }
 		catch(Exception ex)
-		{
-			Logger.e("TagsSectionFragment::onAttach", "Couldn't get listener from the activity this is attached to");
-		}
+		{ Logger.e("TagsSectionFragment::onAttach", "Couldn't get OnFragmentAttachedListener from the activity this fragment is attached to"); }
+		
+		try
+		{ this.tagListItemSelectedCallback = (TagListItemSelectedCallback)activity; }
+		catch(Exception ex)
+		{ Logger.e("TagsSectionFragment::onAttach", "Couldn't get TagListItemSelectedCallback from the activity this fragment is attached to"); }
 	}
 	
 	@Override
@@ -98,6 +104,7 @@ public class TagsSectionFragment extends Fragment
 		super.onResume();
 		if(this.tagsApi != null)
 		{
+			this.tagsApi.addOnRequestListener(this);
 			this.tagsApi.addOnErrorListener(this);
 			this.tagsApi.addOnTagsFetchedListeners(this.mTagsAdapter);
 			this.tagsApi.addOnTagsFetchedListeners(this);
@@ -113,6 +120,7 @@ public class TagsSectionFragment extends Fragment
 		super.onPause();
 		if(this.tagsApi != null)
 		{
+			this.tagsApi.removeOnRequestListener(this);
 			this.tagsApi.removeOnErrorListener(this);
 			this.tagsApi.removeOnTagsFetchedListeners(this.mTagsAdapter);
 			this.tagsApi.removeOnTagsFetchedListeners(this);
@@ -126,6 +134,7 @@ public class TagsSectionFragment extends Fragment
 		// get rid of these things
 		this.tagsApi = null;
 		this.onFragmentAttachedListener = null;
+		this.tagListItemSelectedCallback = null;
 	}
 	
 	/* OnTagsFetchedListener methods */
@@ -144,10 +153,17 @@ public class TagsSectionFragment extends Fragment
 	public void onItemClick(AdapterView<?> dad, View v, int pos, long id)
 	{
 		// TODO: talk with the activity
+		//Toast.makeText(this.getActivity(), this.mTagsAdapter.getItem(pos).toString(), Toast.LENGTH_SHORT).show();
+		String tag = this.mTagsAdapter.getItem(pos).toString();
+		if(this.tagListItemSelectedCallback != null)
+		{
+			this.tagListItemSelectedCallback.tagListItemSelected(tag);
+		}
 	}
 	/* OnItemClickListener methods */
 	
-	/* OnErrorListener methods */	@Override
+	/* OnErrorListener methods */
+	@Override
 	public void onTagsFetchedListener(List<Tag> tags)
 	{
 		this.mLvTags.setVisibility(View.VISIBLE);
@@ -162,4 +178,15 @@ public class TagsSectionFragment extends Fragment
 		}
 	}
 	/* OnErrorListener methods */
+
+	@Override
+	public void onRequest()
+	{
+		if(this.mLvTags != null)
+			this.mLvTags.setVisibility(View.GONE);
+		if(this.mPbProgress != null)
+			this.mPbProgress.setVisibility(View.VISIBLE);
+		if(this.mTvMessage != null)
+			this.mTvMessage.setVisibility(View.GONE);
+	}
 }

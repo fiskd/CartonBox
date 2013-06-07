@@ -1,4 +1,4 @@
-package org.shujito.cartonbox.controller.listeners;
+package org.shujito.cartonbox.view.listeners;
 
 import android.support.v4.app.Fragment;
 

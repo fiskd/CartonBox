@@ -18,7 +18,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
-import android.preference.EditTextPreference;
+import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceCategory;
@@ -123,8 +123,8 @@ public class PreferencesFragment extends PreferenceFragment implements
 	
 	void displayCacheSizeSummary()
 	{
-		EditTextPreference etpCacheSize = (EditTextPreference)this.findPreference(this.getString(R.string.pref_general_cachesize_key));
-		etpCacheSize.setSummary(this.getString(R.string.pref_general_cachesize_desc, etpCacheSize.getText()));
+		ListPreference etpCacheSize = (ListPreference)this.findPreference(this.getString(R.string.pref_general_cachesize_key));
+		etpCacheSize.setSummary(this.getString(R.string.pref_general_cachesize_desc, etpCacheSize.getValue()));
 	}
 	
 	void displayClearCacheSummary()

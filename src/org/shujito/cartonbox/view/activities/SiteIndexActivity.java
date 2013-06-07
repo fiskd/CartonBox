@@ -6,7 +6,6 @@ import org.shujito.cartonbox.R;
 import org.shujito.cartonbox.controller.ImageboardPosts;
 import org.shujito.cartonbox.controller.ImageboardTags;
 import org.shujito.cartonbox.controller.listeners.OnErrorListener;
-import org.shujito.cartonbox.controller.listeners.OnFragmentAttachedListener;
 import org.shujito.cartonbox.utils.Preferences;
 import org.shujito.cartonbox.view.SpaceTokenizer;
 import org.shujito.cartonbox.view.adapters.SiteIndexPageAdapter;
@@ -15,6 +14,8 @@ import org.shujito.cartonbox.view.fragments.LoginDialogFragment;
 import org.shujito.cartonbox.view.fragments.LoginDialogFragment.LoginDialogCallback;
 import org.shujito.cartonbox.view.fragments.PostsSectionFragment;
 import org.shujito.cartonbox.view.fragments.TagsSectionFragment;
+import org.shujito.cartonbox.view.listeners.OnFragmentAttachedListener;
+import org.shujito.cartonbox.view.listeners.TagListItemSelectedCallback;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -40,7 +41,7 @@ import com.actionbarsherlock.view.MenuItem.OnActionExpandListener;
 
 public class SiteIndexActivity extends SherlockFragmentActivity implements
 	OnPageChangeListener, TabListener, OnActionExpandListener, OnEditorActionListener,
-	OnFragmentAttachedListener, OnErrorListener, LoginDialogCallback
+	OnFragmentAttachedListener, TagListItemSelectedCallback, OnErrorListener, LoginDialogCallback
 {
 	public static String EXTRA_SECTIONPAGE = "org.shujito.cartonbox.SECTIONPAGE";
 	
@@ -53,6 +54,8 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 	String[] tabs = null;
 	ImageboardPosts mPostsApi = null;
 	ImageboardTags mTagsApi = null;
+	//
+	boolean dialogShowing = false;
 	
 	@Override
 	protected void onCreate(Bundle cirno)
@@ -82,6 +85,12 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 			this.getSupportActionBar().addTab(tab);
 		}
 		
+		int sectionid = this.getIntent().getIntExtra(EXTRA_SECTIONPAGE, 0);
+		int page = this.findPage(sectionid);
+		if(page > 0)
+			this.mVpSections.setCurrentItem(page);
+		
+		/*
 		int page = 0;
 		int sectionid = this.getIntent().getIntExtra(EXTRA_SECTIONPAGE, 0);
 		
@@ -99,6 +108,30 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 			
 			this.mVpSections.setCurrentItem(page);
 		}
+		//*/
+	}
+	
+	protected int findPage(int resid)
+	{
+		String sectionString = null;
+		try
+		{
+			sectionString = this.getResources().getString(resid);
+		}
+		catch(Exception e)
+		{
+			return -1; // nothing
+		}
+		
+		for(int idx = 0; idx < this.tabs.length; idx++)
+		{
+			if(sectionString.equals(this.tabs[idx]))
+			{
+				return idx;
+			}
+		}
+		
+		return -1;
 	}
 	
 	@Override
@@ -127,8 +160,10 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 	protected void onPause()
 	{
 		super.onPause();
-		this.mPostsApi.removeOnErrorListener(this);
-		this.mTagsApi.removeOnErrorListener(this);
+		if(this.mPostsApi != null)
+			this.mPostsApi.removeOnErrorListener(this);
+		if(this.mTagsApi != null)
+			this.mTagsApi.removeOnErrorListener(this);
 		// TODO: save the query on the search box when changing to landscape/portrait
 	}
 	
@@ -211,7 +246,7 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 			this.mMenuItemSearch.collapseActionView();
 		
 		// clear text
-		// TODO: save this search somewhere for later use (might fix task at line 133)
+		// TODO: save this search somewhere for later use
 		if(this.mMactvQueryPosts != null)
 			this.mMactvQueryPosts.setText(null);
 		
@@ -266,24 +301,47 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 	{
 		if(action == EditorInfo.IME_ACTION_SEARCH)
 		{
-			// TODO: find current section page, do searches depending on the page
-			
 			// collapse search view
 			if(this.mMenuItemSearch != null)
 				this.mMenuItemSearch.collapseActionView();
 			
-			if(this.mPostsApi != null)
+			// find current section page, do searches depending on the page
+			int currentPage = this.mVpSections.getCurrentItem();
+			if(currentPage == this.findPage(R.string.section_tags))
 			{
-				this.mPostsApi.clear();
-				this.getSupportActionBar().setSubtitle(v.getText());
-				String[] tags = v.getText().toString().split("\\s+");
-				for(String tag : tags)
+				if(this.mTagsApi != null)
 				{
-					this.mPostsApi.putTag(tag);
+					// get text from query
+					String text = v.getText().toString();
+					if(text.length() > 0)
+					{
+						// replace spaces with asterisks
+						text = text.replace(' ', '*');
+						// prepend an asterisk
+						text = "*".concat(text);
+					}
+					text = text.concat("*");
+					
+					this.mTagsApi.clear();
+					this.mTagsApi.setQuery(text);
+					this.mTagsApi.request();
 				}
-				this.mPostsApi.request();
 			}
-			return true;
+			else if(currentPage == this.findPage(R.string.section_posts))
+			{
+				if(this.mPostsApi != null)
+				{
+					this.mPostsApi.clear();
+					//this.getSupportActionBar().setSubtitle(v.getText());
+					String[] tags = v.getText().toString().split("\\s+");
+					for(String tag : tags)
+					{
+						this.mPostsApi.putTag(tag);
+					}
+					this.mPostsApi.request();
+				}
+				return true;
+			}
 		}
 		return false;
 	}
@@ -312,6 +370,23 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 	}
 	/* OnFragmentAttachedListener methods */
 	
+	/* TagListItemSelectedCallback methods */
+	@Override
+	public void tagListItemSelected(String tag)
+	{
+		//this.mMactvQueryPosts.setText(tag);
+		
+		this.mPostsApi.clear();
+		this.mPostsApi.putTag(tag);
+		this.mPostsApi.request();
+		int page = this.findPage(R.string.section_posts);
+		if(page > 0)
+			this.mVpSections.setCurrentItem(page);
+		
+		//this.getSupportActionBar().setSubtitle(tag);
+	}
+	/* TagListItemSelectedCallback methods */
+	
 	/* OnErrorListener methods */
 	@Override
 	public void onError(int errCode, String message)
@@ -319,9 +394,14 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 		//Toast.makeText(this, message, Toast.LENGTH_LONG).show();
 		if(errCode == 403)
 		{
-			Logger.e("SiteIndexActivity::onError", message);
-			LoginDialogFragment login = new LoginDialogFragment();
-			login.show(this.getSupportFragmentManager(), LoginDialogFragment.TAG);
+			if(!this.dialogShowing)
+			{
+				Logger.e("SiteIndexActivity::onError", message);
+				LoginDialogFragment login = new LoginDialogFragment();
+				login.show(this.getSupportFragmentManager(), LoginDialogFragment.TAG);
+				this.dialogShowing = true;
+			}
+			
 		}
 	}
 	/* OnErrorListener methods */
@@ -336,6 +416,9 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 			this.mPostsApi.setUsername(username);
 			this.mPostsApi.setPassword(password);
 			this.mPostsApi.request();
+			
+			this.mTagsApi.setUsername(username);
+			this.mTagsApi.setPassword(password);
 			this.mTagsApi.request();
 			
 			String prefsName = String.valueOf(this.mPostsApi.getSite().getId());
@@ -346,6 +429,7 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 			sitePrefsEdit.putString(Preferences.SITE_USERNAME, username);
 			sitePrefsEdit.putString(Preferences.SITE_PASSWORD, password);
 			sitePrefsEdit.commit();
+			this.dialogShowing = false;
 		}
 	}
 	/* LoginDialogCallback methods */

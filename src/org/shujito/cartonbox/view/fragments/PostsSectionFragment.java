@@ -4,12 +4,12 @@ import org.shujito.cartonbox.Logger;
 import org.shujito.cartonbox.R;
 import org.shujito.cartonbox.controller.ImageboardPosts;
 import org.shujito.cartonbox.controller.listeners.OnErrorListener;
-import org.shujito.cartonbox.controller.listeners.OnFragmentAttachedListener;
 import org.shujito.cartonbox.controller.listeners.OnPostsFetchedListener;
 import org.shujito.cartonbox.controller.listeners.OnRequestListener;
 import org.shujito.cartonbox.model.Post;
 import org.shujito.cartonbox.view.activities.PostViewActivity;
 import org.shujito.cartonbox.view.adapters.PostsGridAdapter;
+import org.shujito.cartonbox.view.listeners.OnFragmentAttachedListener;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -121,7 +121,7 @@ public class PostsSectionFragment extends Fragment implements
 			this.postsApi.addOnErrorListener(this);
 			this.postsApi.addOnPostsFetchedListener(this.mPostsAdapter);
 			this.postsApi.addOnPostsFetchedListener(this);
-			this.postsApi.addOnPostsRequestListener(this);
+			this.postsApi.addOnRequestListener(this);
 		}
 	}
 	
@@ -136,7 +136,7 @@ public class PostsSectionFragment extends Fragment implements
 			this.postsApi.removeOnErrorListener(this);
 			this.postsApi.removeOnPostsFetchedListener(this.mPostsAdapter);
 			this.postsApi.removeOnPostsFetchedListener(this);
-			this.postsApi.removeOnPostsRequestListener(this);
+			this.postsApi.removeOnRequestListener(this);
 		}
 		// disable scroll loading (remove listener)
 		
@@ -230,6 +230,11 @@ public class PostsSectionFragment extends Fragment implements
 			this.mTvMessage.setVisibility(View.VISIBLE);
 			this.mTvMessage.setText(R.string.no_posts);
 		}
+		
+		if(posts != null && (this.postsApi.getPostsPerPage() >= posts.size()))
+		{
+			this.mGvPosts.smoothScrollToPosition(0);
+		}
 	}
 	/* OnPostsFetchedListener methods */
 	
@@ -244,6 +249,8 @@ public class PostsSectionFragment extends Fragment implements
 				this.mGvPosts.setVisibility(View.GONE);
 			if(this.mPbProgress != null)
 				this.mPbProgress.setVisibility(View.VISIBLE);
+			if(this.mTvMessage != null)
+				this.mTvMessage.setVisibility(View.GONE);
 		}
 	}
 	/* OnPostsRequestedListener methods */

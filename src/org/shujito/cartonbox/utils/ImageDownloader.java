@@ -19,6 +19,20 @@ import android.os.Environment;
 
 public class ImageDownloader extends AsyncTask<Void, Float, Bitmap>
 {
+	/* static */
+	private static boolean cachingToExternal;
+	
+	public static void setCachingToExternal(boolean cacheToExternal)
+	{
+		cachingToExternal = cacheToExternal;
+	}
+	
+	public static boolean isCachingToExternal()
+	{
+		return cachingToExternal;
+	}
+	
+	
 	/* listeners */
 	
 	private OnImageFetchedListener onImageFetchedListener = null;
@@ -38,7 +52,6 @@ public class ImageDownloader extends AsyncTask<Void, Float, Bitmap>
 	
 	private String url = null;
 	private Context context = null;
-	private boolean cachingToExternal;
 	private boolean alreadyExecuted;
 	
 	int width, height;
@@ -60,11 +73,6 @@ public class ImageDownloader extends AsyncTask<Void, Float, Bitmap>
 	
 	/* setters */
 	
-	public void setCachingToExternal(boolean cacheToExternal)
-	{
-		this.cachingToExternal = cacheToExternal;
-	}
-	
 	public void setWidth(int width)
 	{
 		this.width = width;
@@ -76,11 +84,6 @@ public class ImageDownloader extends AsyncTask<Void, Float, Bitmap>
 	}
 	
 	/* are's */
-	
-	public boolean isCachingToExternal()
-	{
-		return this.cachingToExternal;
-	}
 	
 	public boolean isAlreadyExecuted()
 	{
@@ -129,7 +132,7 @@ public class ImageDownloader extends AsyncTask<Void, Float, Bitmap>
 		{
 			// cache dir to write into
 			File cacheDir = this.context.getCacheDir();
-			if(this.cachingToExternal)
+			if(cachingToExternal)
 			{
 				// should be rw
 				if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED))

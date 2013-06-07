@@ -159,9 +159,8 @@ public abstract class ImageboardPosts extends Imageboard implements
 				
 				Logger.i("Imageboard::requestPosts", "Request job, page " + this.page);
 				this.downloader = this.createDownloader();
-				this.downloader.setOnErrorListener(this);
+				//this.downloader.setOnErrorListener(this);
 				this.downloader.execute();
-				//ConcurrentTask.execute(this.downloader);
 				this.working = true;
 			}
 		}
@@ -193,15 +192,11 @@ public abstract class ImageboardPosts extends Imageboard implements
 		
 		url.append("?");
 		
-		if(this.username != null)
+		if(this.username != null && this.password != null)
 		{
 			url.append(String.format(API_LOGIN, this.username));
 			url.append("&");
-		}
-		if(this.password != null)
-		{
 			url.append(String.format(API_PASSWORD_HASH, this.password));
-			//url.append(String.format(API_KEY, this.password));
 			url.append("&");
 		}
 		

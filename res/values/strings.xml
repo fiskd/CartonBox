@@ -48,7 +48,7 @@
 	<string name="pref_general">General</string>
 	<string name="pref_general_cacheexternal">Cache to SD/External</string>
 	<string name="pref_general_cachesize">Maximum cache size</string>
-	<string name="pref_general_cachesize_desc">Current is %s MB</string>
+	<string name="pref_general_cachesize_desc">Current is %s</string>
 	<string name="pref_general_clearcache">Clear cache</string>
 	<string name="pref_general_clearcache_desc">Cache uses %s</string>
 	<string name="pref_general_clearcache_desc_empty">Cache is empty</string>
@@ -69,8 +69,8 @@
 	<string name="pref_blacklist_tags">Tags list</string>
 	<string name="pref_blacklist_tags_desc">Images of posts\' containing these tags are not loaded.</string>
 	<string name="pref_blacklist_hide">Hide posts from grid</string>
-	<string name="pref_blacklist_hide_desc_on">Posts are completely hidden from view</string>
-	<string name="pref_blacklist_hide_desc_off">Posts are shown normally</string>
+	<string name="pref_blacklist_hide_desc_on">Filtered posts are not visible</string>
+	<string name="pref_blacklist_hide_desc_off">Filtered posts are shown normally</string>
 	
 	<string name="pref_ratings">Ratings filter</string>
 	<string name="pref_ratings_todisplay">Ratings to display</string>
@@ -81,8 +81,8 @@
 	<string name="pref_ratings_todisplay_explicit">Explicit</string>
 	
 	<string name="pref_ratings_hide">Hide posts from grid</string>
-	<string name="pref_ratings_hide_desc_on">Posts are completely hidden from view</string>
-	<string name="pref_ratings_hide_desc_off">Posts are shown normally</string>
+	<string name="pref_ratings_hide_desc_on">Filtered posts are not visible</string>
+	<string name="pref_ratings_hide_desc_off">Filtered posts are shown normally</string>
 	
 	<string name="section_posts">Posts</string>
 	<string name="section_pools">Pools</string>

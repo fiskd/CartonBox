@@ -14,7 +14,6 @@ import org.shujito.cartonbox.model.Site;
 import org.shujito.cartonbox.model.parser.JsonParser;
 
 public abstract class Imageboard implements
-	OnErrorListener,
 	OnAccessDeniedListener,
 	OnInternalServerErrorListener
 {
@@ -32,7 +31,7 @@ public abstract class Imageboard implements
 	List<OnRequestListener> onRequestListeners = null;
 	List<OnErrorListener> onErrorListeners = null;
 
-	public void addOnPostsRequestListener(OnRequestListener l)
+	public void addOnRequestListener(OnRequestListener l)
 	{
 		if(this.onRequestListeners == null)
 			this.onRequestListeners = new ArrayList<OnRequestListener>();
@@ -45,7 +44,7 @@ public abstract class Imageboard implements
 		this.onErrorListeners.add(l);
 	}
 	
-	public void removeOnPostsRequestListener(OnRequestListener l)
+	public void removeOnRequestListener(OnRequestListener l)
 	{
 		if(this.onRequestListeners == null)
 			this.onRequestListeners = new ArrayList<OnRequestListener>();
@@ -133,20 +132,6 @@ public abstract class Imageboard implements
 	}
 	
 	/* meth */
-
-	@Override
-	public void onError(int errCode, String message)
-	{
-		if(this.onErrorListeners != null)
-		{
-			for(OnErrorListener l : this.onErrorListeners)
-			{
-				l.onError(errCode, message);
-			}
-		}
-		
-		this.working = false;
-	}
 	
 	@Override
 	public void onAccessDenied()

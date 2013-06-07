@@ -24,14 +24,10 @@ public class GeneralPreferencesActivity extends SherlockPreferenceActivity
 		}
 		else
 		{
-			this.getFragmentManager().beginTransaction().replace(android.R.id.content, new PreferencesFragment()).commit();
+			PreferencesFragment pfrag = new PreferencesFragment();
+			// oh, this fixes the orientation crash
+			pfrag.setRetainInstance(true);
+			this.getFragmentManager().beginTransaction().replace(android.R.id.content, pfrag).commit();
 		}
-	}
-	
-	@Override
-	protected void onDestroy()
-	{
-		super.onDestroy();
-		
 	}
 }

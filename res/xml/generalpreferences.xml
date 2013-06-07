@@ -8,17 +8,19 @@
 		<CheckBoxPreference
 			android:key="@string/pref_general_cacheexternal_key"
 			android:title="@string/pref_general_cacheexternal"
-			android:defaultValue="true" />
+			android:defaultValue="false" />
 		<CheckBoxPreference
 			android:key="@string/pref_general_clearcacheonstartup_key"
 			android:title="@string/pref_general_clearcacheonstartup"
 			android:defaultValue="false" />
-		<EditTextPreference
+		<ListPreference
+			android:enabled="false"
 			android:key="@string/pref_general_cachesize_key"
 			android:title="@string/pref_general_cachesize"
 			android:summary="@string/pref_general_cachesize_desc"
-			android:defaultValue="100"
-			android:inputType="number" />
+			android:entries="@array/pref_general_cachesize_entries"
+			android:entryValues="@array/pref_general_cachesize_values"
+			android:defaultValue="64" />
 		<Preference
 			android:key="@string/pref_general_clearcache_key"
 			android:title="@string/pref_general_clearcache"
@@ -75,11 +77,6 @@
 	</PreferenceCategory>
 	<PreferenceCategory
 		android:title="@string/pref_ratings" >
-		<!--
-		<MultiSelectListPreference
-			android:title="@string/pref_ratings_todisplay"
-			android:summary="@string/pref_ratings_todisplay_desc" />
-		-->
 		<PreferenceScreen
 			android:title="@string/pref_ratings_todisplay"
 			android:summary="@string/pref_ratings_todisplay_desc" >

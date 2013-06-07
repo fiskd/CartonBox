@@ -18,7 +18,7 @@ import org.shujito.cartonbox.model.parser.JsonParser;
 // step 2b: download
 // step 3: give result
 // step 4: gather tags
-public class ImageboardTags extends Imageboard implements
+public abstract class ImageboardTags extends Imageboard implements
 	OnResponseReceivedListener
 {
 	/* listener */
@@ -37,20 +37,31 @@ public class ImageboardTags extends Imageboard implements
 		this.onTagsFetchedListeners.remove(l);
 	}
 	
+	/* Fields */
+	String query = null;
+	
+	/* Constructor */
+	
 	public ImageboardTags(Site site)
 	{
 		super(site);
 	}
 	
-	@Override
-	protected Downloader<?> createDownloader()
+	/* Getters */
+	
+	public void setQuery(String query)
 	{
-		JsonDownloader downloader = new DanbooruJsonTagDownloader(null);
-		downloader.setOnResponseReceivedListener(this);
-		downloader.setOnAccessDeniedListener(this);
-		downloader.setOnInternalServerErrorListener(this);
-		return downloader;
+		this.query = query;
 	}
+	
+	/* Setters */
+	
+	public String getQuery()
+	{
+		return this.query;
+	}
+	
+	/* Meth */
 	
 	@Override
 	public void clear()
@@ -75,6 +86,7 @@ public class ImageboardTags extends Imageboard implements
 			}
 			
 			this.downloader = this.createDownloader();
+			//this.downloader.setOnErrorListener(this);
 			this.downloader.execute();
 			this.working = true;
 		}
@@ -85,18 +97,14 @@ public class ImageboardTags extends Imageboard implements
 		StringBuilder url = new StringBuilder();
 		
 		url.append(this.site.getUrl());
-		url.append(this.site.getPostsApi());
+		url.append(this.site.getTagsApi());
 		
 		url.append("?");
 		
-		if(this.username != null)
+		if(this.username != null && this.password != null)
 		{
 			url.append(String.format(API_LOGIN, this.username));
 			url.append("&");
-		}
-		
-		if(this.password != null)
-		{
 			url.append(String.format(API_PASSWORD_HASH, this.password));
 			url.append("&");
 		}

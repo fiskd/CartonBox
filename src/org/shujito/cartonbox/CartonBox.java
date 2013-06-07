@@ -36,6 +36,7 @@ public class CartonBox extends Application
 		// detect adb
 		int adb = 0;
 		
+		// gotta love legacy support and backwards compatibility
 		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1)
 			adb = Settings.Secure.getInt(this.getContentResolver(), Settings.Global.ADB_ENABLED, 0);
 		else

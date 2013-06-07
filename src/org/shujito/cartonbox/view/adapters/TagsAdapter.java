@@ -1,5 +1,6 @@
 package org.shujito.cartonbox.view.adapters;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,8 +72,10 @@ public class TagsAdapter extends BaseAdapter
 		// ah, there we go...
 		Tag tag = this.tags.get(pos);
 		
+		DecimalFormat formatter = new DecimalFormat("#,###");
+		
 		((TextView)v.findViewById(R.id.tag_item_tvname)).setText(tag.getName());
-		((TextView)v.findViewById(R.id.tag_item_tvcount)).setText(String.valueOf(tag.getCount()));
+		((TextView)v.findViewById(R.id.tag_item_tvcount)).setText(formatter.format(tag.getCount()));
 		
 		return v;
 	}

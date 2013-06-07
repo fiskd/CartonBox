@@ -10,7 +10,6 @@ import android.annotation.TargetApi;
 import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.os.AsyncTask;
-import android.os.AsyncTask.Status;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -218,23 +217,17 @@ public class PostViewFragment extends Fragment
 		//*
 		if(this.thumbDownloader != null)
 		{
-			if(this.thumbDownloader.getStatus() == Status.RUNNING)
-			{
-				this.thumbDownloader.setOnDownloadProgressListener(null);
-				this.thumbDownloader.setOnImageFetchedListener(null);
-				this.thumbDownloader.cancel(true);
-			}
+			this.thumbDownloader.setOnDownloadProgressListener(null);
+			this.thumbDownloader.setOnImageFetchedListener(null);
+			this.thumbDownloader.cancel(true);
 		}
 		this.thumbDownloader = null;
 		
 		if(this.sampleDownloader != null)
 		{
-			if(this.sampleDownloader.getStatus() == Status.RUNNING)
-			{
-				this.sampleDownloader.setOnDownloadProgressListener(null);
-				this.sampleDownloader.setOnImageFetchedListener(null);
-				this.sampleDownloader.cancel(true);
-			}
+			this.sampleDownloader.setOnDownloadProgressListener(null);
+			this.sampleDownloader.setOnImageFetchedListener(null);
+			this.sampleDownloader.cancel(true);
 		}
 		this.sampleDownloader = null;
 		//*/
