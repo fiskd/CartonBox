@@ -7,9 +7,7 @@ import org.shujito.cartonbox.controller.ImageboardPosts;
 import org.shujito.cartonbox.controller.ImageboardTags;
 import org.shujito.cartonbox.controller.listeners.OnErrorListener;
 import org.shujito.cartonbox.utils.Preferences;
-import org.shujito.cartonbox.view.SpaceTokenizer;
 import org.shujito.cartonbox.view.adapters.SiteIndexPageAdapter;
-import org.shujito.cartonbox.view.adapters.TagsAdapter;
 import org.shujito.cartonbox.view.fragments.LoginDialogFragment;
 import org.shujito.cartonbox.view.fragments.LoginDialogFragment.LoginDialogCallback;
 import org.shujito.cartonbox.view.fragments.PostsSectionFragment;
@@ -25,8 +23,11 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.KeyEvent;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ImageButton;
 import android.widget.MultiAutoCompleteTextView;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
@@ -40,8 +41,10 @@ import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.MenuItem.OnActionExpandListener;
 
 public class SiteIndexActivity extends SherlockFragmentActivity implements
-	OnPageChangeListener, TabListener, OnActionExpandListener, OnEditorActionListener,
-	OnFragmentAttachedListener, TagListItemSelectedCallback, OnErrorListener, LoginDialogCallback
+	OnPageChangeListener, TabListener, OnActionExpandListener,
+	OnEditorActionListener, OnFragmentAttachedListener,
+	TagListItemSelectedCallback, OnErrorListener,
+	LoginDialogCallback, OnClickListener
 {
 	public static String EXTRA_SECTIONPAGE = "org.shujito.cartonbox.SECTIONPAGE";
 	
@@ -49,7 +52,7 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 	ViewPager mVpSections = null;
 	MenuItem mMenuItemSearch = null;
 	MultiAutoCompleteTextView mMactvQueryPosts = null;
-	TagsAdapter mTagsAdapter = null;
+	ImageButton mBtnClearQuery = null;
 	// tab titles
 	String[] tabs = null;
 	ImageboardPosts mPostsApi = null;
@@ -188,8 +191,13 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 				.getActionView()
 				.findViewById(R.id.actionsearch_mactvqueryposts);
 		this.mMactvQueryPosts.setOnEditorActionListener(this);
-		this.mMactvQueryPosts.setAdapter(new TagsAdapter(this));
-		this.mMactvQueryPosts.setTokenizer(new SpaceTokenizer());
+		//this.mMactvQueryPosts.setAdapter(new TagsAdapter(this));
+		//this.mMactvQueryPosts.setTokenizer(new SpaceTokenizer());
+		
+		this.mBtnClearQuery = (ImageButton)this.mMenuItemSearch
+				.getActionView()
+				.findViewById(R.id.actionsearch_btnclearquery);
+		this.mBtnClearQuery.setOnClickListener(this);
 		
 		return true;
 	}
@@ -311,19 +319,8 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 			{
 				if(this.mTagsApi != null)
 				{
-					// get text from query
-					String text = v.getText().toString();
-					if(text.length() > 0)
-					{
-						// replace spaces with asterisks
-						text = text.replace(' ', '*');
-						// prepend an asterisk
-						text = "*".concat(text);
-					}
-					text = text.concat("*");
-					
 					this.mTagsApi.clear();
-					this.mTagsApi.setQuery(text);
+					this.mTagsApi.setQuery(v.getText().toString());
 					this.mTagsApi.request();
 				}
 			}
@@ -433,5 +430,14 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 		}
 	}
 	/* LoginDialogCallback methods */
+	
+	@Override
+	public void onClick(View v)
+	{
+		if(v.equals(this.mBtnClearQuery))
+		{
+			this.mMactvQueryPosts.getText().clear();
+		}
+	}
 }
 

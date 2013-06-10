@@ -74,7 +74,29 @@ public class TagsAdapter extends BaseAdapter
 		
 		DecimalFormat formatter = new DecimalFormat("#,###");
 		
+		int color = 0;
+		
+		switch(tag.getCategory())
+		{
+			case General:
+				color = 0xFF50C0E9;
+				break;
+			case Artist:
+				color = 0xFFC182E0;
+				break;
+			case Copyright:
+				color = 0xFFFF5F5F;
+				break;
+			case Character:
+				color = 0xFF99CC00;
+				break;
+			default:
+				color = 0xFF000000;
+				break;
+		}
+		
 		((TextView)v.findViewById(R.id.tag_item_tvname)).setText(tag.getName());
+		((TextView)v.findViewById(R.id.tag_item_tvname)).setTextColor(color);
 		((TextView)v.findViewById(R.id.tag_item_tvcount)).setText(formatter.format(tag.getCount()));
 		
 		return v;

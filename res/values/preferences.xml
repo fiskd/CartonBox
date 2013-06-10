@@ -41,6 +41,7 @@
 	</integer-array>
 	-->
 	
+	<string name="pref_sites_key">org.shujito.cartonbox.pref_sites_key</string>
 	<string name="pref_general_cacheexternal_key">org.shujito.cartonbox.pref_general_cacheexternal_key</string>
 	<string name="pref_general_clearcacheonstartup_key">org.shujito.cartonbox.pref_general_clearcacheonstartup_key</string>
 	<string name="pref_general_cachesize_key">org.shujito.cartonbox.pref_general_cachesize_key</string>

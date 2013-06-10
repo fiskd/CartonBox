@@ -2,7 +2,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 	<PreferenceCategory
 		android:title="@string/pref_sites"
-		android:key="@string/pref_sites" />
+		android:key="@string/pref_sites_key" />
 	<PreferenceCategory
 		android:title="@string/pref_general" >
 		<CheckBoxPreference
@@ -26,6 +26,12 @@
 			android:title="@string/pref_general_clearcache"
 			android:summary="@string/pref_general_clearcache_desc"
 			android:enabled="false" />
+		<Preference
+			android:key="@string/pref_general_clearcache_key"
+			android:title="@string/pref_general_clearcache"
+			android:summary="@string/pref_general_clearcache_desc"
+			android:enabled="false" />
+		<!-- Clear External Cache -->
 	</PreferenceCategory>
 	<PreferenceCategory
 		android:title="@string/pref_content" >

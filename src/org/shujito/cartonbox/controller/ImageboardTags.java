@@ -51,7 +51,16 @@ public abstract class ImageboardTags extends Imageboard implements
 	
 	public void setQuery(String query)
 	{
-		this.query = query;
+		if(query != null && query.length() > 0)
+		{
+			// replace spaces with asterisks
+			query = query.replace(' ', '*');
+			// prepend an asterisk
+			query = "*".concat(query);
+		}
+		else query = "";
+		// set it
+		this.query = query.concat("*");
 	}
 	
 	/* Setters */
@@ -119,10 +128,8 @@ public abstract class ImageboardTags extends Imageboard implements
 		// place tags here
 		List<Tag> tags = new ArrayList<Tag>();
 		// iterate...
-		int index = 0;
-		while((tag = (Tag)jp.getAtIndex(index)) != null)
+		while((tag = (Tag)jp.getAtIndex(tags.size())) != null)
 		{
-			index++;
 			// we don't need anything complex here, we're just looking for tags
 			tags.add(tag);
 		}
