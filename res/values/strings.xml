@@ -57,6 +57,7 @@
 	
 	<string name="pref_content">Content</string>
 	<string name="pref_content_postsperpage">Posts per page</string>
+	<string name="pref_content_postsperpage_desc">Currently %s</string>
 	<string name="pref_content_poolsperpage">Pools per page</string>
 	<string name="pref_content_poolpostsperpage">Pool posts per page</string>
 	<string name="pref_content_localfilter">Local filtering</string>
@@ -69,8 +70,8 @@
 	<string name="pref_blacklist_tags">Tags list</string>
 	<string name="pref_blacklist_tags_desc">Images of posts\' containing these tags are not loaded.</string>
 	<string name="pref_blacklist_hide">Hide posts from grid</string>
-	<string name="pref_blacklist_hide_desc_on">Filtered posts are not visible</string>
-	<string name="pref_blacklist_hide_desc_off">Filtered posts are shown normally</string>
+	<string name="pref_blacklist_hide_desc_on">Blacklisted posts are not visible</string>
+	<string name="pref_blacklist_hide_desc_off">Blacklisted posts are shown normally</string>
 	
 	<string name="pref_ratings">Ratings filter</string>
 	<string name="pref_ratings_todisplay">Ratings to display</string>

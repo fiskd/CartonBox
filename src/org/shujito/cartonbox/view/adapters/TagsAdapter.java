@@ -90,8 +90,14 @@ public class TagsAdapter extends BaseAdapter
 			case Character:
 				color = 0xFF99CC00;
 				break;
+			case Other1: // circle/model
+				color = 0xFFFFD060;
+				break;
+			case Other2: // faults/photoset
+				color = 0xFFCCCCCC;
+				break;
 			default:
-				color = 0xFF000000;
+				color = 0xFFCCCCCC;
 				break;
 		}
 		

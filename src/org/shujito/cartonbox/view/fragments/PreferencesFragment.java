@@ -16,6 +16,7 @@ public class PreferencesFragment extends PreferenceFragment
 	{
 		super.onCreate(cirno);
 		this.addPreferencesFromResource(R.xml.generalpreferences);
+		// initialize on the activity
 		((GeneralPreferencesActivity)this.getActivity()).initializeFromFragment(this);
 	}
 }

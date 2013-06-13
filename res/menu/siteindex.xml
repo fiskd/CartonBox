@@ -7,10 +7,12 @@
 		android:showAsAction="always|collapseActionView"
 		android:actionLayout="@layout/actionsearch"
 		android:title="@string/search" />
+	<!--
 	<item
 		android:id="@+id/menu_siteindex_settings"
 		android:icon="@android:drawable/ic_menu_preferences"
 		android:showAsAction="ifRoom"
 		android:title="@string/settings" />
+	-->
 	
 </menu>

@@ -1,12 +1,21 @@
+# dot directory
 .*/
+# folders
 /libs/
 /bin/
 /gen/
 /proguard/
+
+# dot files
 .settings/
 .classpath
 .project
+
+# os cache files
+.DS_Store
 Thumbs.db
+
+# secret things
 lint.xml
 build.xml
 ant.properties

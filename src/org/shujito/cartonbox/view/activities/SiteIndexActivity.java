@@ -217,10 +217,12 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 			case R.id.menu_siteindex_search:
 				/* what to put here? */
 				return true;
+				/* // XXX: I should make another prefscreen for site related stuff
 			case R.id.menu_siteindex_settings:
 				Intent ntnPrefs = new Intent(this, GeneralPreferencesActivity.class);
 				this.startActivity(ntnPrefs);
 				return true;
+				//*/
 		}
 		
 		return super.onOptionsItemSelected(item);

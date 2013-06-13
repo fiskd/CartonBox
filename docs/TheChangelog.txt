@@ -1,0 +1,27 @@
+The Changelog
+
+I'm bad at making changelogs, I often forgot most of what I do since the last
+release, but there you go:
+
+0.4
+# second release
+
+
+0.2
+# initial (accidental) release
+- so far:
+	- engines
+		- danbooru 2.x
+		- danbooru 1.18.x
+		both supporting posts, tags, searching and danbooru2 authentication
+	- supported sites
+		- danbooru
+		- hijiribe (danbooru mirror)
+		- yande.re
+		- behoini (3DBooru)
+	- preferences are not complete, some options are broken and a couple ones
+	don't really work (eg blacklists)
+	- image loading and caching (external and internal cache)
+
+0.1
+# broken prerelease

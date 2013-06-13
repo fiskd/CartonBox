@@ -7,6 +7,7 @@ import org.shujito.cartonbox.R;
 import org.shujito.cartonbox.controller.DanbooruImageBoardPosts;
 import org.shujito.cartonbox.controller.DanbooruImageBoardTags;
 import org.shujito.cartonbox.controller.DanbooruOldImageBoardPosts;
+import org.shujito.cartonbox.controller.DanbooruOldImageBoardTags;
 import org.shujito.cartonbox.controller.ImageboardApis;
 import org.shujito.cartonbox.controller.ImageboardPosts;
 import org.shujito.cartonbox.controller.ImageboardTags;
@@ -123,7 +124,7 @@ public class MainActivity extends SherlockActivity implements OnItemClickListene
 		if(currentSite.getType() == Site.Type.Danbooru1)
 		{
 			postsApi = new DanbooruOldImageBoardPosts(currentSite);
-			
+			tagsApi =new DanbooruOldImageBoardTags(currentSite);
 		}
 		else if(currentSite.getType() == Site.Type.Danbooru2)
 		{

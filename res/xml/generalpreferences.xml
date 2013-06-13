@@ -13,31 +13,25 @@
 			android:key="@string/pref_general_clearcacheonstartup_key"
 			android:title="@string/pref_general_clearcacheonstartup"
 			android:defaultValue="false" />
-		<ListPreference
-			android:enabled="false"
+		<org.shujito.cartonbox.view.widget.UpdateableListPreference
 			android:key="@string/pref_general_cachesize_key"
 			android:title="@string/pref_general_cachesize"
 			android:summary="@string/pref_general_cachesize_desc"
 			android:entries="@array/pref_general_cachesize_entries"
 			android:entryValues="@array/pref_general_cachesize_values"
-			android:defaultValue="64" />
+			android:defaultValue="32" />
 		<Preference
 			android:key="@string/pref_general_clearcache_key"
 			android:title="@string/pref_general_clearcache"
-			android:summary="@string/pref_general_clearcache_desc"
-			android:enabled="false" />
-		<Preference
-			android:key="@string/pref_general_clearcache_key"
-			android:title="@string/pref_general_clearcache"
-			android:summary="@string/pref_general_clearcache_desc"
-			android:enabled="false" />
+			android:summary="@string/pref_general_clearcache_desc" />
 		<!-- Clear External Cache -->
 	</PreferenceCategory>
 	<PreferenceCategory
 		android:title="@string/pref_content" >
-		<ListPreference
+		<org.shujito.cartonbox.view.widget.UpdateableListPreference
 			android:key="@string/pref_content_postsperpage_key"
 			android:title="@string/pref_content_postsperpage"
+			android:summary="@string/pref_content_postsperpage_desc"
 			android:entries="@array/pref_content_pages"
 			android:entryValues="@array/pref_content_pages"
 			android:defaultValue="20" />

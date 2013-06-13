@@ -152,8 +152,6 @@ public class TagsSectionFragment extends Fragment implements
 	@Override
 	public void onItemClick(AdapterView<?> dad, View v, int pos, long id)
 	{
-		// TODO: talk with the activity
-		//Toast.makeText(this.getActivity(), this.mTagsAdapter.getItem(pos).toString(), Toast.LENGTH_SHORT).show();
 		String tag = this.mTagsAdapter.getItem(pos).toString();
 		if(this.tagListItemSelectedCallback != null)
 		{

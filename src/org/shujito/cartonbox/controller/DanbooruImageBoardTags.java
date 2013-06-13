@@ -34,7 +34,7 @@ public class DanbooruImageBoardTags extends ImageboardTags
 		url.append(String.format(API_TAGS_SORT, "count"));
 		url.append("&");
 		url.append(String.format(API_TAGS_HIDE_EMPTY, "yes"));
-		if(this.query != null && query.length() > 0)
+		if(this.query != null && this.query.length() > 0)
 		{
 			url.append("&");
 			url.append(String.format(API_TAGS_NAME_MATCHES, this.query));
