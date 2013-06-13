@@ -88,7 +88,7 @@ public class GeneralPreferencesActivity extends SherlockPreferenceActivity
 	protected void onPause()
 	{
 		super.onPause();
-		this.prefCacheSize.getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
+		this.prefScreen.getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
 	}
 	
 	@Override
