@@ -223,4 +223,17 @@ public class Post implements Serializable
 	}
 	
 	/* meth */
+	@Override
+	public String toString()
+	{
+		if(this.site != null)
+		{
+			StringBuilder postUrl = new StringBuilder(this.site.getUrl());
+			postUrl.append(this.site.getPostViewApi());
+			postUrl.append('/');
+			postUrl.append(this.id);
+			return postUrl.toString();
+		}
+		return super.toString();
+	}
 }

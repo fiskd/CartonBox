@@ -11,28 +11,14 @@ import java.net.URL;
 import org.shujito.cartonbox.Logger;
 import org.shujito.cartonbox.controller.listeners.OnDownloadProgressListener;
 import org.shujito.cartonbox.controller.listeners.OnImageFetchedListener;
+import org.shujito.cartonbox.utils.io.DiskCacheManager;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
-import android.os.Environment;
 
 public class ImageDownloader extends AsyncTask<Void, Float, Bitmap>
 {
-	/* static */
-	private static boolean cachingToExternal;
-	
-	public static void setCachingToExternal(boolean cacheToExternal)
-	{
-		cachingToExternal = cacheToExternal;
-	}
-	
-	public static boolean isCachingToExternal()
-	{
-		return cachingToExternal;
-	}
-	
-	
 	/* listeners */
 	
 	private OnImageFetchedListener onImageFetchedListener = null;
@@ -131,20 +117,12 @@ public class ImageDownloader extends AsyncTask<Void, Float, Bitmap>
 		try
 		{
 			// cache dir to write into
-			File cacheDir = this.context.getCacheDir();
-			if(cachingToExternal)
-			{
-				// should be rw
-				if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED))
-					cacheDir = this.context.getExternalCacheDir();
-			}
+			File cacheDir = DiskCacheManager.getCacheDirectory(this.context);
 			// file to open or save
 			File file = new File(cacheDir, filename);
 			if(file.exists())
 			{
 				// there's file, load and that's all for today
-				//InputStream input = new FileInputStream(file);
-				//bmp = BitmapFactory.decodeStream(input);
 				bmp = ImageUtils.decodeSampledBitmap(file, this.width, this.height);
 				//input.close();
 			}
@@ -166,11 +144,6 @@ public class ImageDownloader extends AsyncTask<Void, Float, Bitmap>
 				// put the network stream into a buffer
 				InputStream input = new BufferedInputStream(httpurlconn.getInputStream());
 				
-				// generate random filename
-				//SecureRandom serandom = new SecureRandom();
-				//String randomFilename = new BigInteger(64, serandom).toString();
-				// and a temp file
-				//File tempFile = File.createTempFile(randomFilename, null, this.context.getCacheDir());
 				OutputStream output = null;
 				try
 				{
@@ -235,7 +208,8 @@ public class ImageDownloader extends AsyncTask<Void, Float, Bitmap>
 			if(values != null && values.length > 0)
 			{
 				float progress = values[0];
-				this.onDownloadProgressListener.onDownloadProgress(progress);
+				// whoops! 101%?
+				this.onDownloadProgressListener.onDownloadProgress(Math.min(progress, 1f));
 			}
 		}
 	}

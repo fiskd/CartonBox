@@ -10,10 +10,11 @@
 			android:title="@string/pref_general_cacheexternal"
 			android:defaultValue="false" />
 		<CheckBoxPreference
-			android:key="@string/pref_general_clearcacheonstartup_key"
-			android:title="@string/pref_general_clearcacheonstartup"
+			android:key="@string/pref_general_clearcacheonexit_key"
+			android:title="@string/pref_general_clearcacheonexit"
 			android:defaultValue="false" />
 		<org.shujito.cartonbox.view.widget.UpdateableListPreference
+			android:enabled="false"
 			android:key="@string/pref_general_cachesize_key"
 			android:title="@string/pref_general_cachesize"
 			android:summary="@string/pref_general_cachesize_desc"
@@ -23,7 +24,8 @@
 		<Preference
 			android:key="@string/pref_general_clearcache_key"
 			android:title="@string/pref_general_clearcache"
-			android:summary="@string/pref_general_clearcache_desc" />
+			android:summary="@string/pref_general_clearcache_calc"
+			android:enabled="false" />
 		<!-- Clear External Cache -->
 	</PreferenceCategory>
 	<PreferenceCategory
@@ -50,10 +52,12 @@
 			android:defaultValue="20"
 			android:enabled="false" />
 		<CheckBoxPreference
+			android:enabled="false"
 			android:key="@string/pref_content_localfilter_key"
 			android:title="@string/pref_content_localfilter"
 			android:summary="@string/pref_content_localfilter_desc" />
 		<CheckBoxPreference
+			android:enabled="false"
 			android:key="@string/pref_content_warning_key"
 			android:title="@string/pref_content_warning"
 			android:summary="@string/pref_content_warning_desc" />
@@ -61,6 +65,7 @@
 	<PreferenceCategory
 		android:title="@string/pref_blacklist" >
 		<CheckBoxPreference
+			android:enabled="false"
 			android:key="@string/pref_blacklist_enabled_key"
 			android:title="@string/pref_blacklist_enabled" />
 		<EditTextPreference
@@ -92,6 +97,7 @@
 				android:title="@string/pref_ratings_todisplay_explicit" />
 		</PreferenceScreen>
 		<CheckBoxPreference
+			android:enabled="false"
 			android:key="@string/pref_ratings_hide_key"
 			android:title="@string/pref_ratings_hide"
 			android:summaryOn="@string/pref_ratings_hide_desc_on"

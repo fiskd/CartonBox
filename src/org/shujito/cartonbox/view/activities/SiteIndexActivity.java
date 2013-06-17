@@ -2,11 +2,11 @@ package org.shujito.cartonbox.view.activities;
 
 import org.shujito.cartonbox.CartonBox;
 import org.shujito.cartonbox.Logger;
+import org.shujito.cartonbox.Preferences;
 import org.shujito.cartonbox.R;
 import org.shujito.cartonbox.controller.ImageboardPosts;
 import org.shujito.cartonbox.controller.ImageboardTags;
 import org.shujito.cartonbox.controller.listeners.OnErrorListener;
-import org.shujito.cartonbox.utils.Preferences;
 import org.shujito.cartonbox.view.adapters.SiteIndexPageAdapter;
 import org.shujito.cartonbox.view.fragments.LoginDialogFragment;
 import org.shujito.cartonbox.view.fragments.LoginDialogFragment.LoginDialogCallback;

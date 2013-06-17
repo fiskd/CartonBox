@@ -1,7 +1,6 @@
 package org.shujito.cartonbox;
 
 import org.shujito.cartonbox.controller.ImageboardApis;
-import org.shujito.cartonbox.utils.Preferences;
 
 import android.annotation.TargetApi;
 import android.app.Application;
@@ -28,7 +27,7 @@ public class CartonBox extends Application
 		
 		//Logger.i("CartonBox::onCreate", String.format("Total Memory: %s", Formatters.humanReadableByteCount(Runtime.getRuntime().maxMemory())));
 		
-		if(Preferences.isFirstRun())
+		if(Preferences.isFirstAppRun())
 		{
 			Preferences.init();
 		}

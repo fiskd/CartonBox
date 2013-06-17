@@ -11,6 +11,7 @@ import org.shujito.cartonbox.model.Post;
 import org.shujito.cartonbox.model.Post.Rating;
 import org.shujito.cartonbox.model.Site;
 import org.shujito.cartonbox.model.parser.JsonParser;
+import org.shujito.cartonbox.utils.ConcurrentTask;
 import org.shujito.cartonbox.utils.URLEncoder;
 
 import android.util.SparseArray;
@@ -160,7 +161,7 @@ public abstract class ImageboardPosts extends Imageboard implements
 				Logger.i("Imageboard::requestPosts", "Request job, page " + this.page);
 				this.downloader = this.createDownloader();
 				//this.downloader.setOnErrorListener(this);
-				this.downloader.execute();
+				ConcurrentTask.execute(this.downloader);
 				this.working = true;
 			}
 		}

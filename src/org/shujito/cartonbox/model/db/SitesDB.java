@@ -10,9 +10,14 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+// so useful:
+// http://www.androidhive.info/2011/11/android-sqlite-database-tutorial/
 public class SitesDB extends DB<Site>
 {
 	/* static */
+	static final String DB_NAME = "sites.db3";
+	static final int VERSION = 0x00000001;
+	
 	static String TABLE_SITES = "sites";
 	
 	static final String KEY_ID = "id";
@@ -20,6 +25,7 @@ public class SitesDB extends DB<Site>
 	static final String KEY_URL = "url";
 	static final String KEY_TYPE = "type";
 	static final String KEY_NAME = "name";
+	static final String KEY_POST_VIEW_API = "post_view_api";
 	static final String KEY_POSTS_API = "posts_api";
 	static final String KEY_POOLS_API = "pools_api";
 	static final String KEY_COMMENTS_API = "comments_api";
@@ -30,7 +36,7 @@ public class SitesDB extends DB<Site>
 	/* constructor */
 	public SitesDB(Context context)
 	{
-		super(context);
+		super(context, DB_NAME, VERSION);
 	}
 	
 	/* meth */
@@ -46,6 +52,7 @@ public class SitesDB extends DB<Site>
 				{ SQL_TEXT, KEY_URL },
 				{ SQL_INTEGER, KEY_TYPE },
 				{ SQL_TEXT, KEY_NAME },
+				{ SQL_TEXT, KEY_POST_VIEW_API },
 				{ SQL_TEXT, KEY_POSTS_API },
 				{ SQL_TEXT, KEY_POOLS_API },
 				{ SQL_TEXT, KEY_COMMENTS_API },
@@ -75,6 +82,7 @@ public class SitesDB extends DB<Site>
 		values.put(KEY_URL, record.getUrl());
 		values.put(KEY_TYPE, record.getType().getValue());
 		values.put(KEY_NAME, record.getName());
+		values.put(KEY_POST_VIEW_API, record.getPostViewApi());
 		values.put(KEY_POSTS_API, record.getPostsApi());
 		values.put(KEY_POOLS_API, record.getPoolsApi());
 		values.put(KEY_COMMENTS_API, record.getCommentsApi());
@@ -104,29 +112,7 @@ public class SitesDB extends DB<Site>
 		
 		if(cursor != null && cursor.moveToFirst())
 		{
-			int iType = cursor.getInt(cursor.getColumnIndex(KEY_TYPE));
-			Site.Type type = null;
-			
-			switch(iType)
-			{
-				case 1: type = Site.Type.Danbooru1; break;
-				case 2: type = Site.Type.Danbooru2; break;
-				case 3: type = Site.Type.Gelbooru; break;
-			}
-			
-			Site site = new Site(id)
-				//.setId(id)
-				.setIconid(cursor.getInt(cursor.getColumnIndex(KEY_ICONID)))
-				.setUrl(cursor.getString(cursor.getColumnIndex(KEY_URL)))
-				.setType(type)
-				.setName(cursor.getString(cursor.getColumnIndex(KEY_NAME)))
-				.setPostsApi(cursor.getString(cursor.getColumnIndex(KEY_POSTS_API)))
-				.setPoolsApi(cursor.getString(cursor.getColumnIndex(KEY_POOLS_API)))
-				.setCommentsApi(cursor.getString(cursor.getColumnIndex(KEY_COMMENTS_API)))
-				.setNotesApi(cursor.getString(cursor.getColumnIndex(KEY_NOTES_API)))
-				.setArtistsApi(cursor.getString(cursor.getColumnIndex(KEY_ARTISTS_API)))
-				.setTagsApi(cursor.getString(cursor.getColumnIndex(KEY_TAGS_API)));
-			
+			Site site = this.fromCursor(cursor);
 			return site;
 		}
 		
@@ -153,29 +139,7 @@ public class SitesDB extends DB<Site>
 		{
 			while(true)
 			{
-				int iType = cursor.getInt(cursor.getColumnIndex(KEY_TYPE));
-				Site.Type type = null;
-				
-				switch(iType)
-				{
-					case 1: type = Site.Type.Danbooru1; break;
-					case 2: type = Site.Type.Danbooru2; break;
-					case 3: type = Site.Type.Gelbooru; break;
-				}
-				
-				Site site = new Site(cursor.getInt(cursor.getColumnIndex(KEY_ID)))
-					//.setId(cursor.getInt(cursor.getColumnIndex(KEY_ID)))
-					.setIconid(cursor.getInt(cursor.getColumnIndex(KEY_ICONID)))
-					.setUrl(cursor.getString(cursor.getColumnIndex(KEY_URL)))
-					.setType(type)
-					.setName(cursor.getString(cursor.getColumnIndex(KEY_NAME)))
-					.setPostsApi(cursor.getString(cursor.getColumnIndex(KEY_POSTS_API)))
-					.setPoolsApi(cursor.getString(cursor.getColumnIndex(KEY_POOLS_API)))
-					.setCommentsApi(cursor.getString(cursor.getColumnIndex(KEY_COMMENTS_API)))
-					.setNotesApi(cursor.getString(cursor.getColumnIndex(KEY_NOTES_API)))
-					.setArtistsApi(cursor.getString(cursor.getColumnIndex(KEY_ARTISTS_API)))
-					.setTagsApi(cursor.getString(cursor.getColumnIndex(KEY_TAGS_API)));
-				
+				Site site = this.fromCursor(cursor);
 				sites.add(site);
 				
 				if(!cursor.moveToNext())
@@ -209,5 +173,35 @@ public class SitesDB extends DB<Site>
 	@Override
 	public void delete(Site record)
 	{
+	}
+	
+	private Site fromCursor(Cursor cursor)
+	{
+		// Good, now THIS looks DRY
+		int iType = cursor.getInt(cursor.getColumnIndex(KEY_TYPE));
+		Site.Type type = null;
+		
+		switch(iType)
+		{
+			case 1: type = Site.Type.Danbooru1; break;
+			case 2: type = Site.Type.Danbooru2; break;
+			case 3: type = Site.Type.Gelbooru; break;
+		}
+		
+		Site site = new Site(cursor.getInt(cursor.getColumnIndex(KEY_ID)))
+			//.setId(cursor.getInt(cursor.getColumnIndex(KEY_ID)))
+			.setIconid(cursor.getInt(cursor.getColumnIndex(KEY_ICONID)))
+			.setUrl(cursor.getString(cursor.getColumnIndex(KEY_URL)))
+			.setType(type)
+			.setName(cursor.getString(cursor.getColumnIndex(KEY_NAME)))
+			.setPostViewApi(cursor.getString(cursor.getColumnIndex(KEY_POST_VIEW_API)))
+			.setPostsApi(cursor.getString(cursor.getColumnIndex(KEY_POSTS_API)))
+			.setPoolsApi(cursor.getString(cursor.getColumnIndex(KEY_POOLS_API)))
+			.setCommentsApi(cursor.getString(cursor.getColumnIndex(KEY_COMMENTS_API)))
+			.setNotesApi(cursor.getString(cursor.getColumnIndex(KEY_NOTES_API)))
+			.setArtistsApi(cursor.getString(cursor.getColumnIndex(KEY_ARTISTS_API)))
+			.setTagsApi(cursor.getString(cursor.getColumnIndex(KEY_TAGS_API)));
+		
+		return site;
 	}
 }

@@ -9,6 +9,7 @@ import org.shujito.cartonbox.controller.listeners.OnTagsFetchedListener;
 import org.shujito.cartonbox.model.Site;
 import org.shujito.cartonbox.model.Tag;
 import org.shujito.cartonbox.model.parser.JsonParser;
+import org.shujito.cartonbox.utils.ConcurrentTask;
 
 /* tags logic */
 // step 0: config
@@ -96,7 +97,7 @@ public abstract class ImageboardTags extends Imageboard implements
 			
 			this.downloader = this.createDownloader();
 			//this.downloader.setOnErrorListener(this);
-			this.downloader.execute();
+			ConcurrentTask.execute(this.downloader);
 			this.working = true;
 		}
 	}

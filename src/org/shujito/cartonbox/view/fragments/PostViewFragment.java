@@ -4,12 +4,12 @@ import org.shujito.cartonbox.R;
 import org.shujito.cartonbox.controller.listeners.OnDownloadProgressListener;
 import org.shujito.cartonbox.controller.listeners.OnImageFetchedListener;
 import org.shujito.cartonbox.model.Post;
+import org.shujito.cartonbox.utils.ConcurrentTask;
 import org.shujito.cartonbox.utils.ImageDownloader;
 
 import android.annotation.TargetApi;
 import android.graphics.Bitmap;
 import android.graphics.Point;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -155,24 +155,13 @@ public class PostViewFragment extends Fragment
 					// start downloading sample
 					if(sampleDownloader != null && !sampleDownloader.isAlreadyExecuted())
 					{
-						//*
-						if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-							sampleDownloader.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-						else
-							sampleDownloader.execute();
-						//*/
-						
-						//sampleDownloader.execute();
-						//ConcurrentTask.execute(sampleDownloader);
+						ConcurrentTask.execute(sampleDownloader);
 					}
 				}
 			}
 		});
 		
-		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-			this.thumbDownloader.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-		else
-			this.thumbDownloader.execute();
+		ConcurrentTask.execute(this.thumbDownloader);
 		
 		//this.thumbDownloader.execute();
 		//ConcurrentTask.execute(this.thumbDownloader);

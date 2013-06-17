@@ -31,6 +31,7 @@ public class Site implements Serializable
 	private Type type;
 	private String name;
 	private String url;
+	private String postViewApi;
 	private String postsApi;
 	private String poolsApi;
 	private String commentsApi;
@@ -60,6 +61,8 @@ public class Site implements Serializable
 	{ return this.name; }
 	public String getUrl()
 	{ return this.url; }
+	public String getPostViewApi()
+	{ return postViewApi; }
 	public String getPostsApi()
 	{ return this.postsApi; }
 	public String getPoolsApi()
@@ -74,8 +77,8 @@ public class Site implements Serializable
 	{ return this.tagsApi; }
 
 	/* setters */
-	/*
-	private Site setId(int i)
+	//*
+	public Site setId(int i)
 	{
 		this.id = i;
 		return this;
@@ -99,6 +102,11 @@ public class Site implements Serializable
 	public Site setUrl(String s)
 	{
 		this.url = s;
+		return this;
+	}
+	public Site setPostViewApi(String s)
+	{
+		this.postViewApi = s;
 		return this;
 	}
 	public Site setPostsApi(String s)

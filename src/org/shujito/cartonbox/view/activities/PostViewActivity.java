@@ -7,9 +7,12 @@ import org.shujito.cartonbox.controller.ImageboardPosts;
 import org.shujito.cartonbox.model.Post;
 import org.shujito.cartonbox.view.adapters.PostsPagerAdapter;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
@@ -22,6 +25,8 @@ public class PostViewActivity extends SherlockFragmentActivity
 	
 	ImageboardPosts postsApi = null;
 	
+	// current post
+	Post selectedPost = null;
 	ViewPager mVpPosts = null;
 	PostsPagerAdapter mPostsAdapter = null;
 	
@@ -96,18 +101,32 @@ public class PostViewActivity extends SherlockFragmentActivity
 				// handle the event
 				return true;
 			case R.id.menu_postview_save:
+				//DownloadManager downman = (DownloadManager)this.getSystemService(Context.DOWNLOAD_SERVICE);
+				Toast.makeText(this, "Not available yet", Toast.LENGTH_SHORT).show();
 				return true;
 			case R.id.menu_postview_preferences:
+				Toast.makeText(this, "Not available yet", Toast.LENGTH_SHORT).show();
 				return true;
 			case R.id.menu_postview_details:
+				Toast.makeText(this, "Not available yet", Toast.LENGTH_SHORT).show();
 				return true;
 			case R.id.menu_postview_browser:
+				if(this.selectedPost != null)
+				{
+					String postUrl = this.selectedPost.toString();
+					Uri uri = Uri.parse(postUrl);
+					Intent site = new Intent(Intent.ACTION_VIEW, uri);
+					this.startActivity(site);
+				}
 				return true;
 			case R.id.menu_postview_viewparent:
+				Toast.makeText(this, "Not available yet", Toast.LENGTH_SHORT).show();
 				return true;
 			case R.id.menu_postview_viewchildren:
+				Toast.makeText(this, "Not available yet", Toast.LENGTH_SHORT).show();
 				return true;
 			case R.id.menu_postview_viewpools:
+				Toast.makeText(this, "Not available yet", Toast.LENGTH_SHORT).show();
 				return true;
 		}
 		
@@ -127,6 +146,10 @@ public class PostViewActivity extends SherlockFragmentActivity
 		this.itemViewChildren = menu.findItem(R.id.menu_postview_viewchildren).setVisible(false);
 		this.itemViewParent = menu.findItem(R.id.menu_postview_viewparent).setVisible(false);
 		this.itemViewPools = menu.findItem(R.id.menu_postview_viewpools).setVisible(false);
+		// XXX: I'll hide these for now...
+		//menu.findItem(R.id.menu_postview_details).setVisible(false);
+		//menu.findItem(R.id.menu_postview_preferences).setVisible(false);
+		//menu.findItem(R.id.menu_postview_save).setVisible(false);
 		
 		// XXX: I had to...
 		// this refreshes visible menu items
@@ -154,15 +177,18 @@ public class PostViewActivity extends SherlockFragmentActivity
 		int size = this.postsApi.getPosts().size();
 		int index = size - pos - 1;
 		int key = this.postsApi.getPosts().keyAt(index);
-		Post one = this.postsApi.getPosts().get(key);
-		Logger.i("PostViewActivity::onPageSelected", String.valueOf(one.getId()));
+		this.selectedPost = this.postsApi.getPosts().get(key);
+		Logger.i("PostViewActivity::onPageSelected", String.valueOf(this.selectedPost.getId()));
 		
 		// now this works, I'm happy again (:
 		// now improved
+		
+		/* XXX: deactivated...
 		if(this.itemViewChildren != null)
-			this.itemViewChildren.setVisible(one.isHasChildren());
+			this.itemViewChildren.setVisible(this.selectedPost.isHasChildren());
 		if(this.itemViewParent != null)
-			this.itemViewParent.setVisible(one.getParentId() > 0);
+			this.itemViewParent.setVisible(this.selectedPost.getParentId() > 0);
+		//*/
 		
 		// oh hey it became natural! and I didn't had to do much!
 		if(pos + 1 >= size)

@@ -6,13 +6,13 @@ import org.shujito.cartonbox.controller.listeners.OnImageFetchedListener;
 import org.shujito.cartonbox.controller.listeners.OnPostsFetchedListener;
 import org.shujito.cartonbox.model.Post;
 import org.shujito.cartonbox.utils.BitmapCache;
+import org.shujito.cartonbox.utils.ConcurrentTask;
 import org.shujito.cartonbox.utils.ImageDownloader;
 
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
@@ -196,10 +196,7 @@ public class PostsGridAdapter extends BaseAdapter implements OnPostsFetchedListe
 				}
 			});
 			
-			if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-				downloader.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-			else
-				downloader.execute();
+			ConcurrentTask.execute(downloader);
 		}
 		
 		//ConcurrentTask.execute(downloader);

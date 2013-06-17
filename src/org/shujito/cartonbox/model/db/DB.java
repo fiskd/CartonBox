@@ -9,8 +9,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 public abstract class DB<T> extends SQLiteOpenHelper
 {
 	/* static */
-	static final int VERSION = 0x00000001;
-	static final String DB_NAME = "sites.db3";
 	
 	// DO NOT EDIT
 	static final String SQL_CREATE = "CREATE TABLE %s(%s);";
@@ -19,9 +17,9 @@ public abstract class DB<T> extends SQLiteOpenHelper
 	static final String SQL_INTEGER = "%s INTEGER";
 	static final String SQL_PK = "%s INTEGER PRIMARY KEY AUTOINCREMENT";
 	
-	public DB(Context context)
+	public DB(Context context, String dbname, int version)
 	{
-		super(context, DB_NAME, null, VERSION);
+		super(context, dbname, null, version);
 	}
 	
 	protected void createTable(SQLiteDatabase db, String[][] fields, String tableName)

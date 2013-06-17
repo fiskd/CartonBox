@@ -5,7 +5,8 @@ release, but there you go:
 
 0.4
 # second release
-
+- downloads of anything (posts, tags, images) are now concurrent ant won't
+  keep on waiting
 
 0.2
 # initial (accidental) release

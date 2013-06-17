@@ -3,6 +3,7 @@ package org.shujito.cartonbox.view.activities;
 import java.util.List;
 
 import org.shujito.cartonbox.CartonBox;
+import org.shujito.cartonbox.Preferences;
 import org.shujito.cartonbox.R;
 import org.shujito.cartonbox.controller.DanbooruImageBoardPosts;
 import org.shujito.cartonbox.controller.DanbooruImageBoardTags;
@@ -13,14 +14,19 @@ import org.shujito.cartonbox.controller.ImageboardPosts;
 import org.shujito.cartonbox.controller.ImageboardTags;
 import org.shujito.cartonbox.model.Site;
 import org.shujito.cartonbox.model.db.SitesDB;
-import org.shujito.cartonbox.utils.ImageDownloader;
-import org.shujito.cartonbox.utils.Preferences;
+import org.shujito.cartonbox.utils.io.ClearDirectoryTask;
+import org.shujito.cartonbox.utils.io.DiskCacheManager;
+import org.shujito.cartonbox.utils.io.listeners.OnDirectoryClearedListener;
+import org.shujito.cartonbox.utils.io.listeners.OnDiskTaskProgressListener;
 import org.shujito.cartonbox.view.adapters.SitesAdapter;
 
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.NotificationCompat;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -45,12 +51,19 @@ public class MainActivity extends SherlockActivity implements OnItemClickListene
 		// get sites stored on the db
 		SitesDB sitesdb = new SitesDB(this);
 		this.sites = sitesdb.getAll();
+		if(this.sites.size() == 0)
+		{
+			// upgraded or anything? reset defaults...
+			Preferences.defaultSites();
+			this.sites = sitesdb.getAll();
+		}
 		
 		// init views
 		this.mSitesAdapter = new SitesAdapter(this, this.sites);
 		this.mGridView = (GridView)this.findViewById(R.id.main_gvsites);
 		this.mGridView.setAdapter(this.mSitesAdapter);
 		this.mGridView.setOnItemClickListener(this);
+		
 	}
 	
 	@Override
@@ -64,11 +77,50 @@ public class MainActivity extends SherlockActivity implements OnItemClickListene
 			CartonBox.getInstance().getApis().setImageboardTags(null);
 			CartonBox.getInstance().setApis(null);
 		}
+	}
+	
+	@Override
+	protected void onPause()
+	{
+		super.onPause();
+	}
+	
+	@Override
+	protected void onDestroy()
+	{
+		if(Preferences.getBool(R.string.pref_general_clearcacheonexit_key))
+		{
+			final NotificationManager notman = (NotificationManager)this.getSystemService(Context.NOTIFICATION_SERVICE);
+			final NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
+			builder.setSmallIcon(R.drawable.ic_notif);
+			builder.setOngoing(true);
+			builder.setContentTitle(this.getString(R.string.pref_general_clearcacheonexit_clearing));
+			builder.setProgress(0, 0, true);
+			notman.notify(R.string.app_name, builder.build());
+			
+			ClearDirectoryTask clearDirectory = new ClearDirectoryTask(DiskCacheManager.getCacheDirectory(this));
+			clearDirectory.setOnDiskTaskProgress(new OnDiskTaskProgressListener()
+			{
+				@Override
+				public void onDiskTaskProgress(int total, int complete)
+				{
+					builder.setProgress(total, complete, false);
+					builder.setContentText(String.format("%s/%s", complete, total));
+					notman.notify(R.string.app_name, builder.build());
+				}
+			});
+			clearDirectory.setOnDirectoryClearedListener(new OnDirectoryClearedListener()
+			{
+				@Override
+				public void onDirectoryCleared()
+				{
+					notman.cancel(R.string.app_name);
+				}
+			});
+			clearDirectory.execute();
+		}
 		
-		// initial prefs
-		SharedPreferences globalPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-		boolean bCacheExternal = globalPrefs.getBoolean(this.getString(R.string.pref_general_cacheexternal_key), false);
-		ImageDownloader.setCachingToExternal(bCacheExternal);
+		super.onDestroy();
 	}
 	
 	@Override
@@ -110,9 +162,13 @@ public class MainActivity extends SherlockActivity implements OnItemClickListene
 		
 		// prefs!
 		SharedPreferences globalPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-		boolean bShowSafe = globalPrefs.getBoolean(this.getString(R.string.pref_ratings_todisplay_safe_key), true);
-		boolean bShowQuestionable = globalPrefs.getBoolean(this.getString(R.string.pref_ratings_todisplay_questionable_key), false);
-		boolean bShowExplicit = globalPrefs.getBoolean(this.getString(R.string.pref_ratings_todisplay_explicit_key), false);
+		//boolean bShowSafe = globalPrefs.getBoolean(this.getString(R.string.pref_ratings_todisplay_safe_key), true);
+		//boolean bShowQuestionable = globalPrefs.getBoolean(this.getString(R.string.pref_ratings_todisplay_questionable_key), false);
+		//boolean bShowExplicit = globalPrefs.getBoolean(this.getString(R.string.pref_ratings_todisplay_explicit_key), false);
+		
+		boolean bShowSafe = Preferences.getBool(R.string.pref_ratings_todisplay_key, true);
+		boolean bShowQuestionable = Preferences.getBool(R.string.pref_ratings_todisplay_key);
+		boolean bShowExplicit = Preferences.getBool(R.string.pref_ratings_todisplay_key);
 		
 		String sPostsPerPage = globalPrefs.getString(this.getString(R.string.pref_content_postsperpage_key), "20");
 		int postsPerPage = Integer.parseInt(sPostsPerPage);
