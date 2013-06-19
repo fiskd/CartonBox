@@ -1,5 +1,6 @@
 package org.shujito.cartonbox.view.adapters;
 
+import org.shujito.cartonbox.Logger;
 import org.shujito.cartonbox.controller.listeners.OnPostsFetchedListener;
 import org.shujito.cartonbox.model.Post;
 import org.shujito.cartonbox.view.fragments.PostViewFragment;
@@ -8,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.util.SparseArray;
+import android.view.ViewGroup;
 
 public class PostsPagerAdapter extends FragmentPagerAdapter implements OnPostsFetchedListener
 {
@@ -21,7 +23,6 @@ public class PostsPagerAdapter extends FragmentPagerAdapter implements OnPostsFe
 	@Override
 	public Fragment getItem(int pos)
 	{
-		PostViewFragment fragment = null;
 		// get reverse index, like the grid adapter
 		int size = this.getCount();
 		int index = size - pos - 1;
@@ -31,9 +32,7 @@ public class PostsPagerAdapter extends FragmentPagerAdapter implements OnPostsFe
 		// and a post from the key, that's how SparseArray works
 		Post post = this.posts.get(key);
 		// create the fragment here
-		fragment = PostViewFragment.create(post);
-		
-		return fragment;
+		return PostViewFragment.create(post);
 	}
 	
 	@Override
@@ -49,5 +48,13 @@ public class PostsPagerAdapter extends FragmentPagerAdapter implements OnPostsFe
 	{
 		this.posts = posts;
 		this.notifyDataSetChanged();
+	}
+	
+	@Override
+	public void destroyItem(ViewGroup container, int position, Object object)
+	{
+		// eh don't?
+		//super.destroyItem(container, position, object);
+		Logger.i("PostsPagerAdapter::destroyItem", String.format("Destroyed #%s", position));
 	}
 }

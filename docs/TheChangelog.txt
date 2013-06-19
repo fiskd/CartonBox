@@ -3,10 +3,16 @@ The Changelog
 I'm bad at making changelogs, I often forgot most of what I do since the last
 release, but there you go:
 
+0.5
+# FIRST announced release
+
 0.4
-# second release
+# second (emergency) release
 - downloads of anything (posts, tags, images) are now concurrent ant won't
   keep on waiting
+-some prefs work, disabled some
+-view post on browser works
+-added ability to clear cache when exiting
 
 0.2
 # initial (accidental) release

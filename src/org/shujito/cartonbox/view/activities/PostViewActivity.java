@@ -6,10 +6,16 @@ import org.shujito.cartonbox.R;
 import org.shujito.cartonbox.controller.ImageboardPosts;
 import org.shujito.cartonbox.model.Post;
 import org.shujito.cartonbox.view.adapters.PostsPagerAdapter;
+import org.shujito.cartonbox.view.fragments.dialogs.PostTagsDialogFragment;
 
+import android.annotation.TargetApi;
+import android.app.DownloadManager;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.widget.Toast;
@@ -45,6 +51,7 @@ public class PostViewActivity extends SherlockFragmentActivity
 		
 		this.mVpPosts = (ViewPager)this.findViewById(R.id.postview_vpposts);
 		this.mVpPosts.setAdapter(this.mPostsAdapter);
+		//this.mVpPosts.setOffscreenPageLimit(1);
 		
 		// enable this so we can navigate with the up button
 		this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -92,6 +99,7 @@ public class PostViewActivity extends SherlockFragmentActivity
 	}
 	
 	@Override
+	@TargetApi(Build.VERSION_CODES.GINGERBREAD)
 	public boolean onOptionsItemSelected(MenuItem item)
 	{
 		switch(item.getItemId())
@@ -101,14 +109,36 @@ public class PostViewActivity extends SherlockFragmentActivity
 				// handle the event
 				return true;
 			case R.id.menu_postview_save:
-				//DownloadManager downman = (DownloadManager)this.getSystemService(Context.DOWNLOAD_SERVICE);
-				Toast.makeText(this, "Not available yet", Toast.LENGTH_SHORT).show();
+				// pan de gengibre?
+				if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD)
+				{
+					Toast.makeText(this, this.getString(R.string.download_started), Toast.LENGTH_SHORT).show();
+					DownloadManager downman = (DownloadManager)this.getSystemService(Context.DOWNLOAD_SERVICE);
+					Uri uri = Uri.parse(this.selectedPost.getUrl());
+					String filename = String.format("%s.%s", this.selectedPost.getMd5(), this.selectedPost.getFileExt());
+					DownloadManager.Request request = new DownloadManager.Request(uri)
+						.setAllowedOverRoaming(false)
+						.setDescription(filename)
+						.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename);
+					//long id =
+					downman.enqueue(request);
+				}
+				else
+				{
+					Toast.makeText(this, this.getString(R.string.notavailable), Toast.LENGTH_SHORT).show();
+				}
+				
 				return true;
 			case R.id.menu_postview_preferences:
-				Toast.makeText(this, "Not available yet", Toast.LENGTH_SHORT).show();
+				Toast.makeText(this, this.getString(R.string.notavailable), Toast.LENGTH_SHORT).show();
 				return true;
 			case R.id.menu_postview_details:
-				Toast.makeText(this, "Not available yet", Toast.LENGTH_SHORT).show();
+				//Toast.makeText(this, this.getString(R.string.notavailable), Toast.LENGTH_SHORT).show();
+				PostTagsDialogFragment dialog = new PostTagsDialogFragment();
+				Bundle humble = new Bundle();
+				
+				dialog.setArguments(humble);
+				dialog.show(this.getSupportFragmentManager(), PostTagsDialogFragment.TAG);
 				return true;
 			case R.id.menu_postview_browser:
 				if(this.selectedPost != null)
@@ -120,13 +150,13 @@ public class PostViewActivity extends SherlockFragmentActivity
 				}
 				return true;
 			case R.id.menu_postview_viewparent:
-				Toast.makeText(this, "Not available yet", Toast.LENGTH_SHORT).show();
+				Toast.makeText(this, this.getString(R.string.notavailable), Toast.LENGTH_SHORT).show();
 				return true;
 			case R.id.menu_postview_viewchildren:
-				Toast.makeText(this, "Not available yet", Toast.LENGTH_SHORT).show();
+				Toast.makeText(this, this.getString(R.string.notavailable), Toast.LENGTH_SHORT).show();
 				return true;
 			case R.id.menu_postview_viewpools:
-				Toast.makeText(this, "Not available yet", Toast.LENGTH_SHORT).show();
+				Toast.makeText(this, this.getString(R.string.notavailable), Toast.LENGTH_SHORT).show();
 				return true;
 		}
 		

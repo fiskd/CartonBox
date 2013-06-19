@@ -1,4 +1,4 @@
-package org.shujito.cartonbox.view.fragments;
+package org.shujito.cartonbox.view.fragments.dialogs;
 
 import org.shujito.cartonbox.R;
 
@@ -9,8 +9,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,13 +20,14 @@ import android.widget.TextView.OnEditorActionListener;
 
 public class LoginDialogFragment extends DialogFragment
 	implements DialogInterface.OnClickListener,
-	OnEditorActionListener, View.OnClickListener, TextWatcher
+	OnEditorActionListener, View.OnClickListener
 {
-	public final static String TAG = "org.shujito.cartonbox.view.fragments.LoginDialogFragment";
+	public final static String TAG = "org.shujito.cartonbox.view.fragments.dialogs.LoginDialogFragment";
 	
 	public interface LoginDialogCallback
 	{
 		public void onFinishEditLogin(String username, String password);
+		public void onCancel();
 	}
 	
 	LoginDialogCallback mLoginDialogCallback = null;
@@ -54,10 +53,9 @@ public class LoginDialogFragment extends DialogFragment
 	{
 		LayoutInflater inf = LayoutInflater.from(this.getActivity());
 		View v = inf.inflate(R.layout.dialog_login, null);
-
+		
 		this.tvUsername = (EditText)v.findViewById(R.id.dialog_login_tvusername);
 		this.tvUsername.requestFocus();
-		this.tvUsername.addTextChangedListener(this);
 		this.tvPassword = (EditText)v.findViewById(R.id.dialog_login_tvpassword);
 		this.tvPassword.setOnEditorActionListener(this);
 		
@@ -89,6 +87,9 @@ public class LoginDialogFragment extends DialogFragment
 		((AlertDialog)this.getDialog())
 			.getButton(DialogInterface.BUTTON_POSITIVE)
 			.setOnClickListener(this); // I got your listener
+		((AlertDialog)this.getDialog())
+			.getButton(DialogInterface.BUTTON_NEGATIVE)
+			.setOnClickListener(this); // also you
 	}
 	
 	@Override
@@ -96,7 +97,7 @@ public class LoginDialogFragment extends DialogFragment
 	{
 		if(actionId == EditorInfo.IME_ACTION_DONE)
 		{
-			this.onClick(null, DialogInterface.BUTTON_POSITIVE);
+			this.onClick(this.getDialog(), DialogInterface.BUTTON_POSITIVE);
 		}
 		return true;
 	}
@@ -105,7 +106,13 @@ public class LoginDialogFragment extends DialogFragment
 	@Override
 	public void onClick(View v)
 	{
-		this.onClick(null, DialogInterface.BUTTON_POSITIVE);
+		// fuck hacks, I hate them, sometimes I like them
+		// and this one, for example, I just don't know
+		if(((AlertDialog)this.getDialog()).getButton(DialogInterface.BUTTON_POSITIVE).equals(v))
+			this.onClick(this.getDialog(), DialogInterface.BUTTON_POSITIVE);
+		else if(((AlertDialog)this.getDialog()).getButton(DialogInterface.BUTTON_NEGATIVE).equals(v))
+			this.onClick(this.getDialog(), DialogInterface.BUTTON_NEGATIVE);
+		// nevermind what the fuck: --- ↑
 	}
 	/* View.OnClickListener */
 	
@@ -139,23 +146,19 @@ public class LoginDialogFragment extends DialogFragment
 				}
 			}
 		}
+		if(which == DialogInterface.BUTTON_NEGATIVE)
+		{
+			if(this.mLoginDialogCallback != null)
+				this.mLoginDialogCallback.onCancel();
+		}
 	}
 	/* DialogInterface.OnClickListener methods */
 	
-	/* TextWatcher methods */
 	@Override
-	public void afterTextChanged(Editable s)
+	public void onCancel(DialogInterface dialog)
 	{
+		super.onCancel(dialog);
+		if(this.mLoginDialogCallback != null)
+			this.mLoginDialogCallback.onCancel();
 	}
-	
-	@Override
-	public void beforeTextChanged(CharSequence s, int start, int count, int after)
-	{
-	}
-	
-	@Override
-	public void onTextChanged(CharSequence s, int start, int before, int count)
-	{
-	}
-	/* TextWatcher methods */
 }

@@ -13,6 +13,10 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.TransitionDrawable;
 import android.os.Build;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
@@ -174,11 +178,15 @@ public class PostsGridAdapter extends BaseAdapter implements OnPostsFetchedListe
 				@Override
 				public void onImageFetched(Bitmap bitmap)
 				{
+					Drawable[] overlay = new Drawable[2];
+					overlay[0] = new ColorDrawable(0xff808080);
+					
 					if(bitmap == null)
 					{
 						tvloading.setText("whoops");
 						//tvloading.setText(null);
-						ivpreview.setImageBitmap(cachedBitmap);
+						//ivpreview.setImageBitmap(cachedBitmap);
+						overlay[1] = new BitmapDrawable(context.getResources(), cachedBitmap);
 						// XXX: let's hack here...
 						notifyDataSetChanged();
 					}
@@ -187,12 +195,16 @@ public class PostsGridAdapter extends BaseAdapter implements OnPostsFetchedListe
 						// cache it
 						//bitmaps.append(key, b);
 						cache.addBitmapToMemCache(key, bitmap);
-						ivpreview.setImageBitmap(bitmap);
+						//ivpreview.setImageBitmap(bitmap);
+						overlay[1] = new BitmapDrawable(context.getResources(), bitmap);
 					}
-					
+					// I went ahead and added some eyecandy
+					TransitionDrawable fadeIn = new TransitionDrawable(overlay);
+					ivpreview.setImageDrawable(fadeIn);
 					ivpreview.setBackgroundColor(Color.BLACK);
 					pbprogress.setVisibility(View.GONE);
 					tvloading.setVisibility(View.GONE);
+					fadeIn.startTransition(200);
 				}
 			});
 			

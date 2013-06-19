@@ -12,7 +12,7 @@
 		android:layout_weight="1"
 		android:hint="@string/search"
 		android:inputType="text"
-		android:imeOptions="actionSearch"
+		android:imeOptions="actionSearch|flagNoFullscreen"
 		android:completionThreshold="1" />
 	
 	<ImageButton

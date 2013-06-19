@@ -24,12 +24,16 @@
 	<string name="searchpools">Search pools</string>
 	<string name="searchartists">Search artists</string>
 	
+	<string name="notavailable">Not available yet</string>
+	
 	<string name="loading">Loading&#8230;</string>
 	<string name="loading_sample">Downloading sample&#8230;</string>
 	<string name="loading_preview">Downloading preview&#8230;</string>
 	<string name="no_posts">No posts!</string>
 	<string name="no_tags">No tags!</string>
 	<string name="download_failed">Download failed&#8230;</string>
+	<string name="download_started">Download Started&#8230;</string>
+	<string name="download_complete">Download Complete&#8230;</string>
 	
 	<string name="empty">This part is not available yet&#8230; but it will be! I hope.\n\nRead this while I actually work on the rest.</string>
 	

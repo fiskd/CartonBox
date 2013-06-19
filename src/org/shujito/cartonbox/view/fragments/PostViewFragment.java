@@ -1,5 +1,6 @@
 package org.shujito.cartonbox.view.fragments;
 
+import org.shujito.cartonbox.Logger;
 import org.shujito.cartonbox.R;
 import org.shujito.cartonbox.controller.listeners.OnDownloadProgressListener;
 import org.shujito.cartonbox.controller.listeners.OnImageFetchedListener;
@@ -59,7 +60,8 @@ public class PostViewFragment extends Fragment
 	@Override
 	public View onCreateView(LayoutInflater inf, ViewGroup dad, Bundle cirno)
 	{
-		return inf.inflate(R.layout.post_item_pager, dad, false);
+		
+		return inf.inflate(R.layout.post_item_pager, null);
 	}
 	
 	@Override
@@ -192,18 +194,9 @@ public class PostViewFragment extends Fragment
 	}
 	
 	@Override
-	public void onResume()
+	public void onPause()
 	{
-		super.onResume();
-		
-	}
-	
-	@Override
-	public void onDestroy()
-	{
-		super.onDestroy();
 		// why, ask your mother
-		//*
 		if(this.thumbDownloader != null)
 		{
 			this.thumbDownloader.setOnDownloadProgressListener(null);
@@ -219,7 +212,15 @@ public class PostViewFragment extends Fragment
 			this.sampleDownloader.cancel(true);
 		}
 		this.sampleDownloader = null;
-		//*/
+		
+		super.onPause();
+	}
+	
+	@Override
+	public void onDestroy()
+	{
+		Logger.i("PostViewFragment::onDestroy", String.format("Destroyed #%s", this.post.getId()));
+		super.onDestroy();
 	}
 	
 	/* meth */

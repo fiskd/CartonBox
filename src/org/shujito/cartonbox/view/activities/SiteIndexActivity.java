@@ -8,10 +8,10 @@ import org.shujito.cartonbox.controller.ImageboardPosts;
 import org.shujito.cartonbox.controller.ImageboardTags;
 import org.shujito.cartonbox.controller.listeners.OnErrorListener;
 import org.shujito.cartonbox.view.adapters.SiteIndexPageAdapter;
-import org.shujito.cartonbox.view.fragments.LoginDialogFragment;
-import org.shujito.cartonbox.view.fragments.LoginDialogFragment.LoginDialogCallback;
 import org.shujito.cartonbox.view.fragments.PostsSectionFragment;
 import org.shujito.cartonbox.view.fragments.TagsSectionFragment;
+import org.shujito.cartonbox.view.fragments.dialogs.LoginDialogFragment;
+import org.shujito.cartonbox.view.fragments.dialogs.LoginDialogFragment.LoginDialogCallback;
 import org.shujito.cartonbox.view.listeners.OnFragmentAttachedListener;
 import org.shujito.cartonbox.view.listeners.TagListItemSelectedCallback;
 
@@ -47,6 +47,7 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 	LoginDialogCallback, OnClickListener
 {
 	public static String EXTRA_SECTIONPAGE = "org.shujito.cartonbox.SECTIONPAGE";
+	public static String EXTRA_DIALOGSHOWING = "org.shujito.cartonbox.DIALOGSHOWING";
 	
 	SiteIndexPageAdapter mPageAdapter = null;
 	ViewPager mVpSections = null;
@@ -157,12 +158,17 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 			this.mPostsApi.addOnErrorListener(this);
 			this.mTagsApi.addOnErrorListener(this);
 		}
+		// retrieve dialog showing
+		this.dialogShowing = this.getIntent().getBooleanExtra(EXTRA_DIALOGSHOWING, false);
 	}
 	
 	@Override
 	protected void onPause()
 	{
 		super.onPause();
+		// save dialog showing
+		this.getIntent().putExtra(EXTRA_DIALOGSHOWING, this.dialogShowing);
+		
 		if(this.mPostsApi != null)
 			this.mPostsApi.removeOnErrorListener(this);
 		if(this.mTagsApi != null)
@@ -217,7 +223,7 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 			case R.id.menu_siteindex_search:
 				/* what to put here? */
 				return true;
-				/* // XXX: I should make another prefscreen for site related stuff
+				/* // XXX: I should make another prefscreen for site related stuff (I will)
 			case R.id.menu_siteindex_settings:
 				Intent ntnPrefs = new Intent(this, GeneralPreferencesActivity.class);
 				this.startActivity(ntnPrefs);
@@ -431,6 +437,13 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 			this.dialogShowing = false;
 		}
 	}
+	
+	@Override
+	public void onCancel()
+	{
+		// you can't login or don't want to login, no index for you then...
+		this.finish();
+	}
 	/* LoginDialogCallback methods */
 	
 	@Override
@@ -442,4 +455,3 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 		}
 	}
 }
-
