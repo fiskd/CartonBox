@@ -64,7 +64,7 @@ public class PostsGridAdapter extends BaseAdapter implements OnPostsFetchedListe
 		int index = size - pos - 1;
 		
 		// must get a key from the index, that's how SparseArray works
-		final int key = this.posts.keyAt(index);
+		int key = this.posts.keyAt(index);
 		
 		return this.cache.getBitmapFromMemCache(key);
 	}
@@ -72,7 +72,14 @@ public class PostsGridAdapter extends BaseAdapter implements OnPostsFetchedListe
 	@Override
 	public long getItemId(int pos)
 	{
-		return 0;
+		// should get reverse index
+		int size = this.getCount();
+		int index = size - pos - 1;
+		
+		// must get a key from the index, that's how SparseArray works
+		int key = this.posts.keyAt(index);
+		
+		return key;
 	}
 	
 	@Override
@@ -232,18 +239,24 @@ public class PostsGridAdapter extends BaseAdapter implements OnPostsFetchedListe
 	public void onPostsFetched(SparseArray<Post> posts)
 	{
 		this.posts = posts;
-		this.notifyDataSetChanged();
 		if(this.getFilter() != null)
 		{
 			((PostsFilter)this.getFilter()).filter(this.posts);
 		}
+		else
+		{
+			this.notifyDataSetChanged();
+		}
+	}
+	
+	public void setFilter(PostsFilter filter)
+	{
+		this.filter = filter;
 	}
 	
 	@Override
 	public Filter getFilter()
 	{
-		if(this.filter == null)
-			this.filter = new PostsFilter(this);
 		return this.filter;
 	}
 	

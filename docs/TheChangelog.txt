@@ -13,7 +13,9 @@ what I do since the last release, but there you go:
 -can show/hide deleted and flagged posts
 -now showing response errors that were not showing (time out, not found, denied,
  etc)
- -removed yande.re from the default servers list
+-removed yande.re from the default servers list
+-new (better) icons!
+-blacklists (basic support)!
 
 0.4
 # second (emergency) release
@@ -21,7 +23,7 @@ what I do since the last release, but there you go:
   keep on waiting
 -some prefs work, disabled some
 -view post on browser works
--added ability to clear cache when exiting
+-added ability to clear cache when exiting (and manually)
 
 0.2
 # initial (accidental) release

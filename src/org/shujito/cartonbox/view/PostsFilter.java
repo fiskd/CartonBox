@@ -12,17 +12,26 @@ public class PostsFilter extends Filter
 {
 	FilterCallback<SparseArray<Post>> callback = null;
 	SparseArray<Post> unfiltered = null;
+	// stuff
+	boolean bShowSafe = true;
+	boolean bShowQuestionable = false;
+	boolean bShowExplicit = false;
+	boolean bShowFlagged = false;
+	boolean bShowDeleted = false;
+	boolean bEnableBlacklist = false;
+	String sBlacklistedTags = null;
 	
 	public PostsFilter(FilterCallback<SparseArray<Post>> callback)
 	{
 		this.callback = callback;
-		
-		boolean bShowSafe = Preferences.getBool(R.string.pref_ratings_todisplay_safe_key, true);
-		boolean bShowQuestionable = Preferences.getBool(R.string.pref_ratings_todisplay_questionable_key);
-		boolean bShowExplicit = Preferences.getBool(R.string.pref_ratings_todisplay_explicit_key);
-		boolean bShowFlagged = Preferences.getBool(R.string.pref_content_showflaggedposts_key);
-		boolean bShowDeleted = Preferences.getBool(R.string.pref_content_showdeletedposts_key);
-		
+		//set from preferences
+		this.bShowSafe = Preferences.getBool(R.string.pref_ratings_todisplay_safe_key, true);
+		this.bShowQuestionable = Preferences.getBool(R.string.pref_ratings_todisplay_questionable_key);
+		this.bShowExplicit = Preferences.getBool(R.string.pref_ratings_todisplay_explicit_key);
+		this.bShowDeleted = Preferences.getBool(R.string.pref_content_showdeletedposts_key);
+		this.bShowFlagged = Preferences.getBool(R.string.pref_content_showflaggedposts_key);
+		this.bEnableBlacklist = Preferences.getBool(R.string.pref_blacklist_enabled_key);
+		this.sBlacklistedTags = Preferences.getString(R.string.pref_blacklist_tags_key);
 	}
 	
 	// lovely, this works on a separate thread
@@ -37,6 +46,30 @@ public class PostsFilter extends Filter
 			{
 				int key = this.unfiltered.keyAt(idx);
 				Post post = this.unfiltered.get(key);
+				
+				boolean shouldAdd = false;
+				// ratings (hey, a penis, hide that)
+				shouldAdd = shouldAdd || (this.bShowSafe && post.getRating() == Rating.Safe);
+				shouldAdd = shouldAdd || (this.bShowQuestionable && post.getRating() == Rating.Questionable);
+				shouldAdd = shouldAdd || (this.bShowExplicit && post.getRating() == Rating.Explicit);
+				// must not show flash files
+				shouldAdd = shouldAdd && !"swf".equals(post.getFileExt());
+				// statuses (deleted or flagged)
+				shouldAdd = shouldAdd && !(post.isDeleted() && !this.bShowDeleted);
+				shouldAdd = shouldAdd && !(post.isFlagged() && !this.bShowFlagged);
+				// blacklists
+				if(this.sBlacklistedTags != null)
+				{
+					String[] groups = sBlacklistedTags.split("\\n");
+					for(String group : groups)
+					{
+						String[] tags = group.split("\\s+");
+						for(String tag : tags)
+						{
+							//shouldAdd = shouldAdd && post.getTags().contains(tag);
+						}
+					}
+				}
 				
 				if(post.getRating() == Rating.Safe)
 				{

@@ -105,6 +105,18 @@ public class Preferences
 		return globalPrefs.getInt(context.getString(id), def);
 	}
 	
+	public static String getString(int id)
+	{
+		return getString(id, null);
+	}
+	
+	public static String getString(int id, String def)
+	{
+		Context context = CartonBox.getInstance();
+		SharedPreferences globalPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+		return globalPrefs.getString(context.getString(id), def);
+	}
+	
 	public static void setInt(int id, int value)
 	{
 		Context context = CartonBox.getInstance();
@@ -114,6 +126,19 @@ public class Preferences
 			.edit()
 			// collocate
 			.putInt(context.getString(id), value)
+			// submit changes
+			.commit();
+	}
+	
+	public static void setString(int id, String value)
+	{
+		Context context = CartonBox.getInstance();
+		SharedPreferences globalPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+		globalPrefs
+			// start editing
+			.edit()
+			// collocate
+			.putString(context.getString(id), value)
 			// submit changes
 			.commit();
 	}

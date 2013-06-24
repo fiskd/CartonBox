@@ -28,6 +28,7 @@ public class PostViewActivity extends SherlockFragmentActivity
 	implements OnPageChangeListener
 {
 	public static String EXTRA_POST_INDEX = "org.shujito.cartonbox.POST_INDEX";
+	public static String EXTRA_POST_KEY = "org.shujito.cartonbox.POST_KEY";
 	
 	ImageboardPosts postsApi = null;
 	

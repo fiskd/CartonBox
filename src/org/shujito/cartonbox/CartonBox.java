@@ -33,19 +33,26 @@ public class CartonBox extends Application
 		//Logger.i("CartonBox::onCreate", String.format("Total Memory: %s", Formatters.humanReadableByteCount(Runtime.getRuntime().maxMemory())));
 		
 		// we got an update oh no!
+		// XXX: should move elsewhere in the case this becomes big
 		if(this.detectUpdate())
 		{
-			// get sites!
-			SitesDB sitesdb = new SitesDB(this);
-			List<Site> sites = sitesdb.getAll();
-			// update!
-			for(Site site : sites)
+			int version = this.detectVersionCode();
+			// until version 4 had yandere on it, clear all to remove it
+			// (custom sites are not available yet here so this shouldn't bother)
+			if(version <= 4)
 			{
-				sitesdb.delete(site);
+				// get sites!
+				SitesDB sitesdb = new SitesDB(this);
+				List<Site> sites = sitesdb.getAll();
+				// update!
+				for(Site site : sites)
+				{
+					sitesdb.delete(site);
+				}
+				Preferences.defaultSites();
+				sites = sitesdb.getAll();
+				sites = sitesdb.getAll();
 			}
-			Preferences.defaultSites();
-			sites = sitesdb.getAll();
-			sites = sitesdb.getAll();
 			CartonBox.getInstance().finishUpdate();
 		}
 		
@@ -83,28 +90,41 @@ public class CartonBox extends Application
 	}
 	
 	/**
+	 * Gets the previous stored version
+	 * @return previous install version
+	 */
+	public int previousVersionCode()
+	{
+		return Preferences.getInt(R.string.pref_previous_version_number);
+	}
+	
+	/**
+	 * Gets the current version code
+	 * @return current version
+	 */
+	public int detectVersionCode()
+	{
+		int version = 0;
+		try
+		{
+			PackageInfo info = this.getPackageManager().getPackageInfo(this.getPackageName(), 0);
+			version = info.versionCode;
+		}
+		catch(Exception ex)
+		{
+		}
+		return version;
+	}
+	
+	/**
 	 * Use this to detect whether CartonBox has been updated
 	 * @return true if current version code is greater than the previous
 	 * version code
 	 */
 	public boolean detectUpdate()
 	{
-		int storedVersion = 0;
-		int currentVersion = 0;
-		
-		// get current version
-		try
-		{
-			PackageInfo info = this.getPackageManager().getPackageInfo(this.getPackageName(), 0);
-			currentVersion = info.versionCode;
-		}
-		catch(Exception ex)
-		{
-			// no package uh...
-		}
-		
-		// get old version
-		storedVersion = Preferences.getInt(R.string.pref_previous_version_number);
+		int storedVersion = this.previousVersionCode();
+		int currentVersion = this.detectVersionCode();
 		
 		return currentVersion > storedVersion;
 	}
@@ -115,17 +135,7 @@ public class CartonBox extends Application
 	 */
 	public void finishUpdate()
 	{
-		int currentVersion = 0;
-		try
-		{
-			PackageInfo info = this.getPackageManager().getPackageInfo(this.getPackageName(), 0);
-			currentVersion = info.versionCode;
-		}
-		catch(Exception ex)
-		{
-			// no package!!
-		}
-		
+		int currentVersion = this.detectVersionCode();
 		Preferences.setInt(R.string.pref_previous_version_number, currentVersion);
 	}
 }

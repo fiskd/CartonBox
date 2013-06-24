@@ -69,11 +69,6 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 		super.onCreate(cirno);
 		this.setContentView(R.layout.siteindex);
 		
-		//String siteUrl = this.getIntent().getStringExtra(EXTRA_SITEURL);
-		//String username = this.getIntent().getStringExtra(EXTRA_USERNAME);
-		//String password = this.getIntent().getStringExtra(EXTRA_PASSWORD);
-		//Site site = (Site)this.getIntent().getSerializableExtra(EXTRA_SITE);
-		
 		this.tabs = this.getResources().getStringArray(R.array.danbooru_sections);
 		// create with same amount of tabs
 		this.queries = new String[this.tabs.length];
@@ -98,26 +93,6 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 		int page = this.findPage(sectionid);
 		if(page > 0)
 			this.mVpSections.setCurrentItem(page);
-		
-		/*
-		int page = 0;
-		int sectionid = this.getIntent().getIntExtra(EXTRA_SECTIONPAGE, 0);
-		
-		if(sectionid != 0)
-		{
-			String sectionstring = this.getResources().getString(sectionid);
-			for(int idx = 0; idx < this.tabs.length; idx++)
-			{
-				if(sectionstring.equals(this.tabs[idx]))
-				{
-					page = idx;
-					break;
-				}
-			}
-			
-			this.mVpSections.setCurrentItem(page);
-		}
-		//*/
 	}
 	
 	protected int findPage(int resid)

@@ -3,6 +3,7 @@ package org.shujito.cartonbox.view.adapters;
 import org.shujito.cartonbox.Logger;
 import org.shujito.cartonbox.controller.listeners.OnPostsFetchedListener;
 import org.shujito.cartonbox.model.Post;
+import org.shujito.cartonbox.view.FilterCallback;
 import org.shujito.cartonbox.view.fragments.PostViewFragment;
 
 import android.support.v4.app.Fragment;
@@ -11,8 +12,11 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.util.SparseArray;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 
-public class PostsPagerAdapter extends FragmentPagerAdapter implements OnPostsFetchedListener
+public class PostsPagerAdapter extends FragmentPagerAdapter implements
+	OnPostsFetchedListener, Filterable, FilterCallback<SparseArray<Post>>
 {
 	SparseArray<Post> posts = null;
 	
@@ -64,5 +68,16 @@ public class PostsPagerAdapter extends FragmentPagerAdapter implements OnPostsFe
 		fragtrans.commit();
 		
 		Logger.i("PostsPagerAdapter::destroyItem", String.format("Destroyed #%s", position));
+	}
+	
+	@Override
+	public Filter getFilter()
+	{
+		return null;
+	}
+	
+	@Override
+	public void onFilter(SparseArray<Post> result)
+	{
 	}
 }
