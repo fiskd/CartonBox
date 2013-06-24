@@ -3,5 +3,6 @@
 
 <integer name="posts_section_numcols">3</integer>
 <integer name="main_gvsites_numcols">2</integer>
+<bool name="fullscreen">false</bool>
 
 </resources>

@@ -10,7 +10,9 @@
 	
 	<string name="settings">Settings</string>
 	<string name="search">Search</string>
+	<string name="refresh">Refresh</string>
 	<string name="addsite">Add site</string>
+	<string name="favorite">Favorite</string>
 	
 	<string name="save">Save</string>
 	<string name="browser">Open in browser</string>
@@ -69,6 +71,8 @@
 	<string name="pref_content_localfilter_desc">Good if you want to search for more than two tags with limited accounts</string>
 	<string name="pref_content_warning">Content warning</string>
 	<string name="pref_content_warning_desc">Display a confirmation when attempting to access high rated posts</string>
+	<string name="pref_content_showdeletedposts">Show deleted posts</string>
+	<string name="pref_content_showflaggedposts">Show flagged posts</string>
 	
 	<string name="pref_blacklist">Blacklist</string>
 	<string name="pref_blacklist_enabled">Enable</string>

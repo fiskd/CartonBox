@@ -56,9 +56,6 @@ public class PostViewActivity extends SherlockFragmentActivity
 		// enable this so we can navigate with the up button
 		this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		
-		// get the api from the context (handy, but hacky, should have made this a singleton? nah...)
-		//this.postsApi = CartonBox.getInstance().getImageboard();
-		
 		if(CartonBox.getInstance().getApis() != null)
 			this.postsApi = CartonBox.getInstance().getApis().getImageboardPosts();
 		// no api, no job
@@ -72,7 +69,7 @@ public class PostViewActivity extends SherlockFragmentActivity
 		super.onResume();
 		// hey listen! (the adapter will listen when the api fetches posts)
 		this.postsApi.addOnPostsFetchedListener(this.mPostsAdapter);
-		// XXX: hacky...
+		// Even more HAX!!
 		if(this.mPostsAdapter != null)
 			this.mPostsAdapter.onPostsFetched(this.postsApi.getPosts());
 		
@@ -120,7 +117,6 @@ public class PostViewActivity extends SherlockFragmentActivity
 						.setAllowedOverRoaming(false)
 						.setDescription(filename)
 						.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename);
-					//long id =
 					downman.enqueue(request);
 				}
 				else
@@ -166,26 +162,16 @@ public class PostViewActivity extends SherlockFragmentActivity
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu)
 	{
-		// XXX: woes!: for whatever reason, when changing orientation from
-		// portrait to landscape, the context menu entries disappear
-		// (parent, child, etc)
-		// XXX: got it: onPrepareOptionsMenu doesn't run the first time the
-		// button is pressed
+		// onPrepareOptionsMenu doesn't run the first time the button is pressed
 		this.getSupportMenuInflater().inflate(R.menu.postview, menu);
 		
 		this.itemViewChildren = menu.findItem(R.id.menu_postview_viewchildren).setVisible(false);
 		this.itemViewParent = menu.findItem(R.id.menu_postview_viewparent).setVisible(false);
 		this.itemViewPools = menu.findItem(R.id.menu_postview_viewpools).setVisible(false);
-		// XXX: I'll hide these for now...
-		//menu.findItem(R.id.menu_postview_details).setVisible(false);
-		//menu.findItem(R.id.menu_postview_preferences).setVisible(false);
-		//menu.findItem(R.id.menu_postview_save).setVisible(false);
 		
-		// XXX: I had to...
-		// this refreshes visible menu items
+		// this HAX refreshes visible menu items
 		int page = this.getIntent().getIntExtra(EXTRA_POST_INDEX, 0);
 		this.onPageSelected(page);
-		
 		return true;
 	}
 	
@@ -213,12 +199,10 @@ public class PostViewActivity extends SherlockFragmentActivity
 		// now this works, I'm happy again (:
 		// now improved
 		
-		/* XXX: deactivated...
 		if(this.itemViewChildren != null)
 			this.itemViewChildren.setVisible(this.selectedPost.isHasChildren());
 		if(this.itemViewParent != null)
 			this.itemViewParent.setVisible(this.selectedPost.getParentId() > 0);
-		//*/
 		
 		// oh hey it became natural! and I didn't had to do much!
 		if(pos + 1 >= size)

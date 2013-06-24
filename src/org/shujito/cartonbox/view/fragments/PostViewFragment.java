@@ -10,7 +10,12 @@ import org.shujito.cartonbox.utils.ImageDownloader;
 
 import android.annotation.TargetApi;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.Point;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.TransitionDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -51,6 +56,7 @@ public class PostViewFragment extends Fragment
 	TextView tvmessage = null;
 	ImageView ivpreview = null;
 	ImageView ivred = null;
+	ImageView ivgray = null;
 	ImageView ivblue = null;
 	ImageView ivgreen = null;
 	ImageView ivyellow = null;
@@ -106,20 +112,27 @@ public class PostViewFragment extends Fragment
 		
 		// build the view appearance here
 		this.ivpreview = (ImageView)view.findViewById(R.id.post_item_pager_ivsample);
-		
+
 		// flagged
 		this.ivred = (ImageView)view.findViewById(R.id.post_item_pager_ivred);
+		// deleted
+		this.ivgray = (ImageView)view.findViewById(R.id.post_item_pager_ivgray);
 		// pending
 		this.ivblue = (ImageView)view.findViewById(R.id.post_item_pager_ivblue);
 		// parent (has children)
 		this.ivgreen = (ImageView)view.findViewById(R.id.post_item_pager_ivgreen);
 		// child (belongs to parent)
 		this.ivyellow = (ImageView)view.findViewById(R.id.post_item_pager_ivyellow);
-
+		
 		if(this.post.isFlagged())
 			this.ivred.setVisibility(View.VISIBLE);
 		else
 			this.ivred.setVisibility(View.GONE);
+		
+		if(this.post.isDeleted())
+			this.ivgray.setVisibility(View.VISIBLE);
+		else
+			this.ivgray.setVisibility(View.GONE);
 		
 		if(this.post.isPending())
 			this.ivblue.setVisibility(View.VISIBLE);
@@ -152,7 +165,16 @@ public class PostViewFragment extends Fragment
 				}
 				else
 				{
-					ivpreview.setImageBitmap(b);
+					// I went ahead and added some eyecandy
+					Drawable[] overlay = new Drawable[2];
+					overlay[0] = new ColorDrawable(Color.TRANSPARENT);
+					overlay[1] = new BitmapDrawable(getResources(), b);
+					
+					TransitionDrawable fadeIn = new TransitionDrawable(overlay);
+					ivpreview.setImageDrawable(fadeIn);
+					fadeIn.startTransition(200);
+					
+					//ivpreview.setImageBitmap(b);
 					tvmessage.setText(R.string.loading_sample);
 					// start downloading sample
 					if(sampleDownloader != null && !sampleDownloader.isAlreadyExecuted())
@@ -186,7 +208,16 @@ public class PostViewFragment extends Fragment
 				}
 				else
 				{
-					ivpreview.setImageBitmap(b);
+					// more visual sweets
+					Drawable[] overlay = new Drawable[2];
+					overlay[0] = ivpreview.getDrawable();
+					overlay[1] = new BitmapDrawable(getResources(), b);
+					
+					TransitionDrawable fadeIn = new TransitionDrawable(overlay);
+					ivpreview.setImageDrawable(fadeIn);
+					fadeIn.startTransition(200);
+					
+					//ivpreview.setImageBitmap(b);
 					tvmessage.setVisibility(View.GONE);
 				}
 			}
@@ -194,7 +225,7 @@ public class PostViewFragment extends Fragment
 	}
 	
 	@Override
-	public void onPause()
+	public void onDestroy()
 	{
 		// why, ask your mother
 		if(this.thumbDownloader != null)
@@ -212,13 +243,6 @@ public class PostViewFragment extends Fragment
 			this.sampleDownloader.cancel(true);
 		}
 		this.sampleDownloader = null;
-		
-		super.onPause();
-	}
-	
-	@Override
-	public void onDestroy()
-	{
 		Logger.i("PostViewFragment::onDestroy", String.format("Destroyed #%s", this.post.getId()));
 		super.onDestroy();
 	}

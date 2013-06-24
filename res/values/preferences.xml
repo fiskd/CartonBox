@@ -51,6 +51,8 @@
 	<string name="pref_content_poolpostsperpage_key">org.shujito.cartonbox.pref_content_poolpostsperpage_key</string>
 	<string name="pref_content_localfilter_key">org.shujito.cartonbox.pref_content_localfilter_key</string>
 	<string name="pref_content_warning_key">org.shujito.cartonbox.pref_content_warning_key</string>
+	<string name="pref_content_showdeletedposts_key">org.shujito.cartonbox.pref_content_showdeletedposts_key</string>
+	<string name="pref_content_showflaggedposts_key">org.shujito.cartonbox.pref_content_showflaggedposts_key</string>
 	<string name="pref_blacklist_enabled_key">org.shujito.cartonbox.pref_blacklist_enabled_key</string>
 	<string name="pref_blacklist_tags_key">org.shujito.cartonbox.pref_blacklist_tags_key</string>
 	<string name="pref_blacklist_hide_key">org.shujito.cartonbox.pref_blacklist_hide_key</string>
@@ -59,5 +61,7 @@
 	<string name="pref_ratings_todisplay_safe_key">org.shujito.cartonbox.pref_ratings_todisplay_safe_key</string>
 	<string name="pref_ratings_todisplay_questionable_key">org.shujito.cartonbox.pref_ratings_todisplay_questionable_key</string>
 	<string name="pref_ratings_todisplay_explicit_key">org.shujito.cartonbox.pref_ratings_todisplay_explicit_key</string>
+	
+	<string name="pref_previous_version_number">org.shujito.cartonbox.pref_version_number</string>
 	
 </resources>

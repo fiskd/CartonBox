@@ -14,8 +14,9 @@ public class DanbooruImageBoardPosts extends ImageboardPosts
 	{
 		JsonDownloader downloader = new DanbooruJsonPostDownloader(this.buildPostsUrl());
 		downloader.setOnResponseReceivedListener(this);
-		downloader.setOnAccessDeniedListener(this);
-		downloader.setOnInternalServerErrorListener(this);
+		downloader.setOnErrorListener(this);
+		//downloader.setOnAccessDeniedListener(this);
+		//downloader.setOnInternalServerErrorListener(this);
 		return downloader;
 	}
 }

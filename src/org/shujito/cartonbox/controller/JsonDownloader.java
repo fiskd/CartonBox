@@ -3,11 +3,8 @@ package org.shujito.cartonbox.controller;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 
-import org.shujito.cartonbox.controller.listeners.OnAccessDeniedListener;
-import org.shujito.cartonbox.controller.listeners.OnInternalServerErrorListener;
-import org.shujito.cartonbox.controller.listeners.OnPageNotFoundListener;
+import org.shujito.cartonbox.controller.listeners.OnErrorListener;
 import org.shujito.cartonbox.controller.listeners.OnResponseReceivedListener;
 import org.shujito.cartonbox.model.parser.DanbooruJsonResponseParser;
 import org.shujito.cartonbox.model.parser.JsonParser;
@@ -15,26 +12,16 @@ import org.shujito.cartonbox.model.parser.JsonParser;
 public abstract class JsonDownloader extends Downloader<JsonParser<?>>
 {
 	/* Listeners */
-	private OnAccessDeniedListener onAccessDeniedListener = null;
-	private OnPageNotFoundListener onPageNotFoundListener = null;
-	private OnInternalServerErrorListener onInternalServerErrorListener = null;
+	private OnErrorListener onErrorListener = null;
 	private OnResponseReceivedListener onResponseReceivedListener = null;
 	
-	public OnAccessDeniedListener getOnAccessDeniedListener()
-	{ return this.onAccessDeniedListener; }
-	public OnPageNotFoundListener getOnPageNotFoundListener()
-	{ return this.onPageNotFoundListener; }
-	public OnInternalServerErrorListener getOnInternalServerErrorListener()
-	{ return this.onInternalServerErrorListener; }
+	public OnErrorListener getOnErrorListener()
+	{ return onErrorListener; }
 	public OnResponseReceivedListener getOnResponseReceivedListener()
 	{ return this.onResponseReceivedListener; }
 	
-	public void setOnAccessDeniedListener(OnAccessDeniedListener l)
-	{ this.onAccessDeniedListener = l; }
-	public void setOnPageNotFoundListener(OnPageNotFoundListener l)
-	{ this.onPageNotFoundListener = l; }
-	public void setOnInternalServerErrorListener(OnInternalServerErrorListener l)
-	{ this.onInternalServerErrorListener = l; }
+	public void setOnErrorListener(OnErrorListener l)
+	{ this.onErrorListener = l; }
 	public void setOnResponseReceivedListener(OnResponseReceivedListener l)
 	{ this.onResponseReceivedListener = l; }
 	
@@ -86,8 +73,9 @@ public abstract class JsonDownloader extends Downloader<JsonParser<?>>
 	}
 	
 	@Override
-	protected void onRequestFailed(int code, JsonParser<?> result)
+	protected void onRequestFailed(int code, String message)
 	{
+		/*
 		if(code == HttpURLConnection.HTTP_FORBIDDEN)
 			if(this.onAccessDeniedListener != null)
 				this.onAccessDeniedListener.onAccessDenied();
@@ -97,5 +85,10 @@ public abstract class JsonDownloader extends Downloader<JsonParser<?>>
 		if(code >= HttpURLConnection.HTTP_INTERNAL_ERROR)
 			if(this.onInternalServerErrorListener != null)
 				this.onInternalServerErrorListener.onInternalServerError(result);
+		//*/
+		if(this.onErrorListener != null)
+		{
+			this.onErrorListener.onError(code, message);
+		}
 	}
 }

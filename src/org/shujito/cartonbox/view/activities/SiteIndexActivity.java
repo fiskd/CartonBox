@@ -56,6 +56,8 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 	ImageButton mBtnClearQuery = null;
 	// tab titles
 	String[] tabs = null;
+	// retain queries here
+	String[] queries = null;
 	ImageboardPosts mPostsApi = null;
 	ImageboardTags mTagsApi = null;
 	//
@@ -73,6 +75,9 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 		//Site site = (Site)this.getIntent().getSerializableExtra(EXTRA_SITE);
 		
 		this.tabs = this.getResources().getStringArray(R.array.danbooru_sections);
+		// create with same amount of tabs
+		this.queries = new String[this.tabs.length];
+		
 		this.mPageAdapter = new SiteIndexPageAdapter(this.getSupportFragmentManager(), this, this.tabs);
 		this.mVpSections = (ViewPager)this.findViewById(R.id.siteindex_vpsections);
 		this.mVpSections.setAdapter(this.mPageAdapter);
@@ -221,14 +226,30 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 				// event handled
 				return true;
 			case R.id.menu_siteindex_search:
-				/* what to put here? */
 				return true;
-				/* // XXX: I should make another prefscreen for site related stuff (I will)
-			case R.id.menu_siteindex_settings:
-				Intent ntnPrefs = new Intent(this, GeneralPreferencesActivity.class);
-				this.startActivity(ntnPrefs);
-				return true;
+			case R.id.menu_siteindex_refresh:
+				/*
+				this.mPostsApi.clear();
+				this.mPostsApi.request();
+				int page = this.findPage(R.string.section_posts);
+				this.mVpSections.setCurrentItem(page);
 				//*/
+				int currentPage = this.mVpSections.getCurrentItem();
+				if(currentPage == this.findPage(R.string.section_tags))
+				{
+					this.mTagsApi.clear();
+					this.mTagsApi.request();
+				}
+				if(currentPage == this.findPage(R.string.section_posts))
+				{
+					this.mPostsApi.clear();
+					this.mPostsApi.request();
+				}
+				return true;
+			case R.id.menu_siteindex_settings:
+				//Intent ntnPrefs = new Intent(this, GeneralPreferencesActivity.class);
+				//this.startActivity(ntnPrefs);
+				return true;
 		}
 		
 		return super.onOptionsItemSelected(item);
@@ -248,6 +269,13 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 	@Override
 	public void onPageSelected(int pos)
 	{
+		// clear text
+		if(this.mMactvQueryPosts != null)
+		{
+			
+			this.mMactvQueryPosts.setText(null);
+		}
+		
 		// select the tab
 		this.getSupportActionBar().getTabAt(pos).select();
 	}
@@ -257,14 +285,22 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 	@Override
 	public void onTabSelected(Tab tab, FragmentTransaction ft)
 	{
+		//Toast.makeText(this, String.format("Tab: %s Item: %s", tab.getPosition(), this.mVpSections.getCurrentItem()), Toast.LENGTH_SHORT).show();
 		// collapse search view
 		if(this.mMenuItemSearch != null)
 			this.mMenuItemSearch.collapseActionView();
 		
-		// clear text
 		// TODO: save this search somewhere for later use
+		/*
 		if(this.mMactvQueryPosts != null)
-			this.mMactvQueryPosts.setText(null);
+		{
+			int prev = this.mVpSections.getCurrentItem();
+			int curr = tab.getPosition();
+			
+			this.queries[prev] = this.mMactvQueryPosts.getText().toString();
+			this.mMactvQueryPosts.setText(this.queries[curr]);
+		}
+		//*/
 		
 		// move to page
 		this.mVpSections.setCurrentItem(tab.getPosition());

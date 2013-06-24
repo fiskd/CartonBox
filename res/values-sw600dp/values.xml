@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-<integer name="posts_section_numcols">5</integer>
+<integer name="posts_section_numcols">4</integer>
 <integer name="main_gvsites_numcols">4</integer>
+<bool name="fullscreen">false</bool>
 
 </resources>

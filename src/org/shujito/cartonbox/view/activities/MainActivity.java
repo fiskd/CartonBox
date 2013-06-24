@@ -51,6 +51,7 @@ public class MainActivity extends SherlockActivity implements OnItemClickListene
 		// get sites stored on the db
 		SitesDB sitesdb = new SitesDB(this);
 		this.sites = sitesdb.getAll();
+		
 		if(this.sites.size() == 0)
 		{
 			// upgraded or anything? reset defaults...
@@ -80,13 +81,30 @@ public class MainActivity extends SherlockActivity implements OnItemClickListene
 	}
 	
 	@Override
-	protected void onPause()
+	public boolean onCreateOptionsMenu(Menu menu)
 	{
-		super.onPause();
+		this.getSupportMenuInflater().inflate(R.menu.main, menu);
+		return true;
 	}
 	
 	@Override
-	protected void onDestroy()
+	public boolean onOptionsItemSelected(MenuItem item)
+	{
+		switch(item.getItemId())
+		{
+			case R.id.menu_main_addsite:
+				return true;
+			case R.id.menu_main_settings:
+				Intent ntnPrefs = new Intent(this, GeneralPreferencesActivity.class);
+				this.startActivity(ntnPrefs);
+				return true;
+		}
+		
+		return super.onOptionsItemSelected(item);
+	}
+	
+	@Override
+	public void onBackPressed()
 	{
 		if(Preferences.getBool(R.string.pref_general_clearcacheonexit_key))
 		{
@@ -95,6 +113,7 @@ public class MainActivity extends SherlockActivity implements OnItemClickListene
 			builder.setSmallIcon(R.drawable.ic_notif);
 			builder.setOngoing(true);
 			builder.setContentTitle(this.getString(R.string.pref_general_clearcacheonexit_clearing));
+			builder.setTicker(this.getString(R.string.pref_general_clearcacheonexit_clearing));
 			builder.setProgress(0, 0, true);
 			notman.notify(R.string.app_name, builder.build());
 			
@@ -120,30 +139,7 @@ public class MainActivity extends SherlockActivity implements OnItemClickListene
 			clearDirectory.execute();
 		}
 		
-		super.onDestroy();
-	}
-	
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu)
-	{
-		this.getSupportMenuInflater().inflate(R.menu.main, menu);
-		return true;
-	}
-	
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item)
-	{
-		switch(item.getItemId())
-		{
-			case R.id.menu_main_addsite:
-				return true;
-			case R.id.menu_main_settings:
-				Intent ntnPrefs = new Intent(this, GeneralPreferencesActivity.class);
-				this.startActivity(ntnPrefs);
-				return true;
-		}
-		
-		return super.onOptionsItemSelected(item);
+		super.onBackPressed();
 	}
 	
 	/* OnItemClickListener methods */
@@ -162,20 +158,8 @@ public class MainActivity extends SherlockActivity implements OnItemClickListene
 		
 		// prefs!
 		SharedPreferences globalPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-		//boolean bShowSafe = globalPrefs.getBoolean(this.getString(R.string.pref_ratings_todisplay_safe_key), true);
-		//boolean bShowQuestionable = globalPrefs.getBoolean(this.getString(R.string.pref_ratings_todisplay_questionable_key), false);
-		//boolean bShowExplicit = globalPrefs.getBoolean(this.getString(R.string.pref_ratings_todisplay_explicit_key), false);
-		
-		boolean bShowSafe = Preferences.getBool(R.string.pref_ratings_todisplay_key, true);
-		boolean bShowQuestionable = Preferences.getBool(R.string.pref_ratings_todisplay_key);
-		boolean bShowExplicit = Preferences.getBool(R.string.pref_ratings_todisplay_key);
-		
 		String sPostsPerPage = globalPrefs.getString(this.getString(R.string.pref_content_postsperpage_key), "20");
 		int postsPerPage = Integer.parseInt(sPostsPerPage);
-		
-		//globalPrefs.getInt(this.getString(R.string.pref_content_postsperpage_key), 20);
-		//int poolsPerPage = globalPrefs.getInt(this.getString(R.string.pref_content_poolsperpage_key), 20);
-		//int poolPostsPerPage = globalPrefs.getInt(this.getString(R.string.pref_content_poolpostsperpage_key), 20);
 		
 		if(currentSite.getType() == Site.Type.Danbooru1)
 		{
@@ -191,10 +175,6 @@ public class MainActivity extends SherlockActivity implements OnItemClickListene
 			postsApi = new DanbooruImageBoardPosts(currentSite);
 			postsApi.setUsername(username);
 			postsApi.setPassword(password);
-			postsApi.setPostsPerPage(postsPerPage);
-			postsApi.setShowSafePosts(bShowSafe);
-			postsApi.setShowQuestionablePosts(bShowQuestionable);
-			postsApi.setShowExplicitPosts(bShowExplicit);
 			
 			tagsApi = new DanbooruImageBoardTags(currentSite);
 			tagsApi.setUsername(username);
@@ -203,7 +183,10 @@ public class MainActivity extends SherlockActivity implements OnItemClickListene
 		
 		// set apis on the apis class
 		if(postsApi != null)
+		{
+			postsApi.setPostsPerPage(postsPerPage);
 			apis.setImageboardPosts(postsApi);
+		}
 		if(tagsApi != null)
 			apis.setImageboardTags(tagsApi);
 		

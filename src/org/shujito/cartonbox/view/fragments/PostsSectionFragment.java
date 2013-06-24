@@ -79,14 +79,23 @@ public class PostsSectionFragment extends Fragment implements
 	@Override
 	public void onViewCreated(View view, Bundle cirno)
 	{
-		Logger.i("PostsSectionFragment::onViewCreated", "fragment craeted");
+		Logger.i("PostsSectionFragment::onViewCreated", "fragment created");
 		super.onViewCreated(view, cirno);
 		
 		this.mPostsAdapter = new PostsGridAdapter(this.getActivity());
 		
 		if(this.onFragmentAttachedListener != null)
 		{
-			this.postsApi = (ImageboardPosts)this.onFragmentAttachedListener.onFragmentAttached(this);
+			try
+			{
+				this.postsApi = (ImageboardPosts)this.onFragmentAttachedListener.onFragmentAttached(this);
+			}
+			catch(Exception ex)
+			{
+				// XXX: holy fuck
+				// http://s.modriv.net/abp/images/screencaps/6aff2a0386e9046ed8475b77bc8263ac.jpg
+				Logger.wtf("PostsSectionFragment::onViewCreated", ex.toString(), ex);
+			}
 		}
 		
 		this.mGvPosts = (GridView)view.findViewById(R.id.posts_gvposts);
@@ -113,7 +122,7 @@ public class PostsSectionFragment extends Fragment implements
 	{
 		super.onResume();
 		Logger.i("PostsSectionFragment::onResume", "fragment resumed");
-		// XXX: HACKY!!
+		// HAX!!
 		if(this.mPostsAdapter != null)
 			this.mPostsAdapter.onPostsFetched(this.postsApi.getPosts());
 		if(this.postsApi != null)

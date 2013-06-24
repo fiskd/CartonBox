@@ -1,21 +1,17 @@
 package org.shujito.cartonbox.controller;
 
-import java.net.HttpURLConnection;
 import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.shujito.cartonbox.controller.listeners.OnAccessDeniedListener;
 import org.shujito.cartonbox.controller.listeners.OnErrorListener;
-import org.shujito.cartonbox.controller.listeners.OnInternalServerErrorListener;
 import org.shujito.cartonbox.controller.listeners.OnRequestListener;
-import org.shujito.cartonbox.model.Response;
 import org.shujito.cartonbox.model.Site;
-import org.shujito.cartonbox.model.parser.JsonParser;
 
 public abstract class Imageboard implements
-	OnAccessDeniedListener,
-	OnInternalServerErrorListener
+	//OnAccessDeniedListener,
+	//OnInternalServerErrorListener,
+	OnErrorListener
 {
 	/* Static */
 	
@@ -132,7 +128,7 @@ public abstract class Imageboard implements
 	}
 	
 	/* meth */
-	
+	/*
 	@Override
 	public void onAccessDenied()
 	{
@@ -161,6 +157,18 @@ public abstract class Imageboard implements
 		}
 		
 		this.working = false;
+	}
+	//*/
+	
+	@Override
+	public void onError(int code, String result)
+	{if(this.onErrorListeners != null)
+	{
+		for(OnErrorListener l : this.onErrorListeners)
+		{
+			l.onError(code, result);
+		}
+	}
 	}
 	
 	/* abstract meth */

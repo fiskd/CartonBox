@@ -19,8 +19,9 @@ public class DanbooruImageBoardTags extends ImageboardTags
 	{
 		JsonDownloader downloader = new DanbooruJsonTagDownloader(this.buildTagsUrl());
 		downloader.setOnResponseReceivedListener(this);
-		downloader.setOnAccessDeniedListener(this);
-		downloader.setOnInternalServerErrorListener(this);
+		downloader.setOnErrorListener(this);
+		//downloader.setOnAccessDeniedListener(this);
+		//downloader.setOnInternalServerErrorListener(this);
 		return downloader;
 	}
 	

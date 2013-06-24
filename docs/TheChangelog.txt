@@ -1,10 +1,19 @@
 The Changelog
 
-I'm bad at making changelogs, I often forgot most of what I do since the last
-release, but there you go:
+I'm bad at making changelogs (because I don't), I often forgot most of
+what I do since the last release, but there you go:
 
 0.5
 # FIRST announced release
+-can save images now (2.3.3 and up currently)
+-added some eyecandy to the grid items and post view.
+-fixed memory crash
+-the login dialog closes the activity if it is cancelled.
+-added marks for deleted posts (gray circle)
+-can show/hide deleted and flagged posts
+-now showing response errors that were not showing (time out, not found, denied,
+ etc)
+ -removed yande.re from the default servers list
 
 0.4
 # second (emergency) release

@@ -8,6 +8,8 @@ import org.shujito.cartonbox.model.Post;
 import org.shujito.cartonbox.utils.BitmapCache;
 import org.shujito.cartonbox.utils.ConcurrentTask;
 import org.shujito.cartonbox.utils.ImageDownloader;
+import org.shujito.cartonbox.view.FilterCallback;
+import org.shujito.cartonbox.view.PostsFilter;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -23,18 +25,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-public class PostsGridAdapter extends BaseAdapter implements OnPostsFetchedListener
+public class PostsGridAdapter extends BaseAdapter implements OnPostsFetchedListener, Filterable, FilterCallback<SparseArray<Post>>
 {
 	Context context = null;
 	SparseArray<Post> posts = null;
 	// put cached bitmaps here
 	//SparseArray<Bitmap> bitmaps = null;
 	BitmapCache cache = null;
+	PostsFilter filter = null;
 	
 	public PostsGridAdapter(Context context)
 	{
@@ -94,6 +99,8 @@ public class PostsGridAdapter extends BaseAdapter implements OnPostsFetchedListe
 		final TextView tvloading = (TextView)v.findViewById(R.id.post_item_grid_tvloading);
 		// flagged
 		ImageView ivred = (ImageView)v.findViewById(R.id.post_item_grid_ivred);
+		// deleted
+		ImageView ivgray = (ImageView)v.findViewById(R.id.post_item_grid_ivgray);
 		// pending
 		ImageView ivblue = (ImageView)v.findViewById(R.id.post_item_grid_ivblue);
 		// parent (has children)
@@ -105,6 +112,11 @@ public class PostsGridAdapter extends BaseAdapter implements OnPostsFetchedListe
 			ivred.setVisibility(View.VISIBLE);
 		else
 			ivred.setVisibility(View.GONE);
+		
+		if(post.isDeleted())
+			ivgray.setVisibility(View.VISIBLE);
+		else
+			ivgray.setVisibility(View.GONE);
 		
 		if(post.isPending())
 			ivblue.setVisibility(View.VISIBLE);
@@ -184,10 +196,8 @@ public class PostsGridAdapter extends BaseAdapter implements OnPostsFetchedListe
 					if(bitmap == null)
 					{
 						tvloading.setText("whoops");
-						//tvloading.setText(null);
-						//ivpreview.setImageBitmap(cachedBitmap);
 						overlay[1] = new BitmapDrawable(context.getResources(), cachedBitmap);
-						// XXX: let's hack here...
+						// Let's HAX here...
 						notifyDataSetChanged();
 					}
 					else
@@ -195,15 +205,17 @@ public class PostsGridAdapter extends BaseAdapter implements OnPostsFetchedListe
 						// cache it
 						//bitmaps.append(key, b);
 						cache.addBitmapToMemCache(key, bitmap);
-						//ivpreview.setImageBitmap(bitmap);
 						overlay[1] = new BitmapDrawable(context.getResources(), bitmap);
 					}
 					// I went ahead and added some eyecandy
 					TransitionDrawable fadeIn = new TransitionDrawable(overlay);
+					// put it there
 					ivpreview.setImageDrawable(fadeIn);
+					// the usual is kept there
 					ivpreview.setBackgroundColor(Color.BLACK);
 					pbprogress.setVisibility(View.GONE);
 					tvloading.setVisibility(View.GONE);
+					// animate me!
 					fadeIn.startTransition(200);
 				}
 			});
@@ -220,6 +232,26 @@ public class PostsGridAdapter extends BaseAdapter implements OnPostsFetchedListe
 	public void onPostsFetched(SparseArray<Post> posts)
 	{
 		this.posts = posts;
+		this.notifyDataSetChanged();
+		if(this.getFilter() != null)
+		{
+			((PostsFilter)this.getFilter()).filter(this.posts);
+		}
+	}
+	
+	@Override
+	public Filter getFilter()
+	{
+		if(this.filter == null)
+			this.filter = new PostsFilter(this);
+		return this.filter;
+	}
+	
+	@Override
+	public void onFilter(SparseArray<Post> result)
+	{
+		if(result != null)
+			this.posts = result;
 		this.notifyDataSetChanged();
 	}
 }

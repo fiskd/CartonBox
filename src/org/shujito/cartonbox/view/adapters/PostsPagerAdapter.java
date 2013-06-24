@@ -8,6 +8,7 @@ import org.shujito.cartonbox.view.fragments.PostViewFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.util.SparseArray;
 import android.view.ViewGroup;
 
@@ -53,8 +54,15 @@ public class PostsPagerAdapter extends FragmentPagerAdapter implements OnPostsFe
 	@Override
 	public void destroyItem(ViewGroup container, int position, Object object)
 	{
-		// eh don't?
+		// don't do this
 		//super.destroyItem(container, position, object);
+		// do this instead:
+		Fragment frag = (Fragment)object;
+		FragmentManager fragman = frag.getFragmentManager();
+		FragmentTransaction fragtrans = fragman.beginTransaction();
+		fragtrans.remove(frag);
+		fragtrans.commit();
+		
 		Logger.i("PostsPagerAdapter::destroyItem", String.format("Destroyed #%s", position));
 	}
 }

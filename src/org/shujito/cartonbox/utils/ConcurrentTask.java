@@ -8,13 +8,15 @@ import android.annotation.TargetApi;
 import android.os.AsyncTask;
 import android.os.Build;
 
-public class ConcurrentTask//<Params, Progress, Result> extends AsyncTask<Params, Progress, Result>
+@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+public class ConcurrentTask
 {
 	// I tried this:
 	// http://www.jayway.com/2012/11/28/is-androids-asynctask-executing-tasks-serially-or-concurrently/
 	// and it didn't work, idk why
-
-	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+	// anyway, this thing is a workaround, a rather ugly one but it works,
+	// and I don't have to look at it every time (:
+	
 	public static void execute(ClearDirectoryTask task)
 	{
 		// the tasking thing
@@ -28,7 +30,6 @@ public class ConcurrentTask//<Params, Progress, Result> extends AsyncTask<Params
 		}
 	}
 	
-	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	public static void execute(DirectorySizeTask task)
 	{
 		// the tasking thing
@@ -42,7 +43,6 @@ public class ConcurrentTask//<Params, Progress, Result> extends AsyncTask<Params
 		}
 	}
 	
-	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	public static void execute(Downloader<?> task)
 	{
 		// the tasking thing
@@ -56,7 +56,6 @@ public class ConcurrentTask//<Params, Progress, Result> extends AsyncTask<Params
 		}
 	}
 	
-	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	public static void execute(ImageDownloader task)
 	{
 		// the tasking thing

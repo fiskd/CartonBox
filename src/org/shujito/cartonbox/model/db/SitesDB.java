@@ -168,11 +168,19 @@ public class SitesDB extends DB<Site>
 	@Override
 	public void update(Site record)
 	{
+		// TODO: prepare this when adding sites is ready
 	}
 	
 	@Override
 	public void delete(Site record)
 	{
+		SQLiteDatabase db = this.getWritableDatabase();
+		db.delete(
+				TABLE_SITES,
+				String.format("%s=?", KEY_ID),
+				new String[]{ String.valueOf(record.getId()) }
+			);
+		db.close();
 	}
 	
 	private Site fromCursor(Cursor cursor)

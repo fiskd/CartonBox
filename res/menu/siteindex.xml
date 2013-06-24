@@ -3,16 +3,18 @@
 
 	<item
 		android:id="@+id/menu_siteindex_search"
-		android:icon="@android:drawable/ic_menu_search"
+		android:icon="@drawable/ic_action_search"
 		android:showAsAction="always|collapseActionView"
 		android:actionLayout="@layout/actionsearch"
 		android:title="@string/search" />
-	<!--
+	<item
+		android:id="@+id/menu_siteindex_refresh"
+		android:icon="@drawable/ic_action_refresh"
+		android:showAsAction="ifRoom"
+		android:title="@string/refresh" />
 	<item
 		android:id="@+id/menu_siteindex_settings"
-		android:icon="@android:drawable/ic_menu_preferences"
+		android:icon="@drawable/ic_action_prefs"
 		android:showAsAction="ifRoom"
 		android:title="@string/settings" />
-	-->
-	
 </menu>

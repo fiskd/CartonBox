@@ -7,25 +7,16 @@ import java.net.URI;
 import java.net.URL;
 
 import org.shujito.cartonbox.Logger;
-import org.shujito.cartonbox.controller.listeners.OnErrorListener;
 
 import android.os.AsyncTask;
 
 public abstract class Downloader<T> extends AsyncTask<Void, Integer, T>
 {
-	/* Listeners */
-	private OnErrorListener onErrorListener = null;
-	
-	public final OnErrorListener getOnErrorListener()
-	{ return this.onErrorListener; }
-	public final void setOnErrorListener(OnErrorListener l)
-	{ this.onErrorListener = l; }
-	
 	/* Fields */
-	private String url = null;
 	private String message = null;
+	private int code = 0;
+	private String url = null;
 	private URI uri = null;
-	int code = 0;
 	
 	/* Constructor */
 	public Downloader(String url)
@@ -43,6 +34,7 @@ public abstract class Downloader<T> extends AsyncTask<Void, Integer, T>
 		
 		try
 		{
+			Logger.i("Downloader::doInBackground", this.url);
 			if(this.url != null)
 				url = new URL(this.url);
 			else if(this.uri != null)
@@ -96,9 +88,7 @@ public abstract class Downloader<T> extends AsyncTask<Void, Integer, T>
 	{
 		if(this.code >= HttpURLConnection.HTTP_BAD_REQUEST || this.code == 0)
 		{
-			this.onRequestFailed(this.code, result);
-			if(this.onErrorListener != null)
-				this.onErrorListener.onError(this.code, this.message);
+			this.onRequestFailed(this.code, this.message);
 			if(this.message != null)
 				Logger.e("Downloader::onPostExecute", this.message);
 			else
@@ -115,5 +105,5 @@ public abstract class Downloader<T> extends AsyncTask<Void, Integer, T>
 	/* Meth */
 	protected abstract T doInBackground(InputStream is) throws Exception;
 	protected abstract void onRequestSuccessful(int code, T result);
-	protected abstract void onRequestFailed(int code, T result);
+	protected abstract void onRequestFailed(int code, String message);
 }

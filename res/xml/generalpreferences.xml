@@ -61,11 +61,16 @@
 			android:key="@string/pref_content_warning_key"
 			android:title="@string/pref_content_warning"
 			android:summary="@string/pref_content_warning_desc" />
+		<CheckBoxPreference
+			android:key="@string/pref_content_showdeletedposts_key"
+			android:title="@string/pref_content_showdeletedposts" />
+		<CheckBoxPreference
+			android:key="@string/pref_content_showflaggedposts_key"
+			android:title="@string/pref_content_showflaggedposts" />
 	</PreferenceCategory>
 	<PreferenceCategory
 		android:title="@string/pref_blacklist" >
 		<CheckBoxPreference
-			android:enabled="false"
 			android:key="@string/pref_blacklist_enabled_key"
 			android:title="@string/pref_blacklist_enabled" />
 		<EditTextPreference

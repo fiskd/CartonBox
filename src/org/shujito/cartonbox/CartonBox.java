@@ -1,9 +1,14 @@
 package org.shujito.cartonbox;
 
+import java.util.List;
+
 import org.shujito.cartonbox.controller.ImageboardApis;
+import org.shujito.cartonbox.model.Site;
+import org.shujito.cartonbox.model.db.SitesDB;
 
 import android.annotation.TargetApi;
 import android.app.Application;
+import android.content.pm.PackageInfo;
 import android.os.Build;
 import android.provider.Settings;
 
@@ -27,9 +32,21 @@ public class CartonBox extends Application
 		
 		//Logger.i("CartonBox::onCreate", String.format("Total Memory: %s", Formatters.humanReadableByteCount(Runtime.getRuntime().maxMemory())));
 		
-		if(Preferences.isFirstAppRun())
+		// we got an update oh no!
+		if(this.detectUpdate())
 		{
-			Preferences.init();
+			// get sites!
+			SitesDB sitesdb = new SitesDB(this);
+			List<Site> sites = sitesdb.getAll();
+			// update!
+			for(Site site : sites)
+			{
+				sitesdb.delete(site);
+			}
+			Preferences.defaultSites();
+			sites = sitesdb.getAll();
+			sites = sitesdb.getAll();
+			CartonBox.getInstance().finishUpdate();
 		}
 		
 		// detect adb
@@ -63,5 +80,52 @@ public class CartonBox extends Application
 	public void setApis(ImageboardApis apis)
 	{
 		this.apis = apis;
+	}
+	
+	/**
+	 * Use this to detect whether CartonBox has been updated
+	 * @return true if current version code is greater than the previous
+	 * version code
+	 */
+	public boolean detectUpdate()
+	{
+		int storedVersion = 0;
+		int currentVersion = 0;
+		
+		// get current version
+		try
+		{
+			PackageInfo info = this.getPackageManager().getPackageInfo(this.getPackageName(), 0);
+			currentVersion = info.versionCode;
+		}
+		catch(Exception ex)
+		{
+			// no package uh...
+		}
+		
+		// get old version
+		storedVersion = Preferences.getInt(R.string.pref_previous_version_number);
+		
+		return currentVersion > storedVersion;
+	}
+	
+	/**
+	 * Call this when there's no need anymore to perform update changes
+	 * or detect the updated application
+	 */
+	public void finishUpdate()
+	{
+		int currentVersion = 0;
+		try
+		{
+			PackageInfo info = this.getPackageManager().getPackageInfo(this.getPackageName(), 0);
+			currentVersion = info.versionCode;
+		}
+		catch(Exception ex)
+		{
+			// no package!!
+		}
+		
+		Preferences.setInt(R.string.pref_previous_version_number, currentVersion);
 	}
 }

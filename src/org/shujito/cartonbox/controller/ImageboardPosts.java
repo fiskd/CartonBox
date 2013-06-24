@@ -8,7 +8,6 @@ import org.shujito.cartonbox.controller.listeners.OnPostsFetchedListener;
 import org.shujito.cartonbox.controller.listeners.OnRequestListener;
 import org.shujito.cartonbox.controller.listeners.OnResponseReceivedListener;
 import org.shujito.cartonbox.model.Post;
-import org.shujito.cartonbox.model.Post.Rating;
 import org.shujito.cartonbox.model.Site;
 import org.shujito.cartonbox.model.parser.JsonParser;
 import org.shujito.cartonbox.utils.ConcurrentTask;
@@ -52,15 +51,25 @@ public abstract class ImageboardPosts extends Imageboard implements
 	//protected Downloader<?> downloader = null;
 	//protected boolean working = false;
 	//protected String siteUrl = null;
+	// TODO: next thing to do...
+	protected String[] tagsblacklist = null;
 	
 	boolean doneDownloadingPosts = false;
 	
-	int postsPerPage = 20;
-	int page = 1;
+	protected int postsPerPage = 20;
+	protected int page = 1;
 	
-	boolean showSafePosts = true;
-	boolean showQuestionablePosts = false;
-	boolean showExplicitPosts = false;
+	/*
+	// show/hide ratings
+	protected boolean showSafePosts = true;
+	protected boolean showQuestionablePosts = false;
+	protected boolean showExplicitPosts = false;
+	// show/hide statuses
+	protected boolean showFlaggedPosts = false;
+	protected boolean showDeletedPosts = false;
+	//
+	protected boolean showRatedPosts = true;
+	//*/
 	
 	/* Constructor */
 	
@@ -86,6 +95,7 @@ public abstract class ImageboardPosts extends Imageboard implements
 		return this.postsPerPage;
 	}
 	
+	/*
 	public boolean getShowSafePosts()
 	{
 		return this.showSafePosts;
@@ -100,6 +110,15 @@ public abstract class ImageboardPosts extends Imageboard implements
 	{
 		return this.showExplicitPosts;
 	}
+	public boolean getShowFlaggedPosts()
+	{
+		return showFlaggedPosts;
+	}
+	public boolean getShowDeletedPosts()
+	{
+		return showDeletedPosts;
+	}
+	//*/
 	
 	/* Setters */
 	
@@ -108,6 +127,7 @@ public abstract class ImageboardPosts extends Imageboard implements
 		this.postsPerPage = postsPerPage;
 	}
 	
+	/*
 	public void setShowSafePosts(boolean showSafePosts)
 	{
 		this.showSafePosts = showSafePosts;
@@ -122,6 +142,15 @@ public abstract class ImageboardPosts extends Imageboard implements
 	{
 		this.showExplicitPosts = showExplicitPosts;
 	}
+	public void setShowFlaggedPosts(boolean showFlaggedPosts)
+	{
+		this.showFlaggedPosts = showFlaggedPosts;
+	}
+	public void setShowDeletedPosts(boolean shotDeletedPosts)
+	{
+		this.showDeletedPosts = shotDeletedPosts;
+	}
+	//*/
 	
 	/* Meth */
 	
@@ -222,19 +251,28 @@ public abstract class ImageboardPosts extends Imageboard implements
 		while((post = (Post)jp.getAtIndex(index)) != null)
 		{
 			index++;
-			boolean shouldAdd = false;
+			this.posts.append(post.getId(), post);
+			post.setSite(this.site);
 			
-			shouldAdd = (this.showSafePosts && post.getRating() == Rating.Safe) || shouldAdd;
-			shouldAdd = (this.showQuestionablePosts && post.getRating() == Rating.Questionable) || shouldAdd;
-			shouldAdd = (this.showExplicitPosts && post.getRating() == Rating.Explicit) || shouldAdd;
-			// must now show
+			/*
+			boolean shouldAdd = false;
+			// ratings (hey, a penis, hide that)
+			shouldAdd = shouldAdd || (this.showSafePosts && post.getRating() == Rating.Safe);
+			shouldAdd = shouldAdd || (this.showQuestionablePosts && post.getRating() == Rating.Questionable);
+			shouldAdd = shouldAdd || (this.showExplicitPosts && post.getRating() == Rating.Explicit);
+			// must not show
 			shouldAdd = !"swf".equals(post.getFileExt()) && shouldAdd; //!p.getFileExt().equals("swf") && shouldAdd;
+			// statuses (deleted or flagged)
+			shouldAdd = shouldAdd && !(post.isDeleted() && !this.showDeletedPosts);
+			shouldAdd = shouldAdd && !(post.isFlagged() && !this.showFlaggedPosts);
+			// blacklists
 			
 			if(shouldAdd)
 			{
 				this.posts.append(post.getId(), post);
 				post.setSite(this.site);
 			}
+			//*/
 		}
 		
 		if(index < this.postsPerPage)

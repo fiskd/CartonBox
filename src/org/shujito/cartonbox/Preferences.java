@@ -11,32 +11,8 @@ import android.preference.PreferenceManager;
 public class Preferences
 {
 	//public static final String <prefname> = "org.shujito.cartonbox.<prefname>";
-	public static final String FIRST_RUN = "org.shujito.cartonbox.FIRST_RUN";
-	public static final String FIRST_APP_RUN_OR_UPDATE = "org.shujito.cartonbox.FIRST_APP_RUN_OR_UPDATE";
 	public static final String SITE_USERNAME = "org.shujito.cartonbox.SITE_USERNAME";
 	public static final String SITE_PASSWORD = "org.shujito.cartonbox.SITE_PASSWORD";
-
-	public static boolean isFirstAppRun()
-	{
-		return PreferenceManager.getDefaultSharedPreferences(CartonBox.getInstance()).getBoolean(FIRST_RUN, true);
-	}
-	
-	public static boolean isFirstAppRunOrUpdate()
-	{
-		return PreferenceManager.getDefaultSharedPreferences(CartonBox.getInstance()).getBoolean(FIRST_APP_RUN_OR_UPDATE, true);
-	}
-	
-	public static void init()
-	{
-		// get prefs
-		PreferenceManager.getDefaultSharedPreferences(CartonBox.getInstance())
-			// start editing
-			.edit()
-			// set true (false)
-			.putBoolean(FIRST_RUN, false)
-			// end editing
-			.commit();
-	}
 	
 	public static void defaultSites()
 	{
@@ -85,7 +61,9 @@ public class Preferences
 			.setNotesApi("/note/index.json")
 			.setArtistsApi("/artist/index.json")
 			.setTagsApi("/tag/index.json"));
-		
+		// https://yande.re/forum/show/17672
+		// I don't want to argue, it's his site, it's my app, so...
+		/*
 		db.add(new Site()
 			.setId(4)
 			.setIconid(R.drawable.icon_yande_re)
@@ -93,12 +71,14 @@ public class Preferences
 			.setType(Type.Danbooru1)
 			.setUrl("https://yande.re/")
 			.setPostViewApi("/post/show/")
-			.setPostsApi("/post/index.json")
-			.setPoolsApi("/pool/index.json")
-			.setCommentsApi("/comment/index.json")
-			.setNotesApi("/note/index.json")
-			.setArtistsApi("/artist/index.json")
-			.setTagsApi("/tag/index.json"));
+			.setPostsApi("/post.json")
+			.setPoolsApi("/pool.json")
+			.setCommentsApi("/comment.json")
+			.setNotesApi("/note.json")
+			.setArtistsApi("/artist.json")
+			.setTagsApi("/tag.json"));
+		//*/
+		// ...yeah
 	}
 
 	public static boolean getBool(int id)
@@ -111,5 +91,30 @@ public class Preferences
 		Context context = CartonBox.getInstance();
 		SharedPreferences globalPrefs = PreferenceManager.getDefaultSharedPreferences(context);
 		return globalPrefs.getBoolean(context.getString(id), def);
+	}
+	
+	public static int getInt(int id)
+	{
+		return getInt(id, 0);
+	}
+	
+	public static int getInt(int id, int def)
+	{
+		Context context = CartonBox.getInstance();
+		SharedPreferences globalPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+		return globalPrefs.getInt(context.getString(id), def);
+	}
+	
+	public static void setInt(int id, int value)
+	{
+		Context context = CartonBox.getInstance();
+		SharedPreferences globalPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+		globalPrefs
+			// start editing
+			.edit()
+			// collocate
+			.putInt(context.getString(id), value)
+			// submit changes
+			.commit();
 	}
 }
