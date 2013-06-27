@@ -57,7 +57,7 @@ public class PostsFilter extends Filter
 				// statuses (deleted or flagged)
 				shouldAdd = shouldAdd && !(post.isDeleted() && !this.bShowDeleted);
 				shouldAdd = shouldAdd && !(post.isFlagged() && !this.bShowFlagged);
-				// blacklists
+				// TODO: blacklists
 				if(this.sBlacklistedTags != null)
 				{
 					String[] groups = sBlacklistedTags.split("\\n");
