@@ -1,5 +1,7 @@
 package org.shujito.cartonbox.view;
 
+import java.util.Locale;
+
 import org.shujito.cartonbox.Preferences;
 import org.shujito.cartonbox.R;
 import org.shujito.cartonbox.model.Post;
@@ -57,21 +59,31 @@ public class PostsFilter extends Filter
 				// statuses (deleted or flagged)
 				shouldAdd = shouldAdd && !(post.isDeleted() && !this.bShowDeleted);
 				shouldAdd = shouldAdd && !(post.isFlagged() && !this.bShowFlagged);
-				// TODO: blacklists
-				if(this.sBlacklistedTags != null)
+				// blacklists
+				if(post.getTags() != null && this.bEnableBlacklist && this.sBlacklistedTags != null)
 				{
-					String[] groups = sBlacklistedTags.split("\\n");
+					String[] groups = sBlacklistedTags.toLowerCase(Locale.US).split("\\n");
 					for(String group : groups)
 					{
+						boolean blacklisted = false;
 						String[] tags = group.split("\\s+");
 						for(String tag : tags)
 						{
-							//shouldAdd = shouldAdd && post.getTags().contains(tag);
+							// TODO: grouped blacklists
+							if(post.getTags().toLowerCase(Locale.US).contains(tag))
+							{
+								blacklisted = true;
+							}
 						}
+						
+						shouldAdd = shouldAdd && (shouldAdd && !blacklisted);
+						
+						if(blacklisted)
+							break;
 					}
 				}
 				
-				if(post.getRating() == Rating.Safe)
+				if(shouldAdd)
 				{
 					filtered.append(key, post);
 				}

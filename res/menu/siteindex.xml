@@ -7,11 +7,13 @@
 		android:showAsAction="always|collapseActionView"
 		android:actionLayout="@layout/actionsearch"
 		android:title="@string/search" />
+	
 	<item
 		android:id="@+id/menu_siteindex_refresh"
 		android:icon="@drawable/ic_action_refresh"
 		android:showAsAction="ifRoom"
 		android:title="@string/refresh" />
+	
 	<item
 		android:id="@+id/menu_siteindex_settings"
 		android:icon="@drawable/ic_action_prefs"

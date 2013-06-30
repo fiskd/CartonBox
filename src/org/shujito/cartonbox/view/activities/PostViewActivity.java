@@ -24,8 +24,7 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
-public class PostViewActivity extends SherlockFragmentActivity
-	implements OnPageChangeListener
+public class PostViewActivity extends SherlockFragmentActivity implements OnPageChangeListener
 {
 	public static String EXTRA_POST_INDEX = "org.shujito.cartonbox.POST_INDEX";
 	public static String EXTRA_POST_KEY = "org.shujito.cartonbox.POST_KEY";
@@ -71,19 +70,25 @@ public class PostViewActivity extends SherlockFragmentActivity
 		// hey listen! (the adapter will listen when the api fetches posts)
 		this.postsApi.addOnPostsFetchedListener(this.mPostsAdapter);
 		// Even more HAX!!
-		if(this.mPostsAdapter != null)
-			this.mPostsAdapter.onPostsFetched(this.postsApi.getPosts());
+		this.mPostsAdapter.onPostsFetched(this.postsApi.getPosts());
 		
-		int page = this.getIntent().getIntExtra(EXTRA_POST_INDEX, 0);
+		//int page = this.getIntent().getIntExtra(EXTRA_POST_INDEX, 0);
+		int key = this.getIntent().getIntExtra(EXTRA_POST_KEY, -1);
+		int keypage = this.mPostsAdapter.findPageFromKey(key);
+		
+		//Toast.makeText(this, String.format("k:%s p:%s kp:%s", key, page, keypage), Toast.LENGTH_SHORT).show();
 		this.mVpPosts.setOnPageChangeListener(this);
-		this.mVpPosts.setCurrentItem(page);
+		this.mVpPosts.setCurrentItem(keypage);
 	}
 	
 	@Override
 	protected void onPause()
 	{
 		super.onPause();
-		this.getIntent().putExtra(EXTRA_POST_INDEX, this.mVpPosts.getCurrentItem());
+		//this.getIntent().putExtra(EXTRA_POST_INDEX, this.mVpPosts.getCurrentItem());
+		int page = this.mVpPosts.getCurrentItem();
+		int key = (int)this.mPostsAdapter.getItemId(page);
+		this.getIntent().putExtra(EXTRA_POST_KEY, key);
 		// remove this listener
 		this.postsApi.removeOnPostsFetchedListener(this.mPostsAdapter);
 	}

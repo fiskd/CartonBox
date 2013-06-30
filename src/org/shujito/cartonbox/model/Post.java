@@ -51,6 +51,8 @@ public class Post implements Serializable
 	private String lastCommentedAt;
 	// has notes
 	private String lastNotedAt;
+	// dem tags
+	private String tags;
 	// useful when the post lacks on information
 	private Site site;
 	
@@ -122,6 +124,8 @@ public class Post implements Serializable
 	{ return this.lastCommentedAt; }
 	public String getLastNotedAt()
 	{ return this.lastNotedAt; }
+	public String getTags()
+	{ return this.tags; }
 	public Site getSite()
 	{ return this.site; }
 	
@@ -214,6 +218,11 @@ public class Post implements Serializable
 	public Post setLastNotedAt(String s)
 	{
 		this.lastNotedAt = s;
+		return this;
+	}
+	public Post setTags(String tags)
+	{
+		this.tags = tags;
 		return this;
 	}
 	public Post setSite(Site s)

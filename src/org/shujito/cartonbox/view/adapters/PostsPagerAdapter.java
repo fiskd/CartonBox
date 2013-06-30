@@ -4,6 +4,7 @@ import org.shujito.cartonbox.Logger;
 import org.shujito.cartonbox.controller.listeners.OnPostsFetchedListener;
 import org.shujito.cartonbox.model.Post;
 import org.shujito.cartonbox.view.FilterCallback;
+import org.shujito.cartonbox.view.PostsFilter;
 import org.shujito.cartonbox.view.fragments.PostViewFragment;
 
 import android.support.v4.app.Fragment;
@@ -15,14 +16,16 @@ import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
 
-public class PostsPagerAdapter extends FragmentPagerAdapter implements
-	OnPostsFetchedListener, Filterable, FilterCallback<SparseArray<Post>>
+public class PostsPagerAdapter extends FragmentPagerAdapter
+	implements OnPostsFetchedListener, Filterable, FilterCallback<SparseArray<Post>>
 {
 	SparseArray<Post> posts = null;
+	PostsFilter filter = null;
 	
 	public PostsPagerAdapter(FragmentManager fm)
 	{
 		super(fm);
+		//this.filter = new PostsFilter(this);
 	}
 	
 	@Override
@@ -41,18 +44,33 @@ public class PostsPagerAdapter extends FragmentPagerAdapter implements
 	}
 	
 	@Override
+	public long getItemId(int pos)
+	{
+		// get reverse index, like the grid adapter
+		int size = this.getCount();
+		int index = size - pos - 1;
+		
+		// get a key from the index
+		int key = this.posts.keyAt(index);
+		// and return it
+		return key;
+	}
+	
+	public int findPageFromKey(int key)
+	{
+		int indexof = this.posts.indexOfKey(key);
+		int size = this.getCount();
+		int reverse = size - indexof - 1;
+		
+		return reverse;
+	}
+	
+	@Override
 	public int getCount()
 	{
 		if(this.posts != null)
 			return this.posts.size();
 		return 0;
-	}
-	
-	@Override
-	public void onPostsFetched(SparseArray<Post> posts)
-	{
-		this.posts = posts;
-		this.notifyDataSetChanged();
 	}
 	
 	@Override
@@ -71,13 +89,29 @@ public class PostsPagerAdapter extends FragmentPagerAdapter implements
 	}
 	
 	@Override
+	public void onPostsFetched(SparseArray<Post> posts)
+	{
+		this.posts = posts;
+		this.notifyDataSetChanged();
+		if(this.getFilter() != null)
+		{
+			((PostsFilter)this.getFilter()).filter(this.posts);
+		}
+	}
+	
+	@Override
 	public Filter getFilter()
 	{
-		return null;
+		return this.filter;
 	}
 	
 	@Override
 	public void onFilter(SparseArray<Post> result)
 	{
+		if(result != null)
+			this.posts = result;
+		this.notifyDataSetChanged();
+		//Toast.makeText(CartonBox.getInstance(), "Filtered", Toast.LENGTH_SHORT).show();
 	}
+	
 }

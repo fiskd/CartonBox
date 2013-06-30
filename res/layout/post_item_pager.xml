@@ -4,7 +4,7 @@
 	android:layout_height="match_parent"
 	android:orientation="vertical" >
 	
-	<ImageView
+	<it.sephiroth.android.library.imagezoom.ImageViewTouch
 		android:id="@+id/post_item_pager_ivsample"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"

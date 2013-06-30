@@ -32,7 +32,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-public class PostsGridAdapter extends BaseAdapter implements OnPostsFetchedListener, Filterable, FilterCallback<SparseArray<Post>>
+public class PostsGridAdapter extends BaseAdapter
+	implements OnPostsFetchedListener, Filterable, FilterCallback<SparseArray<Post>>
 {
 	Context context = null;
 	SparseArray<Post> posts = null;
@@ -46,6 +47,7 @@ public class PostsGridAdapter extends BaseAdapter implements OnPostsFetchedListe
 		this.context = context;
 		//this.bitmaps = new SparseArray<Bitmap>();
 		this.cache = new BitmapCache();
+		this.filter = new PostsFilter(this);
 	}
 	
 	@Override
@@ -168,7 +170,8 @@ public class PostsGridAdapter extends BaseAdapter implements OnPostsFetchedListe
 		}
 		else
 		{
-			pbprogress.setVisibility(View.GONE);
+			pbprogress.setVisibility(View.VISIBLE);
+			pbprogress.setIndeterminate(true);
 			pbprogress.setProgress(0);
 			
 			//tvloading.setText(String.valueOf(one.getId()));
@@ -185,7 +188,7 @@ public class PostsGridAdapter extends BaseAdapter implements OnPostsFetchedListe
 				public void onDownloadProgress(float progress)
 				{
 					float percentProgress = progress * 100;
-					
+					pbprogress.setIndeterminate(false);
 					pbprogress.setVisibility(View.VISIBLE);
 					pbprogress.setProgress((int)percentProgress);
 					tvloading.setVisibility(View.VISIBLE);
@@ -247,11 +250,6 @@ public class PostsGridAdapter extends BaseAdapter implements OnPostsFetchedListe
 		{
 			this.notifyDataSetChanged();
 		}
-	}
-	
-	public void setFilter(PostsFilter filter)
-	{
-		this.filter = filter;
 	}
 	
 	@Override

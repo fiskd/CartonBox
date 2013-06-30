@@ -192,8 +192,11 @@ public class PostsSectionFragment extends Fragment implements
 	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 	public void onItemClick(AdapterView<?> dad, View v, int pos, long id)
 	{
+		int key = (int)this.mPostsAdapter.getItemId(pos);
+		
 		Intent ntn = new Intent(this.getActivity(), PostViewActivity.class);
 		ntn.putExtra(PostViewActivity.EXTRA_POST_INDEX, pos);
+		ntn.putExtra(PostViewActivity.EXTRA_POST_KEY, key);
 		
 		Bundle b = null;
 		// zoom animation!!

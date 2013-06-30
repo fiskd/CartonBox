@@ -79,6 +79,7 @@ public abstract class ImageboardTags extends Imageboard implements
 		if(this.working && this.downloader != null)
 			this.downloader.cancel(true);
 		
+		this.query = null;
 		this.working = false;
 	}
 	

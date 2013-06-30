@@ -15,7 +15,8 @@ what I do since the last release, but there you go:
  etc)
 -removed yande.re from the default servers list
 -new (better) icons!
--blacklists (basic support)!
+-blacklists! (basic support)
+-zoomable images
 
 0.4
 # second (emergency) release

@@ -1,5 +1,8 @@
 package org.shujito.cartonbox.view.fragments;
 
+import it.sephiroth.android.library.imagezoom.ImageViewTouch;
+import it.sephiroth.android.library.imagezoom.ImageViewTouchBase.DisplayType;
+
 import org.shujito.cartonbox.Logger;
 import org.shujito.cartonbox.R;
 import org.shujito.cartonbox.controller.listeners.OnDownloadProgressListener;
@@ -8,18 +11,14 @@ import org.shujito.cartonbox.model.Post;
 import org.shujito.cartonbox.utils.ConcurrentTask;
 import org.shujito.cartonbox.utils.ImageDownloader;
 
-import android.annotation.TargetApi;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.TransitionDrawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,7 +53,7 @@ public class PostViewFragment extends Fragment
 	// components
 	ProgressBar pbprogress = null;
 	TextView tvmessage = null;
-	ImageView ivpreview = null;
+	ImageViewTouch ivpreview = null;
 	ImageView ivred = null;
 	ImageView ivgray = null;
 	ImageView ivblue = null;
@@ -71,8 +70,6 @@ public class PostViewFragment extends Fragment
 	}
 	
 	@Override
-	@SuppressWarnings("deprecation")
-	@TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
 	public void onViewCreated(View view, Bundle cirno)
 	{
 		this.post = (Post)this.getArguments().getSerializable(EXTRA_POST);
@@ -83,15 +80,18 @@ public class PostViewFragment extends Fragment
 		//Logger.i("POST ID", String.valueOf(this.post.getId()));
 		
 		this.pbprogress = (ProgressBar)view.findViewById(R.id.post_item_pager_pbprogress);
+		this.pbprogress.setIndeterminate(true);
+		this.pbprogress.setVisibility(View.VISIBLE);
 		//this.pbloading.setVisibility(View.VISIBLE);
 		
 		//Point size = new Point();
 		//int width = this.getActivity().getWindowManager().getDefaultDisplay().getWidth();
 		//int height = this.getActivity().getWindowManager().getDefaultDisplay().getHeight();
 		
-		int width = 0;
-		int height = 0;
+		int width = 2048;
+		int height = 2048;
 		
+		/*
 		Display display = this.getActivity().getWindowManager().getDefaultDisplay();
 		
 		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2)
@@ -106,13 +106,15 @@ public class PostViewFragment extends Fragment
 			width = display.getWidth();
 			height = display.getHeight();
 		}
+		//*/
 		
 		this.tvmessage = (TextView)view.findViewById(R.id.post_item_pager_tvmessage);
 		this.tvmessage.setVisibility(View.VISIBLE);
 		
 		// build the view appearance here
-		this.ivpreview = (ImageView)view.findViewById(R.id.post_item_pager_ivsample);
-
+		this.ivpreview = (ImageViewTouch)view.findViewById(R.id.post_item_pager_ivsample);
+		this.ivpreview.setDisplayType(DisplayType.FIT_TO_SCREEN);
+		
 		// flagged
 		this.ivred = (ImageView)view.findViewById(R.id.post_item_pager_ivred);
 		// deleted
@@ -158,6 +160,8 @@ public class PostViewFragment extends Fragment
 			@Override
 			public void onImageFetched(Bitmap b)
 			{
+				pbprogress.setIndeterminate(true);
+				
 				if(b == null)
 				{
 					tvmessage.setVisibility(View.VISIBLE);
@@ -253,7 +257,7 @@ public class PostViewFragment extends Fragment
 	public void onDownloadProgress(float progress)
 	{
 		float percentProgress = progress * 100;
-		
+		this.pbprogress.setIndeterminate(false);
 		this.pbprogress.setVisibility(View.VISIBLE);
 		this.pbprogress.setProgress((int)percentProgress);
 	}

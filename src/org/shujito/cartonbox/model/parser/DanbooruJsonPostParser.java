@@ -28,6 +28,7 @@ public class DanbooruJsonPostParser implements JsonParser<Post>
 	
 	private static String TAG_FILE_EXT = "file_ext";
 	private static String TAG_FILE_SIZE = "file_size";
+	private static String TAG_TAG_STRING = "tag_string";
 	
 	private JSONArray jsonarray = null;
 	
@@ -57,7 +58,8 @@ public class DanbooruJsonPostParser implements JsonParser<Post>
 			.setFlagged(jobj.optBoolean(TAG_IS_FLAGGED))
 			.setPending(jobj.optBoolean(TAG_IS_PENDING))
 			.setFileExt(jobj.optString(TAG_FILE_EXT))
-			.setFileSize(jobj.optInt(TAG_FILE_SIZE));
+			.setFileSize(jobj.optInt(TAG_FILE_SIZE))
+			.setTags(jobj.optString(TAG_TAG_STRING));
 		
 		// evaluate ratings
 		String rating = jobj.optString(TAG_RATING);

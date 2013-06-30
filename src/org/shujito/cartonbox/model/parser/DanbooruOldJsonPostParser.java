@@ -36,6 +36,8 @@ public class DanbooruOldJsonPostParser implements JsonParser<Post>
 	private static String TAG_HAS_COMMENTS = "has_comments";
 	private static String TAG_HAS_NOTES = "has_notes";
 	
+	private static String TAG_TAGS = "tags";
+	
 	JSONArray jsonarray = null;
 	
 	public DanbooruOldJsonPostParser(String s) throws JSONException
@@ -61,7 +63,8 @@ public class DanbooruOldJsonPostParser implements JsonParser<Post>
 			.setUrl(jobj.optString(TAG_FILE_URL))
 			.setHasChildren(jobj.optBoolean(TAG_HAS_CHILDREN))
 			.setLastCommentedAt(jobj.optBoolean(TAG_HAS_COMMENTS) ? "?" : null)
-			.setLastNotedAt(jobj.optBoolean(TAG_HAS_NOTES) ? "?" : null);
+			.setLastNotedAt(jobj.optBoolean(TAG_HAS_NOTES) ? "?" : null)
+			.setTags(jobj.optString(TAG_TAGS));
 		
 		// evaluate rating
 		String rating = jobj.optString(TAG_RATING);
