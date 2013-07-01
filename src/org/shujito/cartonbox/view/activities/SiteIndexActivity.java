@@ -7,9 +7,11 @@ import org.shujito.cartonbox.R;
 import org.shujito.cartonbox.controller.ImageboardPosts;
 import org.shujito.cartonbox.controller.ImageboardTags;
 import org.shujito.cartonbox.controller.listeners.OnErrorListener;
+import org.shujito.cartonbox.view.SpaceTokenizer;
 import org.shujito.cartonbox.view.adapters.SiteIndexPageAdapter;
-import org.shujito.cartonbox.view.fragments.PostsSectionFragment;
-import org.shujito.cartonbox.view.fragments.TagsSectionFragment;
+import org.shujito.cartonbox.view.adapters.TagsAdapter;
+import org.shujito.cartonbox.view.fragments.SectionPostsFragment;
+import org.shujito.cartonbox.view.fragments.SectionTagsFragment;
 import org.shujito.cartonbox.view.fragments.dialogs.LoginDialogFragment;
 import org.shujito.cartonbox.view.fragments.dialogs.LoginDialogFragment.LoginDialogCallback;
 import org.shujito.cartonbox.view.listeners.OnFragmentAttachedListener;
@@ -177,8 +179,8 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 				.getActionView()
 				.findViewById(R.id.actionsearch_mactvqueryposts);
 		this.mMactvQueryPosts.setOnEditorActionListener(this);
-		//this.mMactvQueryPosts.setAdapter(new TagsAdapter(this));
-		//this.mMactvQueryPosts.setTokenizer(new SpaceTokenizer());
+		this.mMactvQueryPosts.setAdapter(new TagsAdapter(this));
+		this.mMactvQueryPosts.setTokenizer(new SpaceTokenizer());
 		
 		
 		this.mBtnClearQuery = (ImageButton)this.mMenuItemSearch
@@ -269,7 +271,7 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 		//Toast.makeText(this, tab.getText(), Toast.LENGTH_SHORT).show();
 		if(this.mMactvQueryPosts != null)
 		{
-			/*
+			//*
 			if(tab.getText().equals(this.getString(R.string.section_tags)))
 			{
 				this.mMactvQueryPosts.setAdapter(null);
@@ -385,7 +387,7 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 	@Override
 	public Object onFragmentAttached(Fragment f)
 	{
-		if(f instanceof PostsSectionFragment)
+		if(f instanceof SectionPostsFragment)
 		{
 			// this should fix the NPE caused when rotating the device
 			if(this.mPostsApi == null)
@@ -393,7 +395,7 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 			return this.mPostsApi;
 		}
 		
-		if(f instanceof TagsSectionFragment)
+		if(f instanceof SectionTagsFragment)
 		{
 			if(this.mTagsApi == null)
 				this.mTagsApi = CartonBox.getInstance().getApis().getImageboardTags();

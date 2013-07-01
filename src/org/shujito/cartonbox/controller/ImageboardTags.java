@@ -141,6 +141,9 @@ public abstract class ImageboardTags extends Imageboard implements
 		this.setQuery(query);
 		// make a downloader
 		JsonDownloader jdown = (JsonDownloader)this.createDownloader();
+		// damn these two troublemakers...
+		jdown.setOnErrorListener(null);
+		jdown.setOnResponseReceivedListener(null);
 		// put the query back in
 		this.setQuery(backup);
 		ConcurrentTask.execute(jdown);

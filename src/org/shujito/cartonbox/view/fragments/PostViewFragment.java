@@ -11,14 +11,18 @@ import org.shujito.cartonbox.model.Post;
 import org.shujito.cartonbox.utils.ConcurrentTask;
 import org.shujito.cartonbox.utils.ImageDownloader;
 
+import android.annotation.TargetApi;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.TransitionDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,6 +74,8 @@ public class PostViewFragment extends Fragment
 	}
 	
 	@Override
+	@SuppressWarnings("deprecation")
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
 	public void onViewCreated(View view, Bundle cirno)
 	{
 		this.post = (Post)this.getArguments().getSerializable(EXTRA_POST);
@@ -91,7 +97,7 @@ public class PostViewFragment extends Fragment
 		int width = 2048;
 		int height = 2048;
 		
-		/*
+		//*
 		Display display = this.getActivity().getWindowManager().getDefaultDisplay();
 		
 		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2)
@@ -107,6 +113,9 @@ public class PostViewFragment extends Fragment
 			height = display.getHeight();
 		}
 		//*/
+		
+		width *= 2f;
+		height *= 2f;
 		
 		this.tvmessage = (TextView)view.findViewById(R.id.post_item_pager_tvmessage);
 		this.tvmessage.setVisibility(View.VISIBLE);

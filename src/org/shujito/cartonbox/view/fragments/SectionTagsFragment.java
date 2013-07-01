@@ -27,7 +27,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class TagsSectionFragment extends Fragment implements
+public class SectionTagsFragment extends Fragment implements
 	OnItemClickListener, OnErrorListener, OnTagsFetchedListener,
 	OnRequestListener
 {
@@ -48,18 +48,18 @@ public class TagsSectionFragment extends Fragment implements
 	@Override
 	public void onAttach(Activity activity)
 	{
-		Logger.i("TagsSectionFragment::onAttach", "overly attached fragment");
+		Logger.i("SectionTagsFragment::onAttach", "overly attached fragment");
 		super.onAttach(activity);
 		
 		try
 		{ this.onFragmentAttachedListener = (OnFragmentAttachedListener)activity; }
 		catch(Exception ex)
-		{ Logger.e("TagsSectionFragment::onAttach", "Couldn't get OnFragmentAttachedListener from the activity this fragment is attached to"); }
+		{ Logger.e("SectionTagsFragment::onAttach", "Couldn't get OnFragmentAttachedListener from the activity this fragment is attached to"); }
 		
 		try
 		{ this.tagListItemSelectedCallback = (TagListItemSelectedCallback)activity; }
 		catch(Exception ex)
-		{ Logger.e("TagsSectionFragment::onAttach", "Couldn't get TagListItemSelectedCallback from the activity this fragment is attached to"); }
+		{ Logger.e("SectionTagsFragment::onAttach", "Couldn't get TagListItemSelectedCallback from the activity this fragment is attached to"); }
 	}
 	
 	@Override
@@ -77,7 +77,7 @@ public class TagsSectionFragment extends Fragment implements
 	@Override
 	public void onViewCreated(View view, Bundle cirno)
 	{
-		Logger.i("TagsSectionFragment::onViewCreated", "fragment created");
+		Logger.i("SectionTagsFragment::onViewCreated", "fragment created");
 		super.onViewCreated(view, cirno);
 		
 		this.mTagsAdapter = new TagsAdapter(this.getActivity());
@@ -102,7 +102,7 @@ public class TagsSectionFragment extends Fragment implements
 	@Override
 	public void onResume()
 	{
-		Logger.i("TagsSectionFragment::onResume", "fragment resumed");
+		Logger.i("SectionTagsFragment::onResume", "fragment resumed");
 		super.onResume();
 		if(this.tagsApi != null)
 		{
@@ -118,7 +118,7 @@ public class TagsSectionFragment extends Fragment implements
 	@Override
 	public void onPause()
 	{
-		Logger.i("TagsSectionFragment::onPause", "fragment paused");
+		Logger.i("SectionTagsFragment::onPause", "fragment paused");
 		super.onPause();
 		if(this.tagsApi != null)
 		{

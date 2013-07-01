@@ -34,7 +34,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class PostsSectionFragment extends Fragment implements
+public class SectionPostsFragment extends Fragment implements
 	OnErrorListener, OnItemClickListener, OnScrollListener,
 	OnPostsFetchedListener, OnRequestListener
 {
@@ -54,7 +54,7 @@ public class PostsSectionFragment extends Fragment implements
 	@Override
 	public void onAttach(Activity activity)
 	{
-		Logger.i("PostsSectionFragment::onAttach", "overly attached fragment");
+		Logger.i("SectionPostsFragment::onAttach", "overly attached fragment");
 		super.onAttach(activity);
 		try
 		{
@@ -63,7 +63,7 @@ public class PostsSectionFragment extends Fragment implements
 		}
 		catch(Exception ex)
 		{
-			Logger.e("PostsSectionFragment::onAttach", "Couldn't get listener from the activity this is attached to");
+			Logger.e("SectionPostsFragment::onAttach", "Couldn't get listener from the activity this is attached to");
 		}
 	}
 	
@@ -82,7 +82,7 @@ public class PostsSectionFragment extends Fragment implements
 	@Override
 	public void onViewCreated(View view, Bundle cirno)
 	{
-		Logger.i("PostsSectionFragment::onViewCreated", "fragment created");
+		Logger.i("SectionPostsFragment::onViewCreated", "fragment created");
 		super.onViewCreated(view, cirno);
 		
 		this.mPostsAdapter = new PostsGridAdapter(this.getActivity());
@@ -97,7 +97,7 @@ public class PostsSectionFragment extends Fragment implements
 			{
 				// XXX: holy fuck
 				// http://s.modriv.net/abp/images/screencaps/6aff2a0386e9046ed8475b77bc8263ac.jpg
-				Logger.wtf("PostsSectionFragment::onViewCreated", ex.toString(), ex);
+				Logger.wtf("SectionPostsFragment::onViewCreated", ex.toString(), ex);
 			}
 		}
 		
@@ -124,7 +124,7 @@ public class PostsSectionFragment extends Fragment implements
 	public void onResume()
 	{
 		super.onResume();
-		Logger.i("PostsSectionFragment::onResume", "fragment resumed");
+		Logger.i("SectionPostsFragment::onResume", "fragment resumed");
 		// HAX!!
 		if(this.mPostsAdapter != null)
 			this.mPostsAdapter.onPostsFetched(this.postsApi.getPosts());
@@ -141,7 +141,7 @@ public class PostsSectionFragment extends Fragment implements
 	public void onPause()
 	{
 		super.onPause();
-		Logger.i("PostsSectionFragment::onPause", "fragment paused");
+		Logger.i("SectionPostsFragment::onPause", "fragment paused");
 		// remove these listeners
 		if(this.postsApi != null)
 		{
@@ -268,7 +268,7 @@ public class PostsSectionFragment extends Fragment implements
 	@Override
 	public void onRequest()
 	{
-		Logger.i("PostsSectionFragment::onPostsRequest", "Posts requested");
+		Logger.i("SectionPostsFragment::onPostsRequest", "Posts requested");
 		if(this.postsApi != null && this.postsApi.getPosts().size() == 0)
 		{
 			if(this.mGvPosts != null)

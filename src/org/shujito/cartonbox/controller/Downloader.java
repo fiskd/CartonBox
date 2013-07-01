@@ -71,6 +71,7 @@ public abstract class Downloader<T> extends AsyncTask<Void, Integer, T>
 			{
 				Logger.e("Downloader::doInBackground", ex.toString());
 				this.message = ex.getMessage();
+				this.code = HttpURLConnection.HTTP_CONFLICT;
 			}
 		}
 		finally
