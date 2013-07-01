@@ -1,5 +1,7 @@
 package org.shujito.cartonbox.view.fragments;
 
+import java.net.HttpURLConnection;
+
 import org.shujito.cartonbox.Logger;
 import org.shujito.cartonbox.R;
 import org.shujito.cartonbox.controller.ImageboardPosts;
@@ -30,6 +32,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class PostsSectionFragment extends Fragment implements
 	OnErrorListener, OnItemClickListener, OnScrollListener,
@@ -164,10 +167,20 @@ public class PostsSectionFragment extends Fragment implements
 	@Override
 	public void onError(int errCode, String message)
 	{
-		this.mGvPosts.setVisibility(View.GONE);
-		this.mPbProgress.setVisibility(View.GONE);
-		this.mTvMessage.setVisibility(View.VISIBLE);
-		this.mTvMessage.setText(message);
+		if(errCode == HttpURLConnection.HTTP_CLIENT_TIMEOUT)
+		{
+			Toast.makeText(this.getActivity(), message, Toast.LENGTH_SHORT).show();
+			// it failed, request again
+			this.postsApi.request();
+		}
+		else
+		{
+			this.mGvPosts.setVisibility(View.GONE);
+			this.mPbProgress.setVisibility(View.GONE);
+			this.mTvMessage.setVisibility(View.VISIBLE);
+			this.mTvMessage.setText(message);
+		}
+		
 	}
 	/* OnErrorListener methods */
 	
@@ -241,6 +254,7 @@ public class PostsSectionFragment extends Fragment implements
 			this.mGvPosts.setVisibility(View.GONE);
 			this.mTvMessage.setVisibility(View.VISIBLE);
 			this.mTvMessage.setText(R.string.no_posts);
+			
 		}
 		
 		if(posts != null && (this.postsApi.getPostsPerPage() >= posts.size()))

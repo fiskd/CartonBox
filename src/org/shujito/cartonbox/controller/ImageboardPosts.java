@@ -196,6 +196,39 @@ public abstract class ImageboardPosts extends Imageboard implements
 		}
 	}
 	
+	@Override
+	public void onResponseReceived(JsonParser<?> jp)
+	{
+		Post post = null;
+		int index = 0;
+		while((post = (Post)jp.getAtIndex(index)) != null)
+		{
+			index++;
+			this.posts.append(post.getId(), post);
+			post.setSite(this.site);
+		}
+		
+		if(index < this.postsPerPage)
+		{
+			this.doneDownloadingPosts = true;
+			Logger.i("ImageboardApi::onResponseReceived", "I'm done downloading, nothing more to load...");
+		}
+		
+		if(this.onPostsFetchedListeners != null)
+		{
+			for(OnPostsFetchedListener l : this.onPostsFetchedListeners)
+			{
+				if(l != null)
+					l.onPostsFetched(this.posts);
+			}
+		}
+		
+		// increase page
+		this.page++;
+		// I'm done
+		this.working= false;
+	}
+	
 	public String buildTags()
 	{
 		String tags = null;
@@ -241,58 +274,5 @@ public abstract class ImageboardPosts extends Imageboard implements
 		}
 		
 		return url.toString();
-	}
-	
-	@Override
-	public void onResponseReceived(JsonParser<?> jp)
-	{
-		Post post = null;
-		int index = 0;
-		while((post = (Post)jp.getAtIndex(index)) != null)
-		{
-			index++;
-			this.posts.append(post.getId(), post);
-			post.setSite(this.site);
-			
-			/*
-			boolean shouldAdd = false;
-			// ratings (hey, a penis, hide that)
-			shouldAdd = shouldAdd || (this.showSafePosts && post.getRating() == Rating.Safe);
-			shouldAdd = shouldAdd || (this.showQuestionablePosts && post.getRating() == Rating.Questionable);
-			shouldAdd = shouldAdd || (this.showExplicitPosts && post.getRating() == Rating.Explicit);
-			// must not show
-			shouldAdd = !"swf".equals(post.getFileExt()) && shouldAdd; //!p.getFileExt().equals("swf") && shouldAdd;
-			// statuses (deleted or flagged)
-			shouldAdd = shouldAdd && !(post.isDeleted() && !this.showDeletedPosts);
-			shouldAdd = shouldAdd && !(post.isFlagged() && !this.showFlaggedPosts);
-			// blacklists
-			
-			if(shouldAdd)
-			{
-				this.posts.append(post.getId(), post);
-				post.setSite(this.site);
-			}
-			//*/
-		}
-		
-		if(index < this.postsPerPage)
-		{
-			this.doneDownloadingPosts = true;
-			Logger.i("ImageboardApi::onResponseReceived", "I'm done downloading, nothing more to load...");
-		}
-		
-		if(this.onPostsFetchedListeners != null)
-		{
-			for(OnPostsFetchedListener l : this.onPostsFetchedListeners)
-			{
-				if(l != null)
-					l.onPostsFetched(this.posts);
-			}
-		}
-		
-		// increase page
-		this.page++;
-		// I'm done
-		this.working= false;
 	}
 }

@@ -10,7 +10,7 @@ public class DanbooruImageBoardPosts extends ImageboardPosts
 	}
 	
 	@Override
-	protected Downloader<?> createDownloader()
+	public Downloader<?> createDownloader()
 	{
 		JsonDownloader downloader = new DanbooruJsonPostDownloader(this.buildPostsUrl());
 		downloader.setOnResponseReceivedListener(this);

@@ -51,7 +51,6 @@ public class PostViewActivity extends SherlockFragmentActivity implements OnPage
 		
 		this.mVpPosts = (ViewPager)this.findViewById(R.id.postview_vpposts);
 		this.mVpPosts.setAdapter(this.mPostsAdapter);
-		//this.mVpPosts.setOffscreenPageLimit(1);
 		
 		// enable this so we can navigate with the up button
 		this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -121,6 +120,7 @@ public class PostViewActivity extends SherlockFragmentActivity implements OnPage
 					String filename = String.format("%s.%s", this.selectedPost.getMd5(), this.selectedPost.getFileExt());
 					DownloadManager.Request request = new DownloadManager.Request(uri)
 						.setAllowedOverRoaming(false)
+						.setTitle(this.getString(R.string.downloading))
 						.setDescription(filename)
 						.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename);
 					downman.enqueue(request);
@@ -176,8 +176,8 @@ public class PostViewActivity extends SherlockFragmentActivity implements OnPage
 		this.itemViewPools = menu.findItem(R.id.menu_postview_viewpools).setVisible(false);
 		
 		// this HAX refreshes visible menu items
-		int page = this.getIntent().getIntExtra(EXTRA_POST_INDEX, 0);
-		this.onPageSelected(page);
+		//int page = this.getIntent().getIntExtra(EXTRA_POST_INDEX, 0);
+		//this.onPageSelected(page);
 		return true;
 	}
 	

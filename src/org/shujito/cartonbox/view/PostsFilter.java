@@ -21,6 +21,7 @@ public class PostsFilter extends Filter
 	boolean bShowFlagged = false;
 	boolean bShowDeleted = false;
 	boolean bEnableBlacklist = false;
+	boolean bBlacklistExactWord = false;
 	String sBlacklistedTags = null;
 	
 	public PostsFilter(FilterCallback<SparseArray<Post>> callback)
@@ -49,41 +50,7 @@ public class PostsFilter extends Filter
 				int key = this.unfiltered.keyAt(idx);
 				Post post = this.unfiltered.get(key);
 				
-				boolean shouldAdd = false;
-				// ratings (hey, a penis, hide that)
-				shouldAdd = shouldAdd || (this.bShowSafe && post.getRating() == Rating.Safe);
-				shouldAdd = shouldAdd || (this.bShowQuestionable && post.getRating() == Rating.Questionable);
-				shouldAdd = shouldAdd || (this.bShowExplicit && post.getRating() == Rating.Explicit);
-				// must not show flash files
-				shouldAdd = shouldAdd && !"swf".equals(post.getFileExt());
-				// statuses (deleted or flagged)
-				shouldAdd = shouldAdd && !(post.isDeleted() && !this.bShowDeleted);
-				shouldAdd = shouldAdd && !(post.isFlagged() && !this.bShowFlagged);
-				// blacklists
-				if(post.getTags() != null && this.bEnableBlacklist && this.sBlacklistedTags != null)
-				{
-					String[] groups = sBlacklistedTags.toLowerCase(Locale.US).split("\\n");
-					for(String group : groups)
-					{
-						boolean blacklisted = false;
-						String[] tags = group.split("\\s+");
-						for(String tag : tags)
-						{
-							// TODO: grouped blacklists
-							if(post.getTags().toLowerCase(Locale.US).contains(tag))
-							{
-								blacklisted = true;
-							}
-						}
-						
-						shouldAdd = shouldAdd && (shouldAdd && !blacklisted);
-						
-						if(blacklisted)
-							break;
-					}
-				}
-				
-				if(shouldAdd)
+				if(this.isPostFilterable(post))
 				{
 					filtered.append(key, post);
 				}
@@ -94,6 +61,7 @@ public class PostsFilter extends Filter
 		return fr;
 	}
 	
+	// going back to the ui thread
 	@Override
 	protected void publishResults(CharSequence constraint, FilterResults results)
 	{
@@ -114,5 +82,76 @@ public class PostsFilter extends Filter
 	{
 		this.unfiltered = posts;
 		this.filter((String)null);
+	}
+	
+	public boolean isPostFilterable(Post post)
+	{
+		// flash posts are not worth showing on mobile devices
+		// (damn you adobe/google/etc)
+		if("swf".equals(post.getFileExt()))
+			return true;
+		
+		boolean bFilterable = false;
+		// filter safe if safe posts are disabled
+		bFilterable = bFilterable || (this.bShowSafe && post.getRating() == Rating.Safe);
+		// same but with questionable posts
+		bFilterable = bFilterable || (this.bShowQuestionable && post.getRating() == Rating.Questionable);
+		// same but with explicit posts
+		bFilterable = bFilterable || (this.bShowExplicit && post.getRating() == Rating.Explicit);
+		// hide flagged posts if flagged posts are disabled
+		bFilterable = bFilterable && !(!this.bShowFlagged && post.isFlagged());
+		// same but with deleted posts
+		bFilterable = bFilterable && !(!this.bShowDeleted && post.isDeleted());
+		
+		// apply blacklist if the post is filterable at this point
+		if(bFilterable && this.bEnableBlacklist)
+		{
+			// tag groups! hides posts containing all of these tags
+			String[] groups = this.sBlacklistedTags.toLowerCase(Locale.US).split("\\n");
+			for(String group : groups)
+			{
+				// separate each tag from the group
+				String[] tags = group.split("\\s+");
+				boolean blacklisted = false;
+				for(String tag : tags)
+				{
+					if(this.bBlacklistExactWord)
+					{
+						String[] postTags = post.getTags().toLowerCase(Locale.US).split("\\s+");
+						for(String postTag : postTags)
+						{
+							if(postTag.equals(tag))
+							{
+								// it has one
+								blacklisted = true;
+								// get out
+								break;
+							}
+						}
+					}
+					else
+					{
+						if(post.getTags().toLowerCase(Locale.US).contains(tag))
+						{
+							// it has one
+							blacklisted = true;
+						}
+						else
+						{
+							// it doesn't has this one
+							blacklisted = false;
+							// get out
+							break;
+						}
+					}
+				}
+				
+				// it is blacklisted
+				if(blacklisted)
+					return false;
+			}
+		}
+		
+		return bFilterable;
 	}
 }

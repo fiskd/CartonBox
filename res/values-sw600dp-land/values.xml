@@ -3,6 +3,7 @@
 
 <integer name="posts_section_numcols">6</integer>
 <integer name="main_gvsites_numcols">8</integer>
+<dimen name="post_item_grid_size">160dp</dimen>
 <bool name="fullscreen">false</bool>
 
 </resources>

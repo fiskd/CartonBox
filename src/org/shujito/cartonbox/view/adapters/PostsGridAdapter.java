@@ -37,17 +37,22 @@ public class PostsGridAdapter extends BaseAdapter
 {
 	Context context = null;
 	SparseArray<Post> posts = null;
-	// put cached bitmaps here
-	//SparseArray<Bitmap> bitmaps = null;
-	BitmapCache cache = null;
 	PostsFilter filter = null;
+	// put cached bitmaps here
+	BitmapCache cache = null;
 	
 	public PostsGridAdapter(Context context)
 	{
 		this.context = context;
-		//this.bitmaps = new SparseArray<Bitmap>();
-		this.cache = new BitmapCache();
 		this.filter = new PostsFilter(this);
+		this.cache = new BitmapCache();
+	}
+	
+	public PostsGridAdapter(Context context, PostsFilter filter)
+	{
+		this.context = context;
+		this.filter = filter;
+		this.cache = new BitmapCache();
 	}
 	
 	@Override

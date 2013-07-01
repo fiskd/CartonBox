@@ -19,6 +19,9 @@ import android.os.AsyncTask;
 
 public class ImageDownloader extends AsyncTask<Void, Float, Bitmap>
 {
+	/* static */
+	static final int BUFFER = 8192;
+	
 	/* listeners */
 	
 	private OnImageFetchedListener onImageFetchedListener = null;
@@ -48,6 +51,8 @@ public class ImageDownloader extends AsyncTask<Void, Float, Bitmap>
 	{
 		this.context = context;
 		this.url = url;
+		this.width = 256;
+		this.height = 256;
 	}
 	
 	/* getters */
@@ -150,7 +155,7 @@ public class ImageDownloader extends AsyncTask<Void, Float, Bitmap>
 					// create stream from file
 					output = new FileOutputStream(file);
 					// stuff we need for the buffer
-					byte[] data = new byte[8192];
+					byte[] data = new byte[BUFFER];
 					int total = 0;
 					int bytesRead;
 					// start reading the stream

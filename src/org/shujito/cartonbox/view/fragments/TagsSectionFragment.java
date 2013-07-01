@@ -1,5 +1,6 @@
 package org.shujito.cartonbox.view.fragments;
 
+import java.net.HttpURLConnection;
 import java.util.List;
 
 import org.shujito.cartonbox.Logger;
@@ -24,6 +25,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class TagsSectionFragment extends Fragment implements
 	OnItemClickListener, OnErrorListener, OnTagsFetchedListener,
@@ -141,10 +143,19 @@ public class TagsSectionFragment extends Fragment implements
 	@Override
 	public void onError(int errCode, String message)
 	{
-		this.mLvTags.setVisibility(View.GONE);
-		this.mPbProgress.setVisibility(View.GONE);
-		this.mTvMessage.setVisibility(View.VISIBLE);
-		this.mTvMessage.setText(message);
+		if(errCode == HttpURLConnection.HTTP_CLIENT_TIMEOUT)
+		{
+			Toast.makeText(this.getActivity(), message, Toast.LENGTH_SHORT).show();
+			// request again...
+			this.tagsApi.request();
+		}
+		else
+		{
+			this.mLvTags.setVisibility(View.GONE);
+			this.mPbProgress.setVisibility(View.GONE);
+			this.mTvMessage.setVisibility(View.VISIBLE);
+			this.mTvMessage.setText(message);
+		}
 	}
 	/* OnTagsFetchedListener methods */
 	

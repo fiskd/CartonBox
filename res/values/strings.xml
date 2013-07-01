@@ -13,6 +13,7 @@
 	<string name="refresh">Refresh</string>
 	<string name="addsite">Add site</string>
 	<string name="favorite">Favorite</string>
+	<string name="downloading">Downloading</string>
 	
 	<string name="save">Save</string>
 	<string name="browser">Open in browser</string>
@@ -44,7 +45,7 @@
 	<string name="pref_header_blacklist">Set blacklists</string>
 	<string name="pref_header_ratings">Display ratings</string>
 	
-	<string name="pref_header_summary_general"></string>
+	<string name="pref_header_summary_general">General settings</string>
 	<string name="pref_header_summary_content">Customize content</string>
 	<string name="pref_header_summary_blacklist">Set blacklists</string>
 	<string name="pref_header_summary_ratings">Display ratings</string>

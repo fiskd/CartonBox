@@ -3,6 +3,7 @@ package org.shujito.cartonbox.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.shujito.cartonbox.Logger;
 import org.shujito.cartonbox.controller.listeners.OnRequestListener;
 import org.shujito.cartonbox.controller.listeners.OnResponseReceivedListener;
 import org.shujito.cartonbox.controller.listeners.OnTagsFetchedListener;
@@ -56,12 +57,12 @@ public abstract class ImageboardTags extends Imageboard implements
 		{
 			// replace spaces with asterisks
 			query = query.replace(' ', '*');
-			// prepend an asterisk
-			query = "*".concat(query);
+			// wrap with asterisks
+			query = "*".concat(query).concat("*");
 		}
-		else query = "";
+		else query = "*";
 		// set it
-		this.query = query.concat("*");
+		this.query = query;
 	}
 	
 	/* Setters */
@@ -103,6 +104,60 @@ public abstract class ImageboardTags extends Imageboard implements
 		}
 	}
 	
+	@Override
+	public void onResponseReceived(JsonParser<?> jp)
+	{
+		List<Tag> tags = this.processParser(jp);
+		
+		// talk to the listeners
+		for(OnTagsFetchedListener l : this.onTagsFetchedListeners)
+		{
+			if(l != null)
+				l.onTagsFetchedListener(tags);
+		}
+		
+		// not working anymore
+		this.working = false;
+	}
+	
+	private List<Tag> processParser(JsonParser<?> jp)
+	{
+		Tag tag = null;
+		// place tags here
+		List<Tag> tags = new ArrayList<Tag>();
+		// iterate...
+		while((tag = (Tag)jp.getAtIndex(tags.size())) != null)
+		{
+			// we don't need anything complex here, we're just looking for tags
+			tags.add(tag);
+		}
+		return tags;
+	}
+	
+	public List<Tag> requestSynchronous(String query)
+	{
+		// backup the query so nothing breaks later on
+		String backup = this.getQuery();
+		this.setQuery(query);
+		// make a downloader
+		JsonDownloader jdown = (JsonDownloader)this.createDownloader();
+		// put the query back in
+		this.setQuery(backup);
+		ConcurrentTask.execute(jdown);
+		JsonParser<?> parser = null;
+		try
+		{
+			parser = jdown.get();
+		}
+		catch(Exception ex)
+		{
+			Logger.e("TagsFilter::performFiltering", ex.getMessage(), ex);
+			return null;
+		}
+		
+		return processParser(parser);
+	}
+	
 	public String buildTagsUrl()
 	{
 		StringBuilder url = new StringBuilder();
@@ -121,29 +176,5 @@ public abstract class ImageboardTags extends Imageboard implements
 		}
 		
 		return url.toString();
-	}
-	
-	@Override
-	public void onResponseReceived(JsonParser<?> jp)
-	{
-		Tag tag = null;
-		// place tags here
-		List<Tag> tags = new ArrayList<Tag>();
-		// iterate...
-		while((tag = (Tag)jp.getAtIndex(tags.size())) != null)
-		{
-			// we don't need anything complex here, we're just looking for tags
-			tags.add(tag);
-		}
-		
-		// talk to the listeners
-		for(OnTagsFetchedListener l : this.onTagsFetchedListeners)
-		{
-			if(l != null)
-				l.onTagsFetchedListener(tags);
-		}
-		
-		// not working anymore
-		this.working = false;
 	}
 }

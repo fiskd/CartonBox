@@ -15,7 +15,7 @@ public class DanbooruImageBoardTags extends ImageboardTags
 	}
 	
 	@Override
-	protected Downloader<?> createDownloader()
+	public Downloader<?> createDownloader()
 	{
 		JsonDownloader downloader = new DanbooruJsonTagDownloader(this.buildTagsUrl());
 		downloader.setOnResponseReceivedListener(this);

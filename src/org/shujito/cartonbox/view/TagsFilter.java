@@ -3,6 +3,7 @@ package org.shujito.cartonbox.view;
 import java.util.List;
 
 import org.shujito.cartonbox.CartonBox;
+import org.shujito.cartonbox.controller.ImageboardTags;
 import org.shujito.cartonbox.model.Tag;
 
 import android.widget.Filter;
@@ -24,7 +25,13 @@ public class TagsFilter extends Filter
 		{
 			if(CartonBox.getInstance() != null && CartonBox.getInstance().getApis() != null && CartonBox.getInstance().getApis().getImageboardTags() != null)
 			{
-				//ImageboardTags tempTags = CartonBox.getInstance().getApis().getImageboardTags();
+				ImageboardTags tempTags = CartonBox.getInstance().getApis().getImageboardTags();
+				List<Tag> tags = tempTags.requestSynchronous(constraint.toString());
+				if(tags != null)
+				{
+					fr.values = tags;
+					fr.count = tags.size();
+				}
 			}
 		}
 		return fr;

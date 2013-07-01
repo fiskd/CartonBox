@@ -180,6 +180,7 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 		//this.mMactvQueryPosts.setAdapter(new TagsAdapter(this));
 		//this.mMactvQueryPosts.setTokenizer(new SpaceTokenizer());
 		
+		
 		this.mBtnClearQuery = (ImageButton)this.mMenuItemSearch
 				.getActionView()
 				.findViewById(R.id.actionsearch_btnclearquery);
@@ -264,6 +265,23 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 		// collapse search view
 		if(this.mMenuItemSearch != null)
 			this.mMenuItemSearch.collapseActionView();
+		
+		//Toast.makeText(this, tab.getText(), Toast.LENGTH_SHORT).show();
+		if(this.mMactvQueryPosts != null)
+		{
+			/*
+			if(tab.getText().equals(this.getString(R.string.section_tags)))
+			{
+				this.mMactvQueryPosts.setAdapter(null);
+				this.mMactvQueryPosts.setTokenizer(null);
+			}
+			else
+			{
+				this.mMactvQueryPosts.setAdapter(new TagsAdapter(this));
+				this.mMactvQueryPosts.setTokenizer(new SpaceTokenizer());
+			}
+			//*/
+		}
 		
 		// TODO: save this search somewhere for later use
 		/*

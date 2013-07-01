@@ -172,7 +172,7 @@ public abstract class Imageboard implements
 	}
 	
 	/* abstract meth */
-	protected abstract Downloader<?> createDownloader();
+	public abstract Downloader<?> createDownloader();
 	public abstract void request();
 	public abstract void clear();
 }

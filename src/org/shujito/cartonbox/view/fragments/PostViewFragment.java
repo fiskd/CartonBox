@@ -25,6 +25,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class PostViewFragment extends Fragment
 	implements OnDownloadProgressListener
@@ -65,7 +66,6 @@ public class PostViewFragment extends Fragment
 	@Override
 	public View onCreateView(LayoutInflater inf, ViewGroup dad, Bundle cirno)
 	{
-		
 		return inf.inflate(R.layout.post_item_pager, null);
 	}
 	
@@ -260,5 +260,11 @@ public class PostViewFragment extends Fragment
 		this.pbprogress.setIndeterminate(false);
 		this.pbprogress.setVisibility(View.VISIBLE);
 		this.pbprogress.setProgress((int)percentProgress);
+	}
+	
+	public void onFocus()
+	{
+		Post post = (Post)this.getArguments().getSerializable(EXTRA_POST);
+		Toast.makeText(this.getActivity(), post.toString(), Toast.LENGTH_SHORT).show();
 	}
 }
