@@ -26,10 +26,17 @@ public class ImageUtils
 			final int heightRatio = Math.round((float)height / (float)reqHeight);
 			
 			// select the smallest ratio
-			sampleSize = widthRatio > heightRatio ? widthRatio : heightRatio;
+			sampleSize = widthRatio >= heightRatio ? widthRatio : heightRatio;
 		}
 		
 		return sampleSize;
+	}
+	
+	public static Bitmap decodeScaledBitmap(File file, int width, int height)
+	{
+		
+		
+		return null;
 	}
 	
 	public static Bitmap decodeSampledBitmap(byte[] imageData, int width, int height)

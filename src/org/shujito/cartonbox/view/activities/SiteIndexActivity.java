@@ -437,7 +437,6 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 				login.show(this.getSupportFragmentManager(), LoginDialogFragment.TAG);
 				this.dialogShowing = true;
 			}
-			
 		}
 	}
 	/* OnErrorListener methods */

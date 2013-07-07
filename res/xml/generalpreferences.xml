@@ -77,13 +77,15 @@
 			android:key="@string/pref_blacklist_tags_key"
 			android:title="@string/pref_blacklist_tags"
 			android:summary="@string/pref_blacklist_tags_desc"
+			android:dialogMessage="@string/pref_blacklist_tags_dialogmsg"
 			android:dependency="@string/pref_blacklist_enabled_key" />
 		<CheckBoxPreference
 			android:key="@string/pref_blacklist_hide_key"
 			android:title="@string/pref_blacklist_hide"
 			android:summaryOn="@string/pref_blacklist_hide_desc_on"
 			android:summaryOff="@string/pref_blacklist_hide_desc_off"
-			android:dependency="@string/pref_blacklist_enabled_key" />
+			android:dependency="@string/pref_blacklist_enabled_key"
+			android:enabled="false" />
 	</PreferenceCategory>
 	<PreferenceCategory
 		android:title="@string/pref_ratings" >

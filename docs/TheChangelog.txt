@@ -17,6 +17,7 @@ what I do since the last release, but there you go:
 -new (better) icons!
 -blacklists! (basic support)
 -zoomable images
+-artist and copyright tag colors were swapped, not anymore
 
 0.4
 # second (emergency) release

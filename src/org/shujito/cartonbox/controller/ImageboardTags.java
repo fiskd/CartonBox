@@ -122,6 +122,9 @@ public abstract class ImageboardTags extends Imageboard implements
 	
 	private List<Tag> processParser(JsonParser<?> jp)
 	{
+		if(jp == null)
+			return null;
+		
 		Tag tag = null;
 		// place tags here
 		List<Tag> tags = new ArrayList<Tag>();

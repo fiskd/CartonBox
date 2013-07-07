@@ -162,13 +162,15 @@ public abstract class Imageboard implements
 	
 	@Override
 	public void onError(int code, String result)
-	{if(this.onErrorListeners != null)
 	{
-		for(OnErrorListener l : this.onErrorListeners)
+		if(this.onErrorListeners != null)
 		{
-			l.onError(code, result);
+			for(OnErrorListener l : this.onErrorListeners)
+			{
+				l.onError(code, result);
+			}
 		}
-	}
+		this.working = false;
 	}
 	
 	/* abstract meth */

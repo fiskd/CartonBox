@@ -89,7 +89,7 @@ public class PostsFilter extends Filter
 		// flash posts are not worth showing on mobile devices
 		// (damn you adobe/google/etc)
 		if("swf".equals(post.getFileExt()))
-			return true;
+			return false;
 		
 		boolean bFilterable = false;
 		// filter safe if safe posts are disabled

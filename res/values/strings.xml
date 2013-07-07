@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<string name="app_name">CartonBox</string>
+	<string name="googleplay">Google Play link</string>
+	<string name="news">News</string>
 	
 	<string name="login_details">Login details</string>
 	<string name="login_message">Certain booru boards require registration for outside use.</string>
@@ -78,14 +80,15 @@
 	<string name="pref_blacklist">Blacklist</string>
 	<string name="pref_blacklist_enabled">Enable</string>
 	<string name="pref_blacklist_tags">Tags list</string>
-	<string name="pref_blacklist_tags_desc">Images of posts\' containing these tags are not loaded.</string>
+	<string name="pref_blacklist_tags_desc">Images of posts\' containing these tags are not shown</string>
+	<string name="pref_blacklist_tags_dialogmsg">Posts with tag combinations you don\'t want to see. Separate combinations on a new line.</string>
 	<string name="pref_blacklist_hide">Hide posts from grid</string>
 	<string name="pref_blacklist_hide_desc_on">Blacklisted posts are not visible</string>
 	<string name="pref_blacklist_hide_desc_off">Blacklisted posts are shown normally</string>
 	
 	<string name="pref_ratings">Ratings filter</string>
 	<string name="pref_ratings_todisplay">Ratings to display</string>
-	<string name="pref_ratings_todisplay_desc">Images of posts\' with these ratings are not loaded</string>
+	<string name="pref_ratings_todisplay_desc">Images of posts\' with these ratings are not shown</string>
 	
 	<string name="pref_ratings_todisplay_safe">Safe</string>
 	<string name="pref_ratings_todisplay_questionable">Questionable</string>

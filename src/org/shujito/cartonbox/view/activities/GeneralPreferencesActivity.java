@@ -13,8 +13,10 @@ import org.shujito.cartonbox.view.fragments.PreferencesFragment;
 
 import android.annotation.TargetApi;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
@@ -26,6 +28,8 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceScreen;
 
 import com.actionbarsherlock.app.SherlockPreferenceActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 
 public class GeneralPreferencesActivity extends SherlockPreferenceActivity
 	implements OnSharedPreferenceChangeListener, OnPreferenceClickListener
@@ -135,6 +139,34 @@ public class GeneralPreferencesActivity extends SherlockPreferenceActivity
 		
 		// remove listeners (it's safer)
 		this.prefClearCache.setOnPreferenceClickListener(null);
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu)
+	{
+		this.getSupportMenuInflater().inflate(R.menu.preferences, menu);
+		return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item)
+	{
+		switch(item.getItemId())
+		{
+			case R.id.menu_preferences_googleplay:
+				Intent ntn = new Intent(Intent.ACTION_VIEW);
+				String link = String.format("market://details?id=%s", this.getPackageName());
+				ntn.setData(Uri.parse(link));
+				this.startActivity(ntn);
+				return true;
+			case R.id.menu_preferences_news:
+				// TODO: show news feed from http://shujito.org here
+				//XMLDownloader xmldown = new XMLDownloader("http://www.shujito.org/rss");
+				//xmldown.execute();
+				return true;
+		}
+		
+		return super.onOptionsItemSelected(item);
 	}
 	
 	@Override

@@ -143,7 +143,7 @@ public class SectionTagsFragment extends Fragment implements
 	@Override
 	public void onError(int errCode, String message)
 	{
-		if(errCode == HttpURLConnection.HTTP_CLIENT_TIMEOUT)
+		if(errCode == HttpURLConnection.HTTP_CLIENT_TIMEOUT && this.mTagsAdapter != null && this.mTagsAdapter.getCount() != 0)
 		{
 			Toast.makeText(this.getActivity(), message, Toast.LENGTH_SHORT).show();
 			// request again...

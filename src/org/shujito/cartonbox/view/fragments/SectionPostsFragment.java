@@ -167,7 +167,7 @@ public class SectionPostsFragment extends Fragment implements
 	@Override
 	public void onError(int errCode, String message)
 	{
-		if(errCode == HttpURLConnection.HTTP_CLIENT_TIMEOUT)
+		if(errCode == HttpURLConnection.HTTP_CLIENT_TIMEOUT && this.mPostsAdapter != null && this.mPostsAdapter.getCount() != 0)
 		{
 			Toast.makeText(this.getActivity(), message, Toast.LENGTH_SHORT).show();
 			// it failed, request again
@@ -211,11 +211,11 @@ public class SectionPostsFragment extends Fragment implements
 		ntn.putExtra(PostViewActivity.EXTRA_POST_INDEX, pos);
 		ntn.putExtra(PostViewActivity.EXTRA_POST_KEY, key);
 		
-		Bundle b = null;
 		// zoom animation!!
 		// aid used: https://www.youtube.com/watch?v=XNF8pXr6whU
 		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
 		{
+			Bundle b = null;
 			Bitmap thumb = (Bitmap)this.mPostsAdapter.getItem(pos);
 			
 			if(thumb != null)
@@ -254,7 +254,6 @@ public class SectionPostsFragment extends Fragment implements
 			this.mGvPosts.setVisibility(View.GONE);
 			this.mTvMessage.setVisibility(View.VISIBLE);
 			this.mTvMessage.setText(R.string.no_posts);
-			
 		}
 		
 		if(posts != null && (this.postsApi.getPostsPerPage() >= posts.size()))

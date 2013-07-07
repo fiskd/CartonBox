@@ -1,8 +1,5 @@
 package org.shujito.cartonbox.view.fragments;
 
-import it.sephiroth.android.library.imagezoom.ImageViewTouch;
-import it.sephiroth.android.library.imagezoom.ImageViewTouchBase.DisplayType;
-
 import org.shujito.cartonbox.Logger;
 import org.shujito.cartonbox.R;
 import org.shujito.cartonbox.controller.listeners.OnDownloadProgressListener;
@@ -58,7 +55,7 @@ public class PostViewFragment extends Fragment
 	// components
 	ProgressBar pbprogress = null;
 	TextView tvmessage = null;
-	ImageViewTouch ivpreview = null;
+	ImageView ivpreview = null;
 	ImageView ivred = null;
 	ImageView ivgray = null;
 	ImageView ivblue = null;
@@ -114,15 +111,16 @@ public class PostViewFragment extends Fragment
 		}
 		//*/
 		
-		width *= 2f;
-		height *= 2f;
+		//width *= 2f;
+		//height *= 2f;
+		
+		int whatToUse = width > height ? width : height;
 		
 		this.tvmessage = (TextView)view.findViewById(R.id.post_item_pager_tvmessage);
 		this.tvmessage.setVisibility(View.VISIBLE);
 		
 		// build the view appearance here
-		this.ivpreview = (ImageViewTouch)view.findViewById(R.id.post_item_pager_ivsample);
-		this.ivpreview.setDisplayType(DisplayType.FIT_TO_SCREEN);
+		this.ivpreview = (ImageView)view.findViewById(R.id.post_item_pager_ivsample);
 		
 		// flagged
 		this.ivred = (ImageView)view.findViewById(R.id.post_item_pager_ivred);
@@ -162,8 +160,8 @@ public class PostViewFragment extends Fragment
 		
 		this.thumbDownloader = new ImageDownloader(this.getActivity(), this.post.getPreviewUrl());
 		this.thumbDownloader.setOnDownloadProgressListener(this);
-		this.thumbDownloader.setWidth(width);
-		this.thumbDownloader.setHeight(height);
+		this.thumbDownloader.setWidth(whatToUse);
+		this.thumbDownloader.setHeight(whatToUse);
 		this.thumbDownloader.setOnImageFetchedListener(new OnImageFetchedListener()
 		{
 			@Override
@@ -205,8 +203,8 @@ public class PostViewFragment extends Fragment
 		
 		this.sampleDownloader = new ImageDownloader(this.getActivity(), this.post.getSampleUrl());
 		this.sampleDownloader.setOnDownloadProgressListener(this);
-		this.sampleDownloader.setWidth(width);
-		this.sampleDownloader.setHeight(height);
+		this.sampleDownloader.setWidth(whatToUse);
+		this.sampleDownloader.setHeight(whatToUse);
 		this.sampleDownloader.setOnImageFetchedListener(new OnImageFetchedListener()
 		{
 			@Override

@@ -82,10 +82,10 @@ public class TagsAdapter extends BaseAdapter
 				color = 0xFF50C0E9;
 				break;
 			case Artist:
-				color = 0xFFC182E0;
+				color = 0xFFFF5F5F;
 				break;
 			case Copyright:
-				color = 0xFFFF5F5F;
+				color = 0xFFC182E0;
 				break;
 			case Character:
 				color = 0xFF99CC00;
