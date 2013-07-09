@@ -1,8 +1,8 @@
 So far:
 
-	*No spaces please! use tabs! (configure your IDE, eclipse, netbeans or whatever you are going to use).
-	*No egyptian braces.
-	*Comment properly when possible.
-	*My MVC implementation is not the best but I'm trying to keep some standards here, help me out if you can.
+	* No spaces please! use tabs! (configure your IDE, eclipse, netbeans or whatever you are going to use).
+	* No egyptian braces.
+	* Comment properly when possible, and try to put more effort when it's not possible to comment.
+	* My MVC implementation (if it is even) is not the best but I'm trying to keep some standards here, help me out if you can.
 
 and that should be about it for now.

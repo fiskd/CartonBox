@@ -1,8 +1,6 @@
 package org.shujito.cartonbox.view.activities;
 
 import org.shujito.cartonbox.R;
-import org.shujito.cartonbox.controller.BlogRssXmlDownloader;
-import org.shujito.cartonbox.controller.XmlDownloader;
 import org.shujito.cartonbox.utils.ConcurrentTask;
 import org.shujito.cartonbox.utils.Formatters;
 import org.shujito.cartonbox.utils.io.ClearDirectoryTask;
@@ -163,8 +161,6 @@ public class GeneralPreferencesActivity extends SherlockPreferenceActivity
 				return true;
 			case R.id.menu_preferences_news:
 				// TODO: show news feed from http://shujito.org here
-				XmlDownloader xmldown = new BlogRssXmlDownloader("http://www.shujito.org/rss");
-				xmldown.execute();
 				return true;
 		}
 		
