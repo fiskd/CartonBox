@@ -13,30 +13,30 @@ public class DanbooruOldJsonPostParser implements JsonParser<Post>
 	// http://www.androidhive.info/2012/01/android-json-parsing-tutorial/
 
 	// post json tags
-	private static String TAG_ID = "id";
-	private static String TAG_PARENT_ID = "parent_id";
-	private static String TAG_MD5 = "md5";
+	private static final String TAG_ID = "id";
+	private static final String TAG_PARENT_ID = "parent_id";
+	private static final String TAG_MD5 = "md5";
 
-	//private static String TAG_PREVIEW_WIDTH = "preview_width";
-	//private static String TAG_PREVIEW_HEIGHT = "preview_height";
-	private static String TAG_PREVIEW_FILE_URL = "preview_url";
+	//private static final String TAG_PREVIEW_WIDTH = "preview_width";
+	//private static final String TAG_PREVIEW_HEIGHT = "preview_height";
+	private static final String TAG_PREVIEW_FILE_URL = "preview_url";
 
-	//private static String TAG_SAMPLE_WIDTH = "sample_width";
-	//private static String TAG_SAMPLE_HEIGHT = "sample_height";
-	private static String TAG_SAMPLE_FILE_URL = "sample_url";
+	//private static final String TAG_SAMPLE_WIDTH = "sample_width";
+	//private static final String TAG_SAMPLE_HEIGHT = "sample_height";
+	private static final String TAG_SAMPLE_FILE_URL = "sample_url";
 
-	private static String TAG_WIDTH = "width";
-	private static String TAG_HEIGHT = "height";
-	private static String TAG_FILE_URL = "file_url";
+	private static final String TAG_WIDTH = "width";
+	private static final String TAG_HEIGHT = "height";
+	private static final String TAG_FILE_URL = "file_url";
 
-	private static String TAG_RATING = "rating";
-	private static String TAG_STATUS = "status";
+	private static final String TAG_RATING = "rating";
+	private static final String TAG_STATUS = "status";
 
-	private static String TAG_HAS_CHILDREN = "has_children";
-	private static String TAG_HAS_COMMENTS = "has_comments";
-	private static String TAG_HAS_NOTES = "has_notes";
+	private static final String TAG_HAS_CHILDREN = "has_children";
+	private static final String TAG_HAS_COMMENTS = "has_comments";
+	private static final String TAG_HAS_NOTES = "has_notes";
 	
-	private static String TAG_TAGS = "tags";
+	private static final String TAG_TAGS = "tags";
 	
 	JSONArray jsonarray = null;
 	

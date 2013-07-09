@@ -6,7 +6,7 @@ import java.util.List;
 import org.shujito.cartonbox.Logger;
 import org.shujito.cartonbox.controller.listeners.OnPostsFetchedListener;
 import org.shujito.cartonbox.controller.listeners.OnRequestListener;
-import org.shujito.cartonbox.controller.listeners.OnResponseReceivedListener;
+import org.shujito.cartonbox.controller.listeners.OnJsonResponseReceivedListener;
 import org.shujito.cartonbox.model.Post;
 import org.shujito.cartonbox.model.Site;
 import org.shujito.cartonbox.model.parser.JsonParser;
@@ -25,7 +25,7 @@ import android.util.SparseArray;
 // step 3: give result
 // step 4: gather posts
 public abstract class ImageboardPosts extends Imageboard implements
-	OnResponseReceivedListener
+	OnJsonResponseReceivedListener
 {
 	/* Listener */
 	List<OnPostsFetchedListener> onPostsFetchedListeners = null;

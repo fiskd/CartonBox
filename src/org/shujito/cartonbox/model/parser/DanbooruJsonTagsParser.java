@@ -8,10 +8,10 @@ import org.shujito.cartonbox.model.Tag.Category;
 
 public class DanbooruJsonTagsParser implements JsonParser<Tag>
 {
-	private static String TAG_ID = "id";
-	private static String TAG_NAME = "name";
-	private static String TAG_CATEGORY = "category";
-	private static String TAG_POST_COUNT = "post_count";
+	private static final String TAG_ID = "id";
+	private static final String TAG_NAME = "name";
+	private static final String TAG_CATEGORY = "category";
+	private static final String TAG_POST_COUNT = "post_count";
 	
 	private JSONArray jsonarray = null;
 	

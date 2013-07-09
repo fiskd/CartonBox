@@ -1,0 +1,77 @@
+RootElement root = new RootElement("rss");
+// root childs
+Element channel = root.getChild("channel");
+// channel items (blog entries)
+Element item = channel.getChild("item");
+// item fields
+Element title = item.getChild("title");
+Element content = item.getChild("description");
+Element date = item.getChild("pubDate");
+Element link = item.getChild("link");
+// item categories
+Element category = item.getChild("category");
+
+final List<BlogEntry> entries = new ArrayList<BlogEntry>();
+final BlogEntry[] entry = new BlogEntry[1];
+
+// new item!
+item.setStartElementListener(new StartElementListener()
+{
+	@Override
+	public void start(Attributes attributes)
+	{
+		entry[0] = new BlogEntry();
+	}
+});
+// oh, it's over...
+item.setEndElementListener(new EndElementListener()
+{
+	@Override
+	public void end()
+	{
+		entries.add(entry[0]);
+	}
+});
+
+title.setEndTextElementListener(new EndTextElementListener()
+{
+	@Override
+	public void end(String body)
+	{
+		entry[0].setTitle(body);
+	}
+});
+content.setEndTextElementListener(new EndTextElementListener()
+{
+	@Override
+	public void end(String body)
+	{
+		entry[0].setContent(body);
+	}
+});
+date.setEndTextElementListener(new EndTextElementListener()
+{
+	@Override
+	public void end(String body)
+	{
+		entry[0].setDate(body);
+	}
+});
+link.setEndTextElementListener(new EndTextElementListener()
+{
+	@Override
+	public void end(String body)
+	{
+		entry[0].setLink(body);
+	}
+});
+category.setEndTextElementListener(new EndTextElementListener()
+{
+	@Override
+	public void end(String body)
+	{
+		entry[0].getCategories().add(body);
+	}
+});
+
+Xml.parse(is, Encoding.UTF_8, root.getContentHandler());

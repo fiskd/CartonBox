@@ -6,8 +6,8 @@ import org.shujito.cartonbox.model.Response;
 
 public class DanbooruOldJsonResponseParser implements JsonParser<Response>
 {
-	private static String TAG_REASON = "reason";
-	private static String TAG_SUCCESS = "success";
+	private static final String TAG_REASON = "reason";
+	private static final String TAG_SUCCESS = "success";
 	
 	private JSONObject jsonobject = null;
 	

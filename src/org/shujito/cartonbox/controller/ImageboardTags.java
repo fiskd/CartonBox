@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.shujito.cartonbox.Logger;
 import org.shujito.cartonbox.controller.listeners.OnRequestListener;
-import org.shujito.cartonbox.controller.listeners.OnResponseReceivedListener;
+import org.shujito.cartonbox.controller.listeners.OnJsonResponseReceivedListener;
 import org.shujito.cartonbox.controller.listeners.OnTagsFetchedListener;
 import org.shujito.cartonbox.model.Site;
 import org.shujito.cartonbox.model.Tag;
@@ -21,7 +21,7 @@ import org.shujito.cartonbox.utils.ConcurrentTask;
 // step 3: give result
 // step 4: gather tags
 public abstract class ImageboardTags extends Imageboard implements
-	OnResponseReceivedListener
+	OnJsonResponseReceivedListener
 {
 	/* listener */
 	List<OnTagsFetchedListener> onTagsFetchedListeners = null;

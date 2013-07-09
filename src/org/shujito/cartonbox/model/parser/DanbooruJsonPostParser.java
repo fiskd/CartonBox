@@ -8,27 +8,27 @@ import org.shujito.cartonbox.model.Post.Rating;
 
 public class DanbooruJsonPostParser implements JsonParser<Post>
 {
-	private static String TAG_ID = "id";
-	private static String TAG_PARENT_ID = "parent_id";
-	private static String TAG_MD5 = "md5";
+	private static final String TAG_ID = "id";
+	private static final String TAG_PARENT_ID = "parent_id";
+	private static final String TAG_MD5 = "md5";
 	
-	private static String TAG_HAS_LARGE = "has_large";
-	private static String TAG_IMAGE_WIDTH = "image_width";
-	private static String TAG_IMAGE_HEIGHT = "image_height";
+	private static final String TAG_HAS_LARGE = "has_large";
+	private static final String TAG_IMAGE_WIDTH = "image_width";
+	private static final String TAG_IMAGE_HEIGHT = "image_height";
 	
-	private static String TAG_RATING = "rating";
+	private static final String TAG_RATING = "rating";
 	
-	private static String TAG_HAS_CHILDREN = "has_children";
-	private static String TAG_LAST_COMMENTED_AT = "last_commented_at";
-	private static String TAG_LAST_NOTED_AT = "last_noted_at";
+	private static final String TAG_HAS_CHILDREN = "has_children";
+	private static final String TAG_LAST_COMMENTED_AT = "last_commented_at";
+	private static final String TAG_LAST_NOTED_AT = "last_noted_at";
 	
-	private static String TAG_IS_DELETED = "is_deleted";
-	private static String TAG_IS_FLAGGED = "is_flagged";
-	private static String TAG_IS_PENDING = "is_pending";
+	private static final String TAG_IS_DELETED = "is_deleted";
+	private static final String TAG_IS_FLAGGED = "is_flagged";
+	private static final String TAG_IS_PENDING = "is_pending";
 	
-	private static String TAG_FILE_EXT = "file_ext";
-	private static String TAG_FILE_SIZE = "file_size";
-	private static String TAG_TAG_STRING = "tag_string";
+	private static final String TAG_FILE_EXT = "file_ext";
+	private static final String TAG_FILE_SIZE = "file_size";
+	private static final String TAG_TAG_STRING = "tag_string";
 	
 	private JSONArray jsonarray = null;
 	

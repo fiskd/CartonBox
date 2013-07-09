@@ -18,7 +18,7 @@ public class SitesDB extends DB<Site>
 	static final String DB_NAME = "sites.db3";
 	static final int VERSION = 0x00000001;
 	
-	static String TABLE_SITES = "sites";
+	static final String TABLE_SITES = "sites";
 	
 	static final String KEY_ID = "id";
 	static final String KEY_ICONID = "iconid";

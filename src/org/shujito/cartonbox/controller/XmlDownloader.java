@@ -4,26 +4,26 @@ import java.io.InputStream;
 
 import org.shujito.cartonbox.Logger;
 import org.shujito.cartonbox.controller.listeners.OnErrorListener;
-import org.shujito.cartonbox.controller.listeners.OnResponseReceivedListener;
+import org.shujito.cartonbox.controller.listeners.OnXmlResponseReceivedListener;
 import org.shujito.cartonbox.model.parser.XmlParser;
 
-public abstract class XMLDownloader extends Downloader<XmlParser<?>>
+public abstract class XmlDownloader extends Downloader<XmlParser<?>>
 {
 	/* Listeners */
 	private OnErrorListener onErrorListener = null;
-	private OnResponseReceivedListener onResponseReceivedListener = null;
+	private OnXmlResponseReceivedListener onXmlResponseReceivedListener = null;
 	
 	public OnErrorListener getOnErrorListener()
 	{ return onErrorListener; }
-	public OnResponseReceivedListener getOnResponseReceivedListener()
-	{ return this.onResponseReceivedListener; }
+	public OnXmlResponseReceivedListener getOnResponseReceivedListener()
+	{ return this.onXmlResponseReceivedListener; }
 	
 	public void setOnErrorListener(OnErrorListener l)
 	{ this.onErrorListener = l; }
-	public void setOnResponseReceivedListener(OnResponseReceivedListener l)
-	{ this.onResponseReceivedListener = l; }
+	public void setOnResponseReceivedListener(OnXmlResponseReceivedListener l)
+	{ this.onXmlResponseReceivedListener = l; }
 	
-	public XMLDownloader(String url)
+	public XmlDownloader(String url)
 	{
 		super(url);
 	}
@@ -49,7 +49,7 @@ public abstract class XMLDownloader extends Downloader<XmlParser<?>>
 			catch(Exception ex2)
 			{
 				// egh
-				Logger.wtf("XMLDownloader::doInBackground", ex2.getMessage(), ex2);
+				Logger.wtf("XmlDownloader::doInBackground", ex2.getMessage(), ex2);
 			}
 		}
 		
@@ -57,14 +57,14 @@ public abstract class XMLDownloader extends Downloader<XmlParser<?>>
 		return xp;
 	}
 	
-	public abstract XmlParser<?> parse(InputStream is);
-	public abstract XmlParser<?> parseError(InputStream is);
+	public abstract XmlParser<?> parse(InputStream is) throws Exception;;
+	public abstract XmlParser<?> parseError(InputStream is) throws Exception;;
 	
 	@Override
 	protected void onRequestSuccessful(int code, XmlParser<?> result)
 	{
-		//if(this.onResponseReceivedListener != null)
-			//this.onResponseReceivedListener.onResponseReceived(result);
+		if(this.onXmlResponseReceivedListener != null)
+			this.onXmlResponseReceivedListener.onResponseReceived(result);
 	}
 	
 	@Override

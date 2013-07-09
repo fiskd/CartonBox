@@ -16,8 +16,8 @@ what I do since the last release, but there you go:
 -removed yande.re from the default servers list
 -new (better) icons!
 -blacklists! (basic support)
--zoomable images
 -artist and copyright tag colors were swapped, not anymore
+-newsfeed reader (only for important cartonbox announcements)
 
 0.4
 # second (emergency) release

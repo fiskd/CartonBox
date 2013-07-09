@@ -6,24 +6,24 @@ import java.io.InputStreamReader;
 
 import org.shujito.cartonbox.Logger;
 import org.shujito.cartonbox.controller.listeners.OnErrorListener;
-import org.shujito.cartonbox.controller.listeners.OnResponseReceivedListener;
+import org.shujito.cartonbox.controller.listeners.OnJsonResponseReceivedListener;
 import org.shujito.cartonbox.model.parser.JsonParser;
 
 public abstract class JsonDownloader extends Downloader<JsonParser<?>>
 {
 	/* Listeners */
 	private OnErrorListener onErrorListener = null;
-	private OnResponseReceivedListener onResponseReceivedListener = null;
+	private OnJsonResponseReceivedListener onJsonResponseReceivedListener = null;
 	
 	public OnErrorListener getOnErrorListener()
 	{ return onErrorListener; }
-	public OnResponseReceivedListener getOnResponseReceivedListener()
-	{ return this.onResponseReceivedListener; }
+	public OnJsonResponseReceivedListener getOnResponseReceivedListener()
+	{ return this.onJsonResponseReceivedListener; }
 	
 	public void setOnErrorListener(OnErrorListener l)
 	{ this.onErrorListener = l; }
-	public void setOnResponseReceivedListener(OnResponseReceivedListener l)
-	{ this.onResponseReceivedListener = l; }
+	public void setOnResponseReceivedListener(OnJsonResponseReceivedListener l)
+	{ this.onJsonResponseReceivedListener = l; }
 	
 	/* Constructor */
 	public JsonDownloader(String url)
@@ -77,8 +77,8 @@ public abstract class JsonDownloader extends Downloader<JsonParser<?>>
 	@Override
 	protected void onRequestSuccessful(int code, JsonParser<?> result)
 	{
-		if(this.onResponseReceivedListener != null)
-			this.onResponseReceivedListener.onResponseReceived(result);
+		if(this.onJsonResponseReceivedListener != null)
+			this.onJsonResponseReceivedListener.onResponseReceived(result);
 	}
 	
 	@Override
