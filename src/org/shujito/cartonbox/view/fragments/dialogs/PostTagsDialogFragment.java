@@ -10,7 +10,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -20,10 +19,12 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-public class PostTagsDialogFragment extends DialogFragment
+import com.actionbarsherlock.app.SherlockDialogFragment;
+
+public class PostTagsDialogFragment extends SherlockDialogFragment
 	implements OnItemClickListener, OnClickListener
 {
-	public final static String TAG = "org.shujito.cartonbox.view.fragments.dialogs.DialogFragment";
+	public final static String TAG = "org.shujito.cartonbox.view.fragments.dialogs.PostTagsDialogFragment";
 	
 	ListView lvTags = null;
 	

@@ -1,8 +1,5 @@
 If you want to compile properly you will need the following libraries:
 
-For image zooming:
-https://github.com/sephiroth74/ImageViewZoom
-
 Action Bar Sherlock:
 http://actionbarsherlock.com/
 

@@ -18,6 +18,7 @@ import org.shujito.cartonbox.utils.io.ClearDirectoryTask;
 import org.shujito.cartonbox.utils.io.DiskCacheManager;
 import org.shujito.cartonbox.utils.io.listeners.OnDirectoryClearedListener;
 import org.shujito.cartonbox.utils.io.listeners.OnDiskTaskProgressListener;
+import org.shujito.cartonbox.view.BlogNewsDialog;
 import org.shujito.cartonbox.view.adapters.SitesAdapter;
 
 import android.app.NotificationManager;
@@ -64,6 +65,9 @@ public class MainActivity extends SherlockActivity implements OnItemClickListene
 		this.mGridView = (GridView)this.findViewById(R.id.main_gvsites);
 		this.mGridView.setAdapter(this.mSitesAdapter);
 		this.mGridView.setOnItemClickListener(this);
+		
+		BlogNewsDialog dialog = new BlogNewsDialog(this);
+		dialog.createDialog().show();
 		
 	}
 	

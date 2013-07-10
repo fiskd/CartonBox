@@ -6,5 +6,12 @@
 	<ListView
 		android:id="@+id/dialog_blognews_lventries"
 		android:layout_width="match_parent"
-		android:layout_height="match_parent" />
+		android:layout_height="0dp"
+		android:layout_weight="1"
+		android:requiresFadingEdge="vertical"
+		android:animateLayoutChanges="true" />
+	<CheckBox
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="@string/noshowagain" />
 </LinearLayout>

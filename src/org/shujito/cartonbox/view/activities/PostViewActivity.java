@@ -135,10 +135,9 @@ public class PostViewActivity extends SherlockFragmentActivity implements OnPage
 				Toast.makeText(this, this.getString(R.string.notavailable), Toast.LENGTH_SHORT).show();
 				return true;
 			case R.id.menu_postview_details:
-				//Toast.makeText(this, this.getString(R.string.notavailable), Toast.LENGTH_SHORT).show();
 				PostTagsDialogFragment dialog = new PostTagsDialogFragment();
+				// it's a pun!
 				Bundle humble = new Bundle();
-				
 				dialog.setArguments(humble);
 				dialog.show(this.getSupportFragmentManager(), PostTagsDialogFragment.TAG);
 				return true;

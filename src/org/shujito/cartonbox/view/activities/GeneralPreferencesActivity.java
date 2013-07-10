@@ -9,6 +9,7 @@ import org.shujito.cartonbox.utils.io.DiskCacheManager;
 import org.shujito.cartonbox.utils.io.listeners.DirectorySizeCallback;
 import org.shujito.cartonbox.utils.io.listeners.OnDirectoryClearedListener;
 import org.shujito.cartonbox.utils.io.listeners.OnDiskTaskProgressListener;
+import org.shujito.cartonbox.view.BlogNewsDialog;
 import org.shujito.cartonbox.view.fragments.PreferencesFragment;
 
 import android.annotation.TargetApi;
@@ -161,6 +162,9 @@ public class GeneralPreferencesActivity extends SherlockPreferenceActivity
 				return true;
 			case R.id.menu_preferences_news:
 				// TODO: show news feed from http://shujito.org here
+				BlogNewsDialog newsDialog = new BlogNewsDialog(this);
+				newsDialog.createDialog().show();
+				
 				return true;
 		}
 		

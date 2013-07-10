@@ -14,7 +14,6 @@
 		android:title="@string/save" />
 	
 	<item
-		android:visible="false"
 		android:id="@+id/menu_postview_details"
 		android:icon="@drawable/ic_action_info"
 		android:showAsAction="ifRoom"

@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+	<string name="sitelink">http://www.shujito.org/rss</string>
+	
 	<string name="app_name">CartonBox</string>
 	<string name="googleplay">Google Play link</string>
 	<string name="news">News</string>
@@ -30,6 +32,7 @@
 	<string name="searchartists">Search artists</string>
 	
 	<string name="notavailable">Not available yet</string>
+	<string name="noshowagain">Don\'t Show again</string>
 	
 	<string name="loading">Loading&#8230;</string>
 	<string name="loading_sample">Downloading sample&#8230;</string>

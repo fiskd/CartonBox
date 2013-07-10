@@ -1,4 +1,4 @@
-prefs?
+prefs? (old, nevermind these)
 
 site preferences
 	danbooru/hijiribe
