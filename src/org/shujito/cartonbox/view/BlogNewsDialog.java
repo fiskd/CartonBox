@@ -11,12 +11,14 @@ import android.app.Dialog;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.ListView;
 
 public class BlogNewsDialog
 {
 	Context context;
 	ListView mLvEntries = null;
+	CheckBox mCbxNoshowagain = null;
 	BlogListAdapter mBlogListAdapter = null;
 	XmlDownloader downloader = null;
 	
@@ -43,6 +45,11 @@ public class BlogNewsDialog
 		
 		this.mLvEntries = (ListView)v.findViewById(R.id.dialog_blognews_lventries);
 		this.mLvEntries.setAdapter(this.mBlogListAdapter);
+		
+		this.mCbxNoshowagain = (CheckBox)v.findViewById(R.id.dialog_blognews_cbxnoshow);
+		this.mCbxNoshowagain.setChecked(false);
+		if(!showCheckbox)
+			this.mCbxNoshowagain.setVisibility(View.GONE);
 		
 		return new AlertDialog.Builder(this.context)
 			.setTitle(R.string.app_name)

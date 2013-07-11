@@ -163,7 +163,7 @@ public class GeneralPreferencesActivity extends SherlockPreferenceActivity
 			case R.id.menu_preferences_news:
 				// TODO: show news feed from http://shujito.org here
 				BlogNewsDialog newsDialog = new BlogNewsDialog(this);
-				newsDialog.createDialog().show();
+				newsDialog.createDialog(false).show();
 				
 				return true;
 		}

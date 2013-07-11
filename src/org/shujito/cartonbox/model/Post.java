@@ -56,6 +56,12 @@ public class Post implements Serializable
 	// useful when the post lacks on information
 	private Site site;
 	
+	public Post()
+	{
+		// assume both original and sampled images
+		this.hasLarge = true;
+	}
+	
 	/* getters */
 	public int getId()
 	{ return this.id; }

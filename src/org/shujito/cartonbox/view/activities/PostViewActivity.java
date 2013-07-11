@@ -138,6 +138,7 @@ public class PostViewActivity extends SherlockFragmentActivity implements OnPage
 				PostTagsDialogFragment dialog = new PostTagsDialogFragment();
 				// it's a pun!
 				Bundle humble = new Bundle();
+				humble.putSerializable(PostTagsDialogFragment.EXTRA_POSTOBJECT, this.selectedPost);
 				dialog.setArguments(humble);
 				dialog.show(this.getSupportFragmentManager(), PostTagsDialogFragment.TAG);
 				return true;

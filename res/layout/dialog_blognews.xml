@@ -11,6 +11,7 @@
 		android:requiresFadingEdge="vertical"
 		android:animateLayoutChanges="true" />
 	<CheckBox
+		android:id="@+id/dialog_blognews_cbxnoshow"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:text="@string/noshowagain" />
