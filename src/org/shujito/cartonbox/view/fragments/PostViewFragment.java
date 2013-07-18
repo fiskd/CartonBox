@@ -34,13 +34,13 @@ public class PostViewFragment extends Fragment
 	/* static */
 	static String EXTRA_POST = "org.shujito.cartonbox.POST";
 	
-	public static PostViewFragment create(Post post)
+	public static Fragment create(Post post)
 	{
 		// it's a pun
 		Bundle humbleArgs = new Bundle();
 		humbleArgs.putSerializable(EXTRA_POST, post);
 		
-		PostViewFragment fragment = new PostViewFragment();
+		Fragment fragment = new PostViewFragment();
 		fragment.setArguments(humbleArgs);
 		
 		return fragment;

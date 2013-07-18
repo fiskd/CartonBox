@@ -154,8 +154,7 @@ public class PostsGridAdapter extends BaseAdapter
 			// get the downloader attached to the imageview so it can be cancelled (how about no)
 			//((ImageDownloader)ivpreview.getTag()).cancel(true);
 			ImageDownloader attached = (ImageDownloader)ivpreview.getTag();
-			// remove the listener, have it to download it but don't display it
-			// potential memory waster but whatever
+			// remove the listener
 			attached.setOnDownloadProgressListener(null);
 			attached.setOnImageFetchedListener(null);
 		}
@@ -179,12 +178,6 @@ public class PostsGridAdapter extends BaseAdapter
 			pbprogress.setIndeterminate(true);
 			pbprogress.setProgress(0);
 			
-			//tvloading.setText(String.valueOf(one.getId()));
-			tvloading.setVisibility(View.VISIBLE);
-			tvloading.setText(R.string.loading);
-			//tvloading.setText(String.format("w:%s h:%s", v.getWidth(), v.getHeight()));
-			//tvloading.setText(String.valueOf(one.getRating()));
-			
 			downloader.setWidth(150);
 			downloader.setHeight(150);
 			downloader.setOnDownloadProgressListener(new OnDownloadProgressListener()
@@ -206,7 +199,7 @@ public class PostsGridAdapter extends BaseAdapter
 				public void onImageFetched(Bitmap bitmap)
 				{
 					Drawable[] overlay = new Drawable[2];
-					overlay[0] = new ColorDrawable(0xff808080);
+					overlay[0] = new ColorDrawable(0xff000000);
 					
 					if(bitmap == null)
 					{

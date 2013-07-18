@@ -31,6 +31,13 @@ public class SectionTagsFragment extends Fragment implements
 	OnItemClickListener, OnErrorListener, OnTagsFetchedListener,
 	OnRequestListener
 {
+	/* static */
+	public static Fragment create()
+	{
+		Fragment f = new SectionTagsFragment();
+		return f;
+	}
+	
 	/* Listeners */
 	OnFragmentAttachedListener onFragmentAttachedListener = null;
 	TagListItemSelectedCallback tagListItemSelectedCallback = null;

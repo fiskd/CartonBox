@@ -58,7 +58,7 @@ public class Post implements Serializable
 	
 	public Post()
 	{
-		// assume both original and sampled images
+		// assume having an original (large) image
 		this.hasLarge = true;
 	}
 	

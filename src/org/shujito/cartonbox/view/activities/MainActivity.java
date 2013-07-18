@@ -21,6 +21,7 @@ import org.shujito.cartonbox.utils.io.listeners.OnDiskTaskProgressListener;
 import org.shujito.cartonbox.view.adapters.SitesAdapter;
 
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -113,11 +114,15 @@ public class MainActivity extends SherlockActivity implements OnItemClickListene
 		{
 			final NotificationManager notman = (NotificationManager)this.getSystemService(Context.NOTIFICATION_SERVICE);
 			final NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
+			// this fixes app crash on 2.3.x
+			PendingIntent pending = PendingIntent.getActivity(this, R.string.app_name, new Intent(), 0);
 			builder.setSmallIcon(R.drawable.ic_notif);
 			builder.setOngoing(true);
 			builder.setContentTitle(this.getString(R.string.pref_general_clearcacheonexit_clearing));
 			builder.setTicker(this.getString(R.string.pref_general_clearcacheonexit_clearing));
 			builder.setProgress(0, 0, true);
+			// this fixes app crash on 2.3.x
+			builder.setContentIntent(pending);
 			notman.notify(R.string.app_name, builder.build());
 			
 			ClearDirectoryTask clearDirectory = new ClearDirectoryTask(DiskCacheManager.getCacheDirectory(this));

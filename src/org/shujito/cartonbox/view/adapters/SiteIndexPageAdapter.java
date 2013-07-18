@@ -1,5 +1,6 @@
 package org.shujito.cartonbox.view.adapters;
 
+import org.shujito.cartonbox.Logger;
 import org.shujito.cartonbox.R;
 import org.shujito.cartonbox.view.fragments.EmptyFragment;
 import org.shujito.cartonbox.view.fragments.SectionPostsFragment;
@@ -26,10 +27,17 @@ public class SiteIndexPageAdapter extends FragmentPagerAdapter
 	@Override
 	public Fragment getItem(int pos)
 	{
-		if(this.context.getResources().getString(R.string.section_posts).equals(this.pages[pos]))
-			return new SectionPostsFragment();
-		if(this.context.getResources().getString(R.string.section_tags).equals(this.pages[pos]))
-			return new SectionTagsFragment();
+		try
+		{
+			if(this.context.getResources().getString(R.string.section_posts).equals(this.pages[pos]))
+				return SectionPostsFragment.create();
+			if(this.context.getResources().getString(R.string.section_tags).equals(this.pages[pos]))
+				return SectionTagsFragment.create();
+		}
+		catch(Exception ex)
+		{
+			Logger.e("SiteIndexPageAdapter::getItem", ex.getMessage(), ex);
+		}
 		
 		return new EmptyFragment();
 	}

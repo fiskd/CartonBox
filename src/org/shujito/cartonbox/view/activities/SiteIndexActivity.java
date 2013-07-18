@@ -19,6 +19,7 @@ import org.shujito.cartonbox.view.listeners.TagListItemSelectedCallback;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -171,22 +172,23 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 	public boolean onCreateOptionsMenu(Menu menu)
  	{
 		this.getSupportMenuInflater().inflate(R.menu.siteindex, menu);
-		
-		this.mMenuItemSearch = menu.findItem(R.id.menu_siteindex_search);
-		this.mMenuItemSearch.setOnActionExpandListener(this);
-		
-		this.mMactvQueryPosts = (MultiAutoCompleteTextView)this.mMenuItemSearch
-				.getActionView()
-				.findViewById(R.id.actionsearch_mactvqueryposts);
-		this.mMactvQueryPosts.setOnEditorActionListener(this);
-		this.mMactvQueryPosts.setAdapter(new TagsAdapter(this));
-		this.mMactvQueryPosts.setTokenizer(new SpaceTokenizer());
-		
-		
-		this.mBtnClearQuery = (ImageButton)this.mMenuItemSearch
-				.getActionView()
-				.findViewById(R.id.actionsearch_btnclearquery);
-		this.mBtnClearQuery.setOnClickListener(this);
+		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+		{
+			this.mMenuItemSearch = menu.findItem(R.id.menu_siteindex_search);
+			this.mMenuItemSearch.setOnActionExpandListener(this);
+			
+			this.mMactvQueryPosts = (MultiAutoCompleteTextView)this.mMenuItemSearch
+					.getActionView()
+					.findViewById(R.id.actionsearch_mactvqueryposts);
+			this.mMactvQueryPosts.setOnEditorActionListener(this);
+			this.mMactvQueryPosts.setAdapter(new TagsAdapter(this));
+			this.mMactvQueryPosts.setTokenizer(new SpaceTokenizer());
+			
+			this.mBtnClearQuery = (ImageButton)this.mMenuItemSearch
+					.getActionView()
+					.findViewById(R.id.actionsearch_btnclearquery);
+			this.mBtnClearQuery.setOnClickListener(this);
+		}
 		
 		return true;
 	}
@@ -204,6 +206,12 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 				// event handled
 				return true;
 			case R.id.menu_siteindex_search:
+				if(Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB)
+				{
+					// search dialog
+					this.onSearchRequested();
+					return true;
+				}
 				return true;
 			case R.id.menu_siteindex_refresh:
 				/*
@@ -333,7 +341,8 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 				{
 					mMactvQueryPosts.requestFocus();
 					InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
-					imm.showSoftInput(mMactvQueryPosts, InputMethodManager.SHOW_IMPLICIT);
+					imm.showSoftInput(mMactvQueryPosts, InputMethodManager.SHOW_FORCED);
+					mMactvQueryPosts.clearFocus();
 				}
 			});
 		

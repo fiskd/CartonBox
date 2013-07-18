@@ -38,6 +38,13 @@ public class SectionPostsFragment extends Fragment implements
 	OnErrorListener, OnItemClickListener, OnScrollListener,
 	OnPostsFetchedListener, OnRequestListener
 {
+	/* static */
+	public static Fragment create()
+	{
+		Fragment f = new SectionPostsFragment();
+		return f;
+	}
+	
 	/* Listeners */
 	OnFragmentAttachedListener onFragmentAttachedListener = null;
 	
