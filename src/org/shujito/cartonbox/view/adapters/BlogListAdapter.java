@@ -1,8 +1,10 @@
 package org.shujito.cartonbox.view.adapters;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.shujito.cartonbox.R;
+import org.shujito.cartonbox.controller.listeners.OnErrorListener;
 import org.shujito.cartonbox.controller.listeners.OnXmlResponseReceivedListener;
 import org.shujito.cartonbox.model.BlogEntry;
 import org.shujito.cartonbox.model.parser.XmlParser;
@@ -16,7 +18,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-public class BlogListAdapter extends BaseAdapter implements OnXmlResponseReceivedListener
+public class BlogListAdapter extends BaseAdapter implements OnXmlResponseReceivedListener, OnErrorListener
 {
 	Context context = null;
 	List<BlogEntry> entries = null;
@@ -56,13 +58,24 @@ public class BlogListAdapter extends BaseAdapter implements OnXmlResponseReceive
 		}
 		
 		BlogEntry entry = this.entries.get(pos);
-		String blogContent = entry.getContent();
-		Spanned spannedContent = Html.fromHtml(blogContent);
-		//String dur = spannedContent.toString().trim();
-		
-		((TextView)v.findViewById(R.id.blogitem_tvtitle)).setText(entry.getTitle());
-		((TextView)v.findViewById(R.id.blogitem_tvcontent)).setText(spannedContent);
-		((TextView)v.findViewById(R.id.blogitem_tvdate)).setText(entry.getDate());
+		if(entry != null)
+		{
+			String blogContent = entry.getContent();
+			Spanned spannedContent = Html.fromHtml(blogContent);
+			//String dur = spannedContent.toString().trim();
+			
+			((TextView)v.findViewById(R.id.blogitem_tvtitle)).setText(entry.getTitle());
+			((TextView)v.findViewById(R.id.blogitem_tvcontent)).setText(spannedContent);
+			((TextView)v.findViewById(R.id.blogitem_tvdate)).setText(entry.getDate());
+		}
+		else
+		{
+			//String datefmt = DateFormat.getDateTimeInstance().format(new Date());
+			((TextView)v.findViewById(R.id.blogitem_tvtitle)).setText(R.string.couldnotblog);
+			((TextView)v.findViewById(R.id.blogitem_tvcontent)).setText(R.string.trylater);
+			//((TextView)v.findViewById(R.id.blogitem_tvdate)).setText(datefmt);
+			((TextView)v.findViewById(R.id.blogitem_tvdate)).setText(null);
+		}
 		
 		return v;
 	}
@@ -84,5 +97,14 @@ public class BlogListAdapter extends BaseAdapter implements OnXmlResponseReceive
 			this.entries.add(b);
 		}
 		//*/
+	}
+
+	@Override
+	public void onError(int code, String result)
+	{
+		this.entries = new ArrayList<BlogEntry>();
+		// add some dummy
+		this.entries.add(null);
+		this.notifyDataSetChanged();
 	}
 }

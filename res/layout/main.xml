@@ -5,4 +5,5 @@
 	android:layout_height="match_parent"
 	android:gravity="center"
 	android:numColumns="@integer/main_gvsites_numcols" >
+	
 </GridView>

@@ -1,10 +1,12 @@
 package org.shujito.cartonbox.view.fragments;
 
 import org.shujito.cartonbox.Logger;
+import org.shujito.cartonbox.Preferences;
 import org.shujito.cartonbox.R;
 import org.shujito.cartonbox.controller.listeners.OnDownloadProgressListener;
 import org.shujito.cartonbox.controller.listeners.OnImageFetchedListener;
 import org.shujito.cartonbox.model.Post;
+import org.shujito.cartonbox.model.Post.Rating;
 import org.shujito.cartonbox.utils.ConcurrentTask;
 import org.shujito.cartonbox.utils.ImageDownloader;
 
@@ -16,12 +18,14 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.TransitionDrawable;
+import android.os.AsyncTask.Status;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -29,7 +33,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class PostViewFragment extends Fragment
-	implements OnDownloadProgressListener
+	implements OnDownloadProgressListener, OnClickListener
 {
 	/* static */
 	static String EXTRA_POST = "org.shujito.cartonbox.POST";
@@ -158,6 +162,11 @@ public class PostViewFragment extends Fragment
 		else
 			this.ivyellow.setVisibility(View.GONE);
 		
+		if(this.ivred.getVisibility() == View.GONE && this.ivgray.getVisibility() == View.GONE && this.ivblue.getVisibility() == View.GONE && this.ivgreen.getVisibility() == View.GONE && this.ivyellow.getVisibility() == View.GONE)
+		{
+			view.findViewById(R.id.post_item_pager_llstatusdots).setVisibility(View.GONE);
+		}
+		
 		this.thumbDownloader = new ImageDownloader(this.getActivity(), this.post.getPreviewUrl());
 		this.thumbDownloader.setOnDownloadProgressListener(this);
 		this.thumbDownloader.setWidth(whatToUse);
@@ -196,7 +205,31 @@ public class PostViewFragment extends Fragment
 			}
 		});
 		
-		ConcurrentTask.execute(this.thumbDownloader);
+		//if(Preferences.getBool(R.string.pref_content_warning_key) && (post.getRating().equals(Rating.Questionable) || post.getRating().equals(Rating.Explicit)))
+		//{
+		//	ConcurrentTask.execute(this.thumbDownloader);
+		//}
+		
+		if(Preferences.getBool(R.string.pref_content_warning_key, true))
+		{
+			if(post.getRating() == Rating.Safe)
+			{
+				// is it safe? load it then
+				ConcurrentTask.execute(this.thumbDownloader);
+			}
+			else
+			{
+				// it is not!
+				this.tvmessage.setText(R.string.postblocked);
+				this.tvmessage.setOnClickListener(this);
+				this.pbprogress.setVisibility(View.GONE);
+			}
+		}
+		else
+		{
+			// just load it...
+			ConcurrentTask.execute(this.thumbDownloader);
+		}
 		
 		//this.thumbDownloader.execute();
 		//ConcurrentTask.execute(this.thumbDownloader);
@@ -273,5 +306,15 @@ public class PostViewFragment extends Fragment
 	{
 		Post post = (Post)this.getArguments().getSerializable(EXTRA_POST);
 		Toast.makeText(this.getActivity(), post.toString(), Toast.LENGTH_SHORT).show();
+	}
+	
+	@Override
+	public void onClick(View v)
+	{
+		// manual download
+		if(this.thumbDownloader.getStatus() == Status.PENDING)
+		{
+			ConcurrentTask.execute(this.thumbDownloader);
+		}
 	}
 }

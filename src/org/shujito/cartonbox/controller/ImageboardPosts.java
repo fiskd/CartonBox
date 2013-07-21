@@ -48,28 +48,11 @@ public abstract class ImageboardPosts extends Imageboard implements
 	
 	protected SparseArray<Post> posts = null;
 	protected ArrayList<String> tags = null;
-	//protected Downloader<?> downloader = null;
-	//protected boolean working = false;
-	//protected String siteUrl = null;
-	// TODO: next thing to do...
-	protected String[] tagsblacklist = null;
 	
 	boolean doneDownloadingPosts = false;
 	
 	protected int postsPerPage = 20;
 	protected int page = 1;
-	
-	/*
-	// show/hide ratings
-	protected boolean showSafePosts = true;
-	protected boolean showQuestionablePosts = false;
-	protected boolean showExplicitPosts = false;
-	// show/hide statuses
-	protected boolean showFlaggedPosts = false;
-	protected boolean showDeletedPosts = false;
-	//
-	protected boolean showRatedPosts = true;
-	//*/
 	
 	/* Constructor */
 	
@@ -95,62 +78,12 @@ public abstract class ImageboardPosts extends Imageboard implements
 		return this.postsPerPage;
 	}
 	
-	/*
-	public boolean getShowSafePosts()
-	{
-		return this.showSafePosts;
-	}
-	
-	public boolean getShowQuestionablePosts()
-	{
-		return this.showQuestionablePosts;
-	}
-	
-	public boolean getShowExplicitPosts()
-	{
-		return this.showExplicitPosts;
-	}
-	public boolean getShowFlaggedPosts()
-	{
-		return showFlaggedPosts;
-	}
-	public boolean getShowDeletedPosts()
-	{
-		return showDeletedPosts;
-	}
-	//*/
-	
 	/* Setters */
 	
 	public void setPostsPerPage(int postsPerPage)
 	{
 		this.postsPerPage = postsPerPage;
 	}
-	
-	/*
-	public void setShowSafePosts(boolean showSafePosts)
-	{
-		this.showSafePosts = showSafePosts;
-	}
-	
-	public void setShowQuestionablePosts(boolean showQuestionablePosts)
-	{
-		this.showQuestionablePosts = showQuestionablePosts;
-	}
-	
-	public void setShowExplicitPosts(boolean showExplicitPosts)
-	{
-		this.showExplicitPosts = showExplicitPosts;
-	}
-	public void setShowFlaggedPosts(boolean showFlaggedPosts)
-	{
-		this.showFlaggedPosts = showFlaggedPosts;
-	}
-	public void setShowDeletedPosts(boolean shotDeletedPosts)
-	{
-		this.showDeletedPosts = shotDeletedPosts;
-	}
-	//*/
 	
 	/* Meth */
 	
@@ -204,8 +137,11 @@ public abstract class ImageboardPosts extends Imageboard implements
 		while((post = (Post)jp.getAtIndex(index)) != null)
 		{
 			index++;
-			this.posts.append(post.getId(), post);
-			post.setSite(this.site);
+			if(!"swf".equals(post.getFileExt()))
+			{
+				this.posts.append(post.getId(), post);
+				post.setSite(this.site);
+			}
 		}
 		
 		if(index < this.postsPerPage)

@@ -14,6 +14,12 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ListView;
 
+/**
+ * is not a fragment so it doesn't belong to
+ * 'org.shujito.cartonbox.view.fragments.dialogs'
+ * @author Alberto
+ *
+ */
 public class BlogNewsDialog
 {
 	Context context;
@@ -41,6 +47,7 @@ public class BlogNewsDialog
 		this.mBlogListAdapter = new BlogListAdapter(this.context);
 		this.downloader = new BlogRssXmlDownloader(this.context.getString(R.string.sitelink));
 		this.downloader.setOnResponseReceivedListener(this.mBlogListAdapter);
+		this.downloader.setOnErrorListener(this.mBlogListAdapter);
 		ConcurrentTask.execute(this.downloader);
 		
 		this.mLvEntries = (ListView)v.findViewById(R.id.dialog_blognews_lventries);

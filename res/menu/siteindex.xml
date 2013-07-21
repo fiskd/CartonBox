@@ -14,6 +14,7 @@
 		android:title="@string/refresh" />
 	
 	<item
+		android:visible="false"
 		android:id="@+id/menu_siteindex_settings"
 		android:icon="@drawable/ic_action_prefs"
 		android:showAsAction="ifRoom"

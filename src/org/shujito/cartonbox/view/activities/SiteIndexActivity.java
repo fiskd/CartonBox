@@ -7,9 +7,7 @@ import org.shujito.cartonbox.R;
 import org.shujito.cartonbox.controller.ImageboardPosts;
 import org.shujito.cartonbox.controller.ImageboardTags;
 import org.shujito.cartonbox.controller.listeners.OnErrorListener;
-import org.shujito.cartonbox.view.SpaceTokenizer;
 import org.shujito.cartonbox.view.adapters.SiteIndexPageAdapter;
-import org.shujito.cartonbox.view.adapters.TagsAdapter;
 import org.shujito.cartonbox.view.fragments.SectionPostsFragment;
 import org.shujito.cartonbox.view.fragments.SectionTagsFragment;
 import org.shujito.cartonbox.view.fragments.dialogs.LoginDialogFragment;
@@ -17,23 +15,14 @@ import org.shujito.cartonbox.view.fragments.dialogs.LoginDialogFragment.LoginDia
 import org.shujito.cartonbox.view.listeners.OnFragmentAttachedListener;
 import org.shujito.cartonbox.view.listeners.TagListItemSelectedCallback;
 
+import android.app.SearchManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.view.KeyEvent;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.ImageButton;
-import android.widget.MultiAutoCompleteTextView;
-import android.widget.TextView;
-import android.widget.TextView.OnEditorActionListener;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.ActionBar.Tab;
@@ -41,22 +30,19 @@ import com.actionbarsherlock.app.ActionBar.TabListener;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
-import com.actionbarsherlock.view.MenuItem.OnActionExpandListener;
 
 public class SiteIndexActivity extends SherlockFragmentActivity implements
-	OnPageChangeListener, TabListener, OnActionExpandListener,
-	OnEditorActionListener, OnFragmentAttachedListener,
-	TagListItemSelectedCallback, OnErrorListener,
-	LoginDialogCallback, OnClickListener
+	OnPageChangeListener, TabListener, OnFragmentAttachedListener,
+	TagListItemSelectedCallback, OnErrorListener, LoginDialogCallback
 {
 	public static String EXTRA_SECTIONPAGE = "org.shujito.cartonbox.SECTIONPAGE";
 	public static String EXTRA_DIALOGSHOWING = "org.shujito.cartonbox.DIALOGSHOWING";
 	
 	SiteIndexPageAdapter mPageAdapter = null;
 	ViewPager mVpSections = null;
-	MenuItem mMenuItemSearch = null;
-	MultiAutoCompleteTextView mMactvQueryPosts = null;
-	ImageButton mBtnClearQuery = null;
+	//MenuItem mMenuItemSearch = null;
+	//MultiAutoCompleteTextView mMactvQueryPosts = null;
+	//ImageButton mBtnClearQuery = null;
 	// tab titles
 	String[] tabs = null;
 	// retain queries here
@@ -98,27 +84,40 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 			this.mVpSections.setCurrentItem(page);
 	}
 	
-	protected int findPage(int resid)
+	@Override
+	protected void onNewIntent(Intent intent)
 	{
-		String sectionString = null;
-		try
+		//Intent intent = this.getIntent();
+		if(Intent.ACTION_SEARCH.equals(intent.getAction()))
 		{
-			sectionString = this.getResources().getString(resid);
-		}
-		catch(Exception e)
-		{
-			return -1; // nothing
-		}
-		
-		for(int idx = 0; idx < this.tabs.length; idx++)
-		{
-			if(sectionString.equals(this.tabs[idx]))
+			String query = intent.getStringExtra(SearchManager.QUERY);
+			this.getSupportActionBar().setSubtitle(query);
+			//Toast.makeText(this, query, Toast.LENGTH_SHORT).show();
+			// find current section page, do searches depending on the page
+			int currentPage = this.mVpSections.getCurrentItem();
+			if(currentPage == this.findPage(R.string.section_tags))
 			{
-				return idx;
+				if(this.mTagsApi != null)
+				{
+					this.mTagsApi.clear();
+					this.mTagsApi.setQuery(query);
+					this.mTagsApi.request();
+				}
+			}
+			else if(currentPage == this.findPage(R.string.section_posts))
+			{
+				if(this.mPostsApi != null)
+				{
+					this.mPostsApi.clear();
+					String[] tags = query.split("\\s+");
+					for(String tag : tags)
+					{
+						this.mPostsApi.putTag(tag);
+					}
+					this.mPostsApi.request();
+				}
 			}
 		}
-		
-		return -1;
 	}
 	
 	@Override
@@ -130,6 +129,8 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 			this.mPostsApi = CartonBox.getInstance().getApis().getImageboardPosts();
 		if(this.mTagsApi == null)
 			this.mTagsApi = CartonBox.getInstance().getApis().getImageboardTags();
+		
+		this.getSupportActionBar().setTitle(this.mPostsApi.getSite().getName());
 		
 		if(this.mPostsApi == null || this.mTagsApi == null)
 		{
@@ -156,7 +157,6 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 			this.mPostsApi.removeOnErrorListener(this);
 		if(this.mTagsApi != null)
 			this.mTagsApi.removeOnErrorListener(this);
-		// TODO: save the query on the search box when changing to landscape/portrait
 	}
 	
 	@Override
@@ -172,24 +172,6 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 	public boolean onCreateOptionsMenu(Menu menu)
  	{
 		this.getSupportMenuInflater().inflate(R.menu.siteindex, menu);
-		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-		{
-			this.mMenuItemSearch = menu.findItem(R.id.menu_siteindex_search);
-			this.mMenuItemSearch.setOnActionExpandListener(this);
-			
-			this.mMactvQueryPosts = (MultiAutoCompleteTextView)this.mMenuItemSearch
-					.getActionView()
-					.findViewById(R.id.actionsearch_mactvqueryposts);
-			this.mMactvQueryPosts.setOnEditorActionListener(this);
-			this.mMactvQueryPosts.setAdapter(new TagsAdapter(this));
-			this.mMactvQueryPosts.setTokenizer(new SpaceTokenizer());
-			
-			this.mBtnClearQuery = (ImageButton)this.mMenuItemSearch
-					.getActionView()
-					.findViewById(R.id.actionsearch_btnclearquery);
-			this.mBtnClearQuery.setOnClickListener(this);
-		}
-		
 		return true;
 	}
 	
@@ -206,12 +188,8 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 				// event handled
 				return true;
 			case R.id.menu_siteindex_search:
-				if(Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB)
-				{
-					// search dialog
-					this.onSearchRequested();
-					return true;
-				}
+				// search dialog
+				this.onSearchRequested();
 				return true;
 			case R.id.menu_siteindex_refresh:
 				/*
@@ -220,6 +198,7 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 				int page = this.findPage(R.string.section_posts);
 				this.mVpSections.setCurrentItem(page);
 				//*/
+				this.getSupportActionBar().setSubtitle(null);
 				int currentPage = this.mVpSections.getCurrentItem();
 				if(currentPage == this.findPage(R.string.section_tags))
 				{
@@ -255,13 +234,6 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 	@Override
 	public void onPageSelected(int pos)
 	{
-		// clear text
-		if(this.mMactvQueryPosts != null)
-		{
-			
-			this.mMactvQueryPosts.setText(null);
-		}
-		
 		// select the tab
 		this.getSupportActionBar().getTabAt(pos).select();
 	}
@@ -271,40 +243,6 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 	@Override
 	public void onTabSelected(Tab tab, FragmentTransaction ft)
 	{
-		//Toast.makeText(this, String.format("Tab: %s Item: %s", tab.getPosition(), this.mVpSections.getCurrentItem()), Toast.LENGTH_SHORT).show();
-		// collapse search view
-		if(this.mMenuItemSearch != null)
-			this.mMenuItemSearch.collapseActionView();
-		
-		//Toast.makeText(this, tab.getText(), Toast.LENGTH_SHORT).show();
-		if(this.mMactvQueryPosts != null)
-		{
-			//*
-			if(tab.getText().equals(this.getString(R.string.section_tags)))
-			{
-				this.mMactvQueryPosts.setAdapter(null);
-				this.mMactvQueryPosts.setTokenizer(null);
-			}
-			else
-			{
-				this.mMactvQueryPosts.setAdapter(new TagsAdapter(this));
-				this.mMactvQueryPosts.setTokenizer(new SpaceTokenizer());
-			}
-			//*/
-		}
-		
-		// TODO: save this search somewhere for later use
-		/*
-		if(this.mMactvQueryPosts != null)
-		{
-			int prev = this.mVpSections.getCurrentItem();
-			int curr = tab.getPosition();
-			
-			this.queries[prev] = this.mMactvQueryPosts.getText().toString();
-			this.mMactvQueryPosts.setText(this.queries[curr]);
-		}
-		//*/
-		
 		// move to page
 		this.mVpSections.setCurrentItem(tab.getPosition());
 	}
@@ -320,77 +258,6 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 		// this might not be used
 	}
 	/* TabListener methods */
-	
-	/* OnActionExpandListener methods */
-	@Override
-	public boolean onMenuItemActionCollapse(MenuItem item)
-	{
-		InputMethodManager imm = (InputMethodManager)this.getSystemService(INPUT_METHOD_SERVICE);
-		imm.hideSoftInputFromWindow(this.mMactvQueryPosts.getWindowToken(), 0);
-		return true;
-	}
-	
-	@Override
-	public boolean onMenuItemActionExpand(MenuItem item)
-	{
-		if(this.mMactvQueryPosts != null)
-			this.mMactvQueryPosts.post(new Runnable()
-			{
-				@Override
-				public void run()
-				{
-					mMactvQueryPosts.requestFocus();
-					InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
-					imm.showSoftInput(mMactvQueryPosts, InputMethodManager.SHOW_FORCED);
-					mMactvQueryPosts.clearFocus();
-				}
-			});
-		
-		// should be true, or else the item won't expand
-		return true;
-	}
-	/* OnActionExpandListener methods */
-	
-	/* OnEditorActionListener methods */
-	@Override
-	public boolean onEditorAction(TextView v, int action, KeyEvent e)
-	{
-		if(action == EditorInfo.IME_ACTION_SEARCH)
-		{
-			// collapse search view
-			if(this.mMenuItemSearch != null)
-				this.mMenuItemSearch.collapseActionView();
-			
-			// find current section page, do searches depending on the page
-			int currentPage = this.mVpSections.getCurrentItem();
-			if(currentPage == this.findPage(R.string.section_tags))
-			{
-				if(this.mTagsApi != null)
-				{
-					this.mTagsApi.clear();
-					this.mTagsApi.setQuery(v.getText().toString());
-					this.mTagsApi.request();
-				}
-			}
-			else if(currentPage == this.findPage(R.string.section_posts))
-			{
-				if(this.mPostsApi != null)
-				{
-					this.mPostsApi.clear();
-					//this.getSupportActionBar().setSubtitle(v.getText());
-					String[] tags = v.getText().toString().split("\\s+");
-					for(String tag : tags)
-					{
-						this.mPostsApi.putTag(tag);
-					}
-					this.mPostsApi.request();
-				}
-				return true;
-			}
-		}
-		return false;
-	}
-	/* OnEditorActionListener methods */
 	
 	/* OnFragmentAttachedListener methods */
 	@Override
@@ -419,8 +286,6 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 	@Override
 	public void tagListItemSelected(String tag)
 	{
-		//this.mMactvQueryPosts.setText(tag);
-		
 		this.mPostsApi.clear();
 		this.mPostsApi.putTag(tag);
 		this.mPostsApi.request();
@@ -428,7 +293,7 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 		if(page > 0)
 			this.mVpSections.setCurrentItem(page);
 		
-		//this.getSupportActionBar().setSubtitle(tag);
+		this.getSupportActionBar().setSubtitle(tag);
 	}
 	/* TagListItemSelectedCallback methods */
 	
@@ -485,12 +350,26 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 	}
 	/* LoginDialogCallback methods */
 	
-	@Override
-	public void onClick(View v)
+	protected int findPage(int resid)
 	{
-		if(v.equals(this.mBtnClearQuery))
+		String sectionString = null;
+		try
 		{
-			this.mMactvQueryPosts.getText().clear();
+			sectionString = this.getResources().getString(resid);
 		}
+		catch(Exception e)
+		{
+			return -1; // nothing
+		}
+		
+		for(int idx = 0; idx < this.tabs.length; idx++)
+		{
+			if(sectionString.equals(this.tabs[idx]))
+			{
+				return idx;
+			}
+		}
+		
+		return -1;
 	}
 }

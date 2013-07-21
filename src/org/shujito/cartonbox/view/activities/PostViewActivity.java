@@ -78,6 +78,10 @@ public class PostViewActivity extends SherlockFragmentActivity implements OnPage
 		//Toast.makeText(this, String.format("k:%s p:%s kp:%s", key, page, keypage), Toast.LENGTH_SHORT).show();
 		this.mVpPosts.setOnPageChangeListener(this);
 		this.mVpPosts.setCurrentItem(keypage);
+		if(keypage == 0)
+		{
+			this.onPageSelected(keypage);
+		}
 	}
 	
 	@Override
@@ -175,9 +179,13 @@ public class PostViewActivity extends SherlockFragmentActivity implements OnPage
 		this.itemViewParent = menu.findItem(R.id.menu_postview_viewparent).setVisible(false);
 		this.itemViewPools = menu.findItem(R.id.menu_postview_viewpools).setVisible(false);
 		
-		// this HAX refreshes visible menu items
-		//int page = this.getIntent().getIntExtra(EXTRA_POST_INDEX, 0);
-		//this.onPageSelected(page);
+		// fuck haxes...
+		if(this.selectedPost != null)
+		{
+			this.itemViewChildren.setVisible(this.selectedPost.isHasChildren());
+			this.itemViewParent.setVisible(this.selectedPost.getParentId() > 0);
+		}
+		
 		return true;
 	}
 	

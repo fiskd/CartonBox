@@ -3,7 +3,7 @@
 	<string name="sitelink">http://www.shujito.org/rss</string>
 	
 	<string name="app_name">CartonBox</string>
-	<string name="googleplay">Google Play link</string>
+	<string name="googleplay">View in Store</string>
 	<string name="news">News</string>
 	
 	<string name="login_details">Login details</string>
@@ -42,6 +42,9 @@
 	<string name="download_failed">Download failed&#8230;</string>
 	<string name="download_started">Download Started&#8230;</string>
 	<string name="download_complete">Download Complete&#8230;</string>
+	<string name="couldnotblog">Couldn\'t connect to blog</string>
+	<string name="trylater">Don\'t worry, try again later&#8230;</string>
+	<string name="postblocked">Post blocked\ntap to download manually</string>
 	
 	<string name="empty">This part is not available yet&#8230; but it will be! I hope.\n\nRead this while I actually work on the rest.</string>
 	
@@ -76,14 +79,14 @@
 	<string name="pref_content_localfilter">Local filtering</string>
 	<string name="pref_content_localfilter_desc">Good if you want to search for more than two tags with limited accounts</string>
 	<string name="pref_content_warning">Content warning</string>
-	<string name="pref_content_warning_desc">Display a confirmation when attempting to access high rated posts</string>
+	<string name="pref_content_warning_desc">Displayed when accesing a post with a high rating</string>
 	<string name="pref_content_showdeletedposts">Show deleted posts</string>
 	<string name="pref_content_showflaggedposts">Show flagged posts</string>
 	
 	<string name="pref_blacklist">Blacklist</string>
 	<string name="pref_blacklist_enabled">Enable</string>
 	<string name="pref_blacklist_tags">Tags list</string>
-	<string name="pref_blacklist_tags_desc">Images of posts\' containing these tags are not shown</string>
+	<string name="pref_blacklist_tags_desc">Images of posts containing these tags are not shown</string>
 	<string name="pref_blacklist_tags_dialogmsg">Posts with tag combinations you don\'t want to see. Separate combinations on a new line.</string>
 	<string name="pref_blacklist_hide">Hide posts from grid</string>
 	<string name="pref_blacklist_hide_desc_on">Blacklisted posts are not visible</string>
@@ -91,7 +94,7 @@
 	
 	<string name="pref_ratings">Ratings filter</string>
 	<string name="pref_ratings_todisplay">Ratings to display</string>
-	<string name="pref_ratings_todisplay_desc">Images of posts\' with these ratings are not shown</string>
+	<string name="pref_ratings_todisplay_desc">Posts with the ratings you want to see</string>
 	
 	<string name="pref_ratings_todisplay_safe">Safe</string>
 	<string name="pref_ratings_todisplay_questionable">Questionable</string>

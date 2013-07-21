@@ -62,9 +62,9 @@ public class PostTagsDialogFragment extends SherlockDialogFragment
 		this.lvTags.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 		
 		return new AlertDialog.Builder(this.getActivity())
-			.setTitle("Post ID")
-			.setPositiveButton(android.R.string.search_go, null)
-			.setNegativeButton(android.R.string.cancel, null)
+			.setTitle(String.format("Post #%d", post.getId()))
+			//.setPositiveButton(android.R.string.search_go, null)
+			//.setNegativeButton(android.R.string.cancel, null)
 			.setView(v)
 			.create();
 	}

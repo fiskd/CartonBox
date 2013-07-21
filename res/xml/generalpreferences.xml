@@ -55,18 +55,21 @@
 			android:enabled="false"
 			android:key="@string/pref_content_localfilter_key"
 			android:title="@string/pref_content_localfilter"
-			android:summary="@string/pref_content_localfilter_desc" />
+			android:summary="@string/pref_content_localfilter_desc"
+			android:defaultValue="false" />
 		<CheckBoxPreference
-			android:enabled="false"
 			android:key="@string/pref_content_warning_key"
 			android:title="@string/pref_content_warning"
-			android:summary="@string/pref_content_warning_desc" />
+			android:summary="@string/pref_content_warning_desc"
+			android:defaultValue="true" />
 		<CheckBoxPreference
 			android:key="@string/pref_content_showdeletedposts_key"
-			android:title="@string/pref_content_showdeletedposts" />
+			android:title="@string/pref_content_showdeletedposts"
+			android:defaultValue="false" />
 		<CheckBoxPreference
 			android:key="@string/pref_content_showflaggedposts_key"
-			android:title="@string/pref_content_showflaggedposts" />
+			android:title="@string/pref_content_showflaggedposts"
+			android:defaultValue="false" />
 	</PreferenceCategory>
 	<PreferenceCategory
 		android:title="@string/pref_blacklist" >

@@ -137,6 +137,8 @@ public abstract class ImageboardTags extends Imageboard implements
 		return tags;
 	}
 	
+	// this thing is very hacky, I hope to remove
+	// this sometime... (it is unused as of now)
 	public List<Tag> requestSynchronous(String query)
 	{
 		// backup the query so nothing breaks later on
