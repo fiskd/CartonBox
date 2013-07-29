@@ -2,6 +2,7 @@ package org.shujito.cartonbox.view.adapters;
 
 import java.util.List;
 
+import org.shujito.cartonbox.R;
 import org.shujito.cartonbox.model.Site;
 
 import android.content.Context;
@@ -41,7 +42,8 @@ public class SitesAdapter extends BaseAdapter
 			return v; // get out quick
 		
 		((TextView)v).setTextAppearance(this.context, android.R.style.TextAppearance_Medium);
-		((TextView)v).setCompoundDrawablesWithIntrinsicBounds(0, one.getIconid(), 0, 0);
+		((TextView)v).setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.icon_unknown, 0, 0);
+		//((TextView)v).setCompoundDrawables(null, null, null, null);
 		((TextView)v).setText(one.getName());
 		//((TextView)v).setText(this.sites[pos]);
 		((TextView)v).setGravity(Gravity.CENTER);

@@ -1,21 +1,22 @@
 prefs? (old, nevermind these)
 
 site preferences
-	danbooru/hijiribe
+	danbooru
 		name
 		password
 		local filtering
 			yes no default
-	yande.re
-		name
-		password
-		local filtering
-			yes no default
+		blacklist
+			enable/disable
+			tags list
 	behoimi
 		name
 		password
 		local filtering
 			yes no default
+		blacklist
+			enable/disable
+			tags list
 	etc...
 	
 general preferences

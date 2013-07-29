@@ -3,14 +3,19 @@ package org.shujito.cartonbox.view;
 import org.shujito.cartonbox.R;
 import org.shujito.cartonbox.controller.BlogRssXmlDownloader;
 import org.shujito.cartonbox.controller.XmlDownloader;
+import org.shujito.cartonbox.model.BlogEntry;
 import org.shujito.cartonbox.utils.ConcurrentTask;
 import org.shujito.cartonbox.view.adapters.BlogListAdapter;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.CheckBox;
 import android.widget.ListView;
 
@@ -20,7 +25,7 @@ import android.widget.ListView;
  * @author Alberto
  *
  */
-public class BlogNewsDialog
+public class BlogNewsDialog implements OnItemClickListener
 {
 	Context context;
 	ListView mLvEntries = null;
@@ -52,6 +57,7 @@ public class BlogNewsDialog
 		
 		this.mLvEntries = (ListView)v.findViewById(R.id.dialog_blognews_lventries);
 		this.mLvEntries.setAdapter(this.mBlogListAdapter);
+		this.mLvEntries.setOnItemClickListener(this);
 		
 		this.mCbxNoshowagain = (CheckBox)v.findViewById(R.id.dialog_blognews_cbxnoshow);
 		this.mCbxNoshowagain.setChecked(false);
@@ -65,5 +71,15 @@ public class BlogNewsDialog
 			//.setNegativeButton(R.string.noshowagain, this)
 			.setView(v)
 			.create();
+	}
+	
+	@Override
+	public void onItemClick(AdapterView<?> dad, View v, int idx, long id)
+	{
+		String url = ((BlogEntry)this.mBlogListAdapter.getItem(idx)).getLink();
+		Intent ntn = new Intent(Intent.ACTION_VIEW);
+		// I will trust you...
+		ntn.setData(Uri.parse(url));
+		this.context.startActivity(ntn);
 	}
 }

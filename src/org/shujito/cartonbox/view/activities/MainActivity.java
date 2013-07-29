@@ -55,9 +55,9 @@ public class MainActivity extends SherlockActivity implements OnItemClickListene
 		
 		if(this.sites.size() == 0)
 		{
-			// upgraded or anything? reset defaults...
-			Preferences.defaultSites();
-			this.sites = sitesdb.getAll();
+			// upgraded or anything?
+			// TODO: prompt to add a new site
+			this.addSite();
 		}
 		
 		// init views
@@ -68,7 +68,6 @@ public class MainActivity extends SherlockActivity implements OnItemClickListene
 		
 		//BlogNewsDialog dialog = new BlogNewsDialog(this);
 		//dialog.createDialog().show();
-		
 	}
 	
 	@Override
@@ -97,6 +96,7 @@ public class MainActivity extends SherlockActivity implements OnItemClickListene
 		switch(item.getItemId())
 		{
 			case R.id.menu_main_addsite:
+				this.addSite();
 				return true;
 			case R.id.menu_main_settings:
 				Intent ntnPrefs = new Intent(this, GeneralPreferencesActivity.class);
@@ -203,4 +203,9 @@ public class MainActivity extends SherlockActivity implements OnItemClickListene
 		this.startActivity(ntn);
 	}
 	/* OnItemClickListener methods */
+	
+	private void addSite()
+	{
+		
+	}
 }

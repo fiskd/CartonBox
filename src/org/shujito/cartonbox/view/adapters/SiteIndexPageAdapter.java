@@ -49,4 +49,15 @@ public class SiteIndexPageAdapter extends FragmentPagerAdapter
 			return this.pages.length;
 		return 0;
 	}
+	
+	@Override
+	public float getPageWidth(int pos)
+	{
+		if(this.context.getResources().getString(R.string.section_tags).equals(this.pages[pos]))
+		{
+			return context.getResources().getFraction(R.dimen.tags_page_width, 1, 1);
+		}
+		
+		return 1f;
+	}
 }

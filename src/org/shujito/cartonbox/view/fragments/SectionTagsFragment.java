@@ -192,6 +192,11 @@ public class SectionTagsFragment extends Fragment implements
 			this.mTvMessage.setVisibility(View.VISIBLE);
 			this.mTvMessage.setText(R.string.no_tags);
 		}
+		
+		if(tags != null && tags.size() > 0)
+		{
+			this.mLvTags.smoothScrollToPosition(0);
+		}
 	}
 	/* OnErrorListener methods */
 

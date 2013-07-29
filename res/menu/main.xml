@@ -2,7 +2,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
 	<item
-		android:visible="false"
 		android:id="@+id/menu_main_addsite"
 		android:icon="@drawable/ic_action_add"
 		android:showAsAction="always"

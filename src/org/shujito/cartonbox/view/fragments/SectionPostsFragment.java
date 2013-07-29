@@ -132,7 +132,7 @@ public class SectionPostsFragment extends Fragment implements
 	{
 		super.onResume();
 		Logger.i("SectionPostsFragment::onResume", "fragment resumed");
-		// HAX!!
+		// XXX: haax!!
 		if(this.mPostsAdapter != null)
 			this.mPostsAdapter.onPostsFetched(this.postsApi.getPosts());
 		if(this.postsApi != null)

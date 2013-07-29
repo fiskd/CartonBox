@@ -27,8 +27,8 @@ public class Site implements Serializable
 	
 	/* fields */
 	private int id;
-	private int iconid;
 	private Type type;
+	private String icon;
 	private String name;
 	private String url;
 	private String postViewApi;
@@ -53,10 +53,10 @@ public class Site implements Serializable
 	/* getters */
 	public int getId()
 	{ return this.id; }
-	public int getIconid()
-	{ return this.iconid; }
 	public Type getType()
 	{ return this.type; }
+	public String getIcon()
+	{ return this.icon; }
 	public String getName()
 	{ return this.name; }
 	public String getUrl()
@@ -84,14 +84,14 @@ public class Site implements Serializable
 		return this;
 	}
 	//*/
-	public Site setIconid(int i)
-	{
-		this.iconid = i;
-		return this;
-	}
 	public Site setType(Type e)
 	{
 		this.type = e;
+		return this;
+	}
+	public Site setIcon(String icon)
+	{
+		this.icon = icon;
 		return this;
 	}
 	public Site setName(String s)

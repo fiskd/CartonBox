@@ -6,4 +6,6 @@
 <dimen name="post_item_grid_size">100dp</dimen>
 <bool name="fullscreen">false</bool>
 
+<item name="tags_page_width" type="dimen">100%</item>
+
 </resources>

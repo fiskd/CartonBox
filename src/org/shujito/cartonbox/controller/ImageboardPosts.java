@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.shujito.cartonbox.Logger;
+import org.shujito.cartonbox.controller.listeners.OnJsonResponseReceivedListener;
 import org.shujito.cartonbox.controller.listeners.OnPostsFetchedListener;
 import org.shujito.cartonbox.controller.listeners.OnRequestListener;
-import org.shujito.cartonbox.controller.listeners.OnJsonResponseReceivedListener;
 import org.shujito.cartonbox.model.Post;
 import org.shujito.cartonbox.model.Site;
 import org.shujito.cartonbox.model.parser.JsonParser;
@@ -76,6 +76,11 @@ public abstract class ImageboardPosts extends Imageboard implements
 	public int getPostsPerPage()
 	{
 		return this.postsPerPage;
+	}
+	
+	public String[] getTags()
+	{
+		return (String[])this.tags.toArray(new String[this.tags.size()]);
 	}
 	
 	/* Setters */

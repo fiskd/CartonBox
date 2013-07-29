@@ -1,0 +1,92 @@
+{
+	"donmai": {
+		"url": "http://donmai.us",
+		"type": 2,
+		"posts": "/posts.json",
+		"pools": "/pools.json",
+		"comments": "/comments.json",
+		"notes": "/notes.json",
+		"tags": "/tags.json"
+	},
+	"danbooru": {
+		"url": "http://danbooru.donmai.us",
+		"type": 2,
+		"posts": "/posts.json",
+		"pools": "/pools.json",
+		"comments": "/comments.json",
+		"notes": "/notes.json",
+		"tags": "/tags.json"
+	},
+	"hijiribe (danbooru mirror)": {
+		"url": "http://hijiribe.donmai.us",
+		"type": 2,
+		"posts": "/posts.json",
+		"pools": "/pools.json",
+		"comments": "/comments.json",
+		"notes": "/notes.json",
+		"tags": "/tags.json"
+	},
+	"safebooru (danbooru safe)": {
+		"url": "http://safebooru.donmai.us",
+		"type": 2,
+		"posts": "/posts.json",
+		"pools": "/pools.json",
+		"comments": "/comments.json",
+		"notes": "/notes.json",
+		"tags": "/tags.json"
+	},
+	"yande.re": {
+		"url": "https://yande.re",
+		"type": 1,
+		"posts": "/post/index.json",
+		"pools": "/pool/index.json",
+		"comments": "/comment/index.json",
+		"notes": "/note/index.json",
+		"tags": "/tag/index.json"
+	},
+	"gelbooru": {
+		"url": "http://gelbooru.com",
+		"type": 3,
+		"posts": "/index.php?page=dapi&s=post&q=index",
+		"pools": null,
+		"comments": null,
+		"notes": null,
+		"tags": "/index.php?page=dapi&s=tag&q=index"
+	},
+	"Konachan (R-18)": {
+		"url": "http://konachan.com",
+		"type": 1,
+		"posts": "/post/index.json",
+		"pools": "/pool/index.json",
+		"comments": "/comment/index.json",
+		"notes": "/note/index.json",
+		"tags": "/tag/index.json"
+	},
+	"Konachan (safe)": {
+		"url": "http://konachan.net",
+		"type": 1,
+		"posts": "/post/index.json",
+		"pools": "/pool/index.json",
+		"comments": "/comment/index.json",
+		"notes": "/note/index.json",
+		"tags": "/tag/index.json"
+	},
+	"3dbooru (behoimi)": {
+		"url": "http://behoimi.org",
+		"type": 1,
+		"posts": "/post/index.json",
+		"pools": "/pool/index.json",
+		"comments": "/comment/index.json",
+		"notes": "/note/index.json",
+		"tags": "/tag/index.json"
+	},
+	"e621": {
+		"url": "http://e621.net",
+		"type": 1,
+		"posts": "/post/index.json",
+		"pools": "/pool/index.json",
+		"comments": "/comment/index.json",
+		"notes": "/note/index.json",
+		"tags": "/tag/index.json"
+	}
+}

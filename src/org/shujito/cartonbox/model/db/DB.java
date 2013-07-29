@@ -15,6 +15,7 @@ public abstract class DB<T> extends SQLiteOpenHelper
 	static final String SQL_DROP = "DROP TABLE IF EXISTS %s;";
 	static final String SQL_TEXT = "%s TEXT";
 	static final String SQL_INTEGER = "%s INTEGER";
+	static final String SQL_BLOB = "%s BLOB";
 	static final String SQL_PK = "%s INTEGER PRIMARY KEY AUTOINCREMENT";
 	
 	public DB(Context context, String dbname, int version)

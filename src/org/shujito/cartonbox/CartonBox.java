@@ -33,7 +33,7 @@ public class CartonBox extends Application
 		//Logger.i("CartonBox::onCreate", String.format("Total Memory: %s", Formatters.humanReadableByteCount(Runtime.getRuntime().maxMemory())));
 		
 		// we got an update oh no!
-		// XXX: should move elsewhere in the case this becomes big
+		// XXX: this should be moved elsewhere in the case this becomes big
 		if(this.detectUpdate())
 		{
 			int version = this.detectVersionCode();
@@ -50,8 +50,10 @@ public class CartonBox extends Application
 					sitesdb.delete(site);
 				}
 				Preferences.defaultSites();
-				sites = sitesdb.getAll();
-				sites = sitesdb.getAll();
+			}
+			if(version <= 5)
+			{
+				// what
 			}
 			CartonBox.getInstance().finishUpdate();
 		}

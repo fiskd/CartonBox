@@ -40,13 +40,9 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 	
 	SiteIndexPageAdapter mPageAdapter = null;
 	ViewPager mVpSections = null;
-	//MenuItem mMenuItemSearch = null;
-	//MultiAutoCompleteTextView mMactvQueryPosts = null;
-	//ImageButton mBtnClearQuery = null;
 	// tab titles
 	String[] tabs = null;
 	// retain queries here
-	String[] queries = null;
 	ImageboardPosts mPostsApi = null;
 	ImageboardTags mTagsApi = null;
 	//
@@ -59,8 +55,6 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 		this.setContentView(R.layout.siteindex);
 		
 		this.tabs = this.getResources().getStringArray(R.array.danbooru_sections);
-		// create with same amount of tabs
-		this.queries = new String[this.tabs.length];
 		
 		this.mPageAdapter = new SiteIndexPageAdapter(this.getSupportFragmentManager(), this, this.tabs);
 		this.mVpSections = (ViewPager)this.findViewById(R.id.siteindex_vpsections);
@@ -87,34 +81,41 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 	@Override
 	protected void onNewIntent(Intent intent)
 	{
+		// TODO: move this code to onResume
 		//Intent intent = this.getIntent();
 		if(Intent.ACTION_SEARCH.equals(intent.getAction()))
 		{
-			String query = intent.getStringExtra(SearchManager.QUERY);
-			this.getSupportActionBar().setSubtitle(query);
-			//Toast.makeText(this, query, Toast.LENGTH_SHORT).show();
-			// find current section page, do searches depending on the page
-			int currentPage = this.mVpSections.getCurrentItem();
-			if(currentPage == this.findPage(R.string.section_tags))
+			// get what we want to search for...
+			String searchQuery = intent.getStringExtra(SearchManager.QUERY);
+			
+			// let's do the search here
+			if(searchQuery != null)
 			{
-				if(this.mTagsApi != null)
+				this.getSupportActionBar().setSubtitle(searchQuery);
+				//Toast.makeText(this, query, Toast.LENGTH_SHORT).show();
+				// find current section page, do searches depending on the page
+				int currentPage = this.mVpSections.getCurrentItem();
+				if(currentPage == this.findPage(R.string.section_tags))
 				{
-					this.mTagsApi.clear();
-					this.mTagsApi.setQuery(query);
-					this.mTagsApi.request();
-				}
-			}
-			else if(currentPage == this.findPage(R.string.section_posts))
-			{
-				if(this.mPostsApi != null)
-				{
-					this.mPostsApi.clear();
-					String[] tags = query.split("\\s+");
-					for(String tag : tags)
+					if(this.mTagsApi != null)
 					{
-						this.mPostsApi.putTag(tag);
+						this.mTagsApi.clear();
+						this.mTagsApi.setQuery(searchQuery);
+						this.mTagsApi.request();
 					}
-					this.mPostsApi.request();
+				}
+				else if(currentPage == this.findPage(R.string.section_posts))
+				{
+					if(this.mPostsApi != null)
+					{
+						this.mPostsApi.clear();
+						String[] tags = searchQuery.split("\\s+");
+						for(String tag : tags)
+						{
+							this.mPostsApi.putTag(tag);
+						}
+						this.mPostsApi.request();
+					}
 				}
 			}
 		}
@@ -141,9 +142,11 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 		{
 			this.mPostsApi.addOnErrorListener(this);
 			this.mTagsApi.addOnErrorListener(this);
+			
+			// retrieve dialog showing
+			this.dialogShowing = this.getIntent().getBooleanExtra(EXTRA_DIALOGSHOWING, false);
+			
 		}
-		// retrieve dialog showing
-		this.dialogShowing = this.getIntent().getBooleanExtra(EXTRA_DIALOGSHOWING, false);
 	}
 	
 	@Override
@@ -192,22 +195,23 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 				this.onSearchRequested();
 				return true;
 			case R.id.menu_siteindex_refresh:
-				/*
-				this.mPostsApi.clear();
-				this.mPostsApi.request();
-				int page = this.findPage(R.string.section_posts);
-				this.mVpSections.setCurrentItem(page);
-				//*/
-				this.getSupportActionBar().setSubtitle(null);
 				int currentPage = this.mVpSections.getCurrentItem();
 				if(currentPage == this.findPage(R.string.section_tags))
 				{
+					String backupQuery = this.mTagsApi.getQuery();
 					this.mTagsApi.clear();
+					this.mTagsApi.setQuery(backupQuery);
 					this.mTagsApi.request();
 				}
 				if(currentPage == this.findPage(R.string.section_posts))
 				{
+					String[] alltags = this.mPostsApi.getTags();
 					this.mPostsApi.clear();
+					// put the tags back again...
+					for(String tag : alltags)
+					{
+						this.mPostsApi.putTag(tag);
+					}
 					this.mPostsApi.request();
 				}
 				return true;
@@ -256,6 +260,8 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 	public void onTabReselected(Tab tab, FragmentTransaction ft)
 	{
 		// this might not be used
+		// XXX: or maybe yes (twitter refresh, back to the top, something)
+		// agh! How do I talk to a fragment from this activity!?
 	}
 	/* TabListener methods */
 	

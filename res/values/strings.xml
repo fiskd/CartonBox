@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="sitelink">http://www.shujito.org/rss</string>
+	<string name="sitelink">http://www.shujito.org/tagged/cartonbox/rss</string>
 	
 	<string name="app_name">CartonBox</string>
 	<string name="googleplay">View in Store</string>
@@ -30,6 +30,7 @@
 	<string name="searchposts">Search posts</string>
 	<string name="searchpools">Search pools</string>
 	<string name="searchartists">Search artists</string>
+	<string name="searchstuff">Search stuff</string>
 	
 	<string name="notavailable">Not available yet</string>
 	<string name="noshowagain">Don\'t Show again</string>

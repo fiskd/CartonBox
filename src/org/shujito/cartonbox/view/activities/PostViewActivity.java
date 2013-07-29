@@ -68,7 +68,7 @@ public class PostViewActivity extends SherlockFragmentActivity implements OnPage
 		super.onResume();
 		// hey listen! (the adapter will listen when the api fetches posts)
 		this.postsApi.addOnPostsFetchedListener(this.mPostsAdapter);
-		// Even more HAX!!
+		// XXX: haax!
 		this.mPostsAdapter.onPostsFetched(this.postsApi.getPosts());
 		
 		//int page = this.getIntent().getIntExtra(EXTRA_POST_INDEX, 0);

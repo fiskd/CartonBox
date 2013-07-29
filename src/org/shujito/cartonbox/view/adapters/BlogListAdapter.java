@@ -39,6 +39,10 @@ public class BlogListAdapter extends BaseAdapter implements OnXmlResponseReceive
 	@Override
 	public Object getItem(int pos)
 	{
+		if(this.entries != null)
+		{
+			return this.entries.get(pos);
+		}
 		return null;
 	}
 	
@@ -67,6 +71,7 @@ public class BlogListAdapter extends BaseAdapter implements OnXmlResponseReceive
 			((TextView)v.findViewById(R.id.blogitem_tvtitle)).setText(entry.getTitle());
 			((TextView)v.findViewById(R.id.blogitem_tvcontent)).setText(spannedContent);
 			((TextView)v.findViewById(R.id.blogitem_tvdate)).setText(entry.getDate());
+			//((TextView)v.findViewById(R.id.blogitem_tvdate)).setText(Locale.getDefault().getDisplayLanguage());
 		}
 		else
 		{
@@ -86,17 +91,30 @@ public class BlogListAdapter extends BaseAdapter implements OnXmlResponseReceive
 	{
 		// one line
 		this.entries = (List<BlogEntry>)xp.get();
-		this.notifyDataSetChanged();
 		
-		/* more code
-		this.entries.clear();
+		/* even more code
+		this.entries = new ArrayList<BlogEntry>();
 		BlogEntry b = null;
 		int index = 0;
-		while((b = (BlogEntry)xp.get().get(index)) != null)
+		List<?> everything = xp.get();
+		// (b = (BlogEntry)xp.get().get(++index)) != null
+		while(everything.size() > index && (b = (BlogEntry)everything.get(index++)) != null)
 		{
-			this.entries.add(b);
+			if(b.getCategories() != null)
+			{
+				for(String cat : b.getCategories())
+				{
+					if(cat.contains("cartonbox"))
+					{
+						this.entries.add(b);
+						break;
+					}
+				}
+			}
 		}
 		//*/
+		
+		this.notifyDataSetChanged();
 	}
 
 	@Override

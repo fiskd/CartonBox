@@ -80,10 +80,21 @@ public class GeneralPreferencesActivity extends SherlockPreferenceActivity
 		else
 		{
 			PreferencesFragment pfrag = new PreferencesFragment();
-			// oh, this fixes the orientation crash
-			pfrag.setRetainInstance(true);
 			this.getFragmentManager().beginTransaction().replace(android.R.id.content, pfrag).commit();
 		}
+	}
+	
+	@Override
+	protected void onPause()
+	{
+		super.onPause();
+		// stop listening for changed prefs
+		this.prefScreen.getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
+		
+		// remove listeners (it's safer)
+		this.prefClearCache.setOnPreferenceClickListener(null);
+		
+		//this.getFragmentManager().beginTransaction().remove(null).commit();
 	}
 	
 	@Override
@@ -129,17 +140,6 @@ public class GeneralPreferencesActivity extends SherlockPreferenceActivity
 		else
 			sizeTask.execute();
 		//*/
-	}
-	
-	@Override
-	protected void onPause()
-	{
-		super.onPause();
-		// stop listening for changed prefs
-		this.prefScreen.getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
-		
-		// remove listeners (it's safer)
-		this.prefClearCache.setOnPreferenceClickListener(null);
 	}
 	
 	@Override

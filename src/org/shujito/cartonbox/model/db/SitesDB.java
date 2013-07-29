@@ -16,12 +16,12 @@ public class SitesDB extends DB<Site>
 {
 	/* static */
 	static final String DB_NAME = "sites.db3";
-	static final int VERSION = 0x00000001;
+	static final int VERSION = 0x00000002;
 	
 	static final String TABLE_SITES = "sites";
 	
 	static final String KEY_ID = "id";
-	static final String KEY_ICONID = "iconid";
+	static final String KEY_ICON = "icon";
 	static final String KEY_URL = "url";
 	static final String KEY_TYPE = "type";
 	static final String KEY_NAME = "name";
@@ -48,9 +48,9 @@ public class SitesDB extends DB<Site>
 		String[][] fields =
 			{
 				{ SQL_PK, KEY_ID },
-				{ SQL_INTEGER, KEY_ICONID },
 				{ SQL_TEXT, KEY_URL },
 				{ SQL_INTEGER, KEY_TYPE },
+				{ SQL_TEXT, KEY_ICON }, // base64
 				{ SQL_TEXT, KEY_NAME },
 				{ SQL_TEXT, KEY_POST_VIEW_API },
 				{ SQL_TEXT, KEY_POSTS_API },
@@ -78,9 +78,9 @@ public class SitesDB extends DB<Site>
 		
 		ContentValues values = new ContentValues();
 		//values.put(KEY_ID, record.getId());
-		values.put(KEY_ICONID, record.getIconid());
 		values.put(KEY_URL, record.getUrl());
 		values.put(KEY_TYPE, record.getType().getValue());
+		values.put(KEY_ICON, record.getIcon());
 		values.put(KEY_NAME, record.getName());
 		values.put(KEY_POST_VIEW_API, record.getPostViewApi());
 		values.put(KEY_POSTS_API, record.getPostsApi());
@@ -169,6 +169,10 @@ public class SitesDB extends DB<Site>
 	public void update(Site record)
 	{
 		// TODO: prepare this when adding sites is ready
+		// oh it is time!
+		SQLiteDatabase db = this.getWritableDatabase();
+		
+		db.close();
 	}
 	
 	@Override
@@ -198,9 +202,9 @@ public class SitesDB extends DB<Site>
 		
 		Site site = new Site(cursor.getInt(cursor.getColumnIndex(KEY_ID)))
 			//.setId(cursor.getInt(cursor.getColumnIndex(KEY_ID)))
-			.setIconid(cursor.getInt(cursor.getColumnIndex(KEY_ICONID)))
 			.setUrl(cursor.getString(cursor.getColumnIndex(KEY_URL)))
 			.setType(type)
+			.setIcon(cursor.getString(cursor.getColumnIndex(KEY_ICON)))
 			.setName(cursor.getString(cursor.getColumnIndex(KEY_NAME)))
 			.setPostViewApi(cursor.getString(cursor.getColumnIndex(KEY_POST_VIEW_API)))
 			.setPostsApi(cursor.getString(cursor.getColumnIndex(KEY_POSTS_API)))

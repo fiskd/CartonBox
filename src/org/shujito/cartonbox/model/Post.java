@@ -82,7 +82,8 @@ public class Post implements Serializable
 		}
 		else if((this.url != null && this.url.charAt(0) == '/') && this.site != null)
 		{
-			// XXX: was I supposed to put something here??
+			// some boards may have the image urls truncated
+			this.url = this.site.getUrl().concat(this.url);
 		}
 		
 		return this.url;
