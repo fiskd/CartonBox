@@ -9,13 +9,10 @@ import org.shujito.cartonbox.view.adapters.PostsPagerAdapter;
 import org.shujito.cartonbox.view.fragments.dialogs.PostTagsDialogFragment;
 
 import android.annotation.TargetApi;
-import android.app.DownloadManager;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.widget.Toast;
@@ -115,6 +112,7 @@ public class PostViewActivity extends SherlockFragmentActivity implements OnPage
 				// handle the event
 				return true;
 			case R.id.menu_postview_save:
+				/*
 				// pan de gengibre?
 				if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD)
 				{
@@ -126,6 +124,7 @@ public class PostViewActivity extends SherlockFragmentActivity implements OnPage
 						.setAllowedOverRoaming(false)
 						.setTitle(this.getString(R.string.downloading))
 						.setDescription(filename)
+						.addRequestHeader("Referer", this.selectedPost.getUrl())
 						.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename);
 					downman.enqueue(request);
 				}
@@ -133,6 +132,9 @@ public class PostViewActivity extends SherlockFragmentActivity implements OnPage
 				{
 					Toast.makeText(this, this.getString(R.string.notavailable), Toast.LENGTH_SHORT).show();
 				}
+				//*/
+				// TODO: change from a downloadmanager to a generic coded downloader (ew...)
+				Toast.makeText(this, this.getString(R.string.notavailable), Toast.LENGTH_SHORT).show();
 				
 				return true;
 			case R.id.menu_postview_preferences:
@@ -156,12 +158,15 @@ public class PostViewActivity extends SherlockFragmentActivity implements OnPage
 				}
 				return true;
 			case R.id.menu_postview_viewparent:
+				// TODO: make it work
 				Toast.makeText(this, this.getString(R.string.notavailable), Toast.LENGTH_SHORT).show();
 				return true;
 			case R.id.menu_postview_viewchildren:
+				// TODO: make it work
 				Toast.makeText(this, this.getString(R.string.notavailable), Toast.LENGTH_SHORT).show();
 				return true;
 			case R.id.menu_postview_viewpools:
+				// TODO: make it work
 				Toast.makeText(this, this.getString(R.string.notavailable), Toast.LENGTH_SHORT).show();
 				return true;
 		}

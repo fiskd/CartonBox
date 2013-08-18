@@ -1,7 +1,5 @@
 package org.shujito.cartonbox.view.activities;
 
-import java.util.List;
-
 import org.shujito.cartonbox.CartonBox;
 import org.shujito.cartonbox.Preferences;
 import org.shujito.cartonbox.R;
@@ -19,6 +17,8 @@ import org.shujito.cartonbox.utils.io.DiskCacheManager;
 import org.shujito.cartonbox.utils.io.listeners.OnDirectoryClearedListener;
 import org.shujito.cartonbox.utils.io.listeners.OnDiskTaskProgressListener;
 import org.shujito.cartonbox.view.adapters.SitesAdapter;
+import org.shujito.cartonbox.view.fragments.dialogs.AddSiteDialogFragment;
+import org.shujito.cartonbox.view.fragments.dialogs.AddSiteDialogFragment.AddSiteDialogCallback;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -33,15 +33,16 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 
-import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
-public class MainActivity extends SherlockActivity implements OnItemClickListener
+public class MainActivity extends SherlockFragmentActivity
+	implements OnItemClickListener, AddSiteDialogCallback
 {
 	GridView mGridView = null;
 	SitesAdapter mSitesAdapter = null;
-	List<Site> sites = null;
+	//List<Site> sites = null;
 	
 	@Override
 	protected void onCreate(Bundle cirno)
@@ -49,22 +50,18 @@ public class MainActivity extends SherlockActivity implements OnItemClickListene
 		super.onCreate(cirno);
 		this.setContentView(R.layout.main);
 		
-		// get sites stored on the db
-		SitesDB sitesdb = new SitesDB(this);
-		this.sites = sitesdb.getAll();
-		
-		if(this.sites.size() == 0)
-		{
-			// upgraded or anything?
-			// TODO: prompt to add a new site
-			this.addSite();
-		}
-		
 		// init views
-		this.mSitesAdapter = new SitesAdapter(this, this.sites);
+		this.mSitesAdapter = new SitesAdapter(this);
 		this.mGridView = (GridView)this.findViewById(R.id.main_gvsites);
 		this.mGridView.setAdapter(this.mSitesAdapter);
 		this.mGridView.setOnItemClickListener(this);
+		
+		// count adapter size
+		if(this.mSitesAdapter.getCount() == 0)
+		{
+			// upgraded or anything?
+			this.addSite();
+		}
 		
 		//BlogNewsDialog dialog = new BlogNewsDialog(this);
 		//dialog.createDialog().show();
@@ -154,7 +151,7 @@ public class MainActivity extends SherlockActivity implements OnItemClickListene
 	@Override
 	public void onItemClick(AdapterView<?> dad, View v, int pos, long id)
 	{
-		Site currentSite = this.sites.get(pos);
+		Site currentSite = (Site)this.mSitesAdapter.getItem(pos);
 		
 		// create apis here
 		ImageboardApis apis = new ImageboardApis();
@@ -206,6 +203,23 @@ public class MainActivity extends SherlockActivity implements OnItemClickListene
 	
 	private void addSite()
 	{
-		
+		AddSiteDialogFragment asdf = new AddSiteDialogFragment();
+		asdf.show(this.getSupportFragmentManager(), AddSiteDialogFragment.TAG);
+	}
+	
+	@Override
+	public void onOk(Site site)
+	{
+		SitesDB sites = new SitesDB(this);
+		sites.add(site);
+		if(this.mSitesAdapter != null)
+		{
+			this.mSitesAdapter.notifyDataSetChanged();
+		}
+	}
+	
+	@Override
+	public void onCancel()
+	{
 	}
 }

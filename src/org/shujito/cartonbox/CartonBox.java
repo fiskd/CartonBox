@@ -12,6 +12,11 @@ import android.content.pm.PackageInfo;
 import android.os.Build;
 import android.provider.Settings;
 
+/**
+ * The Application, a handy and useful singleton for us to abuse
+ * @author Alberto
+ *
+ */
 public class CartonBox extends Application
 {
 	// application instance, we can access the context everywhere with this

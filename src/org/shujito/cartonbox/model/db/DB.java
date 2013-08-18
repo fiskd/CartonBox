@@ -25,24 +25,25 @@ public abstract class DB<T> extends SQLiteOpenHelper
 	
 	protected void createTable(SQLiteDatabase db, String[][] fields, String tableName)
 	{
+		// the create query will be created here
 		StringBuilder struct = new StringBuilder();
 		for(int idx = 0; idx < fields.length; idx++)
 		{
 			if(idx > 0)
 				struct.append(',');
-			
+			// create the query with the provided struct
 			String[] field = fields[idx];
 			struct.append(String.format(field[0], field[1]));
 		}
-		
+		// here it is
 		String query = String.format(SQL_CREATE, tableName, struct.toString());
 		db.execSQL(query);
 	}
 	
-	public abstract void add(T record);
+	public abstract boolean add(T record);
 	public abstract T get(int id);
 	public abstract List<T> getAll();
 	public abstract int getCount();
-	public abstract void update(T record);
-	public abstract void delete(T record);
+	public abstract boolean update(T record);
+	public abstract boolean delete(T record);
 }

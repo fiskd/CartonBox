@@ -8,7 +8,8 @@ public class Site implements Serializable
 	{
 		Danbooru1(1),
 		Danbooru2(2),
-		Gelbooru(3)
+		Gelbooru(3),
+		Custom(-1)
 		;
 		
 		private int value;
@@ -20,10 +21,55 @@ public class Site implements Serializable
 		
 		public int getValue()
 		{ return this.value; }
+		
+		public static Type fromInt(int value)
+		{
+			switch(value)
+			{
+				case 1: return Danbooru1;
+				case 2: return Danbooru2;
+				case 3: return Gelbooru;
+			}
+			return null;
+		}
 	}
 	
 	/* Static */
 	private static final long serialVersionUID = 1L;
+	
+	public static Site createByType(Type type)
+	{
+		if(type == Type.Danbooru1)
+		{
+			return new Site()
+				.setType(type)
+				.setPostViewApi("/post/show/")
+				.setPostsApi("/post/index.json")
+				.setPoolsApi("/pool/index.json")
+				.setCommentsApi("/comment/index.json")
+				.setNotesApi("/note/index.json")
+				.setTagsApi("/tag/index.json");
+		}
+		if(type == Type.Danbooru2)
+		{
+			return new Site()
+				.setType(type)
+				.setPostViewApi("/posts")
+				.setPostsApi("/posts.json")
+				.setPoolsApi("/pools.json")
+				.setCommentsApi("/comments.json")
+				.setNotesApi("/notes.json")
+				.setTagsApi("/tags.json");
+		}
+		if(type == Type.Gelbooru)
+		{
+			return new Site()
+				.setType(type)
+				.setPostsApi("/index.php?page=dapi&s=post&q=index")
+				.setTagsApi("/index.php?page=dapi&s=tag&q=index");
+		}
+		return null;
+	}
 	
 	/* fields */
 	private int id;

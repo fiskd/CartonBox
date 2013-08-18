@@ -81,7 +81,10 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 	@Override
 	protected void onNewIntent(Intent intent)
 	{
-		// TODO: move this code to onResume
+		// TODO: look for workarounds on making this work when the fragments
+		// are ready (Without causing a whole code mess) should check the
+		// fragments and look for a proper behavior (I'm sleepy and idk if I'll
+		// understand this the next time I read this)
 		//Intent intent = this.getIntent();
 		if(Intent.ACTION_SEARCH.equals(intent.getAction()))
 		{
@@ -125,6 +128,8 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 	protected void onResume()
 	{
 		super.onResume();
+		Logger.i("SiteIndexActivity::onResume", "activity resumed");
+		
 		// get the imageboard
 		if(this.mPostsApi == null)
 			this.mPostsApi = CartonBox.getInstance().getApis().getImageboardPosts();
@@ -153,6 +158,7 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 	protected void onPause()
 	{
 		super.onPause();
+		Logger.i("SiteIndexActivity::onPause", "activity paused");
 		// save dialog showing
 		this.getIntent().putExtra(EXTRA_DIALOGSHOWING, this.dialogShowing);
 		
@@ -269,6 +275,7 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 	@Override
 	public Object onFragmentAttached(Fragment f)
 	{
+		Logger.i("SiteIndexActivity::onFragmentAttached", String.format("fragment %s attached", f.toString()));
 		if(f instanceof SectionPostsFragment)
 		{
 			// this should fix the NPE caused when rotating the device

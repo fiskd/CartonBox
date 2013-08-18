@@ -1,4 +1,4 @@
-ldpi	72
-mdpi	96
-hdpi	144
-xhdpi	192
+		normal	tablets
+mdpi	96		192
+hdpi	144		288
+xhdpi	192		384

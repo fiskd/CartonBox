@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.shujito.cartonbox.R;
 import org.shujito.cartonbox.model.Site;
+import org.shujito.cartonbox.model.db.SitesDB;
 
 import android.content.Context;
 import android.view.Gravity;
@@ -15,15 +16,13 @@ import android.widget.TextView;
 public class SitesAdapter extends BaseAdapter
 {
 	Context context = null;
-	//String[] sites = null;
 	List<Site> mLsSites = null;
 	
-	public SitesAdapter(Context context, List<Site> sites)
+	//public SitesAdapter(Context context, List<Site> sites)
+	public SitesAdapter(Context context)
 	{
 		this.context = context;
-		this.mLsSites = sites;
-		
-		//this.sites = this.context.getResources().getStringArray(R.array.danbooru_site_names);
+		this.refreshSites();
 	}
 	
 	@Override
@@ -62,12 +61,34 @@ public class SitesAdapter extends BaseAdapter
 	@Override
 	public Object getItem(int pos)
 	{
+		if(this.mLsSites != null)
+			return this.mLsSites.get(pos);
 		return null;
 	}
 	
 	@Override
 	public long getItemId(int pos)
 	{
-		return 0;
+		if(this.mLsSites != null)
+		{
+			Site s = this.mLsSites.get(pos);
+			if(s != null)
+				return s.getId();
+		}
+		
+		return -1;
+	}
+	
+	@Override
+	public void notifyDataSetChanged()
+	{
+		this.refreshSites();
+		super.notifyDataSetChanged();
+	}
+	
+	private void refreshSites()
+	{
+		SitesDB sites = new SitesDB(this.context);
+		this.mLsSites = sites.getAll();
 	}
 }

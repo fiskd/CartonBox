@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="sitelink">http://www.shujito.org/tagged/cartonbox/rss</string>
-	
 	<string name="app_name">CartonBox</string>
 	<string name="googleplay">View in Store</string>
 	<string name="news">News</string>
@@ -9,8 +7,13 @@
 	<string name="login_details">Login details</string>
 	<string name="login_message">Certain booru boards require registration for outside use.</string>
 	
-	<string name="username">Name</string>
+	<string name="username">Username</string>
 	<string name="password">Password</string>
+	
+	<string name="notempty">This field can not be empty!</string>
+	<string name="enteravalidurl">You should enter a valid url</string>
+	<string name="enterusername">Enter your username</string>
+	<string name="enterpassword">Enter your password</string>
 	
 	<string name="settings">Settings</string>
 	<string name="search">Search</string>
@@ -34,6 +37,17 @@
 	
 	<string name="notavailable">Not available yet</string>
 	<string name="noshowagain">Don\'t Show again</string>
+	
+	<string name="sitename">Name</string>
+	<string name="sitetype">Site type</string>
+	<string name="siteaddress">http://</string>
+	
+	<string name="siteauthdetails">Provide login details</string>
+	
+	<string name="sitedanbooru2">Danbooru 2.x</string>
+	<string name="sitedanbooru1">Danbooru 1.18.x</string>
+	<string name="sitegelbooru">Gelbooru 0.2.x</string>
+	<string name="sitecustomize">Customize</string>
 	
 	<string name="loading">Loading&#8230;</string>
 	<string name="loading_sample">Downloading sample&#8230;</string>

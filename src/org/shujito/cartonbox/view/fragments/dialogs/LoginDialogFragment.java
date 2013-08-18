@@ -20,8 +20,8 @@ import android.widget.TextView.OnEditorActionListener;
 import com.actionbarsherlock.app.SherlockDialogFragment;
 
 public class LoginDialogFragment extends SherlockDialogFragment
-	implements DialogInterface.OnClickListener,
-	OnEditorActionListener, View.OnClickListener
+	implements View.OnClickListener, DialogInterface.OnClickListener,
+	OnEditorActionListener
 {
 	public final static String TAG = "org.shujito.cartonbox.view.fragments.dialogs.LoginDialogFragment";
 	
@@ -33,8 +33,8 @@ public class LoginDialogFragment extends SherlockDialogFragment
 	
 	LoginDialogCallback mLoginDialogCallback = null;
 	
-	EditText tvUsername = null;
-	EditText tvPassword = null;
+	EditText etUsername = null;
+	EditText etPassword = null;
 	
 	@Override
 	public void onAttach(Activity activity)
@@ -55,20 +55,20 @@ public class LoginDialogFragment extends SherlockDialogFragment
 		LayoutInflater inf = LayoutInflater.from(this.getActivity());
 		View v = inf.inflate(R.layout.dialog_login, null);
 		
-		this.tvUsername = (EditText)v.findViewById(R.id.dialog_login_tvusername);
-		this.tvUsername.requestFocus();
-		this.tvPassword = (EditText)v.findViewById(R.id.dialog_login_tvpassword);
-		this.tvPassword.setOnEditorActionListener(this);
+		this.etUsername = (EditText)v.findViewById(R.id.dialog_login_tvusername);
+		this.etUsername.requestFocus();
+		this.etPassword = (EditText)v.findViewById(R.id.dialog_login_tvpassword);
+		this.etPassword.setOnEditorActionListener(this);
 		
-		this.tvUsername.post(new Runnable()
+		this.etUsername.post(new Runnable()
 		{
 			@Override
 			public void run()
 			{
-				tvUsername.requestFocus();
+				etUsername.requestFocus();
 				InputMethodManager imm = (InputMethodManager)getActivity()
 						.getSystemService(Context.INPUT_METHOD_SERVICE);
-				imm.showSoftInput(tvUsername, InputMethodManager.SHOW_IMPLICIT);
+				imm.showSoftInput(etUsername, InputMethodManager.SHOW_IMPLICIT);
 			}
 		});
 		
@@ -85,6 +85,8 @@ public class LoginDialogFragment extends SherlockDialogFragment
 	public void onStart()
 	{
 		super.onStart();
+		// avoid closing the dialog when clicking the buttons by
+		// stealing their listeners
 		((AlertDialog)this.getDialog())
 			.getButton(DialogInterface.BUTTON_POSITIVE)
 			.setOnClickListener(this); // I got your listener
@@ -113,7 +115,7 @@ public class LoginDialogFragment extends SherlockDialogFragment
 			this.onClick(this.getDialog(), DialogInterface.BUTTON_POSITIVE);
 		else if(((AlertDialog)this.getDialog()).getButton(DialogInterface.BUTTON_NEGATIVE).equals(v))
 			this.onClick(this.getDialog(), DialogInterface.BUTTON_NEGATIVE);
-		// nevermind what the fuck: --- ↑
+		// I forgot what is this for
 	}
 	/* View.OnClickListener */
 	
@@ -121,34 +123,38 @@ public class LoginDialogFragment extends SherlockDialogFragment
 	@Override
 	public void onClick(DialogInterface dialog, int which)
 	{
+		this.etUsername.setError(null);
+		this.etPassword.setError(null);
+		
 		if(which == DialogInterface.BUTTON_POSITIVE)
 		{
 			if(this.mLoginDialogCallback != null)
 			{
-				String username = this.tvUsername.getText().toString();
-				String password = this.tvPassword.getText().toString();
-				if((username != null && username.length() > 0) && (password != null && password.length() > 0))
+				if(this.etUsername.length() > 0 && this.etPassword.length() > 0)
 				{
 					this.dismiss();
+					String username = this.etUsername.getText().toString();
+					String password = this.etPassword.getText().toString();
 					this.mLoginDialogCallback.onFinishEditLogin(username, password);
 				}
 				else
 				{
-					if(password != null && password.length() == 0)
+					if(this.etPassword.length() == 0)
 					{
-						this.tvPassword.requestFocus();
-						this.tvPassword.setHintTextColor(0xffcc0000);
+						this.etPassword.requestFocus();
+						this.etPassword.setError(this.getText(R.string.enterusername));
 					}
-					if(username != null && username.length() == 0)
+					if(this.etUsername.length() == 0)
 					{
-						this.tvUsername.requestFocus();
-						this.tvUsername.setHintTextColor(0xffcc0000);
+						this.etUsername.requestFocus();
+						this.etUsername.setError(this.getText(R.string.enterpassword));
 					}
 				}
 			}
 		}
 		if(which == DialogInterface.BUTTON_NEGATIVE)
 		{
+			this.dismiss();
 			if(this.mLoginDialogCallback != null)
 				this.mLoginDialogCallback.onCancel();
 		}

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:orientation="vertical"
+	android:layout_margin="8dp" >
+	
+	<EditText
+		android:id="@+id/dialog_addsite_etname"
+		android:layout_width="match_parent"
+		android:layout_height="48dp"
+		android:layout_margin="4dp"
+		android:textAppearance="?android:attr/textAppearanceMedium"
+		android:inputType="text"
+		android:hint="@string/sitename" />
+	
+	<EditText
+		android:id="@+id/dialog_addsite_eturl"
+		android:layout_width="match_parent"
+		android:layout_height="48dp"
+		android:layout_margin="4dp"
+		android:textAppearance="?android:attr/textAppearanceMedium"
+		android:inputType="text"
+		android:hint="@string/siteaddress" />
+	
+	<TextView
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_margin="4dp"
+		android:textAppearance="?android:attr/textAppearanceMedium"
+		android:text="@string/sitetype" />
+	
+	<Spinner
+		android:id="@+id/dialog_addsite_sptype"
+		android:layout_width="match_parent"
+		android:layout_height="48dp"
+		android:layout_margin="4dp" />
+	
+	<CheckBox
+		android:id="@+id/dialog_addsite_cbauthdetails"
+		android:layout_width="match_parent"
+		android:layout_height="48dp"
+		android:text="@string/siteauthdetails"
+		android:visibility="gone" />
+	
+	<EditText
+		android:id="@+id/dialog_addsite_etusername"
+		android:layout_width="match_parent"
+		android:layout_height="48dp"
+		android:layout_margin="4dp"
+		android:textAppearance="?android:attr/textAppearanceMedium"
+		android:inputType="text"
+		android:visibility="gone"
+		android:hint="@string/username" />
+	
+	<EditText
+		android:id="@+id/dialog_addsite_etpassword"
+		android:layout_width="match_parent"
+		android:layout_height="48dp"
+		android:layout_margin="4dp"
+		android:textAppearance="?android:attr/textAppearanceMedium"
+		android:inputType="textPassword"
+		android:visibility="gone"
+		android:hint="@string/password" />
+	
+</LinearLayout>
