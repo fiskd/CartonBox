@@ -77,7 +77,7 @@ public class SitesDB extends DB<Site>
 		SQLiteDatabase db = this.getWritableDatabase();
 		// TODO: refactor
 		ContentValues values = new ContentValues();
-		//values.put(KEY_ID, record.getId());
+		values.put(KEY_ID, record.getId());
 		values.put(KEY_URL, record.getUrl());
 		values.put(KEY_TYPE, record.getType().getValue());
 		values.put(KEY_ICON, record.getIcon());
@@ -173,7 +173,7 @@ public class SitesDB extends DB<Site>
 		SQLiteDatabase db = this.getWritableDatabase();
 		
 		ContentValues values = new ContentValues();
-		//values.put(KEY_ID, record.getId());
+		values.put(KEY_ID, record.getId());
 		values.put(KEY_URL, record.getUrl());
 		values.put(KEY_TYPE, record.getType().getValue());
 		values.put(KEY_ICON, record.getIcon());
@@ -222,8 +222,8 @@ public class SitesDB extends DB<Site>
 			case 3: type = Site.Type.Gelbooru; break;
 		}
 		
-		Site site = new Site(cursor.getInt(cursor.getColumnIndex(KEY_ID)))
-			//.setId(cursor.getInt(cursor.getColumnIndex(KEY_ID)))
+		Site site = new Site()
+			.setId(cursor.getLong(cursor.getColumnIndex(KEY_ID)))
 			.setUrl(cursor.getString(cursor.getColumnIndex(KEY_URL)))
 			.setType(type)
 			.setIcon(cursor.getString(cursor.getColumnIndex(KEY_ICON)))

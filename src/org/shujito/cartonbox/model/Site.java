@@ -72,7 +72,7 @@ public class Site implements Serializable
 	}
 	
 	/* fields */
-	private int id;
+	private long id;
 	private Type type;
 	private String icon;
 	private String name;
@@ -88,16 +88,11 @@ public class Site implements Serializable
 	/* constructor */
 	public Site()
 	{
-		this.id = -1;
-	}
-	
-	public Site(int id)
-	{
-		this.id = id;
+		this.id = System.currentTimeMillis();
 	}
 	
 	/* getters */
-	public int getId()
+	public long getId()
 	{ return this.id; }
 	public Type getType()
 	{ return this.type; }
@@ -124,7 +119,7 @@ public class Site implements Serializable
 
 	/* setters */
 	//*
-	public Site setId(int i)
+	public Site setId(long i)
 	{
 		this.id = i;
 		return this;
