@@ -1,6 +1,10 @@
 package org.shujito.cartonbox.view.activities;
 
+import java.util.List;
+
 import org.shujito.cartonbox.R;
+import org.shujito.cartonbox.model.Site;
+import org.shujito.cartonbox.model.db.SitesDB;
 import org.shujito.cartonbox.utils.ConcurrentTask;
 import org.shujito.cartonbox.utils.Formatters;
 import org.shujito.cartonbox.utils.io.ClearDirectoryTask;
@@ -105,11 +109,17 @@ public class GeneralPreferencesActivity extends SherlockPreferenceActivity
 		// listen for changed prefs
 		this.prefScreen.getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
 		
-		Preference dummy = new Preference(this);
-		dummy.setTitle("nothing");
-		dummy.setEnabled(false);
+		SitesDB sitesdb = new SitesDB(this);
+		List<Site> sites = sitesdb.getAll();
+		for(Site site : sites)
+		{
+			Preference sitePref = new Preference(this);
+			sitePref.setTitle(site.getName());
+			sitePref.setSummary(site.getUrl());
+			sitePref.setEnabled(false);
+			this.prefSites.addPreference(sitePref);
+		}
 		
-		this.prefSites.addPreference(dummy);
 		// put listeners
 		this.prefClearCache.setOnPreferenceClickListener(this);
 		

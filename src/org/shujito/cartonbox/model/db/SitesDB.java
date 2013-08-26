@@ -50,7 +50,7 @@ public class SitesDB extends DB<Site>
 				{ SQL_PK, KEY_ID },
 				{ SQL_TEXT, KEY_URL },
 				{ SQL_INTEGER, KEY_TYPE },
-				{ SQL_TEXT, KEY_ICON }, // base64
+				{ SQL_TEXT, KEY_ICON }, // filename
 				{ SQL_TEXT, KEY_NAME },
 				{ SQL_TEXT, KEY_POST_VIEW_API },
 				{ SQL_TEXT, KEY_POSTS_API },

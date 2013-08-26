@@ -12,37 +12,43 @@ import org.shujito.cartonbox.controller.ImageboardPosts;
 import org.shujito.cartonbox.controller.ImageboardTags;
 import org.shujito.cartonbox.model.Site;
 import org.shujito.cartonbox.model.db.SitesDB;
+import org.shujito.cartonbox.utils.ConcurrentTask;
 import org.shujito.cartonbox.utils.io.ClearDirectoryTask;
 import org.shujito.cartonbox.utils.io.DiskCacheManager;
 import org.shujito.cartonbox.utils.io.listeners.OnDirectoryClearedListener;
 import org.shujito.cartonbox.utils.io.listeners.OnDiskTaskProgressListener;
 import org.shujito.cartonbox.view.adapters.SitesAdapter;
-import org.shujito.cartonbox.view.fragments.dialogs.AddSiteDialogFragment;
-import org.shujito.cartonbox.view.fragments.dialogs.AddSiteDialogFragment.AddSiteDialogCallback;
+import org.shujito.cartonbox.view.fragments.dialogs.AddOrEditSiteDialogFragment;
+import org.shujito.cartonbox.view.fragments.dialogs.AddOrEditSiteDialogFragment.AddSiteDialogCallback;
 
+import android.app.AlertDialog;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.GridView;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
 
 public class MainActivity extends SherlockFragmentActivity
-	implements OnItemClickListener, AddSiteDialogCallback
+	implements OnItemClickListener, OnItemLongClickListener, DialogInterface.OnClickListener, AddSiteDialogCallback
 {
 	GridView mGridView = null;
 	SitesAdapter mSitesAdapter = null;
 	//List<Site> sites = null;
+	Site selectedSite = null;
 	
 	@Override
 	protected void onCreate(Bundle cirno)
@@ -55,6 +61,8 @@ public class MainActivity extends SherlockFragmentActivity
 		this.mGridView = (GridView)this.findViewById(R.id.main_gvsites);
 		this.mGridView.setAdapter(this.mSitesAdapter);
 		this.mGridView.setOnItemClickListener(this);
+		this.mGridView.setOnItemLongClickListener(this);
+		this.registerForContextMenu(this.mGridView);
 		
 		// count adapter size
 		if(this.mSitesAdapter.getCount() == 0)
@@ -78,6 +86,9 @@ public class MainActivity extends SherlockFragmentActivity
 			CartonBox.getInstance().getApis().setImageboardTags(null);
 			CartonBox.getInstance().setApis(null);
 		}
+		
+		if(this.mSitesAdapter != null)
+			this.mSitesAdapter.notifyDataSetChanged();
 	}
 	
 	@Override
@@ -88,7 +99,7 @@ public class MainActivity extends SherlockFragmentActivity
 	}
 	
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item)
+	public boolean onOptionsItemSelected(com.actionbarsherlock.view.MenuItem item)
 	{
 		switch(item.getItemId())
 		{
@@ -102,6 +113,33 @@ public class MainActivity extends SherlockFragmentActivity
 		}
 		
 		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo)
+	{
+		super.onCreateContextMenu(menu, v, menuInfo);
+		this.getMenuInflater().inflate(R.menu.main_context, menu);
+	}
+	
+	@Override
+	public boolean onContextItemSelected(android.view.MenuItem item)
+	{
+		switch(item.getItemId())
+		{
+			case R.id.menu_main_context_edit:
+				this.editSite();
+				return true;
+			case R.id.menu_main_context_remove:
+				AlertDialog.Builder builder = new AlertDialog.Builder(this)
+					.setMessage(R.string.surewanttoremove)
+					.setPositiveButton(android.R.string.yes, this)
+					.setNegativeButton(android.R.string.no, null);
+				builder.create().show();
+				return true;
+		}
+		
+		return super.onContextItemSelected(item);
 	}
 	
 	@Override
@@ -141,7 +179,7 @@ public class MainActivity extends SherlockFragmentActivity
 					notman.cancel(R.string.app_name);
 				}
 			});
-			clearDirectory.execute();
+			ConcurrentTask.execute(clearDirectory);
 		}
 		
 		super.onBackPressed();
@@ -201,10 +239,30 @@ public class MainActivity extends SherlockFragmentActivity
 	}
 	/* OnItemClickListener methods */
 	
+	/* OnItemLongClickListener methods */
+	@Override
+	public boolean onItemLongClick(AdapterView<?> dad, View v, int pos, long id)
+	{
+		this.selectedSite = (Site)this.mSitesAdapter.getItem(pos);
+		this.openContextMenu(this.mGridView);
+		return true;
+	}
+	/* OnItemLongClickListener methods */
+	
+	/* AddSiteDialogCallback methods */
 	private void addSite()
 	{
-		AddSiteDialogFragment asdf = new AddSiteDialogFragment();
-		asdf.show(this.getSupportFragmentManager(), AddSiteDialogFragment.TAG);
+		AddOrEditSiteDialogFragment asdf = new AddOrEditSiteDialogFragment();
+		asdf.show(this.getSupportFragmentManager(), AddOrEditSiteDialogFragment.TAG);
+	}
+	
+	private void editSite()
+	{
+		AddOrEditSiteDialogFragment asdf = new AddOrEditSiteDialogFragment();
+		Bundle args = new Bundle();
+		args.putSerializable(AddOrEditSiteDialogFragment.EXTRA_SITE, this.selectedSite);
+		asdf.setArguments(args);
+		asdf.show(this.getSupportFragmentManager(), AddOrEditSiteDialogFragment.TAG);
 	}
 	
 	@Override
@@ -213,13 +271,33 @@ public class MainActivity extends SherlockFragmentActivity
 		SitesDB sites = new SitesDB(this);
 		sites.add(site);
 		if(this.mSitesAdapter != null)
-		{
 			this.mSitesAdapter.notifyDataSetChanged();
-		}
 	}
 	
 	@Override
 	public void onCancel()
 	{
+		// not used?
+		SitesDB sites = new SitesDB(this);
+		if(sites.getCount() == 0)
+			this.finish();
 	}
+	/* AddSiteDialogCallback methods */
+	
+	/* android.content.DialogInterface.OnClickListener methods */
+	@Override
+	public void onClick(DialogInterface dialog, int which)
+	{
+		SitesDB sitesdb = new SitesDB(this);
+		if(sitesdb.delete(this.selectedSite))
+		{
+			this.mSitesAdapter.notifyDataSetChanged();
+			if(sitesdb.getCount() == 0)
+			{
+				//Toast.makeText(this, null, Toast.LENGTH_LONG).show();
+				this.addSite();
+			}
+		}
+	}
+	/* android.content.DialogInterface.OnClickListener methods */
 }

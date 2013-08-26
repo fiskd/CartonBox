@@ -1,5 +1,6 @@
 package org.shujito.cartonbox.view.fragments.dialogs;
 
+import org.shujito.cartonbox.Logger;
 import org.shujito.cartonbox.R;
 import org.shujito.cartonbox.model.Site;
 
@@ -7,7 +8,11 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
@@ -16,15 +21,19 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockDialogFragment;
 
-public class AddSiteDialogFragment extends SherlockDialogFragment
+public class AddOrEditSiteDialogFragment extends SherlockDialogFragment
 	implements View.OnClickListener, DialogInterface.OnClickListener,
 	OnCheckedChangeListener, OnFocusChangeListener
 {
-	public static String TAG = "org.shujito.cartonbox.view.fragments.dialogs.AddSiteDialogFragment";
+	public static final String TAG = "org.shujito.cartonbox.view.fragments.dialogs.AddSiteDialogFragment";
+	public static final String EXTRA_SITE = "org.shujito.cartonbox.view.fragments.dialogs.AddSiteDialogFragment.EXTRA_SITE";
+	public static final int REQUEST_CODE = ((R.string.app_name & 0xffff) ^ (R.string.app_name >> 16));
 	
 	public interface AddSiteDialogCallback
 	{
@@ -34,6 +43,7 @@ public class AddSiteDialogFragment extends SherlockDialogFragment
 	
 	AddSiteDialogCallback callback = null;
 	
+	ImageButton btnAddIcon = null;
 	EditText etSiteName = null;
 	EditText etSiteUrl = null;
 	Spinner spSiteType = null;
@@ -42,7 +52,10 @@ public class AddSiteDialogFragment extends SherlockDialogFragment
 	EditText etPassword = null;
 	
 	String[] sites = null;
+	String iconFilePath = null;
 	int[] siteids = null;
+	
+	public AddOrEditSiteDialogFragment() { }
 	
 	@Override
 	public void onAttach(Activity activity)
@@ -63,6 +76,7 @@ public class AddSiteDialogFragment extends SherlockDialogFragment
 		LayoutInflater inf = this.getActivity().getLayoutInflater();
 		View v = inf.inflate(R.layout.dialog_addsite, null);
 		
+		this.btnAddIcon = (ImageButton)v.findViewById(R.id.dialog_addsite_btnaddicon);
 		this.etSiteName = (EditText)v.findViewById(R.id.dialog_addsite_etname);
 		this.etSiteUrl = (EditText)v.findViewById(R.id.dialog_addsite_eturl);
 		this.spSiteType = (Spinner)v.findViewById(R.id.dialog_addsite_sptype);
@@ -70,6 +84,7 @@ public class AddSiteDialogFragment extends SherlockDialogFragment
 		this.etUsername = (EditText)v.findViewById(R.id.dialog_addsite_etusername);
 		this.etPassword = (EditText)v.findViewById(R.id.dialog_addsite_etpassword);
 		
+		this.btnAddIcon.setOnClickListener(this);
 		this.etSiteUrl.setOnFocusChangeListener(this);
 		this.cbSiteAuthDetails.setOnCheckedChangeListener(this);
 		this.onCheckedChanged(this.cbSiteAuthDetails, this.cbSiteAuthDetails.isChecked());
@@ -79,6 +94,21 @@ public class AddSiteDialogFragment extends SherlockDialogFragment
 		
 		ArrayAdapter<String> arrada = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_dropdown_item, sites);
 		this.spSiteType.setAdapter(arrada);
+		
+		if(this.getArguments() != null)
+		{
+			Site site = (Site)this.getArguments().getSerializable(EXTRA_SITE);
+			if(site != null)
+			{
+				this.etSiteName.setText(site.getName());
+				this.etSiteUrl.setText(site.getUrl());
+				if(site.getIcon() != null)
+				{
+					this.btnAddIcon.setImageURI(Uri.parse(site.getIcon()));
+					this.iconFilePath = site.getIcon();
+				}
+			}
+		}
 		
 		return new AlertDialog.Builder(this.getActivity())
 			.setTitle("add a site...")
@@ -110,6 +140,21 @@ public class AddSiteDialogFragment extends SherlockDialogFragment
 			this.onClick(this.getDialog(), DialogInterface.BUTTON_POSITIVE);
 		else if(((AlertDialog)this.getDialog()).getButton(DialogInterface.BUTTON_NEGATIVE).equals(v))
 			this.onClick(this.getDialog(), DialogInterface.BUTTON_NEGATIVE);
+		else if(this.btnAddIcon.equals(v))
+		{
+			//Intent ntn = new Intent(Intent.ACTION_VIEW, null);
+			try
+			{
+				Intent ntn = new Intent(Intent.ACTION_PICK);
+				ntn.setType("image/*");
+				this.startActivityForResult(ntn, REQUEST_CODE);
+				//Logger.i("AddSiteDialogFragment::onClick", String.format("code: %x", RESULT_CODE));
+			}
+			catch(Exception ex)
+			{
+				Toast.makeText(this.getActivity(), ex.getMessage(), Toast.LENGTH_LONG).show();
+			}
+		}
 	}
 	/* View.OnClickListener */
 	
@@ -117,8 +162,8 @@ public class AddSiteDialogFragment extends SherlockDialogFragment
 	@Override
 	public void onClick(DialogInterface dialog, int which)
 	{
-		this.etSiteName.setError(null);
-		this.etSiteUrl.setError(null);
+		//this.etSiteName.setError(null);
+		//this.etSiteUrl.setError(null);
 		
 		if(which == DialogInterface.BUTTON_POSITIVE)
 		{
@@ -139,6 +184,8 @@ public class AddSiteDialogFragment extends SherlockDialogFragment
 					
 					site.setName(siteName);
 					site.setUrl(siteUrl);
+					// it's raw
+					site.setIcon(this.iconFilePath);
 					
 					if(this.callback != null)
 						this.callback.onOk(site);
@@ -176,6 +223,38 @@ public class AddSiteDialogFragment extends SherlockDialogFragment
 		}
 	}
 	/* DialogInterface.OnClickListener */
+	
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data)
+	{
+		if(requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK && data != null)
+		{
+			//Logger.i("AddSiteDialogFragment::onActivityResult", data.getData().getPath());
+			try
+			{
+				Cursor cursor = this.getActivity().getContentResolver().query(
+						data.getData(),
+						new String[]{ MediaStore.Images.Media.DATA },
+						null,
+						null,
+						null
+					);
+				
+				if(cursor.moveToFirst())
+				{
+					String filePath = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
+					this.btnAddIcon.setImageURI(Uri.parse(filePath));
+					this.iconFilePath = filePath;
+				}
+			}
+			catch(Exception ex)
+			{
+				Logger.e("AddSiteDialogFragment::onActivityResult", ex.getMessage(), ex);
+				//Toast.makeText(this.getActivity(), ex.toString(), Toast.LENGTH_LONG).show();
+				//Toast.makeText(this.getActivity(), "Can't open that...", Toast.LENGTH_LONG).show();
+			}
+		}
+	}
 	
 	@Override
 	public void onCancel(DialogInterface dialog)
