@@ -53,7 +53,9 @@ public class AddOrEditSiteDialogFragment extends SherlockDialogFragment
 	
 	String[] sites = null;
 	String iconFilePath = null;
-	int[] siteids = null;
+	
+	int[] sitetypeids = null;
+	long siteid = -1;
 	
 	public AddOrEditSiteDialogFragment() { }
 	
@@ -75,7 +77,7 @@ public class AddOrEditSiteDialogFragment extends SherlockDialogFragment
 	{
 		LayoutInflater inf = this.getActivity().getLayoutInflater();
 		View v = inf.inflate(R.layout.dialog_addsite, null);
-		
+		// get these views
 		this.btnAddIcon = (ImageButton)v.findViewById(R.id.dialog_addsite_btnaddicon);
 		this.etSiteName = (EditText)v.findViewById(R.id.dialog_addsite_etname);
 		this.etSiteUrl = (EditText)v.findViewById(R.id.dialog_addsite_eturl);
@@ -83,25 +85,44 @@ public class AddOrEditSiteDialogFragment extends SherlockDialogFragment
 		this.cbSiteAuthDetails = (CheckBox)v.findViewById(R.id.dialog_addsite_cbauthdetails);
 		this.etUsername = (EditText)v.findViewById(R.id.dialog_addsite_etusername);
 		this.etPassword = (EditText)v.findViewById(R.id.dialog_addsite_etpassword);
-		
+		// listeners
 		this.btnAddIcon.setOnClickListener(this);
 		this.etSiteUrl.setOnFocusChangeListener(this);
 		this.cbSiteAuthDetails.setOnCheckedChangeListener(this);
 		this.onCheckedChanged(this.cbSiteAuthDetails, this.cbSiteAuthDetails.isChecked());
-		
+		// get site types from resources
 		this.sites = this.getActivity().getResources().getStringArray(R.array.sitetypes);
-		this.siteids = this.getActivity().getResources().getIntArray(R.array.sitetypesids);
-		
+		this.sitetypeids = this.getActivity().getResources().getIntArray(R.array.sitetypesids);
+		// put the sites in this adapter
 		ArrayAdapter<String> arrada = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_dropdown_item, sites);
+		// it's for this spinner
 		this.spSiteType.setAdapter(arrada);
-		
+		// edit sites
 		if(this.getArguments() != null)
 		{
+			// get the site argument
 			Site site = (Site)this.getArguments().getSerializable(EXTRA_SITE);
 			if(site != null)
 			{
+				// I don't like how this looks but it works
+				this.siteid = site.getId();
 				this.etSiteName.setText(site.getName());
 				this.etSiteUrl.setText(site.getUrl());
+				int siteval = site.getType().getValue();
+				
+				int idx = 0;
+				for(int siteid : this.sitetypeids)
+				{
+					if(siteid == siteval)
+					{
+						siteval = idx;
+						break;
+					}
+					idx++;
+				}
+				
+				this.spSiteType.setSelection(siteval);
+				
 				if(site.getIcon() != null)
 				{
 					this.btnAddIcon.setImageURI(Uri.parse(site.getIcon()));
@@ -111,7 +132,7 @@ public class AddOrEditSiteDialogFragment extends SherlockDialogFragment
 		}
 		
 		return new AlertDialog.Builder(this.getActivity())
-			.setTitle("add a site...")
+			.setTitle(R.string.addsite)
 			.setView(v)
 			.setPositiveButton(android.R.string.ok, null)
 			.setNegativeButton(android.R.string.cancel, null)
@@ -176,11 +197,14 @@ public class AddOrEditSiteDialogFragment extends SherlockDialogFragment
 				{
 					this.dismiss();
 					int selected = this.spSiteType.getSelectedItemPosition();
-					int id = this.siteids[selected];
+					int typeid = this.sitetypeids[selected];
 					
-					Site.Type type = Site.Type.fromInt(id);
+					Site.Type type = Site.Type.fromInt(typeid);
 					
+					// I don't like how this looks but it works
 					Site site = Site.createByType(type);
+					if(this.siteid > 0)
+						site.setId(this.siteid);
 					
 					site.setName(siteName);
 					site.setUrl(siteUrl);

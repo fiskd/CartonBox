@@ -9,7 +9,6 @@ public class Site implements Serializable
 		Danbooru1(1),
 		Danbooru2(2),
 		Gelbooru(3),
-		Custom(-1)
 		;
 		
 		private int value;

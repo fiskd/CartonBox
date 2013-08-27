@@ -38,7 +38,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.GridView;
-import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
@@ -270,8 +269,11 @@ public class MainActivity extends SherlockFragmentActivity
 	public void onOk(Site site)
 	{
 		SitesDB sites = new SitesDB(this);
-		sites.add(site);
-		Toast.makeText(this, String.valueOf(site.getId()), Toast.LENGTH_LONG).show();
+		if(!sites.add(site))
+		{
+			sites.update(site);
+		}
+		
 		if(this.mSitesAdapter != null)
 			this.mSitesAdapter.notifyDataSetChanged();
 	}
@@ -291,7 +293,6 @@ public class MainActivity extends SherlockFragmentActivity
 	public void onClick(DialogInterface dialog, int which)
 	{
 		SitesDB sitesdb = new SitesDB(this);
-		Toast.makeText(this, String.valueOf(this.selectedSite.getId()), Toast.LENGTH_LONG).show();
 		if(sitesdb.delete(this.selectedSite))
 		{
 			this.mSitesAdapter.notifyDataSetChanged();

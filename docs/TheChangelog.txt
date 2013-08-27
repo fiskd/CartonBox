@@ -4,6 +4,10 @@ I'm bad at making changelogs (because I don't),
 I often forgot most of what I do since the last
 release, but there you go:
 
+0.6
+-custom sites! which means adding, deleting, and
+ editing, you can also customize the icon.
+
 0.5
 # FIRST announced release
 -can save images now (2.3.3 and up currently)
