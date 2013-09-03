@@ -5,6 +5,7 @@ import java.util.List;
 import org.shujito.cartonbox.CartonBox;
 import org.shujito.cartonbox.controller.ImageboardTags;
 import org.shujito.cartonbox.model.Tag;
+import org.shujito.cartonbox.view.PostsFilter.FilterCallback;
 
 import android.widget.Filter;
 

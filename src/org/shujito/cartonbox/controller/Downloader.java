@@ -10,19 +10,30 @@ import org.shujito.cartonbox.Logger;
 
 import android.os.AsyncTask;
 
-public abstract class Downloader<T> extends AsyncTask<Void, Integer, T>
+public abstract class Downloader<T> extends AsyncTask<Void, Float, T>
 {
 	/* Fields */
+	
 	private String message = null;
 	private int code = 0;
 	private String url = null;
 	private URI uri = null;
 	
 	/* Constructor */
+	
 	public Downloader(String url)
 	{
 		this.url = url;
 	}
+	
+	/* getters */
+	
+	public String getUrl()
+	{
+		return url;
+	}
+	
+	/* meth */
 	
 	@Override
 	protected T doInBackground(Void... params)
@@ -42,7 +53,7 @@ public abstract class Downloader<T> extends AsyncTask<Void, Integer, T>
 			else
 				return null;
 			
-			http = (HttpURLConnection) url.openConnection();
+			http = (HttpURLConnection)url.openConnection();
 			// it it could not read within ten seconds then it will not
 			http.setReadTimeout(10000);
 			//http.setInstanceFollowRedirects(true);
@@ -103,7 +114,8 @@ public abstract class Downloader<T> extends AsyncTask<Void, Integer, T>
 		
 	}
 	
-	/* Meth */
+	/* abstract meth */
+	
 	protected abstract T doInBackground(InputStream is) throws Exception;
 	protected abstract void onRequestSuccessful(int code, T result);
 	protected abstract void onRequestFailed(int code, String message);

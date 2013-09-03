@@ -3,8 +3,9 @@ package org.shujito.cartonbox.view.adapters;
 import org.shujito.cartonbox.Logger;
 import org.shujito.cartonbox.controller.listeners.OnPostsFetchedListener;
 import org.shujito.cartonbox.model.Post;
-import org.shujito.cartonbox.view.FilterCallback;
 import org.shujito.cartonbox.view.PostsFilter;
+import org.shujito.cartonbox.view.PostsFilter.FilterCallback;
+import org.shujito.cartonbox.view.PostsFilter.OnAfterPostsFilterListener;
 import org.shujito.cartonbox.view.fragments.PostViewFragment;
 
 import android.support.v4.app.Fragment;
@@ -19,13 +20,20 @@ import android.widget.Filterable;
 public class PostsPagerAdapter extends FragmentPagerAdapter
 	implements OnPostsFetchedListener, Filterable, FilterCallback<SparseArray<Post>>
 {
+	/* listeners */
+	OnAfterPostsFilterListener onAfterPostsFilterListener = null;
+	public OnAfterPostsFilterListener getonafAfterPostsFilterListener()
+	{ return this.onAfterPostsFilterListener; }
+	public void setOnAfterPostsFilterListener(OnAfterPostsFilterListener l)
+	{ this.onAfterPostsFilterListener = l; }
+	
 	SparseArray<Post> posts = null;
 	PostsFilter filter = null;
 	
 	public PostsPagerAdapter(FragmentManager fm)
 	{
 		super(fm);
-		//this.filter = new PostsFilter(this);
+		this.filter = new PostsFilter(this);
 	}
 	
 	@Override
@@ -56,15 +64,6 @@ public class PostsPagerAdapter extends FragmentPagerAdapter
 		return key;
 	}
 	
-	public int findPageFromKey(int key)
-	{
-		int indexof = this.posts.indexOfKey(key);
-		int size = this.getCount();
-		int reverse = size - indexof - 1;
-		
-		return reverse;
-	}
-	
 	@Override
 	public int getCount()
 	{
@@ -81,9 +80,13 @@ public class PostsPagerAdapter extends FragmentPagerAdapter
 		// do this instead:
 		Fragment frag = (Fragment)object;
 		FragmentManager fragman = frag.getFragmentManager();
-		FragmentTransaction fragtrans = fragman.beginTransaction();
-		fragtrans.remove(frag);
-		fragtrans.commit();
+		// sometimes...
+		if(fragman != null)
+		{
+			FragmentTransaction fragtrans = fragman.beginTransaction();
+			fragtrans.remove(frag);
+			fragtrans.commit();
+		}
 		
 		Logger.i("PostsPagerAdapter::destroyItem", String.format("Destroyed #%s", position));
 	}
@@ -91,11 +94,16 @@ public class PostsPagerAdapter extends FragmentPagerAdapter
 	@Override
 	public void onPostsFetched(SparseArray<Post> posts)
 	{
-		this.posts = posts;
+		//this.posts = posts;
 		this.notifyDataSetChanged();
 		if(this.getFilter() != null)
 		{
-			((PostsFilter)this.getFilter()).filter(this.posts);
+			((PostsFilter)this.getFilter()).filter(posts);
+		}
+		else
+		{
+			this.posts = posts;
+			this.notifyDataSetChanged();
 		}
 	}
 	
@@ -111,7 +119,10 @@ public class PostsPagerAdapter extends FragmentPagerAdapter
 		if(result != null)
 			this.posts = result;
 		this.notifyDataSetChanged();
-		//Toast.makeText(CartonBox.getInstance(), "Filtered", Toast.LENGTH_SHORT).show();
+		Logger.i("PostsPagerAdapter::onFilter", String.format("Filtered, count: %s", this.getCount()));
+		// TODO: filtered callback to the postviewactivity so we can change to the page after this
+		if(this.onAfterPostsFilterListener != null)
+			this.onAfterPostsFilterListener.onPostFilter();
 	}
 	
 }

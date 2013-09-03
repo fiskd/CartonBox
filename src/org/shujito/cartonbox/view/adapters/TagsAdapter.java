@@ -7,7 +7,7 @@ import java.util.List;
 import org.shujito.cartonbox.R;
 import org.shujito.cartonbox.controller.listeners.OnTagsFetchedListener;
 import org.shujito.cartonbox.model.Tag;
-import org.shujito.cartonbox.view.FilterCallback;
+import org.shujito.cartonbox.view.PostsFilter.FilterCallback;
 import org.shujito.cartonbox.view.TagsFilter;
 
 import android.content.Context;

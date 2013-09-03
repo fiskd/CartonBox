@@ -175,6 +175,7 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 		// get rid of this
 		this.mPostsApi = null;
 		this.mTagsApi = null;
+		Logger.i("SiteIndexActivity::onDestroy", "activity destroyed");
 	}
 	
 	@Override

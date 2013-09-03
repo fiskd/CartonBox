@@ -1,15 +1,15 @@
 package org.shujito.cartonbox.view.adapters;
 
 import org.shujito.cartonbox.R;
+import org.shujito.cartonbox.controller.ImageDownloader;
 import org.shujito.cartonbox.controller.listeners.OnDownloadProgressListener;
 import org.shujito.cartonbox.controller.listeners.OnImageFetchedListener;
 import org.shujito.cartonbox.controller.listeners.OnPostsFetchedListener;
 import org.shujito.cartonbox.model.Post;
 import org.shujito.cartonbox.utils.BitmapCache;
 import org.shujito.cartonbox.utils.ConcurrentTask;
-import org.shujito.cartonbox.utils.ImageDownloader;
-import org.shujito.cartonbox.view.FilterCallback;
 import org.shujito.cartonbox.view.PostsFilter;
+import org.shujito.cartonbox.view.PostsFilter.FilterCallback;
 
 import android.annotation.TargetApi;
 import android.content.Context;

@@ -16,6 +16,7 @@ import org.shujito.cartonbox.view.listeners.TagListItemSelectedCallback;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -104,13 +105,7 @@ public class SectionTagsFragment extends Fragment implements
 		
 		this.mTvMessage = (TextView)view.findViewById(R.id.tags_tvmessage);
 		this.mTvMessage.setVisibility(View.GONE);
-	}
-	
-	@Override
-	public void onResume()
-	{
-		Logger.i("SectionTagsFragment::onResume", "fragment resumed");
-		super.onResume();
+		
 		if(this.tagsApi != null)
 		{
 			this.tagsApi.addOnRequestListener(this);
@@ -123,27 +118,24 @@ public class SectionTagsFragment extends Fragment implements
 	}
 	
 	@Override
-	public void onPause()
+	public void onDestroy()
 	{
-		Logger.i("SectionTagsFragment::onPause", "fragment paused");
-		super.onPause();
+		// get rid of these things
+		this.tagsApi = null;
+		this.onFragmentAttachedListener = null;
+		this.tagListItemSelectedCallback = null;
+		// remove these listeners
 		if(this.tagsApi != null)
 		{
+			// I'm scared of leaving listerens alive since their assignation
 			this.tagsApi.removeOnRequestListener(this);
 			this.tagsApi.removeOnErrorListener(this);
 			this.tagsApi.removeOnTagsFetchedListeners(this.mTagsAdapter);
 			this.tagsApi.removeOnTagsFetchedListeners(this);
 		}
-	}
-	
-	@Override
-	public void onDestroy()
-	{
+		// this can now be destroyed
 		super.onDestroy();
-		// get rid of these things
-		this.tagsApi = null;
-		this.onFragmentAttachedListener = null;
-		this.tagListItemSelectedCallback = null;
+		Logger.i("SectionTagsFragment::onDestroy", "fragment destroyed");
 	}
 	
 	/* OnTagsFetchedListener methods */
@@ -153,8 +145,6 @@ public class SectionTagsFragment extends Fragment implements
 		if(errCode == HttpURLConnection.HTTP_CLIENT_TIMEOUT && this.mTagsAdapter != null && this.mTagsAdapter.getCount() != 0)
 		{
 			Toast.makeText(this.getActivity(), message, Toast.LENGTH_SHORT).show();
-			// request again...
-			this.tagsApi.request();
 		}
 		else
 		{
@@ -163,6 +153,16 @@ public class SectionTagsFragment extends Fragment implements
 			this.mTvMessage.setVisibility(View.VISIBLE);
 			this.mTvMessage.setText(message);
 		}
+		
+		// request again...
+		new Handler().postDelayed(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				tagsApi.request();
+			}
+		}, 5000);
 	}
 	/* OnTagsFetchedListener methods */
 	

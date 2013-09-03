@@ -1,4 +1,4 @@
-package org.shujito.cartonbox.utils;
+package org.shujito.cartonbox.controller;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -11,6 +11,7 @@ import java.net.URL;
 import org.shujito.cartonbox.Logger;
 import org.shujito.cartonbox.controller.listeners.OnDownloadProgressListener;
 import org.shujito.cartonbox.controller.listeners.OnImageFetchedListener;
+import org.shujito.cartonbox.utils.ImageUtils;
 import org.shujito.cartonbox.utils.io.DiskCacheManager;
 
 import android.content.Context;
@@ -53,13 +54,6 @@ public class ImageDownloader extends AsyncTask<Void, Float, Bitmap>
 		this.url = url;
 		this.width = 256;
 		this.height = 256;
-	}
-	
-	/* getters */
-	
-	public String getUrl()
-	{
-		return this.url;
 	}
 	
 	/* setters */

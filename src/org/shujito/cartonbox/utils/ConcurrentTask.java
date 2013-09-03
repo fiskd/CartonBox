@@ -1,6 +1,7 @@
 package org.shujito.cartonbox.utils;
 
 import org.shujito.cartonbox.controller.Downloader;
+import org.shujito.cartonbox.controller.ImageDownloader;
 import org.shujito.cartonbox.utils.io.ClearDirectoryTask;
 import org.shujito.cartonbox.utils.io.DirectorySizeTask;
 

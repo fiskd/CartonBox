@@ -158,6 +158,7 @@ public class MainActivity extends SherlockFragmentActivity
 			builder.setProgress(0, 0, true);
 			// this fixes app crash on 2.3.x
 			builder.setContentIntent(pending);
+			// this resource id is used as a notification identifier
 			notman.notify(R.string.app_name, builder.build());
 			
 			ClearDirectoryTask clearDirectory = new ClearDirectoryTask(DiskCacheManager.getCacheDirectory(this));

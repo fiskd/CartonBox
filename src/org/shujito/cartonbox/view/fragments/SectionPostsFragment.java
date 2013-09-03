@@ -20,6 +20,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
@@ -119,55 +120,40 @@ public class SectionPostsFragment extends Fragment implements
 		this.mTvMessage = (TextView)view.findViewById(R.id.posts_tvmessage);
 		this.mTvMessage.setVisibility(View.GONE);
 		
-		if(this.postsApi != null && this.postsApi.getPosts().size() > 0)
-		{
-			this.mGvPosts.setVisibility(View.VISIBLE);
-			this.mPbProgress.setVisibility(View.GONE);
-			this.mTvMessage.setVisibility(View.GONE);
-		}
-	}
-	
-	@Override
-	public void onResume()
-	{
-		super.onResume();
-		Logger.i("SectionPostsFragment::onResume", "fragment resumed");
-		// XXX: haax!!
-		if(this.mPostsAdapter != null)
-			this.mPostsAdapter.onPostsFetched(this.postsApi.getPosts());
 		if(this.postsApi != null)
 		{
 			this.postsApi.addOnErrorListener(this);
 			this.postsApi.addOnPostsFetchedListener(this.mPostsAdapter);
 			this.postsApi.addOnPostsFetchedListener(this);
 			this.postsApi.addOnRequestListener(this);
+			
+			if(this.postsApi.getPosts().size() > 0)
+			{
+				this.mGvPosts.setVisibility(View.VISIBLE);
+				this.mPbProgress.setVisibility(View.GONE);
+				this.mTvMessage.setVisibility(View.GONE);
+			}
 		}
-	}
-	
-	@Override
-	public void onPause()
-	{
-		super.onPause();
-		Logger.i("SectionPostsFragment::onPause", "fragment paused");
-		// remove these listeners
-		if(this.postsApi != null)
-		{
-			this.postsApi.removeOnErrorListener(this);
-			this.postsApi.removeOnPostsFetchedListener(this.mPostsAdapter);
-			this.postsApi.removeOnPostsFetchedListener(this);
-			this.postsApi.removeOnRequestListener(this);
-		}
-		// disable scroll loading (remove listener)
-		
 	}
 	
 	@Override
 	public void onDestroy()
 	{
-		super.onDestroy();
+		// remove these listeners
+		if(this.postsApi != null)
+		{
+			// I'm scared of leaving listerens alive since their assignation
+			this.postsApi.removeOnErrorListener(this);
+			this.postsApi.removeOnPostsFetchedListener(this.mPostsAdapter);
+			this.postsApi.removeOnPostsFetchedListener(this);
+			this.postsApi.removeOnRequestListener(this);
+		}
 		// get rid of this, quick
 		this.postsApi = null;
 		this.onFragmentAttachedListener = null;
+		// destroy this now
+		super.onDestroy();
+		Logger.i("SectionPostsFragment::onDestroy", "fragment destroyed");
 	}
 	
 	/* OnErrorListener methods */
@@ -177,8 +163,6 @@ public class SectionPostsFragment extends Fragment implements
 		if(errCode == HttpURLConnection.HTTP_CLIENT_TIMEOUT && this.mPostsAdapter != null && this.mPostsAdapter.getCount() != 0)
 		{
 			Toast.makeText(this.getActivity(), message, Toast.LENGTH_SHORT).show();
-			// it failed, request again
-			this.postsApi.request();
 		}
 		else
 		{
@@ -188,6 +172,15 @@ public class SectionPostsFragment extends Fragment implements
 			this.mTvMessage.setText(message);
 		}
 		
+		// it failed, request again
+		new Handler().postDelayed(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				postsApi.request();
+			}
+		}, 3000);
 	}
 	/* OnErrorListener methods */
 	
@@ -212,11 +205,11 @@ public class SectionPostsFragment extends Fragment implements
 	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 	public void onItemClick(AdapterView<?> dad, View v, int pos, long id)
 	{
-		int key = (int)this.mPostsAdapter.getItemId(pos);
+		//int key = (int)this.mPostsAdapter.getItemId(pos);
 		
 		Intent ntn = new Intent(this.getActivity(), PostViewActivity.class);
 		ntn.putExtra(PostViewActivity.EXTRA_POST_INDEX, pos);
-		ntn.putExtra(PostViewActivity.EXTRA_POST_KEY, key);
+		//ntn.putExtra(PostViewActivity.EXTRA_POST_KEY, key);
 		
 		// zoom animation!!
 		// aid used: https://www.youtube.com/watch?v=XNF8pXr6whU

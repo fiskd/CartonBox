@@ -23,11 +23,10 @@
 	<string name="downloading">Downloading</string>
 	
 	<string name="addsite">Add a site</string>
-	
 	<string name="edit">Edit</string>
 	<string name="remove">Remove</string>
-	
 	<string name="surewanttoremove">Are you sure you want to remove this site?</string>
+	<string name="incompatiblefilesource">Incompatible file source</string>
 	
 	<string name="save">Save</string>
 	<string name="browser">Open in browser</string>

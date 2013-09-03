@@ -3,12 +3,12 @@ package org.shujito.cartonbox.view.fragments;
 import org.shujito.cartonbox.Logger;
 import org.shujito.cartonbox.Preferences;
 import org.shujito.cartonbox.R;
+import org.shujito.cartonbox.controller.ImageDownloader;
 import org.shujito.cartonbox.controller.listeners.OnDownloadProgressListener;
 import org.shujito.cartonbox.controller.listeners.OnImageFetchedListener;
 import org.shujito.cartonbox.model.Post;
 import org.shujito.cartonbox.model.Post.Rating;
 import org.shujito.cartonbox.utils.ConcurrentTask;
-import org.shujito.cartonbox.utils.ImageDownloader;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -27,13 +27,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class PostViewFragment extends Fragment
 	implements OnDownloadProgressListener, OnClickListener
 {
 	/* static */
-	static String EXTRA_POST = "org.shujito.cartonbox.POST";
+	public static String EXTRA_POST = "org.shujito.cartonbox.POST";
 	
 	public static Fragment create(Post post)
 	{
@@ -62,6 +61,8 @@ public class PostViewFragment extends Fragment
 	ImageView ivblue = null;
 	ImageView ivgreen = null;
 	ImageView ivyellow = null;
+	// it's a linear layout
+	View llStatusDots = null;
 	
 	/* constructor */
 	
@@ -74,14 +75,33 @@ public class PostViewFragment extends Fragment
 	@Override
 	public void onViewCreated(View view, Bundle cirno)
 	{
+		this.setHasOptionsMenu(true);
+		// get post
 		this.post = (Post)this.getArguments().getSerializable(EXTRA_POST);
-		// get out early
+		// build the view appearance here
+		this.pbprogress = (ProgressBar)view.findViewById(R.id.post_item_pager_pbprogress);
+		// message
+		this.tvmessage = (TextView)view.findViewById(R.id.post_item_pager_tvmessage);
+		// image preview
+		this.ivpreview = (ImageView)view.findViewById(R.id.post_item_pager_ivsample);
+		// dots container
+		this.llStatusDots = view.findViewById(R.id.post_item_pager_llstatusdots);
+		// flagged
+		this.ivred = (ImageView)view.findViewById(R.id.post_item_pager_ivred);
+		// deleted
+		this.ivgray = (ImageView)view.findViewById(R.id.post_item_pager_ivgray);
+		// pending
+		this.ivblue = (ImageView)view.findViewById(R.id.post_item_pager_ivblue);
+		// parent (has children)
+		this.ivgreen = (ImageView)view.findViewById(R.id.post_item_pager_ivgreen);
+		// child (belongs to parent)
+		this.ivyellow = (ImageView)view.findViewById(R.id.post_item_pager_ivyellow);
+		// display things
+		
+		// get out early, this can't work without a post!
 		if(this.post == null)
 			return;
 		
-		//Logger.i("POST ID", String.valueOf(this.post.getId()));
-		
-		this.pbprogress = (ProgressBar)view.findViewById(R.id.post_item_pager_pbprogress);
 		this.pbprogress.setIndeterminate(true);
 		this.pbprogress.setVisibility(View.VISIBLE);
 		//this.pbloading.setVisibility(View.VISIBLE);
@@ -94,22 +114,7 @@ public class PostViewFragment extends Fragment
 		
 		int whatToUse = width > height ? width : height;
 		
-		this.tvmessage = (TextView)view.findViewById(R.id.post_item_pager_tvmessage);
 		this.tvmessage.setVisibility(View.VISIBLE);
-		
-		// build the view appearance here
-		this.ivpreview = (ImageView)view.findViewById(R.id.post_item_pager_ivsample);
-		
-		// flagged
-		this.ivred = (ImageView)view.findViewById(R.id.post_item_pager_ivred);
-		// deleted
-		this.ivgray = (ImageView)view.findViewById(R.id.post_item_pager_ivgray);
-		// pending
-		this.ivblue = (ImageView)view.findViewById(R.id.post_item_pager_ivblue);
-		// parent (has children)
-		this.ivgreen = (ImageView)view.findViewById(R.id.post_item_pager_ivgreen);
-		// child (belongs to parent)
-		this.ivyellow = (ImageView)view.findViewById(R.id.post_item_pager_ivyellow);
 		
 		if(this.post.isFlagged())
 			this.ivred.setVisibility(View.VISIBLE);
@@ -138,7 +143,7 @@ public class PostViewFragment extends Fragment
 		
 		if(this.ivred.getVisibility() == View.GONE && this.ivgray.getVisibility() == View.GONE && this.ivblue.getVisibility() == View.GONE && this.ivgreen.getVisibility() == View.GONE && this.ivyellow.getVisibility() == View.GONE)
 		{
-			view.findViewById(R.id.post_item_pager_llstatusdots).setVisibility(View.GONE);
+			this.llStatusDots.setVisibility(View.GONE);
 		}
 		
 		this.thumbDownloader = new ImageDownloader(this.getActivity(), this.post.getPreviewUrl());
@@ -246,6 +251,7 @@ public class PostViewFragment extends Fragment
 	public void onDestroy()
 	{
 		// why, ask your mother
+		// that was rude, kill tasks when the fragment dies
 		if(this.thumbDownloader != null)
 		{
 			this.thumbDownloader.setOnDownloadProgressListener(null);
@@ -274,12 +280,6 @@ public class PostViewFragment extends Fragment
 		this.pbprogress.setIndeterminate(false);
 		this.pbprogress.setVisibility(View.VISIBLE);
 		this.pbprogress.setProgress((int)percentProgress);
-	}
-	
-	public void onFocus()
-	{
-		Post post = (Post)this.getArguments().getSerializable(EXTRA_POST);
-		Toast.makeText(this.getActivity(), post.toString(), Toast.LENGTH_SHORT).show();
 	}
 	
 	@Override

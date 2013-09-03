@@ -75,23 +75,8 @@ public class SitesDB extends DB<Site>
 	public boolean add(Site record)
 	{
 		SQLiteDatabase db = this.getWritableDatabase();
-		// TODO: refactor
-		ContentValues values = new ContentValues();
-		values.put(KEY_ID, record.getId());
-		values.put(KEY_URL, record.getUrl());
-		values.put(KEY_TYPE, record.getType().getValue());
-		values.put(KEY_ICON, record.getIcon());
-		values.put(KEY_NAME, record.getName());
-		values.put(KEY_POST_VIEW_API, record.getPostViewApi());
-		values.put(KEY_POSTS_API, record.getPostsApi());
-		values.put(KEY_POOLS_API, record.getPoolsApi());
-		values.put(KEY_COMMENTS_API, record.getCommentsApi());
-		values.put(KEY_NOTES_API, record.getNotesApi());
-		values.put(KEY_ARTISTS_API, record.getArtistsApi());
-		values.put(KEY_TAGS_API, record.getTagsApi());
-		
 		// insert entry
-		long inserted = db.insert(TABLE_SITES, null, values);
+		long inserted = db.insert(TABLE_SITES, null, this.fromRecord(record));
 		db.close();
 		return inserted > 0;
 	}
@@ -169,26 +154,10 @@ public class SitesDB extends DB<Site>
 	@Override
 	public boolean update(Site record)
 	{
-		// TODO: test it, refactor
 		SQLiteDatabase db = this.getWritableDatabase();
-		
-		ContentValues values = new ContentValues();
-		values.put(KEY_ID, record.getId());
-		values.put(KEY_URL, record.getUrl());
-		values.put(KEY_TYPE, record.getType().getValue());
-		values.put(KEY_ICON, record.getIcon());
-		values.put(KEY_NAME, record.getName());
-		values.put(KEY_POST_VIEW_API, record.getPostViewApi());
-		values.put(KEY_POSTS_API, record.getPostsApi());
-		values.put(KEY_POOLS_API, record.getPoolsApi());
-		values.put(KEY_COMMENTS_API, record.getCommentsApi());
-		values.put(KEY_NOTES_API, record.getNotesApi());
-		values.put(KEY_ARTISTS_API, record.getArtistsApi());
-		values.put(KEY_TAGS_API, record.getTagsApi());
-		
 		int rowsAffected = db.update(
 				TABLE_SITES,
-				values,
+				this.fromRecord(record),
 				String.format("%s=?", KEY_ID),
 				new String[]{ String.valueOf(record.getId()) }
 			);
@@ -207,6 +176,24 @@ public class SitesDB extends DB<Site>
 			);
 		db.close();
 		return affectedRows > 0;
+	}
+	
+	private ContentValues fromRecord(Site record)
+	{
+		ContentValues values = new ContentValues();
+		values.put(KEY_ID, record.getId());
+		values.put(KEY_URL, record.getUrl());
+		values.put(KEY_TYPE, record.getType().getValue());
+		values.put(KEY_ICON, record.getIcon());
+		values.put(KEY_NAME, record.getName());
+		values.put(KEY_POST_VIEW_API, record.getPostViewApi());
+		values.put(KEY_POSTS_API, record.getPostsApi());
+		values.put(KEY_POOLS_API, record.getPoolsApi());
+		values.put(KEY_COMMENTS_API, record.getCommentsApi());
+		values.put(KEY_NOTES_API, record.getNotesApi());
+		values.put(KEY_ARTISTS_API, record.getArtistsApi());
+		values.put(KEY_TAGS_API, record.getTagsApi());
+		return values;
 	}
 	
 	private Site fromCursor(Cursor cursor)

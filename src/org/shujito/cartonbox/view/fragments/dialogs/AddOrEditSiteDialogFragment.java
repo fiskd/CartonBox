@@ -267,15 +267,20 @@ public class AddOrEditSiteDialogFragment extends SherlockDialogFragment
 				if(cursor.moveToFirst())
 				{
 					String filePath = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
-					this.btnAddIcon.setImageURI(Uri.parse(filePath));
-					this.iconFilePath = filePath;
+					if(filePath != null)
+					{
+						this.btnAddIcon.setImageURI(Uri.parse(filePath));
+						this.iconFilePath = filePath;
+					}
+					else
+					{
+						Toast.makeText(this.getActivity(), R.string.incompatiblefilesource, Toast.LENGTH_SHORT).show();
+					}
 				}
 			}
 			catch(Exception ex)
 			{
 				Logger.e("AddSiteDialogFragment::onActivityResult", ex.getMessage(), ex);
-				//Toast.makeText(this.getActivity(), ex.toString(), Toast.LENGTH_LONG).show();
-				//Toast.makeText(this.getActivity(), "Can't open that...", Toast.LENGTH_LONG).show();
 			}
 		}
 	}

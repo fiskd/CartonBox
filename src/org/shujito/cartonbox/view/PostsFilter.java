@@ -12,6 +12,16 @@ import android.widget.Filter;
 
 public class PostsFilter extends Filter
 {
+	public interface FilterCallback<T>
+	{
+		public void onFilter(T result);
+	}
+	
+	public interface OnAfterPostsFilterListener
+	{
+		public void onPostFilter();
+	}
+	
 	FilterCallback<SparseArray<Post>> callback = null;
 	SparseArray<Post> unfiltered = null;
 	// stuff

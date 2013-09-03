@@ -1,10 +1,11 @@
 package org.shujito.cartonbox.view.activities;
 
 import org.shujito.cartonbox.CartonBox;
-import org.shujito.cartonbox.Logger;
 import org.shujito.cartonbox.R;
 import org.shujito.cartonbox.controller.ImageboardPosts;
 import org.shujito.cartonbox.model.Post;
+import org.shujito.cartonbox.services.DownloadService;
+import org.shujito.cartonbox.view.PostsFilter.OnAfterPostsFilterListener;
 import org.shujito.cartonbox.view.adapters.PostsPagerAdapter;
 import org.shujito.cartonbox.view.fragments.dialogs.PostTagsDialogFragment;
 
@@ -21,10 +22,11 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
-public class PostViewActivity extends SherlockFragmentActivity implements OnPageChangeListener
+public class PostViewActivity extends SherlockFragmentActivity
+	implements OnPageChangeListener, OnAfterPostsFilterListener
 {
 	public static String EXTRA_POST_INDEX = "org.shujito.cartonbox.POST_INDEX";
-	public static String EXTRA_POST_KEY = "org.shujito.cartonbox.POST_KEY";
+	//public static String EXTRA_POST_KEY = "org.shujito.cartonbox.POST_KEY";
 	
 	ImageboardPosts postsApi = null;
 	
@@ -45,7 +47,7 @@ public class PostViewActivity extends SherlockFragmentActivity implements OnPage
 		this.setContentView(R.layout.posts_view);
 		
 		this.mPostsAdapter = new PostsPagerAdapter(this.getSupportFragmentManager());
-		
+		this.mPostsAdapter.setOnAfterPostsFilterListener(this);
 		this.mVpPosts = (ViewPager)this.findViewById(R.id.postview_vpposts);
 		this.mVpPosts.setAdapter(this.mPostsAdapter);
 		
@@ -65,30 +67,24 @@ public class PostViewActivity extends SherlockFragmentActivity implements OnPage
 		super.onResume();
 		// hey listen! (the adapter will listen when the api fetches posts)
 		this.postsApi.addOnPostsFetchedListener(this.mPostsAdapter);
-		// XXX: haax!
+		// a hack, this makes the posts adapter think it has fetched something
 		this.mPostsAdapter.onPostsFetched(this.postsApi.getPosts());
 		
-		//int page = this.getIntent().getIntExtra(EXTRA_POST_INDEX, 0);
-		int key = this.getIntent().getIntExtra(EXTRA_POST_KEY, -1);
-		int keypage = this.mPostsAdapter.findPageFromKey(key);
-		
-		//Toast.makeText(this, String.format("k:%s p:%s kp:%s", key, page, keypage), Toast.LENGTH_SHORT).show();
 		this.mVpPosts.setOnPageChangeListener(this);
-		this.mVpPosts.setCurrentItem(keypage);
-		if(keypage == 0)
-		{
-			this.onPageSelected(keypage);
-		}
+		//if(keypage == 0)
+		//{
+			//this.onPageSelected(keypage);
+		//}
 	}
 	
 	@Override
 	protected void onPause()
 	{
 		super.onPause();
-		//this.getIntent().putExtra(EXTRA_POST_INDEX, this.mVpPosts.getCurrentItem());
-		int page = this.mVpPosts.getCurrentItem();
-		int key = (int)this.mPostsAdapter.getItemId(page);
-		this.getIntent().putExtra(EXTRA_POST_KEY, key);
+		// get current pager item and put it into extras so we don't lose
+		// our current pager position when changing the orientation
+		int position = this.mVpPosts.getCurrentItem();
+		this.getIntent().putExtra(EXTRA_POST_INDEX, position);
 		// remove this listener
 		this.postsApi.removeOnPostsFetchedListener(this.mPostsAdapter);
 	}
@@ -134,8 +130,10 @@ public class PostViewActivity extends SherlockFragmentActivity implements OnPage
 				}
 				//*/
 				// TODO: change from a downloadmanager to a generic coded downloader (ew...)
-				Toast.makeText(this, this.getString(R.string.notavailable), Toast.LENGTH_SHORT).show();
-				
+				//Toast.makeText(this, this.getString(R.string.notavailable), Toast.LENGTH_SHORT).show();
+				Intent ntn = new Intent(this, DownloadService.class);
+				ntn.putExtra(DownloadService.EXTRA_FILENAME, this.selectedPost.getMd5());
+				this.startService(ntn);
 				return true;
 			case R.id.menu_postview_preferences:
 				Toast.makeText(this, this.getString(R.string.notavailable), Toast.LENGTH_SHORT).show();
@@ -185,6 +183,7 @@ public class PostViewActivity extends SherlockFragmentActivity implements OnPage
 		this.itemViewPools = menu.findItem(R.id.menu_postview_viewpools).setVisible(false);
 		
 		// fuck haxes...
+		// I don't remember what was the hax here...
 		if(this.selectedPost != null)
 		{
 			this.itemViewChildren.setVisible(this.selectedPost.isHasChildren());
@@ -208,26 +207,33 @@ public class PostViewActivity extends SherlockFragmentActivity implements OnPage
 	@Override
 	public void onPageSelected(int pos)
 	{
-		// reverse index (how could I forget about this)
-		int size = this.postsApi.getPosts().size();
-		int index = size - pos - 1;
-		int key = this.postsApi.getPosts().keyAt(index);
-		this.selectedPost = this.postsApi.getPosts().get(key);
-		Logger.i("PostViewActivity::onPageSelected", String.valueOf(this.selectedPost.getId()));
+		long postId = this.mPostsAdapter.getItemId(pos);
+		int postCount = this.mPostsAdapter.getCount();
 		
-		// now this works, I'm happy again (:
-		// now improved
+		this.selectedPost = this.postsApi.getPosts().get((int)postId);
 		
 		if(this.itemViewChildren != null)
 			this.itemViewChildren.setVisible(this.selectedPost.isHasChildren());
 		if(this.itemViewParent != null)
 			this.itemViewParent.setVisible(this.selectedPost.getParentId() > 0);
 		
-		// oh hey it became natural! and I didn't had to do much!
-		if(pos + 1 >= size)
+		// that wasn't hard at all...
+		if(pos + 1 >= postCount)
 		{
+			// refresh when
 			this.postsApi.request();
 		}
 	}
 	/* OnPageChangeListener methods */
+	
+	/* OnAfterPostsFilterListener methods */
+	@Override
+	public void onPostFilter()
+	{
+		this.mPostsAdapter.setOnAfterPostsFilterListener(null);
+		int position = this.getIntent().getIntExtra(EXTRA_POST_INDEX, 0);
+		if(this.mVpPosts != null)
+			this.mVpPosts.setCurrentItem(position, false);
+	}
+	/* OnAfterPostsFilterListener methods */
 }
