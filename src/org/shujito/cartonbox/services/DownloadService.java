@@ -185,6 +185,7 @@ public class DownloadService extends IntentService
 			builder.setSmallIcon(android.R.drawable.stat_sys_download_done);
 			notificationManager.notify(R.string.app_name, builder.build());
 			// this helps scanning the files so they show up on the gallery
+			// XXX: sending 'this' will leak, send application context instead
 			new SimpleMediaScan(CartonBox.getInstance(), fileDest);
 		}
 		else
