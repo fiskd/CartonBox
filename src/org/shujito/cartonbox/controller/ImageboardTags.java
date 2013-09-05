@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.shujito.cartonbox.Logger;
-import org.shujito.cartonbox.controller.listeners.OnRequestListener;
 import org.shujito.cartonbox.controller.listeners.OnJsonResponseReceivedListener;
+import org.shujito.cartonbox.controller.listeners.OnRequestListener;
 import org.shujito.cartonbox.controller.listeners.OnTagsFetchedListener;
 import org.shujito.cartonbox.model.Site;
 import org.shujito.cartonbox.model.Tag;

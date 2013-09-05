@@ -131,9 +131,24 @@ public class PostViewActivity extends SherlockFragmentActivity
 				//*/
 				// TODO: change from a downloadmanager to a generic coded downloader (ew...)
 				//Toast.makeText(this, this.getString(R.string.notavailable), Toast.LENGTH_SHORT).show();
-				Intent ntn = new Intent(this, DownloadService.class);
-				ntn.putExtra(DownloadService.EXTRA_FILENAME, this.selectedPost.getMd5());
-				this.startService(ntn);
+				if(this.selectedPost != null)
+				{
+					Intent ntn = new Intent(this, DownloadService.class);
+					// where is the web resource located
+					ntn.putExtra(DownloadService.EXTRA_SOURCE, this.selectedPost.getUrl());
+					// the name to save the file with
+					String where = this.selectedPost.getSite().getName();
+					where = where.concat(" ");
+					where = where.concat(this.selectedPost.getMd5());
+					where = where.concat(".");
+					where = where.concat(this.selectedPost.getFileExt());
+					ntn.putExtra(DownloadService.EXTRA_DESTINATION, where);
+					// what directory to save into
+					ntn.putExtra(DownloadService.EXTRA_DIRECTORY, "CartonBox");
+					// display this while downloading
+					ntn.putExtra(DownloadService.EXTRA_DISPLAY, this.selectedPost.getMd5());
+					this.startService(ntn);
+				}
 				return true;
 			case R.id.menu_postview_preferences:
 				Toast.makeText(this, this.getString(R.string.notavailable), Toast.LENGTH_SHORT).show();
