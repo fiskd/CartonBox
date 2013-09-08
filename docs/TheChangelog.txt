@@ -7,6 +7,13 @@ release, but there you go:
 0.6
 -custom sites! which means adding, deleting, and
  editing, you can also customize the icon.
+-downloading images now available to all android
+ platforms! (also fixed downloading sausages on
+ behoimi)
+-filtered/hidden posts are now gone from the full-
+ screen post viewer (no more 'blocked posts')
+ 
+
 
 0.5
 # FIRST announced release

@@ -69,12 +69,8 @@ public class PostViewActivity extends SherlockFragmentActivity
 		this.postsApi.addOnPostsFetchedListener(this.mPostsAdapter);
 		// a hack, this makes the posts adapter think it has fetched something
 		this.mPostsAdapter.onPostsFetched(this.postsApi.getPosts());
-		
+		// pager listener
 		this.mVpPosts.setOnPageChangeListener(this);
-		//if(keypage == 0)
-		//{
-			//this.onPageSelected(keypage);
-		//}
 	}
 	
 	@Override
@@ -108,29 +104,6 @@ public class PostViewActivity extends SherlockFragmentActivity
 				// handle the event
 				return true;
 			case R.id.menu_postview_save:
-				/*
-				// pan de gengibre?
-				if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD)
-				{
-					Toast.makeText(this, this.getString(R.string.download_started), Toast.LENGTH_SHORT).show();
-					DownloadManager downman = (DownloadManager)this.getSystemService(Context.DOWNLOAD_SERVICE);
-					Uri uri = Uri.parse(this.selectedPost.getUrl());
-					String filename = String.format("%s.%s", this.selectedPost.getMd5(), this.selectedPost.getFileExt());
-					DownloadManager.Request request = new DownloadManager.Request(uri)
-						.setAllowedOverRoaming(false)
-						.setTitle(this.getString(R.string.downloading))
-						.setDescription(filename)
-						.addRequestHeader("Referer", this.selectedPost.getUrl())
-						.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename);
-					downman.enqueue(request);
-				}
-				else
-				{
-					Toast.makeText(this, this.getString(R.string.notavailable), Toast.LENGTH_SHORT).show();
-				}
-				//*/
-				// TODO: change from a downloadmanager to a generic coded downloader (ew...)
-				//Toast.makeText(this, this.getString(R.string.notavailable), Toast.LENGTH_SHORT).show();
 				if(this.selectedPost != null)
 				{
 					Intent ntn = new Intent(this, DownloadService.class);
@@ -249,6 +222,8 @@ public class PostViewActivity extends SherlockFragmentActivity
 		int position = this.getIntent().getIntExtra(EXTRA_POST_INDEX, 0);
 		if(this.mVpPosts != null)
 			this.mVpPosts.setCurrentItem(position, false);
+		if(position == 0)
+			this.onPageSelected(0);
 	}
 	/* OnAfterPostsFilterListener methods */
 }

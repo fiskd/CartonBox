@@ -15,6 +15,7 @@ import org.shujito.cartonbox.view.fragments.dialogs.LoginDialogFragment.LoginDia
 import org.shujito.cartonbox.view.listeners.OnFragmentAttachedListener;
 import org.shujito.cartonbox.view.listeners.TagListItemSelectedCallback;
 
+import android.app.AlertDialog;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -25,7 +26,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 
 import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.ActionBar.Tab;
 import com.actionbarsherlock.app.ActionBar.TabListener;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
@@ -81,11 +81,6 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 	@Override
 	protected void onNewIntent(Intent intent)
 	{
-		// TODO: look for workarounds on making this work when the fragments
-		// are ready (Without causing a whole code mess) should check the
-		// fragments and look for a proper behavior (I'm sleepy and idk if I'll
-		// understand this the next time I read this)
-		//Intent intent = this.getIntent();
 		if(Intent.ACTION_SEARCH.equals(intent.getAction()))
 		{
 			// get what we want to search for...
@@ -150,8 +145,15 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 			
 			// retrieve dialog showing
 			this.dialogShowing = this.getIntent().getBooleanExtra(EXTRA_DIALOGSHOWING, false);
-			
 		}
+		
+		// TODO: dialog saying "give rating!"
+		AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+		dialog.setTitle("Give rating!");
+		dialog.setMessage("You have been using this app for some time, would you like to give a rating?");
+		dialog.setPositiveButton(android.R.string.ok, null);
+		dialog.setNegativeButton("Later", null);
+		//dialog.show();
 	}
 	
 	@Override
@@ -252,23 +254,23 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 	
 	/* TabListener methods */
 	@Override
-	public void onTabSelected(Tab tab, FragmentTransaction ft)
+	public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft)
 	{
+		Logger.i("SiteIndexActivity::onTabSelected", tab.toString());
 		// move to page
 		this.mVpSections.setCurrentItem(tab.getPosition());
 	}
 	
 	@Override
-	public void onTabUnselected(Tab tab, FragmentTransaction ft)
+	public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft)
 	{
+		Logger.i("SiteIndexActivity::onTabUnselected", tab.toString());
 	}
 	
 	@Override
-	public void onTabReselected(Tab tab, FragmentTransaction ft)
+	public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft)
 	{
-		// this might not be used
-		// XXX: or maybe yes (twitter refresh, back to the top, something)
-		// agh! How do I talk to a fragment from this activity!?
+		Logger.i("SiteIndexActivity::onTabReselected", tab.toString());
 	}
 	/* TabListener methods */
 	
@@ -277,8 +279,10 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 	public Object onFragmentAttached(Fragment f)
 	{
 		Logger.i("SiteIndexActivity::onFragmentAttached", String.format("fragment %s attached", f.toString()));
+		int section = 0;
 		if(f instanceof SectionPostsFragment)
 		{
+			section = R.string.section_posts;
 			// this should fix the NPE caused when rotating the device
 			if(this.mPostsApi == null)
 				this.mPostsApi = CartonBox.getInstance().getApis().getImageboardPosts();
@@ -287,10 +291,14 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 		
 		if(f instanceof SectionTagsFragment)
 		{
+			section = R.string.section_tags;
 			if(this.mTagsApi == null)
 				this.mTagsApi = CartonBox.getInstance().getApis().getImageboardTags();
 			return this.mTagsApi;
 		}
+		
+		ActionBar.Tab tab = this.getSupportActionBar().getTabAt(this.findPage(section));
+		tab.setTag(f);
 		
 		return null;
 	}

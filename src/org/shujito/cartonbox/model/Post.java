@@ -70,7 +70,23 @@ public class Post implements Serializable
 	public String getMd5()
 	{ return this.md5; }
 	public String getFileExt()
-	{ return this.fileExt; }
+	{
+		if(this.fileExt == null)
+		{
+			String url = this.getUrl();
+			int lastPeriod = 0;
+			for(int idx = 0; idx < url.length(); idx++)
+			{
+				if(url.charAt(idx) == '.')
+					lastPeriod = idx;
+			}
+			if(lastPeriod > 0)
+			{
+				this.fileExt = url.substring(lastPeriod + 1);
+			}
+		}
+		return this.fileExt;
+	}
 	public int getFileSize()
 	{ return this.fileSize; }
 	public String getUrl()

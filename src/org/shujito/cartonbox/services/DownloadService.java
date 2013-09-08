@@ -45,28 +45,6 @@ public class DownloadService extends IntentService
 		super("DownloadService");
 	}
 	
-	/*
-	@Override
-	public void onCreate()
-	{
-		super.onCreate();
-		
-		this.id = (int)System.currentTimeMillis();
-		
-		PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, new Intent(), 0);
-		this.mNotificationManager = (NotificationManager)this.getSystemService(NOTIFICATION_SERVICE);
-		this.mBuilder = new NotificationCompat.Builder(this);
-		this.mBuilder.setSmallIcon(R.drawable.ic_action_download);
-		this.mBuilder.setOngoing(true);
-		this.mBuilder.setContentTitle(this.getText(R.string.downloading));
-		this.mBuilder.setTicker(this.getText(R.string.download_started));
-		this.mBuilder.setProgress(0, 0, true);
-		this.mBuilder.setContentIntent(pendingIntent);
-		// resource id used as notification id
-		this.mNotificationManager.notify(this.id, this.mBuilder.build());
-	}
-	//*/
-	
 	@Override
 	protected void onHandleIntent(Intent intent)
 	{
@@ -86,7 +64,7 @@ public class DownloadService extends IntentService
 			display = intent.getExtras().getString(EXTRA_DISPLAY);
 		}
 		
-		// placeholder intent
+		// blank intent
 		PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, new Intent(), 0);
 		// get notifications manager
 		NotificationManager notificationManager = (NotificationManager)this.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -96,7 +74,12 @@ public class DownloadService extends IntentService
 		builder.setContentIntent(pendingIntent);
 		
 		File dest = Environment.getExternalStoragePublicDirectory(directory);
-		File fileDest = new File(dest.getAbsoluteFile(), destination);
+		File fileDest = new File(dest.getAbsolutePath(), destination);
+		/*
+		Intent ntn = new Intent(Intent.ACTION_VIEW);
+		ntn.setDataAndType(Uri.fromFile(fileDest), "image/*");
+		PendingIntent viewImageIntent = PendingIntent.getActivity(this, 0, ntn, 0);
+		//*/
 		// file doesn't exist
 		if(!fileDest.exists())
 		{
@@ -176,13 +159,14 @@ public class DownloadService extends IntentService
 			catch(Exception ex)
 			{
 				Logger.e(this.getClass().getSimpleName(), ex.getMessage(), ex);
-				builder.setContentTitle(this.getText(R.string.download_complete));
-				builder.setTicker(this.getText(R.string.download_complete));
+				builder.setContentTitle(this.getText(R.string.download_failed));
+				builder.setTicker(this.getText(R.string.download_failed));
 			}
 			
 			builder.setOngoing(false);
 			builder.setProgress(0, 0, false);
 			builder.setSmallIcon(android.R.drawable.stat_sys_download_done);
+			//builder.setContentIntent(viewImageIntent);
 			notificationManager.notify(R.string.app_name, builder.build());
 			// this helps scanning the files so they show up on the gallery
 			// XXX: sending 'this' will leak, send application context instead
@@ -193,22 +177,8 @@ public class DownloadService extends IntentService
 			builder.setContentTitle(this.getText(R.string.already_downloaded));
 			builder.setTicker(this.getText(R.string.already_downloaded));
 			builder.setSmallIcon(android.R.drawable.stat_sys_download_done);
+			//builder.setContentIntent(viewImageIntent);
 			notificationManager.notify(R.string.app_name, builder.build());
 		}
 	}
-	
-	/*
-	@Override
-	public void onDestroy()
-	{
-		super.onDestroy();
-		
-		this.mBuilder.setTicker(this.getText(R.string.download_complete));
-		this.mBuilder.setContentText(this.getText(R.string.download_complete));
-		this.mBuilder.setAutoCancel(true);
-		this.mBuilder.setOngoing(false);
-		this.mBuilder.setProgress(0, 0, false);
-		this.mNotificationManager.notify(this.id, this.mBuilder.build());
-	}
-	//*/
 }
