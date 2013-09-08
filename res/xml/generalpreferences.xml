@@ -5,6 +5,10 @@
 		android:key="@string/pref_sites_key" />
 	<PreferenceCategory
 		android:title="@string/pref_general" >
+		<EditTextPreference
+			android:key="@string/pref_general_download_folder_key"
+			android:title="@string/pref_general_download_folder"
+			android:defaultValue="CartonBox" />
 		<CheckBoxPreference
 			android:key="@string/pref_general_cacheexternal_key"
 			android:title="@string/pref_general_cacheexternal"

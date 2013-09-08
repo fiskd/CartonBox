@@ -108,6 +108,7 @@ public class GeneralPreferencesActivity extends SherlockPreferenceActivity
 		super.onResume();
 		// listen for changed prefs
 		this.prefScreen.getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
+		this.prefSites.removeAll();
 		
 		SitesDB sitesdb = new SitesDB(this);
 		List<Site> sites = sitesdb.getAll();
@@ -117,6 +118,8 @@ public class GeneralPreferencesActivity extends SherlockPreferenceActivity
 			sitePref.setTitle(site.getName());
 			sitePref.setSummary(site.getUrl());
 			sitePref.setEnabled(false);
+			// TODO: launch site prefs here
+			//sitePref.setIntent(new Intent(Intent.ACTION_VIEW, Uri.parse(site.getUrl())));
 			this.prefSites.addPreference(sitePref);
 		}
 		

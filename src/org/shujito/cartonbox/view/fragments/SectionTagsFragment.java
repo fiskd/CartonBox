@@ -79,7 +79,7 @@ public class SectionTagsFragment extends Fragment implements
 	@Override
 	public View onCreateView(LayoutInflater inf, ViewGroup dad, Bundle cirno)
 	{
-		return inf.inflate(R.layout.tags_section, dad, false);
+		return inf.inflate(R.layout.section_tags, dad, false);
 	}
 	
 	@Override

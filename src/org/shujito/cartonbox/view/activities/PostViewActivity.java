@@ -1,6 +1,7 @@
 package org.shujito.cartonbox.view.activities;
 
 import org.shujito.cartonbox.CartonBox;
+import org.shujito.cartonbox.Preferences;
 import org.shujito.cartonbox.R;
 import org.shujito.cartonbox.controller.ImageboardPosts;
 import org.shujito.cartonbox.model.Post;
@@ -107,17 +108,30 @@ public class PostViewActivity extends SherlockFragmentActivity
 				if(this.selectedPost != null)
 				{
 					Intent ntn = new Intent(this, DownloadService.class);
-					// where is the web resource located
-					ntn.putExtra(DownloadService.EXTRA_SOURCE, this.selectedPost.getUrl());
-					// the name to save the file with
+					
+					String saveDir = Preferences.getString(R.string.pref_general_download_folder_key);
 					String where = this.selectedPost.getSite().getName();
 					where = where.concat(" ");
 					where = where.concat(this.selectedPost.getMd5());
 					where = where.concat(".");
 					where = where.concat(this.selectedPost.getFileExt());
+					
+					// TODO: a pref
+					if(ntn.equals(null))
+					{
+						saveDir = saveDir.concat("/");
+						saveDir = saveDir.concat(this.selectedPost.getSite().getName());
+						where = this.selectedPost.getMd5();
+						where = where.concat(".");
+						where = where.concat(this.selectedPost.getFileExt());
+					}
+					
+					// where is the web resource located
+					ntn.putExtra(DownloadService.EXTRA_SOURCE, this.selectedPost.getUrl());
+					// the name to save the file with
 					ntn.putExtra(DownloadService.EXTRA_DESTINATION, where);
 					// what directory to save into
-					ntn.putExtra(DownloadService.EXTRA_DIRECTORY, "CartonBox");
+					ntn.putExtra(DownloadService.EXTRA_DIRECTORY, saveDir);
 					// display this while downloading
 					ntn.putExtra(DownloadService.EXTRA_DISPLAY, this.selectedPost.getMd5());
 					this.startService(ntn);

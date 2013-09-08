@@ -42,6 +42,7 @@
 	-->
 	
 	<string name="pref_sites_key">org.shujito.cartonbox.pref_sites_key</string>
+	<string name="pref_general_download_folder_key">org.shujito.cartonbox.pref_general_download_folder</string>
 	<string name="pref_general_cacheexternal_key">org.shujito.cartonbox.pref_general_cacheexternal_key</string>
 	<string name="pref_general_clearcacheonexit_key">org.shujito.cartonbox.pref_general_clearcacheonexit_key</string>
 	<string name="pref_general_cachesize_key">org.shujito.cartonbox.pref_general_cachesize_key</string>

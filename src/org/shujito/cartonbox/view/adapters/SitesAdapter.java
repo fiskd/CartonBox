@@ -54,10 +54,44 @@ public class SitesAdapter extends BaseAdapter
 		if(one == null)
 			return v; // get out quick
 		
-		Drawable dw = Drawable.createFromPath(one.getIcon());
+		Drawable dw = (Drawable)v.getTag();
 		if(dw == null)
-			dw = this.context.getResources().getDrawable(R.drawable.icon_unknown);
-		dw.setBounds(0, 0, this.width / this.numCols, this.width / this.numCols);
+		{
+			dw = Drawable.createFromPath(one.getIcon());
+			if(dw == null)
+			{
+				dw = this.context.getResources().getDrawable(R.drawable.icon_unknown);
+				/*
+				Bitmap b = Bitmap.createBitmap(512, 512, Bitmap.Config.ARGB_8888);
+				Canvas c = new Canvas(b);
+				
+				String first = one.getName();
+				int color = 0xff000000;
+				if(first.length() > 0)
+					color |= first.charAt(0) << 16;
+				if(first.length() > 1)
+					color |= first.charAt(1) << 8;
+				if(first.length() > 2)
+					color |= first.charAt(2);
+				
+				Paint paint = new Paint();
+				paint.setColor(color);
+				paint.setStyle(Paint.Style.FILL);
+				c.drawPaint(paint);
+				
+				paint.setColor(0xff000000);
+				
+				c.scale(8, 8);
+				//c.translate(128, 128);
+				
+				c.drawText(first.substring(0, 2), 0, 0, paint);
+				
+				dw = new BitmapDrawable(this.context.getResources(), b);
+				//*/
+			}
+			dw.setBounds(0, 0, this.width / this.numCols, this.width / this.numCols);
+			v.setTag(dw);
+		}
 		
 		((TextView)v).setTextAppearance(this.context, android.R.style.TextAppearance_Medium);
 		//((TextView)v).setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.icon_unknown, 0, 0);

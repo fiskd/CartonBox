@@ -17,7 +17,7 @@ public class DiskCacheManager
 	
 	public static File getCacheDirectory(Context context)
 	{
-		if(PreferenceManager.getDefaultSharedPreferences(context).getBoolean(context.getString(R.string.pref_general_cacheexternal), false))
+		if(PreferenceManager.getDefaultSharedPreferences(context).getBoolean(context.getString(R.string.pref_general_cacheexternal_key), false))
 			return context.getExternalCacheDir();
 		else
 			return context.getCacheDir();

@@ -84,6 +84,7 @@
 	<string name="pref_sites">Sites</string>
 	
 	<string name="pref_general">General</string>
+	<string name="pref_general_download_folder">Download folder</string>
 	<string name="pref_general_cacheexternal">Cache to SD/External</string>
 	<string name="pref_general_cachesize">Maximum cache size</string>
 	<string name="pref_general_cachesize_desc">Current is %s</string>
@@ -102,7 +103,7 @@
 	<string name="pref_content_localfilter">Local filtering</string>
 	<string name="pref_content_localfilter_desc">Good if you want to search for more than two tags with limited accounts</string>
 	<string name="pref_content_warning">Content warning</string>
-	<string name="pref_content_warning_desc">Displayed when accesing a post with a high rating</string>
+	<string name="pref_content_warning_desc">Displays \'Post blocked\' when accesing a post with a high rating</string>
 	<string name="pref_content_showdeletedposts">Show deleted posts</string>
 	<string name="pref_content_showflaggedposts">Show flagged posts</string>
 	

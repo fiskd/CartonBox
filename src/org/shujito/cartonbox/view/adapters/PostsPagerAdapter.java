@@ -119,7 +119,8 @@ public class PostsPagerAdapter extends FragmentPagerAdapter
 			this.posts = result;
 		this.notifyDataSetChanged();
 		Logger.i("PostsPagerAdapter::onFilter", String.format("Filtered, count: %s", this.getCount()));
-		// TODO: filtered callback to the postviewactivity so we can change to the page after this
+		// tells the activity to do things (in this case it changes the page)
+		// after filtering for the first time
 		if(this.onAfterPostsFilterListener != null)
 			this.onAfterPostsFilterListener.onPostFilter();
 	}

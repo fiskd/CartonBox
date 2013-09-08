@@ -84,7 +84,7 @@ public class SectionPostsFragment extends Fragment implements
 	@Override
 	public View onCreateView(LayoutInflater inf, ViewGroup dad, Bundle cirno)
 	{
-		return inf.inflate(R.layout.posts_section, dad, false);
+		return inf.inflate(R.layout.section_posts, dad, false);
 	}
 	
 	@Override
