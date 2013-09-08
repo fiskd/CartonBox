@@ -103,7 +103,7 @@ public class PostViewActivity extends SherlockFragmentActivity
 				this.finish();
 				// handle the event
 				return true;
-			case R.id.menu_postview_save:
+			case R.id.save:
 				if(this.selectedPost != null)
 				{
 					Intent ntn = new Intent(this, DownloadService.class);
@@ -123,10 +123,10 @@ public class PostViewActivity extends SherlockFragmentActivity
 					this.startService(ntn);
 				}
 				return true;
-			case R.id.menu_postview_preferences:
+			case R.id.preferences:
 				Toast.makeText(this, this.getString(R.string.notavailable), Toast.LENGTH_SHORT).show();
 				return true;
-			case R.id.menu_postview_details:
+			case R.id.details:
 				PostTagsDialogFragment dialog = new PostTagsDialogFragment();
 				// it's a pun!
 				Bundle humble = new Bundle();
@@ -134,7 +134,7 @@ public class PostViewActivity extends SherlockFragmentActivity
 				dialog.setArguments(humble);
 				dialog.show(this.getSupportFragmentManager(), PostTagsDialogFragment.TAG);
 				return true;
-			case R.id.menu_postview_browser:
+			case R.id.browser:
 				if(this.selectedPost != null)
 				{
 					String postUrl = this.selectedPost.toString();
@@ -143,15 +143,15 @@ public class PostViewActivity extends SherlockFragmentActivity
 					this.startActivity(site);
 				}
 				return true;
-			case R.id.menu_postview_viewparent:
+			case R.id.viewparent:
 				// TODO: make it work
 				Toast.makeText(this, this.getString(R.string.notavailable), Toast.LENGTH_SHORT).show();
 				return true;
-			case R.id.menu_postview_viewchildren:
+			case R.id.viewchildren:
 				// TODO: make it work
 				Toast.makeText(this, this.getString(R.string.notavailable), Toast.LENGTH_SHORT).show();
 				return true;
-			case R.id.menu_postview_viewpools:
+			case R.id.viewpools:
 				// TODO: make it work
 				Toast.makeText(this, this.getString(R.string.notavailable), Toast.LENGTH_SHORT).show();
 				return true;
@@ -166,9 +166,9 @@ public class PostViewActivity extends SherlockFragmentActivity
 		// onPrepareOptionsMenu doesn't run the first time the button is pressed
 		this.getSupportMenuInflater().inflate(R.menu.postview, menu);
 		
-		this.itemViewChildren = menu.findItem(R.id.menu_postview_viewchildren).setVisible(false);
-		this.itemViewParent = menu.findItem(R.id.menu_postview_viewparent).setVisible(false);
-		this.itemViewPools = menu.findItem(R.id.menu_postview_viewpools).setVisible(false);
+		this.itemViewChildren = menu.findItem(R.id.viewchildren).setVisible(false);
+		this.itemViewParent = menu.findItem(R.id.viewparent).setVisible(false);
+		this.itemViewPools = menu.findItem(R.id.viewpools).setVisible(false);
 		
 		// fuck haxes...
 		// I don't remember what was the hax here...

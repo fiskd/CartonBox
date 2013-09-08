@@ -199,11 +199,11 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 				//this.finish();
 				// event handled
 				return true;
-			case R.id.menu_siteindex_search:
+			case R.id.search:
 				// search dialog
 				this.onSearchRequested();
 				return true;
-			case R.id.menu_siteindex_refresh:
+			case R.id.refresh:
 				int currentPage = this.mVpSections.getCurrentItem();
 				if(currentPage == this.findPage(R.string.section_tags))
 				{
@@ -224,7 +224,7 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 					this.mPostsApi.request();
 				}
 				return true;
-			case R.id.menu_siteindex_settings:
+			case R.id.settings:
 				//Intent ntnPrefs = new Intent(this, GeneralPreferencesActivity.class);
 				//this.startActivity(ntnPrefs);
 				return true;

@@ -103,10 +103,10 @@ public class MainActivity extends SherlockFragmentActivity
 	{
 		switch(item.getItemId())
 		{
-			case R.id.menu_main_addsite:
+			case R.id.addsite:
 				this.addSite();
 				return true;
-			case R.id.menu_main_settings:
+			case R.id.settings:
 				Intent ntnPrefs = new Intent(this, GeneralPreferencesActivity.class);
 				this.startActivity(ntnPrefs);
 				return true;
@@ -127,10 +127,10 @@ public class MainActivity extends SherlockFragmentActivity
 	{
 		switch(item.getItemId())
 		{
-			case R.id.menu_main_context_edit:
+			case R.id.edit:
 				this.editSite();
 				return true;
-			case R.id.menu_main_context_remove:
+			case R.id.remove:
 				AlertDialog.Builder builder = new AlertDialog.Builder(this)
 					.setMessage(R.string.surewanttoremove)
 					.setPositiveButton(android.R.string.yes, this)

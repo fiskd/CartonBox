@@ -164,13 +164,13 @@ public class GeneralPreferencesActivity extends SherlockPreferenceActivity
 	{
 		switch(item.getItemId())
 		{
-			case R.id.menu_preferences_googleplay:
+			case R.id.googleplay:
 				Intent ntn = new Intent(Intent.ACTION_VIEW);
 				String link = String.format("market://details?id=%s", this.getPackageName());
 				ntn.setData(Uri.parse(link));
 				this.startActivity(ntn);
 				return true;
-			case R.id.menu_preferences_news:
+			case R.id.news:
 				// TODO: show news feed from http://shujito.org here
 				BlogNewsDialog newsDialog = new BlogNewsDialog(this);
 				newsDialog.createDialog(false).show();

@@ -2,20 +2,20 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
 	<item
-		android:id="@+id/menu_siteindex_search"
+		android:id="@+id/search"
 		android:icon="@drawable/ic_action_search"
 		android:showAsAction="always"
 		android:title="@string/search" />
 	
 	<item
-		android:id="@+id/menu_siteindex_refresh"
+		android:id="@+id/refresh"
 		android:icon="@drawable/ic_action_refresh"
 		android:showAsAction="ifRoom"
 		android:title="@string/refresh" />
 	
 	<item
 		android:visible="false"
-		android:id="@+id/menu_siteindex_settings"
+		android:id="@+id/settings"
 		android:icon="@drawable/ic_action_prefs"
 		android:showAsAction="ifRoom"
 		android:title="@string/settings" />
