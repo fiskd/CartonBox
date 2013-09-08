@@ -57,7 +57,7 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 		this.tabs = this.getResources().getStringArray(R.array.danbooru_sections);
 		
 		this.mPageAdapter = new SiteIndexPageAdapter(this.getSupportFragmentManager(), this, this.tabs);
-		this.mVpSections = (ViewPager)this.findViewById(R.id.siteindex_vpsections);
+		this.mVpSections = (ViewPager)this.findViewById(R.id.vpSections);
 		this.mVpSections.setAdapter(this.mPageAdapter);
 		this.mVpSections.setOnPageChangeListener(this);
 		

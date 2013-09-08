@@ -55,9 +55,9 @@ public class LoginDialogFragment extends SherlockDialogFragment
 		LayoutInflater inf = LayoutInflater.from(this.getActivity());
 		View v = inf.inflate(R.layout.dialog_login, null);
 		
-		this.etUsername = (EditText)v.findViewById(R.id.dialog_login_tvusername);
+		this.etUsername = (EditText)v.findViewById(R.id.tvUsername);
 		this.etUsername.requestFocus();
-		this.etPassword = (EditText)v.findViewById(R.id.dialog_login_tvpassword);
+		this.etPassword = (EditText)v.findViewById(R.id.tvPassword);
 		this.etPassword.setOnEditorActionListener(this);
 		
 		this.etUsername.post(new Runnable()

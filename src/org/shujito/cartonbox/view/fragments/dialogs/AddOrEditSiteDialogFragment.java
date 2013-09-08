@@ -78,13 +78,13 @@ public class AddOrEditSiteDialogFragment extends SherlockDialogFragment
 		LayoutInflater inf = this.getActivity().getLayoutInflater();
 		View v = inf.inflate(R.layout.dialog_addsite, null);
 		// get these views
-		this.btnAddIcon = (ImageButton)v.findViewById(R.id.dialog_addsite_btnaddicon);
-		this.etSiteName = (EditText)v.findViewById(R.id.dialog_addsite_etname);
-		this.etSiteUrl = (EditText)v.findViewById(R.id.dialog_addsite_eturl);
-		this.spSiteType = (Spinner)v.findViewById(R.id.dialog_addsite_sptype);
-		this.cbSiteAuthDetails = (CheckBox)v.findViewById(R.id.dialog_addsite_cbauthdetails);
-		this.etUsername = (EditText)v.findViewById(R.id.dialog_addsite_etusername);
-		this.etPassword = (EditText)v.findViewById(R.id.dialog_addsite_etpassword);
+		this.btnAddIcon = (ImageButton)v.findViewById(R.id.btnAddicon);
+		this.etSiteName = (EditText)v.findViewById(R.id.etName);
+		this.etSiteUrl = (EditText)v.findViewById(R.id.etUrl);
+		this.spSiteType = (Spinner)v.findViewById(R.id.spType);
+		this.cbSiteAuthDetails = (CheckBox)v.findViewById(R.id.cbxAuthdetails);
+		this.etUsername = (EditText)v.findViewById(R.id.etUsername);
+		this.etPassword = (EditText)v.findViewById(R.id.etPassword);
 		// listeners
 		this.btnAddIcon.setOnClickListener(this);
 		this.etSiteUrl.setOnFocusChangeListener(this);

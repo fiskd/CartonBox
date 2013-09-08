@@ -7,19 +7,19 @@
 	tools:context=".view.fragments.TagsSectionFragment" >
 	
 	<ListView
-		android:id="@+id/tags_lvtags"
+		android:id="@+id/lvTags"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent" />
 	
 	<ProgressBar
-		android:id="@+id/tags_pbprogress"
+		android:id="@+id/pbProgress"
 		style="?android:attr/progressBarStyleLarge"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_gravity="center" />
 	
 	<TextView
-		android:id="@+id/tags_tvmessage"
+		android:id="@+id/tvMessage"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_gravity="center_horizontal"

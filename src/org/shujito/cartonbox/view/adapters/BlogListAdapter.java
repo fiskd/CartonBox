@@ -68,18 +68,18 @@ public class BlogListAdapter extends BaseAdapter implements OnXmlResponseReceive
 			Spanned spannedContent = Html.fromHtml(blogContent);
 			//String dur = spannedContent.toString().trim();
 			
-			((TextView)v.findViewById(R.id.blogitem_tvtitle)).setText(entry.getTitle());
-			((TextView)v.findViewById(R.id.blogitem_tvcontent)).setText(spannedContent);
-			((TextView)v.findViewById(R.id.blogitem_tvdate)).setText(entry.getDate());
+			((TextView)v.findViewById(R.id.tvTitle)).setText(entry.getTitle());
+			((TextView)v.findViewById(R.id.tvContent)).setText(spannedContent);
+			((TextView)v.findViewById(R.id.tvDate)).setText(entry.getDate());
 			//((TextView)v.findViewById(R.id.blogitem_tvdate)).setText(Locale.getDefault().getDisplayLanguage());
 		}
 		else
 		{
 			//String datefmt = DateFormat.getDateTimeInstance().format(new Date());
-			((TextView)v.findViewById(R.id.blogitem_tvtitle)).setText(R.string.couldnotblog);
-			((TextView)v.findViewById(R.id.blogitem_tvcontent)).setText(R.string.trylater);
+			((TextView)v.findViewById(R.id.tvTitle)).setText(R.string.couldnotblog);
+			((TextView)v.findViewById(R.id.tvContent)).setText(R.string.trylater);
 			//((TextView)v.findViewById(R.id.blogitem_tvdate)).setText(datefmt);
-			((TextView)v.findViewById(R.id.blogitem_tvdate)).setText(null);
+			((TextView)v.findViewById(R.id.tvDate)).setText(null);
 		}
 		
 		return v;

@@ -58,7 +58,7 @@ public class MainActivity extends SherlockFragmentActivity
 		
 		// init views
 		this.mSitesAdapter = new SitesAdapter(this);
-		this.mGridView = (GridView)this.findViewById(R.id.main_gvsites);
+		this.mGridView = (GridView)this.findViewById(R.id.gvSites);
 		this.mGridView.setAdapter(this.mSitesAdapter);
 		this.mGridView.setOnItemClickListener(this);
 		this.mGridView.setOnItemLongClickListener(this);

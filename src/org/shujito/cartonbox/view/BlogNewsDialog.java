@@ -57,11 +57,11 @@ public class BlogNewsDialog implements OnItemClickListener
 		this.downloader.setOnErrorListener(this.mBlogListAdapter);
 		ConcurrentTask.execute(this.downloader);
 		
-		this.mLvEntries = (ListView)v.findViewById(R.id.dialog_blognews_lventries);
+		this.mLvEntries = (ListView)v.findViewById(R.id.lvEntries);
 		this.mLvEntries.setAdapter(this.mBlogListAdapter);
 		this.mLvEntries.setOnItemClickListener(this);
 		
-		this.mCbxNoshowagain = (CheckBox)v.findViewById(R.id.dialog_blognews_cbxnoshow);
+		this.mCbxNoshowagain = (CheckBox)v.findViewById(R.id.cbxNoshow);
 		this.mCbxNoshowagain.setChecked(false);
 		if(!showCheckbox)
 			this.mCbxNoshowagain.setVisibility(View.GONE);

@@ -7,7 +7,7 @@
 	tools:context=".view.fragments.PostsSectionFragment" >
 	
 	<GridView
-		android:id="@+id/posts_gvposts"
+		android:id="@+id/gvPosts"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		android:gravity="center"
@@ -16,14 +16,14 @@
 		android:numColumns="@integer/posts_section_numcols" />
 	
 	<ProgressBar
-		android:id="@+id/posts_pbloading"
+		android:id="@+id/pbLoading"
 		style="?android:attr/progressBarStyleLarge"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_gravity="center" />
 	
 	<TextView
-		android:id="@+id/posts_tvmessage"
+		android:id="@+id/tvMessage"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_gravity="center_horizontal"
@@ -31,5 +31,13 @@
 		android:padding="10dp"
 		android:textIsSelectable="false"
 		android:textAppearance="?android:attr/textAppearanceLarge" />
+	
+	<ProgressBar
+		android:id="@+id/pbLoading2"
+		style="?android:attr/progressBarStyleHorizontal"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_gravity="bottom"
+		android:indeterminateOnly="true" />
 	
 </FrameLayout>

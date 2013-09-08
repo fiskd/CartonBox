@@ -5,7 +5,7 @@
 	android:orientation="vertical" >
 	
 	<ListView
-		android:id="@+id/dialog_blognews_lventries"
+		android:id="@+id/lvEntries"
 		android:layout_width="match_parent"
 		android:layout_height="0dp"
 		android:layout_weight="1"
@@ -13,7 +13,7 @@
 		android:animateLayoutChanges="true" />
 	
 	<CheckBox
-		android:id="@+id/dialog_blognews_cbxnoshow"
+		android:id="@+id/cbxNoshow"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:text="@string/noshowagain" />

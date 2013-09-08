@@ -7,7 +7,7 @@
 	tools:context=".view.activities.SiteIndexActivity" >
 	
 	<android.support.v4.view.ViewPager
-		android:id="@+id/siteindex_vpsections"
+		android:id="@+id/vpSections"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent" />
 	

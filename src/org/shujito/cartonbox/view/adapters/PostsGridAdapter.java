@@ -108,19 +108,19 @@ public class PostsGridAdapter extends BaseAdapter
 		// getting out early...
 		if(post == null) return v;
 
-		final ImageView ivpreview = (ImageView)v.findViewById(R.id.post_item_grid_ivpreview);
-		final ProgressBar pbprogress = (ProgressBar)v.findViewById(R.id.post_item_grid_pbprogress);
-		final TextView tvloading = (TextView)v.findViewById(R.id.post_item_grid_tvloading);
+		final ImageView ivpreview = (ImageView)v.findViewById(R.id.ivPreview);
+		final ProgressBar pbprogress = (ProgressBar)v.findViewById(R.id.pbProgress);
+		final TextView tvloading = (TextView)v.findViewById(R.id.tvLoading);
 		// flagged
-		ImageView ivred = (ImageView)v.findViewById(R.id.post_item_grid_ivred);
+		ImageView ivred = (ImageView)v.findViewById(R.id.ivRed);
 		// deleted
-		ImageView ivgray = (ImageView)v.findViewById(R.id.post_item_grid_ivgray);
+		ImageView ivgray = (ImageView)v.findViewById(R.id.ivGray);
 		// pending
-		ImageView ivblue = (ImageView)v.findViewById(R.id.post_item_grid_ivblue);
+		ImageView ivblue = (ImageView)v.findViewById(R.id.ivBlue);
 		// parent (has children)
-		ImageView ivgreen = (ImageView)v.findViewById(R.id.post_item_grid_ivgreen);
+		ImageView ivgreen = (ImageView)v.findViewById(R.id.ivGreen);
 		// child (belongs to parent)
-		ImageView ivyellow = (ImageView)v.findViewById(R.id.post_item_grid_ivyellow);
+		ImageView ivyellow = (ImageView)v.findViewById(R.id.ivYellow);
 		
 		if(post.isFlagged())
 			ivred.setVisibility(View.VISIBLE);

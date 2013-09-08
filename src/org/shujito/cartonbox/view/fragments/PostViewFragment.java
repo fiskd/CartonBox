@@ -79,23 +79,23 @@ public class PostViewFragment extends Fragment
 		// get post
 		this.post = (Post)this.getArguments().getSerializable(EXTRA_POST);
 		// build the view appearance here
-		this.pbprogress = (ProgressBar)view.findViewById(R.id.post_item_pager_pbprogress);
+		this.pbprogress = (ProgressBar)view.findViewById(R.id.pbProgress);
 		// message
-		this.tvmessage = (TextView)view.findViewById(R.id.post_item_pager_tvmessage);
+		this.tvmessage = (TextView)view.findViewById(R.id.tvMessage);
 		// image preview
-		this.ivpreview = (ImageView)view.findViewById(R.id.post_item_pager_ivsample);
+		this.ivpreview = (ImageView)view.findViewById(R.id.ivSample);
 		// dots container
-		this.llStatusDots = view.findViewById(R.id.post_item_pager_llstatusdots);
+		this.llStatusDots = view.findViewById(R.id.llStatusdots);
 		// flagged
-		this.ivred = (ImageView)view.findViewById(R.id.post_item_pager_ivred);
+		this.ivred = (ImageView)view.findViewById(R.id.ivRed);
 		// deleted
-		this.ivgray = (ImageView)view.findViewById(R.id.post_item_pager_ivgray);
+		this.ivgray = (ImageView)view.findViewById(R.id.ivGray);
 		// pending
-		this.ivblue = (ImageView)view.findViewById(R.id.post_item_pager_ivblue);
+		this.ivblue = (ImageView)view.findViewById(R.id.ivBlue);
 		// parent (has children)
-		this.ivgreen = (ImageView)view.findViewById(R.id.post_item_pager_ivgreen);
+		this.ivgreen = (ImageView)view.findViewById(R.id.ivGreen);
 		// child (belongs to parent)
-		this.ivyellow = (ImageView)view.findViewById(R.id.post_item_pager_ivyellow);
+		this.ivyellow = (ImageView)view.findViewById(R.id.ivYellow);
 		// display things
 		
 		// get out early, this can't work without a post!

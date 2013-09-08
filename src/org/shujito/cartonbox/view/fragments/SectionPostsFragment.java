@@ -109,15 +109,15 @@ public class SectionPostsFragment extends Fragment implements
 			}
 		}
 		
-		this.mGvPosts = (GridView)view.findViewById(R.id.posts_gvposts);
+		this.mGvPosts = (GridView)view.findViewById(R.id.gvPosts);
 		this.mGvPosts.setAdapter(this.mPostsAdapter);
 		this.mGvPosts.setOnItemClickListener(this);
 		this.mGvPosts.setOnScrollListener(this);
 		
-		this.mPbProgress = (ProgressBar)view.findViewById(R.id.posts_pbloading);
+		this.mPbProgress = (ProgressBar)view.findViewById(R.id.pbLoading);
 		this.mPbProgress.setVisibility(View.VISIBLE);
 		
-		this.mTvMessage = (TextView)view.findViewById(R.id.posts_tvmessage);
+		this.mTvMessage = (TextView)view.findViewById(R.id.tvMessage);
 		this.mTvMessage.setVisibility(View.GONE);
 		
 		if(this.postsApi != null)
@@ -178,7 +178,8 @@ public class SectionPostsFragment extends Fragment implements
 			@Override
 			public void run()
 			{
-				postsApi.request();
+				if(postsApi != null)
+					postsApi.request();
 			}
 		}, 3000);
 	}

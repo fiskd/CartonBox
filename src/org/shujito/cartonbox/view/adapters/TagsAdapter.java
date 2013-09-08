@@ -101,9 +101,9 @@ public class TagsAdapter extends BaseAdapter
 				break;
 		}
 		
-		((TextView)v.findViewById(R.id.tag_item_tvname)).setText(tag.getName());
-		((TextView)v.findViewById(R.id.tag_item_tvname)).setTextColor(color);
-		((TextView)v.findViewById(R.id.tag_item_tvcount)).setText(formatter.format(tag.getCount()));
+		((TextView)v.findViewById(R.id.tvName)).setText(tag.getName());
+		((TextView)v.findViewById(R.id.tvName)).setTextColor(color);
+		((TextView)v.findViewById(R.id.tvCount)).setText(formatter.format(tag.getCount()));
 		
 		return v;
 	}

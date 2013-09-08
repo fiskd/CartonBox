@@ -12,7 +12,7 @@
 		android:gravity="center" >
 		
 		<ImageButton
-			android:id="@+id/dialog_addsite_btnaddicon"
+			android:id="@+id/btnAddicon"
 			android:contentDescription="@string/app_name"
 			android:src="@drawable/icon_unknown"
 			android:scaleType="fitCenter"
@@ -26,7 +26,7 @@
 			android:orientation="vertical" >
 			
 			<EditText
-				android:id="@+id/dialog_addsite_etname"
+				android:id="@+id/etName"
 				android:layout_width="match_parent"
 				android:layout_height="48dp"
 				android:layout_margin="4dp"
@@ -35,7 +35,7 @@
 				android:hint="@string/sitename" />
 			
 			<EditText
-				android:id="@+id/dialog_addsite_eturl"
+				android:id="@+id/etUrl"
 				android:layout_width="match_parent"
 				android:layout_height="48dp"
 				android:layout_margin="4dp"
@@ -55,20 +55,20 @@
 		android:text="@string/sitetype" />
 	
 	<Spinner
-		android:id="@+id/dialog_addsite_sptype"
+		android:id="@+id/spType"
 		android:layout_width="match_parent"
 		android:layout_height="48dp"
 		android:layout_margin="4dp" />
 	
 	<CheckBox
-		android:id="@+id/dialog_addsite_cbauthdetails"
+		android:id="@+id/cbxAuthdetails"
 		android:layout_width="match_parent"
 		android:layout_height="48dp"
 		android:text="@string/siteauthdetails"
 		android:visibility="gone" />
 	
 	<EditText
-		android:id="@+id/dialog_addsite_etusername"
+		android:id="@+id/etUsername"
 		android:layout_width="match_parent"
 		android:layout_height="48dp"
 		android:layout_margin="4dp"
@@ -78,7 +78,7 @@
 		android:hint="@string/username" />
 	
 	<EditText
-		android:id="@+id/dialog_addsite_etpassword"
+		android:id="@+id/etPassword"
 		android:layout_width="match_parent"
 		android:layout_height="48dp"
 		android:layout_margin="4dp"

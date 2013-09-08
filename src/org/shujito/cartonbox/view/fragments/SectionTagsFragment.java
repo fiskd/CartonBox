@@ -95,15 +95,15 @@ public class SectionTagsFragment extends Fragment implements
 			this.tagsApi = (ImageboardTags)this.onFragmentAttachedListener.onFragmentAttached(this);
 		}
 		
-		this.mLvTags = (ListView)view.findViewById(R.id.tags_lvtags);
+		this.mLvTags = (ListView)view.findViewById(R.id.lvTags);
 		this.mLvTags.setAdapter(this.mTagsAdapter);
 		this.mLvTags.setOnItemClickListener(this);
 		this.mLvTags.setVisibility(View.GONE);
 		
-		this.mPbProgress = (ProgressBar)view.findViewById(R.id.tags_pbprogress);
+		this.mPbProgress = (ProgressBar)view.findViewById(R.id.pbProgress);
 		this.mPbProgress.setVisibility(View.VISIBLE);
 		
-		this.mTvMessage = (TextView)view.findViewById(R.id.tags_tvmessage);
+		this.mTvMessage = (TextView)view.findViewById(R.id.tvMessage);
 		this.mTvMessage.setVisibility(View.GONE);
 		
 		if(this.tagsApi != null)

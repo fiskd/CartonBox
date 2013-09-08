@@ -10,20 +10,20 @@
 		android:background="#323232" />
 	
 	<ImageView
-		android:id="@+id/post_item_grid_ivpreview"
+		android:id="@+id/ivPreview"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		android:contentDescription="@string/app_name" />
 	
 	<ProgressBar
-		android:id="@+id/post_item_grid_pbprogress"
+		android:id="@+id/pbProgress"
 		android:layout_width="match_parent"
 		android:layout_height="15dp"
 		android:layout_gravity="center"
 		style="?android:attr/progressBarStyleHorizontal" />
 	
 	<TextView
-		android:id="@+id/post_item_grid_tvloading"
+		android:id="@+id/tvLoading"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_gravity="center"
@@ -39,7 +39,7 @@
 		android:layout_marginBottom="2dp" >
 		
 		<ImageView
-			android:id="@+id/post_item_grid_ivred"
+			android:id="@+id/ivRed"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_marginRight="2dp"
@@ -47,7 +47,7 @@
 			android:contentDescription="@string/app_name" />
 		
 		<ImageView
-			android:id="@+id/post_item_grid_ivgray"
+			android:id="@+id/ivGray"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_marginRight="2dp"
@@ -55,7 +55,7 @@
 			android:contentDescription="@string/app_name" />
 		
 		<ImageView
-			android:id="@+id/post_item_grid_ivblue"
+			android:id="@+id/ivBlue"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_marginRight="2dp"
@@ -63,7 +63,7 @@
 			android:contentDescription="@string/app_name" />
 		
 		<ImageView
-			android:id="@+id/post_item_grid_ivgreen"
+			android:id="@+id/ivGreen"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_marginRight="2dp"
@@ -71,7 +71,7 @@
 			android:contentDescription="@string/app_name" />
 		
 		<ImageView
-			android:id="@+id/post_item_grid_ivyellow"
+			android:id="@+id/ivYellow"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:src="@drawable/circle_yellow"
@@ -81,7 +81,7 @@
 	
 	<!--
 	<CheckBox
-		android:id="@+id/post_item_grid_cbxselect"
+		android:id="@+id/cbxSelect"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_gravity="right|bottom"

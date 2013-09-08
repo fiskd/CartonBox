@@ -57,7 +57,7 @@ public class PostTagsDialogFragment extends SherlockDialogFragment
 		
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_list_item_1, things);
 		
-		this.lvTags = (ListView)v.findViewById(R.id.dialog_posttags_lvtags);
+		this.lvTags = (ListView)v.findViewById(R.id.lvTags);
 		this.lvTags.setAdapter(adapter);
 		this.lvTags.setOnItemClickListener(this);
 		this.lvTags.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);

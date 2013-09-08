@@ -48,7 +48,7 @@ public class PostViewActivity extends SherlockFragmentActivity
 		
 		this.mPostsAdapter = new PostsPagerAdapter(this.getSupportFragmentManager());
 		this.mPostsAdapter.setOnAfterPostsFilterListener(this);
-		this.mVpPosts = (ViewPager)this.findViewById(R.id.postview_vpposts);
+		this.mVpPosts = (ViewPager)this.findViewById(R.id.vpPosts);
 		this.mVpPosts.setAdapter(this.mPostsAdapter);
 		
 		// enable this so we can navigate with the up button
