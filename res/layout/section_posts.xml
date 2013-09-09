@@ -33,7 +33,7 @@
 		android:textAppearance="?android:attr/textAppearanceLarge" />
 	
 	<ProgressBar
-		android:id="@+id/pbLoading2"
+		android:id="@+id/pbLoadingPend"
 		style="?android:attr/progressBarStyleHorizontal"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"

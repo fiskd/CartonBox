@@ -53,8 +53,9 @@ public class SectionPostsFragment extends Fragment implements
 	ImageboardPosts postsApi = null;
 	
 	GridView mGvPosts = null;
-	ProgressBar mPbProgress = null;
+	ProgressBar mPbLoading = null;
 	TextView mTvMessage = null;
+	ProgressBar mPbLoadingPend = null;
 	
 	PostsGridAdapter mPostsAdapter = null;
 	
@@ -114,11 +115,14 @@ public class SectionPostsFragment extends Fragment implements
 		this.mGvPosts.setOnItemClickListener(this);
 		this.mGvPosts.setOnScrollListener(this);
 		
-		this.mPbProgress = (ProgressBar)view.findViewById(R.id.pbLoading);
-		this.mPbProgress.setVisibility(View.VISIBLE);
+		this.mPbLoading = (ProgressBar)view.findViewById(R.id.pbLoading);
+		this.mPbLoading.setVisibility(View.VISIBLE);
 		
 		this.mTvMessage = (TextView)view.findViewById(R.id.tvMessage);
 		this.mTvMessage.setVisibility(View.GONE);
+		
+		this.mPbLoadingPend = (ProgressBar)view.findViewById(R.id.pbLoadingPend);
+		this.mPbLoadingPend.setVisibility(View.GONE);
 		
 		if(this.postsApi != null)
 		{
@@ -130,7 +134,7 @@ public class SectionPostsFragment extends Fragment implements
 			if(this.postsApi.getPosts().size() > 0)
 			{
 				this.mGvPosts.setVisibility(View.VISIBLE);
-				this.mPbProgress.setVisibility(View.GONE);
+				this.mPbLoading.setVisibility(View.GONE);
 				this.mTvMessage.setVisibility(View.GONE);
 			}
 		}
@@ -167,7 +171,7 @@ public class SectionPostsFragment extends Fragment implements
 		else
 		{
 			this.mGvPosts.setVisibility(View.GONE);
-			this.mPbProgress.setVisibility(View.GONE);
+			this.mPbLoading.setVisibility(View.GONE);
 			this.mTvMessage.setVisibility(View.VISIBLE);
 			this.mTvMessage.setText(message);
 		}
@@ -247,8 +251,9 @@ public class SectionPostsFragment extends Fragment implements
 	public void onPostsFetched(SparseArray<Post> posts)
 	{
 		this.mGvPosts.setVisibility(View.VISIBLE);
-		this.mPbProgress.setVisibility(View.GONE);
+		this.mPbLoading.setVisibility(View.GONE);
 		this.mTvMessage.setVisibility(View.GONE);
+		this.mPbLoadingPend.setVisibility(View.GONE);
 		
 		if(posts != null && posts.size() == 0)
 		{
@@ -273,10 +278,14 @@ public class SectionPostsFragment extends Fragment implements
 		{
 			if(this.mGvPosts != null)
 				this.mGvPosts.setVisibility(View.GONE);
-			if(this.mPbProgress != null)
-				this.mPbProgress.setVisibility(View.VISIBLE);
+			if(this.mPbLoading != null)
+				this.mPbLoading.setVisibility(View.VISIBLE);
 			if(this.mTvMessage != null)
 				this.mTvMessage.setVisibility(View.GONE);
+		}
+		else
+		{
+			this.mPbLoadingPend.setVisibility(View.VISIBLE);
 		}
 	}
 	/* OnPostsRequestedListener methods */

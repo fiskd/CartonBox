@@ -22,7 +22,7 @@ import android.widget.ListView;
 
 import com.actionbarsherlock.app.SherlockDialogFragment;
 
-public class PostTagsDialogFragment extends SherlockDialogFragment
+public class PostDetailsDialogFragment extends SherlockDialogFragment
 	implements OnItemClickListener
 {
 	public final static String TAG = "org.shujito.cartonbox.view.fragments.dialogs.PostTagsDialogFragment";

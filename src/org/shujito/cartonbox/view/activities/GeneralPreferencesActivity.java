@@ -146,13 +146,6 @@ public class GeneralPreferencesActivity extends SherlockPreferenceActivity
 			}
 		});
 		ConcurrentTask.execute(sizeTask);
-		//sizeTask.execute();
-		/*
-		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-			sizeTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-		else
-			sizeTask.execute();
-		//*/
 	}
 	
 	@Override
