@@ -8,7 +8,7 @@ import org.shujito.cartonbox.model.Post;
 import org.shujito.cartonbox.services.DownloadService;
 import org.shujito.cartonbox.view.PostsFilter.OnAfterPostsFilterListener;
 import org.shujito.cartonbox.view.adapters.PostsPagerAdapter;
-import org.shujito.cartonbox.view.fragments.dialogs.PostDetailsDialogFragment;
+import org.shujito.cartonbox.view.fragments.dialogs.PostDetailDialogFragment;
 
 import android.annotation.TargetApi;
 import android.content.Intent;
@@ -141,12 +141,12 @@ public class PostViewActivity extends SherlockFragmentActivity
 				Toast.makeText(this, this.getString(R.string.notavailable), Toast.LENGTH_SHORT).show();
 				return true;
 			case R.id.details:
-				PostDetailsDialogFragment dialog = new PostDetailsDialogFragment();
+				PostDetailDialogFragment dialog = new PostDetailDialogFragment();
 				// it's a pun!
 				Bundle humble = new Bundle();
-				humble.putSerializable(PostDetailsDialogFragment.EXTRA_POSTOBJECT, this.selectedPost);
+				humble.putSerializable(PostDetailDialogFragment.EXTRA_POSTOBJECT, this.selectedPost);
 				dialog.setArguments(humble);
-				dialog.show(this.getSupportFragmentManager(), PostDetailsDialogFragment.TAG);
+				dialog.show(this.getSupportFragmentManager(), PostDetailDialogFragment.TAG);
 				return true;
 			case R.id.browser:
 				if(this.selectedPost != null)
