@@ -116,7 +116,7 @@ public class PostViewActivity extends SherlockFragmentActivity
 					where = where.concat(".");
 					where = where.concat(this.selectedPost.getFileExt());
 					
-					// TODO: a pref
+					// TODO: pref, download stuff by folder rather than booru_md5.ext
 					if(ntn.equals(null))
 					{
 						saveDir = saveDir.concat("/");

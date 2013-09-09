@@ -64,7 +64,7 @@ public class DanbooruOldJsonPostParser implements JsonParser<Post>
 			.setHasChildren(jobj.optBoolean(TAG_HAS_CHILDREN))
 			.setLastCommentedAt(jobj.optBoolean(TAG_HAS_COMMENTS) ? "?" : null)
 			.setLastNotedAt(jobj.optBoolean(TAG_HAS_NOTES) ? "?" : null)
-			.setTags(jobj.optString(TAG_TAGS));
+			.setTagString(jobj.optString(TAG_TAGS));
 		
 		// evaluate rating
 		String rating = jobj.optString(TAG_RATING);

@@ -8,11 +8,15 @@ release, but there you go:
 -custom sites! which means adding, deleting, and
  editing, you can also customize the icon.
 -downloading images now available to all android
- platforms! (also fixed downloading sausages on
+ platforms! (this fixes downloading sausages on
  behoimi)
 -filtered/hidden posts are now gone from the full-
  screen post viewer (no more 'blocked posts')
- 
+-updated actionbar sherlock to 4.4.4 
+-I overlooked whenever the external cache pref
+ was working or not, now it does.
+-good, danbooru2 now has the file fields included
+ into the json, cartonbox uses that now
 
 
 0.5

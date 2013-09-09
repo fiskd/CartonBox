@@ -1,6 +1,7 @@
 package org.shujito.cartonbox.model;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class Post implements Serializable
 {
@@ -52,7 +53,8 @@ public class Post implements Serializable
 	// has notes
 	private String lastNotedAt;
 	// dem tags
-	private String tags;
+	private String tagString;
+	private List<Tag> tags;
 	// useful when the post lacks on information
 	private Site site;
 	
@@ -118,6 +120,11 @@ public class Post implements Serializable
 			this.sampleUrl = this.site.getUrl().concat(
 				String.format(URL_SAMPLE_FORMAT, this.md5));
 		}
+		else if((this.sampleUrl != null && this.sampleUrl.charAt(0) == '/') && this.site != null)
+		{
+			// some boards may have the image urls truncated
+			this.sampleUrl = this.site.getUrl().concat(this.sampleUrl);
+		}
 		
 		return this.sampleUrl;
 	}
@@ -127,6 +134,11 @@ public class Post implements Serializable
 		{
 			this.previewUrl = this.site.getUrl().concat(
 				String.format(URL_PREVIEW_FORMAT, this.md5));
+		}
+		if((this.previewUrl != null && this.previewUrl.charAt(0) == '/') && this.site != null)
+		{
+			// some boards may have the image urls truncated
+			this.previewUrl = this.site.getUrl().concat(this.previewUrl);
 		}
 		
 		return this.previewUrl;
@@ -147,7 +159,9 @@ public class Post implements Serializable
 	{ return this.lastCommentedAt; }
 	public String getLastNotedAt()
 	{ return this.lastNotedAt; }
-	public String getTags()
+	public String getTagString()
+	{ return this.tagString; }
+	public List<Tag> getTags()
 	{ return this.tags; }
 	public Site getSite()
 	{ return this.site; }
@@ -243,10 +257,14 @@ public class Post implements Serializable
 		this.lastNotedAt = s;
 		return this;
 	}
-	public Post setTags(String tags)
+	public Post setTagString(String s)
 	{
-		this.tags = tags;
+		this.tagString = s;
 		return this;
+	}
+	public void setTags(List<Tag> l)
+	{
+		this.tags = l;
 	}
 	public Post setSite(Site s)
 	{

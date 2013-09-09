@@ -225,8 +225,8 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 				}
 				return true;
 			case R.id.settings:
-				//Intent ntnPrefs = new Intent(this, GeneralPreferencesActivity.class);
-				//this.startActivity(ntnPrefs);
+				Intent ntnPrefs = new Intent(this, GeneralPreferencesActivity.class);
+				this.startActivity(ntnPrefs);
 				return true;
 		}
 		

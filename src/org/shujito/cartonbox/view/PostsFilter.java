@@ -31,7 +31,7 @@ public class PostsFilter extends Filter
 	boolean bShowFlagged = false;
 	boolean bShowDeleted = false;
 	boolean bEnableBlacklist = false;
-	boolean bBlacklistExactWord = false;
+	boolean bBlacklistExactWord = true;
 	String sBlacklistedTags = null;
 	
 	public PostsFilter(FilterCallback<SparseArray<Post>> callback)
@@ -100,6 +100,7 @@ public class PostsFilter extends Filter
 		// (damn you adobe/google/etc)
 		if("swf".equals(post.getFileExt()))
 			return false;
+		// TODO: make gifs work
 		
 		boolean bFilterable = false;
 		// filter safe if safe posts are disabled
@@ -125,9 +126,10 @@ public class PostsFilter extends Filter
 				boolean blacklisted = false;
 				for(String tag : tags)
 				{
+					// TODO: make it a preference
 					if(this.bBlacklistExactWord)
 					{
-						String[] postTags = post.getTags().toLowerCase(Locale.US).split("\\s+");
+						String[] postTags = post.getTagString().toLowerCase(Locale.US).split("\\s+");
 						for(String postTag : postTags)
 						{
 							if(postTag.equals(tag))
@@ -141,7 +143,7 @@ public class PostsFilter extends Filter
 					}
 					else
 					{
-						if(post.getTags().toLowerCase(Locale.US).contains(tag))
+						if(post.getTagString().toLowerCase(Locale.US).contains(tag))
 						{
 							// it has one
 							blacklisted = true;
