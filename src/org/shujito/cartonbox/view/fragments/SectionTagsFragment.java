@@ -160,7 +160,8 @@ public class SectionTagsFragment extends Fragment implements
 			@Override
 			public void run()
 			{
-				tagsApi.request();
+				if(tagsApi != null)
+					tagsApi.request();
 			}
 		}, 5000);
 	}

@@ -1,10 +1,15 @@
 package org.shujito.cartonbox.model.parser;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.shujito.cartonbox.model.Post;
 import org.shujito.cartonbox.model.Post.Rating;
+import org.shujito.cartonbox.model.Tag;
+import org.shujito.cartonbox.model.Tag.Category;
 
 
 public class DanbooruOldJsonPostParser implements JsonParser<Post>
@@ -65,6 +70,22 @@ public class DanbooruOldJsonPostParser implements JsonParser<Post>
 			.setLastCommentedAt(jobj.optBoolean(TAG_HAS_COMMENTS) ? "?" : null)
 			.setLastNotedAt(jobj.optBoolean(TAG_HAS_NOTES) ? "?" : null)
 			.setTagString(jobj.optString(TAG_TAGS));
+		
+		// parse tags (don't parse tags)
+		String[] tagString = p.getTagString().split("\\s+");
+		
+		List<Tag> tags = new ArrayList<Tag>();
+		// can't categorize these (should be possible but that would
+		// involve querying tags or storing them into a database
+		// and then etc...)
+		for(String tag : tagString)
+		{
+			tags.add(new Tag()
+				.setCategory(Category.General)
+				.setName(tag));
+		}
+		
+		p.setTags(tags);
 		
 		// evaluate rating
 		String rating = jobj.optString(TAG_RATING);

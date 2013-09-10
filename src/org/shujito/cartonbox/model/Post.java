@@ -13,6 +13,8 @@ public class Post implements Serializable
 	public static final String URL_SAMPLE_FORMAT = "/data/sample/sample-%s.jpg";
 	// thumbnail
 	public static final String URL_PREVIEW_FORMAT = "/ssd/data/preview/%s.jpg";
+	// source
+	public static final String URL_PIXIV_SOURCE = "http://www.pixiv.net/member_illust.php?mode=medium&illust_id=%s";
 	
 	// sexual rating
 	public enum Rating
@@ -55,6 +57,8 @@ public class Post implements Serializable
 	// dem tags
 	private String tagString;
 	private List<Tag> tags;
+	// source
+	// TODO: pixiv
 	// useful when the post lacks on information
 	private Site site;
 	

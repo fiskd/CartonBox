@@ -9,6 +9,7 @@ import org.shujito.cartonbox.model.db.SitesDB;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.util.DisplayMetrics;
+import android.util.SparseArray;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ public class SitesAdapter extends BaseAdapter
 {
 	Context context = null;
 	List<Site> mLsSites = null;
+	SparseArray<Drawable> drawables = null;
 	int width;
 	int numCols;
 	
@@ -35,6 +37,8 @@ public class SitesAdapter extends BaseAdapter
 		this.width = metrics.widthPixels;
 		
 		this.numCols = this.context.getResources().getInteger(R.integer.main_gvsites_numcols);
+		
+		this.drawables = new SparseArray<Drawable>();
 		
 		this.refreshSites();
 	}
@@ -54,7 +58,7 @@ public class SitesAdapter extends BaseAdapter
 		if(one == null)
 			return v; // get out quick
 		
-		Drawable dw = (Drawable)v.getTag();
+		Drawable dw = this.drawables.get(pos);
 		if(dw == null)
 		{
 			dw = Drawable.createFromPath(one.getIcon());
@@ -90,7 +94,7 @@ public class SitesAdapter extends BaseAdapter
 				//*/
 			}
 			dw.setBounds(0, 0, this.width / this.numCols, this.width / this.numCols);
-			v.setTag(dw);
+			this.drawables.put(pos, dw);
 		}
 		
 		((TextView)v).setTextAppearance(this.context, android.R.style.TextAppearance_Medium);

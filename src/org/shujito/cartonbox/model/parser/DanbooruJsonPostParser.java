@@ -87,27 +87,31 @@ public class DanbooruJsonPostParser implements JsonParser<Post>
 		List<Tag> tags = new ArrayList<Tag>();
 		for(String tag : tagArtist)
 		{
-			tags.add(new Tag()
-				.setCategory(Tag.Category.Artist)
-				.setName(tag));
+			if(tag.length() > 0)
+				tags.add(new Tag()
+					.setCategory(Tag.Category.Artist)
+					.setName(tag));
 		}
 		for(String tag : tagCharacter)
 		{
-			tags.add(new Tag()
-				.setCategory(Tag.Category.Character)
-				.setName(tag));
+			if(tag.length() > 0)
+				tags.add(new Tag()
+					.setCategory(Tag.Category.Character)
+					.setName(tag));
 		}
 		for(String tag : tagCopyright)
 		{
-			tags.add(new Tag()
-				.setCategory(Tag.Category.Copyright)
-				.setName(tag));
+			if(tag.length() > 0)
+				tags.add(new Tag()
+					.setCategory(Tag.Category.Copyright)
+					.setName(tag));
 		}
 		for(String tag : tagGeneral)
 		{
-			tags.add(new Tag()
-				.setCategory(Tag.Category.General)
-				.setName(tag));
+			if(tag.length() > 0)
+				tags.add(new Tag()
+					.setCategory(Tag.Category.General)
+					.setName(tag));
 		}
 		
 		p.setTags(tags);

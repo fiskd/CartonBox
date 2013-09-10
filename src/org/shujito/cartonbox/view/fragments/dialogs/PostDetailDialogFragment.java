@@ -47,8 +47,8 @@ public class PostDetailDialogFragment extends SherlockDialogFragment
 		
 		return new AlertDialog.Builder(this.getActivity())
 			.setTitle(String.format("Post #%d", post.getId()))
-			//.setPositiveButton(android.R.string.search_go, null)
-			//.setNegativeButton(android.R.string.cancel, null)
+			.setPositiveButton(android.R.string.search_go, null)
+			.setNegativeButton(android.R.string.unknownName, null)
 			.setView(v)
 			.create();
 	}
