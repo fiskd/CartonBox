@@ -12,34 +12,28 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.CheckedTextView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class PostDetailAdapter extends BaseAdapter
-	implements OnItemClickListener
 {
 	public class Detail
 	{
 		private String header;
 		private String content;
 		private Tag tag;
+		private boolean enabled;
 		
 		public String getHeader()
-		{
-			return header;
-		}
+		{ return this.header; }
 		public String getContent()
-		{
-			return content;
-		}
+		{ return this.content; }
 		public Tag getTag()
-		{
-			return tag;
-		}
+		{ return this.tag; }
+		public boolean isEnabled()
+		{ return this.enabled; }
 		
 		public Detail setHeader(String header)
 		{
@@ -54,6 +48,11 @@ public class PostDetailAdapter extends BaseAdapter
 		public Detail setTag(Tag tag)
 		{
 			this.tag = tag;
+			return this;
+		}
+		public Detail setEnabled(boolean enabled)
+		{
+			this.enabled = enabled;
 			return this;
 		}
 	}
@@ -98,6 +97,8 @@ public class PostDetailAdapter extends BaseAdapter
 	@Override
 	public Object getItem(int pos)
 	{
+		if(this.details != null)
+			return this.details.get(pos);
 		return null;
 	}
 	
@@ -179,6 +180,7 @@ public class PostDetailAdapter extends BaseAdapter
 			ctvTag.setVisibility(View.VISIBLE);
 			ctvTag.setText(one.getTag().getName());
 			ctvTag.setTextColor(color);
+			ctvTag.setChecked(one.isEnabled());
 		}
 		
 		return v;
@@ -188,12 +190,7 @@ public class PostDetailAdapter extends BaseAdapter
 	public boolean isEnabled(int position)
 	{
 		if(this.details != null && this.details.get(position) != null)
-			return this.details.get(position).getHeader() == null;
+			return this.details.get(position).getTag() != null;
 		return true;
-	}
-	
-	@Override
-	public void onItemClick(AdapterView<?> ada, View v, int pos, long id)
-	{
 	}
 }
