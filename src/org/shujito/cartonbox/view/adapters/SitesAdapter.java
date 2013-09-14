@@ -1,6 +1,8 @@
 package org.shujito.cartonbox.view.adapters;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.shujito.cartonbox.R;
 import org.shujito.cartonbox.model.Site;
@@ -9,7 +11,6 @@ import org.shujito.cartonbox.model.db.SitesDB;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.util.DisplayMetrics;
-import android.util.SparseArray;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +22,7 @@ public class SitesAdapter extends BaseAdapter
 {
 	Context context = null;
 	List<Site> mLsSites = null;
-	SparseArray<Drawable> drawables = null;
+	Map<Long, Drawable> drawables = null;
 	int width;
 	int numCols;
 	
@@ -38,7 +39,7 @@ public class SitesAdapter extends BaseAdapter
 		
 		this.numCols = this.context.getResources().getInteger(R.integer.main_gvsites_numcols);
 		
-		this.drawables = new SparseArray<Drawable>();
+		this.drawables = new HashMap<Long, Drawable>();
 		
 		this.refreshSites();
 	}
@@ -58,7 +59,7 @@ public class SitesAdapter extends BaseAdapter
 		if(one == null)
 			return v; // get out quick
 		
-		Drawable dw = this.drawables.get(pos);
+		Drawable dw = this.drawables.get(one.getId());
 		if(dw == null)
 		{
 			dw = Drawable.createFromPath(one.getIcon());
@@ -94,7 +95,7 @@ public class SitesAdapter extends BaseAdapter
 				//*/
 			}
 			dw.setBounds(0, 0, this.width / this.numCols, this.width / this.numCols);
-			this.drawables.put(pos, dw);
+			this.drawables.put(one.getId(), dw);
 		}
 		
 		((TextView)v).setTextAppearance(this.context, android.R.style.TextAppearance_Medium);
@@ -147,5 +148,6 @@ public class SitesAdapter extends BaseAdapter
 	{
 		SitesDB sites = new SitesDB(this.context);
 		this.mLsSites = sites.getAll();
+		this.drawables.clear();
 	}
 }

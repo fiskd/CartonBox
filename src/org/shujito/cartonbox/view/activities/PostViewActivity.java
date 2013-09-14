@@ -109,7 +109,8 @@ public class PostViewActivity extends SherlockFragmentActivity
 				{
 					Intent ntn = new Intent(this, DownloadService.class);
 					
-					String saveDir = Preferences.getString(R.string.pref_general_download_folder_key);
+					String defaultSaveDir = this.getString(R.string.app_name);
+					String saveDir = Preferences.getString(R.string.pref_general_download_folder_key, defaultSaveDir);
 					String where = this.selectedPost.getSite().getName();
 					where = where.concat(" ");
 					where = where.concat(this.selectedPost.getMd5());

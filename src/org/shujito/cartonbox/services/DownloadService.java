@@ -98,7 +98,7 @@ public class DownloadService extends IntentService
 			builder.setSmallIcon(android.R.drawable.stat_sys_download);
 			// resource id used as notification id
 			// TODO: should use system millis for multiple notifications,
-			// TODO: later, make it a pref
+			// TODO: make it a pref
 			notificationManager.notify(R.string.app_name, builder.build());
 			try
 			{
@@ -137,11 +137,6 @@ public class DownloadService extends IntentService
 						{
 							builder.setProgress(size, total, false);
 							notificationManager.notify(R.string.app_name, builder.build());
-							/*
-							this.mBuilder.setProgress(size, total, false);
-							this.mBuilder.setContentText(Formatters.humanReadableByteCount(total));
-							this.mNotificationManager.notify(this.id, this.mBuilder.build());
-							//*/
 						}
 						output.write(data, 0, bytesRead);
 					}

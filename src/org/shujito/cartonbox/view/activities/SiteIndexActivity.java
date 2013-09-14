@@ -26,13 +26,12 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 
 import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.ActionBar.TabListener;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
 public class SiteIndexActivity extends SherlockFragmentActivity implements
-	OnPageChangeListener, TabListener, OnFragmentAttachedListener,
+	OnPageChangeListener, ActionBar.TabListener, OnFragmentAttachedListener,
 	TagListItemSelectedCallback, OnErrorListener, LoginDialogCallback
 {
 	public static String EXTRA_SECTIONPAGE = "org.shujito.cartonbox.SECTIONPAGE";
@@ -47,6 +46,22 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 	ImageboardTags mTagsApi = null;
 	//
 	boolean dialogShowing = false;
+	
+	ActionBar.TabListener emptyTabListener = new ActionBar.TabListener()
+	{
+		@Override
+		public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft)
+		{
+		}
+		@Override
+		public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft)
+		{
+		}
+		@Override
+		public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft)
+		{
+		}
+	};
 	
 	@Override
 	protected void onCreate(Bundle cirno)
@@ -204,15 +219,14 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 				this.onSearchRequested();
 				return true;
 			case R.id.refresh:
-				int currentPage = this.mVpSections.getCurrentItem();
-				if(currentPage == this.findPage(R.string.section_tags))
+				if(this.mVpSections.getCurrentItem() == this.findPage(R.string.section_tags))
 				{
 					String backupQuery = this.mTagsApi.getQuery();
 					this.mTagsApi.clear();
 					this.mTagsApi.setQuery(backupQuery);
 					this.mTagsApi.request();
 				}
-				if(currentPage == this.findPage(R.string.section_posts))
+				if(this.mVpSections.getCurrentItem() == this.findPage(R.string.section_posts))
 				{
 					String[] alltags = this.mPostsApi.getTags();
 					this.mPostsApi.clear();
@@ -223,6 +237,14 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 					}
 					this.mPostsApi.request();
 				}
+				break;
+			case R.id.reset:
+				this.mTagsApi.clear();
+				this.mTagsApi.request();
+				this.mPostsApi.clear();
+				this.mPostsApi.request();
+				this.getSupportActionBar().setSubtitle(null);
+				this.mVpSections.setCurrentItem(this.findPage(R.string.section_posts));
 				return true;
 			case R.id.settings:
 				Intent ntnPrefs = new Intent(this, GeneralPreferencesActivity.class);
@@ -247,30 +269,40 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 	@Override
 	public void onPageSelected(int pos)
 	{
+		//Logger.i("SiteIndexActivity::onPageSelected", String.format("page %s", pos));
+		// find the tab
+		ActionBar.Tab tab = this.getSupportActionBar().getTabAt(pos);
+		// remove listener
+		tab.setTabListener(this.emptyTabListener);
 		// select the tab
 		this.getSupportActionBar().getTabAt(pos).select();
+		// put listener back
+		tab.setTabListener(this);
 	}
 	/* OnPageChangeListener methods */
 	
 	/* TabListener methods */
 	@Override
-	public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft)
+	public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft)
 	{
-		Logger.i("SiteIndexActivity::onTabSelected", tab.toString());
-		// move to page
-		this.mVpSections.setCurrentItem(tab.getPosition());
+		//Logger.i("SiteIndexActivity::onTabUnselected", String.format("unsel %s", tab.getPosition()));
 	}
 	
 	@Override
-	public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft)
+	public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft)
 	{
-		Logger.i("SiteIndexActivity::onTabUnselected", tab.toString());
+		//Logger.i("SiteIndexActivity::onTabSelected", String.format("sel %s", tab.getPosition()));
+		this.mVpSections.setCurrentItem(tab.getPosition());
 	}
 	
 	@Override
 	public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft)
 	{
-		Logger.i("SiteIndexActivity::onTabReselected", tab.toString());
+		//Logger.i("SiteIndexActivity::onTabReselected", String.format("resel %s", tab.getPosition()));
+		if(tab.getPosition() == this.findPage(R.string.section_posts))
+		{
+			// TODO: scroll to top
+		}
 	}
 	/* TabListener methods */
 	

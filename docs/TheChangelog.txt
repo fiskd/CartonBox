@@ -17,7 +17,8 @@ release, but there you go:
  was working or not, now it does.
 -good, danbooru2 now has the file fields included
  into the json, cartonbox uses that now
-
+-added more details to the info dialog, should now
+ also perform a multi search
 
 0.5
 # FIRST announced release

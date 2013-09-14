@@ -33,6 +33,7 @@ public class DanbooruOldJsonPostParser implements JsonParser<Post>
 	private static final String TAG_WIDTH = "width";
 	private static final String TAG_HEIGHT = "height";
 	private static final String TAG_FILE_URL = "file_url";
+	private static final String TAG_FILE_SIZE = "file_size";
 
 	private static final String TAG_RATING = "rating";
 	private static final String TAG_STATUS = "status";
@@ -66,6 +67,7 @@ public class DanbooruOldJsonPostParser implements JsonParser<Post>
 			.setSampleUrl(jobj.optString(TAG_SAMPLE_FILE_URL))
 			.setPreviewUrl(jobj.optString(TAG_PREVIEW_FILE_URL))
 			.setUrl(jobj.optString(TAG_FILE_URL))
+			.setFileSize(jobj.optInt(TAG_FILE_SIZE))
 			.setHasChildren(jobj.optBoolean(TAG_HAS_CHILDREN))
 			.setLastCommentedAt(jobj.optBoolean(TAG_HAS_COMMENTS) ? "?" : null)
 			.setLastNotedAt(jobj.optBoolean(TAG_HAS_NOTES) ? "?" : null)
