@@ -10,11 +10,13 @@ import org.shujito.cartonbox.controller.ImageLoader;
 import org.shujito.cartonbox.controller.listeners.OnImageFetchedListener;
 import org.shujito.cartonbox.model.Download;
 import org.shujito.cartonbox.model.db.DownloadsDB;
+import org.shujito.cartonbox.utils.BitmapCache;
 import org.shujito.cartonbox.utils.ConcurrentTask;
 
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,11 +29,13 @@ public class DownloadsAdapter extends BaseAdapter
 {
 	Context context = null;
 	List<Download> mLsDownloads = null;
+	BitmapCache cache = null;
 	
 	public DownloadsAdapter(Context context)
 	{
 		this.context = context;
 		this.mLsDownloads = new ArrayList<Download>();
+		this.cache = new BitmapCache();
 	}
 	
 	@Override
@@ -69,7 +73,7 @@ public class DownloadsAdapter extends BaseAdapter
 			v = inf.inflate(R.layout.download_item, dad, false);
 		}
 		
-		Download one = this.mLsDownloads.get(pos);
+		final Download one = this.mLsDownloads.get(pos);
 		// the id can be used as time
 		long ago = now - one.getId();
 		int hours = (int)(ago / (60 * 60 * 1000));
@@ -116,18 +120,39 @@ public class DownloadsAdapter extends BaseAdapter
 		
 		final ImageView iv = ((ImageView)v.findViewById(R.id.ivPic));
 		
-		ImageLoader down = new ImageLoader(this.context, one.getLocation());
-		down.setWidth(128);
-		down.setHeight(128);
-		down.setOnImageFetchedListener(new OnImageFetchedListener()
+		Bitmap cached = this.cache.getBitmapFromMemCache(one.getId());
+		if(cached != null)
 		{
-			@Override
-			public void onImageFetched(Bitmap b)
+			iv.setBackgroundColor(Color.BLACK);
+			iv.setImageBitmap(cached);
+		}
+		else
+		{
+			ImageLoader load = new ImageLoader(one.getLocation());
+			if(iv.getTag() instanceof ImageLoader)
 			{
-				iv.setImageBitmap(b);
+				ImageLoader attached = (ImageLoader)iv.getTag();
+				attached.setOnImageFetchedListener(null);
 			}
-		});
-		ConcurrentTask.execute(down);
+			
+			iv.setTag(load);
+			iv.setImageBitmap(null);
+			iv.setBackgroundColor(Color.GRAY);
+			
+			load.setWidth(128);
+			load.setHeight(128);
+			load.setOnImageFetchedListener(new OnImageFetchedListener()
+			{
+				@Override
+				public void onImageFetched(Bitmap b)
+				{
+					cache.addBitmapToMemCache(one.getId(), b);
+					iv.setBackgroundColor(Color.BLACK);
+					iv.setImageBitmap(b);
+				}
+			});
+			ConcurrentTask.execute(load);
+		}
 		
 		return v;
 	}

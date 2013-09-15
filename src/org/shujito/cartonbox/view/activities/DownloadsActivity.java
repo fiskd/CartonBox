@@ -2,9 +2,12 @@ package org.shujito.cartonbox.view.activities;
 
 import java.io.File;
 
+import org.shujito.cartonbox.R;
 import org.shujito.cartonbox.model.Download;
 import org.shujito.cartonbox.view.adapters.DownloadsAdapter;
 
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -23,6 +26,9 @@ public class DownloadsActivity extends SherlockListActivity
 		super.onCreate(savedInstanceState);
 		this.adapter = new DownloadsAdapter(this);
 		this.setListAdapter(this.adapter);
+		
+		NotificationManager notman = (NotificationManager)this.getSystemService(Context.NOTIFICATION_SERVICE);
+		notman.cancel(R.string.app_name);
 	}
 	
 	@Override

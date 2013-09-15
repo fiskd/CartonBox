@@ -5,7 +5,6 @@ import java.io.File;
 import org.shujito.cartonbox.controller.listeners.OnImageFetchedListener;
 import org.shujito.cartonbox.utils.ImageUtils;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 
@@ -27,16 +26,14 @@ public class ImageLoader extends AsyncTask<Void, Float, Bitmap>
 	/* fields */
 	
 	private String location = null;
-	private Context context = null;
 	private boolean alreadyExecuted;
 	
 	int width, height;
 	
 	/* constructor */
 	
-	public ImageLoader(Context context, String location)
+	public ImageLoader(String location)
 	{
-		this.context = context;
 		this.location = location;
 		this.width = 256;
 		this.height = 256;
