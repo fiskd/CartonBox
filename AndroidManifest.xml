@@ -42,6 +42,7 @@
 		</activity>
 		<activity android:name="org.shujito.cartonbox.view.activities.PostViewActivity" />
 		<activity android:name="org.shujito.cartonbox.view.activities.GeneralPreferencesActivity" />
+		<activity android:name="org.shujito.cartonbox.view.activities.DownloadsActivity" />
 		
 		<service android:name="org.shujito.cartonbox.services.DownloadService"/>
 	</application>

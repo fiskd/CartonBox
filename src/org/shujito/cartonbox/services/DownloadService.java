@@ -11,6 +11,8 @@ import java.net.URL;
 import org.shujito.cartonbox.CartonBox;
 import org.shujito.cartonbox.Logger;
 import org.shujito.cartonbox.R;
+import org.shujito.cartonbox.model.Download;
+import org.shujito.cartonbox.model.db.DownloadsDB;
 import org.shujito.cartonbox.utils.io.SimpleMediaScan;
 
 import android.app.IntentService;
@@ -158,6 +160,15 @@ public class DownloadService extends IntentService
 				builder.setContentTitle(this.getText(R.string.download_failed));
 				builder.setTicker(this.getText(R.string.download_failed));
 			}
+			
+			Download dl = new Download();
+			dl.setId(System.currentTimeMillis());
+			dl.setLocation(destination);
+			dl.setName(display);
+			dl.setSource(source);
+			
+			DownloadsDB ddb = new DownloadsDB(this);
+			ddb.add(dl);
 			
 			builder.setOngoing(false);
 			builder.setProgress(0, 0, false);
