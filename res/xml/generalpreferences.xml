@@ -8,6 +8,8 @@
 		<EditTextPreference
 			android:key="@string/pref_general_download_folder_key"
 			android:title="@string/pref_general_download_folder"
+			android:dialogMessage="@string/pref_general_download_folder_dialogmsg"
+			android:singleLine="true"
 			android:defaultValue="@string/app_name" />
 		<CheckBoxPreference
 			android:key="@string/pref_general_cacheexternal_key"

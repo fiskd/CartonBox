@@ -14,6 +14,7 @@ import org.shujito.cartonbox.R;
 import org.shujito.cartonbox.model.Download;
 import org.shujito.cartonbox.model.db.DownloadsDB;
 import org.shujito.cartonbox.utils.io.SimpleMediaScan;
+import org.shujito.cartonbox.view.activities.DownloadsActivity;
 
 import android.app.IntentService;
 import android.app.NotificationManager;
@@ -77,10 +78,10 @@ public class DownloadService extends IntentService
 		
 		File dest = Environment.getExternalStoragePublicDirectory(directory);
 		File fileDest = new File(dest.getAbsolutePath(), destination);
-		/*
-		Intent ntn = new Intent(Intent.ACTION_VIEW);
-		ntn.setDataAndType(Uri.fromFile(fileDest), "image/*");
-		PendingIntent viewImageIntent = PendingIntent.getActivity(this, 0, ntn, 0);
+		//*
+		Intent ntn = new Intent(this, DownloadsActivity.class);
+		//ntn.setDataAndType(Uri.fromFile(fileDest), "image/*");
+		PendingIntent viewDownloadsIntent = PendingIntent.getActivity(this, 0, ntn, 0);
 		//*/
 		// file doesn't exist
 		if(!fileDest.exists())
@@ -163,7 +164,7 @@ public class DownloadService extends IntentService
 			
 			Download dl = new Download();
 			dl.setId(System.currentTimeMillis());
-			dl.setLocation(destination);
+			dl.setLocation(fileDest.getAbsolutePath());
 			dl.setName(display);
 			dl.setSource(source);
 			
@@ -173,7 +174,7 @@ public class DownloadService extends IntentService
 			builder.setOngoing(false);
 			builder.setProgress(0, 0, false);
 			builder.setSmallIcon(android.R.drawable.stat_sys_download_done);
-			//builder.setContentIntent(viewImageIntent);
+			builder.setContentIntent(viewDownloadsIntent);
 			notificationManager.notify(R.string.app_name, builder.build());
 			// this helps scanning the files so they show up on the gallery
 			// XXX: sending 'this' will leak, send application context instead
@@ -184,7 +185,7 @@ public class DownloadService extends IntentService
 			builder.setContentTitle(this.getText(R.string.already_downloaded));
 			builder.setTicker(this.getText(R.string.already_downloaded));
 			builder.setSmallIcon(android.R.drawable.stat_sys_download_done);
-			//builder.setContentIntent(viewImageIntent);
+			builder.setContentIntent(viewDownloadsIntent);
 			notificationManager.notify(R.string.app_name, builder.build());
 		}
 	}

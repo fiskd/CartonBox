@@ -1,6 +1,7 @@
 package org.shujito.cartonbox.view.activities;
 
 import org.shujito.cartonbox.CartonBox;
+import org.shujito.cartonbox.Logger;
 import org.shujito.cartonbox.Preferences;
 import org.shujito.cartonbox.R;
 import org.shujito.cartonbox.controller.DanbooruImageBoardPosts;
@@ -11,6 +12,7 @@ import org.shujito.cartonbox.controller.ImageboardApis;
 import org.shujito.cartonbox.controller.ImageboardPosts;
 import org.shujito.cartonbox.controller.ImageboardTags;
 import org.shujito.cartonbox.model.Site;
+import org.shujito.cartonbox.model.db.DownloadsDB;
 import org.shujito.cartonbox.model.db.SitesDB;
 import org.shujito.cartonbox.utils.ConcurrentTask;
 import org.shujito.cartonbox.utils.io.ClearDirectoryTask;
@@ -41,6 +43,7 @@ import android.widget.GridView;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 
 public class MainActivity extends SherlockFragmentActivity
 	implements OnItemClickListener, OnItemLongClickListener, DialogInterface.OnClickListener, AddSiteDialogCallback
@@ -49,6 +52,8 @@ public class MainActivity extends SherlockFragmentActivity
 	SitesAdapter mSitesAdapter = null;
 	//List<Site> sites = null;
 	Site selectedSite = null;
+	MenuItem itemDownloads = null;
+	boolean anyDownloads = false;
 	
 	@Override
 	protected void onCreate(Bundle cirno)
@@ -87,6 +92,12 @@ public class MainActivity extends SherlockFragmentActivity
 			CartonBox.getInstance().setApis(null);
 		}
 		
+		DownloadsDB downloads = new DownloadsDB(this);
+		this.anyDownloads = downloads.getCount() > 0;
+		
+		if(this.itemDownloads != null)
+			this.itemDownloads.setVisible(this.anyDownloads);
+		
 		if(this.mSitesAdapter != null)
 			this.mSitesAdapter.notifyDataSetChanged();
 	}
@@ -94,17 +105,26 @@ public class MainActivity extends SherlockFragmentActivity
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu)
 	{
+		Logger.i(this.getClass().getSimpleName(), "onCreateOptionsMenu");
 		this.getSupportMenuInflater().inflate(R.menu.main, menu);
+		
+		this.itemDownloads = menu.findItem(R.id.downloads).setVisible(this.anyDownloads);
+		
 		return true;
 	}
 	
 	@Override
 	public boolean onOptionsItemSelected(com.actionbarsherlock.view.MenuItem item)
 	{
+		Logger.i(this.getClass().getSimpleName(), "onOptionsItemSelected");
 		switch(item.getItemId())
 		{
 			case R.id.addsite:
 				this.addSite();
+				return true;
+			case R.id.downloads:
+				Intent ntn = new Intent(this, DownloadsActivity.class);
+				this.startActivity(ntn);
 				return true;
 			case R.id.settings:
 				Intent ntnPrefs = new Intent(this, GeneralPreferencesActivity.class);

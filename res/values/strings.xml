@@ -58,6 +58,7 @@
 	<string name="no_posts">No posts!</string>
 	<string name="no_tags">No tags!</string>
 	
+	<string name="downloads">See downloads</string>
 	<string name="downloading">Downloading&#8230;</string>
 	<string name="already_downloaded">Already downloaded</string>
 	<string name="loading">Loading&#8230;</string>
@@ -86,6 +87,7 @@
 	
 	<string name="pref_general">General</string>
 	<string name="pref_general_download_folder">Download folder</string>
+	<string name="pref_general_download_folder_dialogmsg">Downloaded images will be located in this directory.</string>
 	<string name="pref_general_cacheexternal">Cache to SD/External</string>
 	<string name="pref_general_cachesize">Maximum cache size</string>
 	<string name="pref_general_cachesize_desc">Current is %s</string>

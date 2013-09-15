@@ -87,8 +87,6 @@ public class ImageDownloader extends AsyncTask<Void, Float, Bitmap>
 	@Override
 	protected Bitmap doInBackground(Void... params)
 	{
-		boolean bCorrupted = false;
-		
 		if(this.url == null)
 			return null;
 		
@@ -189,20 +187,16 @@ public class ImageDownloader extends AsyncTask<Void, Float, Bitmap>
 		{
 			Logger.e("ImageDownloader::doInBackground", ex.toString(), ex);
 			System.gc();
-			bCorrupted = true;
 		}
 		catch(Exception ex)
 		{
-			bCorrupted = true;
 			if(ex != null && ex.getMessage() != null)
 				Logger.e("ImageDownloader::doInBackground", ex.getMessage(), ex);
 			else
 				Logger.e("ImageDownloader::doInBackground", "whatever did happen", ex);
 		}
 		
-		if(!bCorrupted)
-			return bmp;
-		return null;
+		return bmp;
 	}
 	
 	@Override
