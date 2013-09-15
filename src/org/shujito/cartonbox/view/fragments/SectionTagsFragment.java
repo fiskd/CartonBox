@@ -145,6 +145,16 @@ public class SectionTagsFragment extends Fragment implements
 		if(errCode == HttpURLConnection.HTTP_CLIENT_TIMEOUT && this.mTagsAdapter != null && this.mTagsAdapter.getCount() != 0)
 		{
 			Toast.makeText(this.getActivity(), message, Toast.LENGTH_SHORT).show();
+			// request again...
+			new Handler().postDelayed(new Runnable()
+			{
+				@Override
+				public void run()
+				{
+					if(tagsApi != null)
+						tagsApi.request();
+				}
+			}, 5000);
 		}
 		else
 		{
@@ -153,17 +163,6 @@ public class SectionTagsFragment extends Fragment implements
 			this.mTvMessage.setVisibility(View.VISIBLE);
 			this.mTvMessage.setText(message);
 		}
-		
-		// request again...
-		new Handler().postDelayed(new Runnable()
-		{
-			@Override
-			public void run()
-			{
-				if(tagsApi != null)
-					tagsApi.request();
-			}
-		}, 5000);
 	}
 	/* OnTagsFetchedListener methods */
 	

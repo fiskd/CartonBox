@@ -13,4 +13,10 @@
 		android:showAsAction="always"
 		android:title="@string/news" />
 	
+	<item
+		android:id="@+id/privacy"
+		android:icon="@drawable/ic_action_help"
+		android:showAsAction="ifRoom"
+		android:title="@string/privacy" />
+	
 </menu>

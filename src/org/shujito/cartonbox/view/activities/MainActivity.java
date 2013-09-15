@@ -37,6 +37,7 @@ import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.GridView;
@@ -49,6 +50,7 @@ public class MainActivity extends SherlockFragmentActivity
 	implements OnItemClickListener, OnItemLongClickListener, DialogInterface.OnClickListener, AddSiteDialogCallback
 {
 	GridView mGridView = null;
+	TextView mTvNosites = null;
 	SitesAdapter mSitesAdapter = null;
 	//List<Site> sites = null;
 	Site selectedSite = null;
@@ -62,19 +64,23 @@ public class MainActivity extends SherlockFragmentActivity
 		this.setContentView(R.layout.main);
 		
 		// init views
+		this.mTvNosites = (TextView)this.findViewById(R.id.tvNosites);
 		this.mSitesAdapter = new SitesAdapter(this);
+		
 		this.mGridView = (GridView)this.findViewById(R.id.gvSites);
 		this.mGridView.setAdapter(this.mSitesAdapter);
 		this.mGridView.setOnItemClickListener(this);
 		this.mGridView.setOnItemLongClickListener(this);
 		this.registerForContextMenu(this.mGridView);
 		
+		this.mTvNosites.setVisibility(this.mSitesAdapter.getCount() > 0 ? View.GONE : View.VISIBLE);
+		
 		// count adapter size
-		if(this.mSitesAdapter.getCount() == 0)
-		{
+		//if(this.mSitesAdapter.getCount() == 0)
+		//{
 			// upgraded or anything?
-			this.addSite();
-		}
+			//this.addSite();
+		//}
 		
 		//BlogNewsDialog dialog = new BlogNewsDialog(this);
 		//dialog.createDialog().show();
@@ -297,15 +303,15 @@ public class MainActivity extends SherlockFragmentActivity
 		
 		if(this.mSitesAdapter != null)
 			this.mSitesAdapter.notifyDataSetChanged();
+		
+		this.mTvNosites.setVisibility(this.mSitesAdapter.getCount() > 0 ? View.GONE : View.VISIBLE);
 	}
 	
 	@Override
 	public void onCancel()
 	{
 		// not used?
-		SitesDB sites = new SitesDB(this);
-		if(sites.getCount() == 0)
-			this.finish();
+		this.mTvNosites.setVisibility(this.mSitesAdapter.getCount() > 0 ? View.GONE : View.VISIBLE);
 	}
 	/* AddSiteDialogCallback methods */
 	
@@ -317,10 +323,7 @@ public class MainActivity extends SherlockFragmentActivity
 		if(sitesdb.delete(this.selectedSite))
 		{
 			this.mSitesAdapter.notifyDataSetChanged();
-			if(sitesdb.getCount() == 0)
-			{
-				this.addSite();
-			}
+			this.mTvNosites.setVisibility(this.mSitesAdapter.getCount() > 0 ? View.GONE : View.VISIBLE);
 		}
 	}
 	/* android.content.DialogInterface.OnClickListener methods */

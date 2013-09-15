@@ -3,6 +3,7 @@
 	<string name="app_name">CartonBox</string>
 	<string name="googleplay">View in Store</string>
 	<string name="news">News</string>
+	<string name="privacy">Privacy policy</string>
 	
 	<string name="login_details">Login details</string>
 	<string name="login_message">Certain booru boards require registration for outside use.</string>
@@ -14,6 +15,16 @@
 	<string name="enteravalidurl">You should enter a valid url</string>
 	<string name="enterusername">Enter your username</string>
 	<string name="enterpassword">Enter your password</string>
+	<string name="help">Help</string>
+	<string name="icons">Sample icons</string>
+	
+	<string name="help_msg">"This dialog helps you add custom sites, put a name and the url of the booru site (gelbooru sites don\'t work at the moment).
+
+You also need to specify the type of booru board you are going to add; currently *.donmai.us boorus are of the Danbooru 2.x type, other boorus (except for gelbooru, safebooru and the boorus at booru.org, which all are gelbooru) should be of the danbooru 1.18.x type (some examples: behoimi, one yukkuri place, yande.re, konachan, although yande.re definitely will not work).
+
+You will also need to provide your own display icons, images at 512 x 512 px should look fine."</string>
+	
+	<string name="nosites">You have no sites added.</string>
 	
 	<string name="settings">Settings</string>
 	<string name="search">Search</string>

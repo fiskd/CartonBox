@@ -167,6 +167,16 @@ public class SectionPostsFragment extends Fragment implements
 		if(errCode == HttpURLConnection.HTTP_CLIENT_TIMEOUT && this.mPostsAdapter != null && this.mPostsAdapter.getCount() != 0)
 		{
 			Toast.makeText(this.getActivity(), message, Toast.LENGTH_SHORT).show();
+			// it failed, request again
+			new Handler().postDelayed(new Runnable()
+			{
+				@Override
+				public void run()
+				{
+					if(postsApi != null)
+						postsApi.request();
+				}
+			}, 3000);
 		}
 		else
 		{
@@ -175,17 +185,6 @@ public class SectionPostsFragment extends Fragment implements
 			this.mTvMessage.setVisibility(View.VISIBLE);
 			this.mTvMessage.setText(message);
 		}
-		
-		// it failed, request again
-		new Handler().postDelayed(new Runnable()
-		{
-			@Override
-			public void run()
-			{
-				if(postsApi != null)
-					postsApi.request();
-			}
-		}, 3000);
 	}
 	/* OnErrorListener methods */
 	

@@ -1,9 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<GridView xmlns:android="http://schemas.android.com/apk/res/android"
-	android:id="@+id/gvSites"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="match_parent"
-	android:layout_height="match_parent"
-	android:gravity="center"
-	android:numColumns="@integer/main_gvsites_numcols" >
+	android:layout_height="match_parent">
 	
-</GridView>
+	<TextView
+		android:id="@+id/tvNosites"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_gravity="center"
+		android:gravity="center"
+		android:textAppearance="?android:attr/textAppearanceLarge"
+		android:textSize="@dimen/fontsize"
+		android:text="@string/nosites" />
+	
+	<GridView 
+		android:id="@+id/gvSites"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:gravity="center"
+		android:numColumns="@integer/main_gvsites_numcols" >
+	</GridView>
+	
+</FrameLayout>

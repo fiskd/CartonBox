@@ -60,6 +60,24 @@ public abstract class Downloader<T> extends AsyncTask<Void, Float, T>
 			http.connect();
 			// TODO: handle better, http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html
 			this.code = http.getResponseCode();
+			this.message = http.getResponseMessage();
+			
+			//Map<String, List<String>> headers = http.getHeaderFields();
+			
+			while(this.code == HttpURLConnection.HTTP_MOVED_PERM)
+			{
+				// where now?
+				String newLocation = http.getHeaderField("Location");
+				// disconnect
+				http.disconnect();
+				// new url
+				url = new URL(newLocation);
+				// reconnect again
+				http = (HttpURLConnection)url.openConnection();
+				// what code do we have now?
+				this.code = http.getResponseCode();
+				this.message = http.getResponseMessage();
+			}
 			
 			// http://www-01.ibm.com/support/docview.wss?uid=swg21249300
 			InputStream is = null;

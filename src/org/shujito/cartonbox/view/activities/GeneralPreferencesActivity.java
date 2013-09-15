@@ -112,15 +112,22 @@ public class GeneralPreferencesActivity extends SherlockPreferenceActivity
 		
 		SitesDB sitesdb = new SitesDB(this);
 		List<Site> sites = sitesdb.getAll();
-		for(Site site : sites)
+		if(sites.size() != 0)
 		{
-			Preference sitePref = new Preference(this);
-			sitePref.setTitle(site.getName());
-			sitePref.setSummary(site.getUrl());
-			sitePref.setEnabled(false);
-			// TODO: launch site prefs here
-			//sitePref.setIntent(new Intent(Intent.ACTION_VIEW, Uri.parse(site.getUrl())));
-			this.prefSites.addPreference(sitePref);
+			for(Site site : sites)
+			{
+				Preference sitePref = new Preference(this);
+				sitePref.setTitle(site.getName());
+				sitePref.setSummary(site.getUrl());
+				sitePref.setEnabled(false);
+				// TODO: launch site prefs here
+				//sitePref.setIntent(new Intent(Intent.ACTION_VIEW, Uri.parse(site.getUrl())));
+				this.prefSites.addPreference(sitePref);
+			}
+		}
+		else
+		{
+			this.prefScreen.removePreference(this.prefSites);
 		}
 		
 		// put listeners
@@ -161,16 +168,19 @@ public class GeneralPreferencesActivity extends SherlockPreferenceActivity
 		switch(item.getItemId())
 		{
 			case R.id.googleplay:
-				Intent ntn = new Intent(Intent.ACTION_VIEW);
-				String link = String.format("market://details?id=%s", this.getPackageName());
-				ntn.setData(Uri.parse(link));
-				this.startActivity(ntn);
+				Intent market = new Intent(Intent.ACTION_VIEW);
+				String marketLink = String.format("market://details?id=%s", this.getPackageName());
+				market.setData(Uri.parse(marketLink));
+				this.startActivity(market);
 				return true;
 			case R.id.news:
-				// TODO: show news feed from http://shujito.org here
 				BlogNewsDialog newsDialog = new BlogNewsDialog(this);
 				newsDialog.createDialog(false).show();
-				
+				return true;
+			case R.id.privacy:
+				Intent privacy = new Intent(Intent.ACTION_VIEW);
+				privacy.setData(Uri.parse("http://www.shujito.org/cartonbox/privacy"));
+				this.startActivity(privacy);
 				return true;
 		}
 		

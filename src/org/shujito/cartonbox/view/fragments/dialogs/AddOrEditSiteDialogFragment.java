@@ -136,6 +136,7 @@ public class AddOrEditSiteDialogFragment extends SherlockDialogFragment
 			.setView(v)
 			.setPositiveButton(android.R.string.ok, null)
 			.setNegativeButton(android.R.string.cancel, null)
+			.setNeutralButton(R.string.help, null)
 			.create();
 	}
 	
@@ -151,6 +152,9 @@ public class AddOrEditSiteDialogFragment extends SherlockDialogFragment
 		((AlertDialog)this.getDialog())
 			.getButton(DialogInterface.BUTTON_NEGATIVE)
 			.setOnClickListener(this);
+		((AlertDialog)this.getDialog())
+			.getButton(DialogInterface.BUTTON_NEUTRAL)
+			.setOnClickListener(this);
 	}
 	
 	/* View.OnClickListener */
@@ -161,6 +165,8 @@ public class AddOrEditSiteDialogFragment extends SherlockDialogFragment
 			this.onClick(this.getDialog(), DialogInterface.BUTTON_POSITIVE);
 		else if(((AlertDialog)this.getDialog()).getButton(DialogInterface.BUTTON_NEGATIVE).equals(v))
 			this.onClick(this.getDialog(), DialogInterface.BUTTON_NEGATIVE);
+		else if(((AlertDialog)this.getDialog()).getButton(DialogInterface.BUTTON_NEUTRAL).equals(v))
+			this.onClick(this.getDialog(), DialogInterface.BUTTON_NEUTRAL);
 		else if(this.btnAddIcon.equals(v))
 		{
 			//Intent ntn = new Intent(Intent.ACTION_VIEW, null);
@@ -244,6 +250,26 @@ public class AddOrEditSiteDialogFragment extends SherlockDialogFragment
 			this.dismiss();
 			if(this.callback != null)
 				this.callback.onCancel();
+		}
+		else if(which == DialogInterface.BUTTON_NEUTRAL)
+		{
+			//Toast.makeText(this.getActivity(), "hue", Toast.LENGTH_SHORT).show();
+			AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this.getActivity())
+				.setTitle(R.string.help)
+				.setMessage(R.string.help_msg)
+				.setPositiveButton(android.R.string.ok, null)
+				.setNeutralButton(R.string.icons, new DialogInterface.OnClickListener()
+				{
+					@Override
+					public void onClick(DialogInterface dialog, int which)
+					{
+						Intent ntn = new Intent(Intent.ACTION_VIEW);
+						ntn.setData(Uri.parse("http://www.shujito.org/cartonbox/icons"));
+						getActivity().startActivity(ntn);
+					}
+				});
+			
+			alertBuilder.create().show();
 		}
 	}
 	/* DialogInterface.OnClickListener */
