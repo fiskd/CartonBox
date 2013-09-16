@@ -355,7 +355,7 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 	@Override
 	public void onError(int errCode, String message)
 	{
-		//Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+		//Toast.makeText(this, String.format("%s: %s", errCode, message), Toast.LENGTH_LONG).show();
 		if(errCode == 403)
 		{
 			if(!this.dialogShowing)

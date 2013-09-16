@@ -1,8 +1,7 @@
 The Changelog
 
-I'm bad at making changelogs (because I don't),
-I often forgot most of what I do since the last
-release, but there you go:
+0.7
+(nothing yet)
 
 0.6
 -custom sites! which means adding, deleting, and
@@ -19,6 +18,9 @@ release, but there you go:
  into the json, cartonbox uses that now
 -added more details to the info dialog, should now
  also perform a multi search
+-downloads list, and view downloaded images from
+ there
+-choose where to download images
 
 0.5
 # FIRST announced release

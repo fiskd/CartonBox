@@ -185,6 +185,12 @@ public class SectionPostsFragment extends Fragment implements
 			this.mTvMessage.setVisibility(View.VISIBLE);
 			this.mTvMessage.setText(message);
 		}
+		
+		if(errCode == HttpURLConnection.HTTP_NOT_FOUND)
+		{
+			Toast.makeText(this.getActivity(), this.getText(R.string.notbooru), Toast.LENGTH_LONG).show();
+			this.getActivity().finish();
+		}
 	}
 	/* OnErrorListener methods */
 	
@@ -215,32 +221,40 @@ public class SectionPostsFragment extends Fragment implements
 		ntn.putExtra(PostViewActivity.EXTRA_POST_INDEX, pos);
 		//ntn.putExtra(PostViewActivity.EXTRA_POST_KEY, key);
 		
-		// zoom animation!!
-		// aid used: https://www.youtube.com/watch?v=XNF8pXr6whU
-		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
+		Post post = this.postsApi.getPosts().get((int)id);
+		if((post.getUrl() != null && post.getUrl().length() > 0) && (post.getSampleUrl() != null && post.getSampleUrl().length() > 0) && (post.getPreviewUrl() != null && post.getPreviewUrl().length() > 0))
 		{
-			Bundle b = null;
-			Bitmap thumb = (Bitmap)this.mPostsAdapter.getItem(pos);
-			
-			if(thumb != null)
+			// zoom animation!!
+			// aid used: https://www.youtube.com/watch?v=XNF8pXr6whU
+			if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
 			{
-				// do the fun thing
-				int offsetx = (v.getWidth() - thumb.getWidth()) / 2;
-				int offsety = (v.getHeight() - thumb.getHeight()) / 2;
+				Bundle b = null;
+				Bitmap thumb = (Bitmap)this.mPostsAdapter.getItem(pos);
 				
-				b = ActivityOptions.makeThumbnailScaleUpAnimation(v, thumb, offsetx, offsety).toBundle();
+				if(thumb != null)
+				{
+					// do the fun thing
+					int offsetx = (v.getWidth() - thumb.getWidth()) / 2;
+					int offsety = (v.getHeight() - thumb.getHeight()) / 2;
+					
+					b = ActivityOptions.makeThumbnailScaleUpAnimation(v, thumb, offsetx, offsety).toBundle();
+				}
+				else
+				{
+					// do the other fun thing
+					b = ActivityOptions.makeScaleUpAnimation(v, 0, 0, v.getWidth(), v.getHeight()).toBundle();
+				}
+				this.getActivity().startActivity(ntn, b);
 			}
 			else
 			{
-				// do the other fun thing
-				b = ActivityOptions.makeScaleUpAnimation(v, 0, 0, v.getWidth(), v.getHeight()).toBundle();
+				// do the boring thing
+				this.startActivity(ntn);
 			}
-			this.getActivity().startActivity(ntn, b);
 		}
 		else
 		{
-			// do the boring thing
-			this.startActivity(ntn);
+			Toast.makeText(this.getActivity(), this.getText(R.string.configureit), Toast.LENGTH_SHORT).show();
 		}
 	}
 	/* OnItemClickListener methods */

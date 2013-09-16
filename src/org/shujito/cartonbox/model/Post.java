@@ -102,7 +102,7 @@ public class Post implements Serializable
 			this.url = this.site.getUrl().concat(
 				String.format(URL_FILE_FORMAT, this.md5, this.fileExt));
 		}
-		else if((this.url != null && this.url.charAt(0) == '/') && this.site != null)
+		else if((this.url != null && this.url.length() > 0 && this.url.charAt(0) == '/') && this.site != null)
 		{
 			// some boards may have the image urls truncated
 			this.url = this.site.getUrl().concat(this.url);
@@ -124,7 +124,7 @@ public class Post implements Serializable
 			this.sampleUrl = this.site.getUrl().concat(
 				String.format(URL_SAMPLE_FORMAT, this.md5));
 		}
-		else if((this.sampleUrl != null && this.sampleUrl.charAt(0) == '/') && this.site != null)
+		else if((this.sampleUrl != null && this.sampleUrl.length() > 0 && this.sampleUrl.charAt(0) == '/') && this.site != null)
 		{
 			// some boards may have the image urls truncated
 			this.sampleUrl = this.site.getUrl().concat(this.sampleUrl);
@@ -139,7 +139,7 @@ public class Post implements Serializable
 			this.previewUrl = this.site.getUrl().concat(
 				String.format(URL_PREVIEW_FORMAT, this.md5));
 		}
-		if((this.previewUrl != null && this.previewUrl.charAt(0) == '/') && this.site != null)
+		if((this.previewUrl != null && this.previewUrl.length() > 0 && this.previewUrl.charAt(0) == '/') && this.site != null)
 		{
 			// some boards may have the image urls truncated
 			this.previewUrl = this.site.getUrl().concat(this.previewUrl);
