@@ -1,59 +1,41 @@
 The Changelog
 
 0.7
-(nothing yet)
+-image zooming (pinch, double tap)
 
 0.6
--custom sites! which means adding, deleting, and
- editing, you can also customize the icon.
--downloading images now available to all android
- platforms! (this fixes downloading sausages on
- behoimi)
--filtered/hidden posts are now gone from the full-
- screen post viewer (no more 'blocked posts')
--updated actionbar sherlock to 4.4.4 
--I overlooked whenever the external cache pref
- was working or not, now it does.
--good, danbooru2 now has the file fields included
- into the json, cartonbox uses that now
--added more details to the info dialog, should now
- also perform a multi search
--downloads list, and view downloaded images from
- there
+-custom sites! which means adding, deleting, and editing, you can also customize the icon.
+-downloading images now available to all android platforms! (this fixes downloading sausages on behoimi)
+-filtered/hidden posts are now gone from the full-screen post viewer (no more 'blocked posts')
+-updated actionbar sherlock to 4.4.4
+-I overlooked whenever the external cache pref was working or not, now it does.
+-good, danbooru2 now has the file fields included into the json, cartonbox uses that now
+-added more details to the info dialog, should now also perform a multi search
+-downloads list, and view downloaded images from there
 -choose where to download images
 
 0.5
 # FIRST announced release
 -can save images now (2.3.3 and up currently)
--added some eyecandy to the grid items and post
- view.
+-added some eyecandy to the grid items and post view.
 -fixed memory crash
--the login dialog closes the activity if it is
- cancelled.
+-the login dialog closes the activity if it is cancelled.
 -added marks for deleted posts (gray circle)
 -can show/hide deleted and flagged posts
--rating filters fixed, now they work as they
- should
--now showing response errors that were not showing
- (time out, not found, denied, etc)
+-rating filters fixed, now they work as they should
+-now showing response errors that were not showing (time out, not found, denied, etc)
 -removed yande.re from the default servers list
--new (better) icons! (taken from the free icons
- pack from www.androidicons.com)
+-new (better) icons! (taken from the free icons pack from www.androidicons.com)
 -blacklists! (basic support)
--artist and copyright tag colors were swapped,
- not anymore
--newsfeed reader (only for important cartonbox
- announcements)
+-artist and copyright tag colors were swapped, not anymore
+-newsfeed reader (only for important cartonbox announcements)
 
 0.4
 # second (emergency) release
--downloads of anything (posts, tags, images) are
- now concurrent ant won't
- keep on waiting
+-downloads of anything (posts, tags, images) are now concurrent ant won't keep on waiting
 -some prefs work, disabled some
 -view post on browser works
--added ability to clear cache when exiting (and
- manually)
+-added ability to clear cache when exiting (and manually)
 
 0.2
 # initial (accidental) release

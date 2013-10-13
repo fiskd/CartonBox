@@ -10,6 +10,7 @@ import org.shujito.cartonbox.model.Post;
 import org.shujito.cartonbox.model.Post.Rating;
 import org.shujito.cartonbox.utils.ConcurrentTask;
 
+import uk.co.senab.photoview.PhotoView;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
@@ -19,7 +20,6 @@ import android.graphics.drawable.TransitionDrawable;
 import android.os.AsyncTask.Status;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -55,7 +55,7 @@ public class PostViewFragment extends Fragment
 	// components
 	ProgressBar pbprogress = null;
 	TextView tvmessage = null;
-	ImageView ivpreview = null;
+	PhotoView ivpreview = null;
 	ImageView ivred = null;
 	ImageView ivgray = null;
 	ImageView ivblue = null;
@@ -83,7 +83,7 @@ public class PostViewFragment extends Fragment
 		// message
 		this.tvmessage = (TextView)view.findViewById(R.id.tvMessage);
 		// image preview
-		this.ivpreview = (ImageView)view.findViewById(R.id.ivSample);
+		this.ivpreview = (PhotoView)view.findViewById(R.id.ivSample);
 		// dots container
 		this.llStatusDots = view.findViewById(R.id.llStatusdots);
 		// flagged
@@ -98,21 +98,23 @@ public class PostViewFragment extends Fragment
 		this.ivyellow = (ImageView)view.findViewById(R.id.ivYellow);
 		// display things
 		
+		this.pbprogress.setIndeterminate(true);
+		this.pbprogress.setVisibility(View.VISIBLE);
+		//this.pbloading.setVisibility(View.VISIBLE);
+		this.ivpreview.setImageDrawable(null);
+		
 		// get out early, this can't work without a post!
 		if(this.post == null)
 			return;
 		
-		this.pbprogress.setIndeterminate(true);
-		this.pbprogress.setVisibility(View.VISIBLE);
-		//this.pbloading.setVisibility(View.VISIBLE);
+		//DisplayMetrics displayMetrics = new DisplayMetrics();
+		//this.getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 		
-		DisplayMetrics displayMetrics = new DisplayMetrics();
-		this.getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+		//int width = displayMetrics.widthPixels;
+		//int height = displayMetrics.heightPixels;
 		
-		int width = displayMetrics.widthPixels;
-		int height = displayMetrics.heightPixels;
-		
-		int whatToUse = width > height ? width : height;
+		//int whatToUse = width > height ? width : height;
+		int whatToUse = 1280;
 		
 		this.tvmessage.setVisibility(View.VISIBLE);
 		

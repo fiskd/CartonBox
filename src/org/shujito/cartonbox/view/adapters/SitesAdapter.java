@@ -23,6 +23,7 @@ public class SitesAdapter extends BaseAdapter
 	Context context = null;
 	List<Site> mLsSites = null;
 	Map<Long, Drawable> drawables = null;
+	//Map<Long, SoftReference<Drawable>> softDrawables = null;
 	int width;
 	int numCols;
 	
@@ -40,6 +41,7 @@ public class SitesAdapter extends BaseAdapter
 		this.numCols = this.context.getResources().getInteger(R.integer.main_gvsites_numcols);
 		
 		this.drawables = new HashMap<Long, Drawable>();
+		//this.softDrawables = new HashMap<Long, SoftReference<Drawable>>();
 		
 		this.refreshSites();
 	}

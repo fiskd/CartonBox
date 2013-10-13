@@ -110,24 +110,32 @@ public class ImageDownloader extends AsyncTask<Void, Float, Bitmap>
 		Bitmap bmp = null;
 		// domain
 		String filename = this.url.substring(secondslash, thirdslash);
+		filename = filename.concat(" ");
 		// file
 		filename = filename.concat(this.url.substring(thirdslash + 1).replace('/', '-'));
+		
+		Logger.i(this.getClass().getSimpleName(), String.format("from '%s'", filename));
 		
 		try
 		{
 			// cache dir to write into
-			File cacheDir = DiskCacheManager.getCacheDirectory(this.context);
+			//File cacheDir = DiskCacheManager.getCacheDirectory(this.context);
 			// file to open or save
-			File file = new File(cacheDir, filename);
+			//File file = new File(cacheDir, filename);
+			// file in cache dir to open or write into
+			File file =  DiskCacheManager.getCacheFile(this.context, filename);
 			if(file.exists())
 			{
+				Logger.i(this.getClass().getSimpleName(), String.format("file '%s' already exists", filename));
 				// there's file, load and that's all for today
 				bmp = ImageUtils.decodeSampledBitmap(file, this.width, this.height);
 				//input.close();
 			}
-			
-			if(bmp == null)
+			else
+			//if(bmp == null)
 			{
+				//Logger.i(this.getClass().getSimpleName(), String.format("'%s' is corrupt or not downloaded", filename));
+				Logger.i(this.getClass().getSimpleName(), String.format("downloading '%s'", filename));
 				int size = 0;
 				// no file, download and then save
 				// have an url
@@ -179,6 +187,7 @@ public class ImageDownloader extends AsyncTask<Void, Float, Bitmap>
 				
 				//InputStream imageStream = new FileInputStream(file);
 				//bmp = BitmapFactory.decodeStream(imageStream);
+				//Logger.i(this.getClass().getSimpleName(), String.format("success! '%s'", filename));
 				bmp = ImageUtils.decodeSampledBitmap(file, this.width, this.height);
 				//imageStream.close();
 			}

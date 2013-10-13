@@ -73,7 +73,7 @@ public class DownloadService extends IntentService
 		NotificationManager notificationManager = (NotificationManager)this.getSystemService(Context.NOTIFICATION_SERVICE);
 		// build notification
 		NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
-		builder.setAutoCancel(true);
+		//builder.setAutoCancel(true);
 		builder.setContentIntent(pendingIntent);
 		
 		File dest = Environment.getExternalStoragePublicDirectory(directory);

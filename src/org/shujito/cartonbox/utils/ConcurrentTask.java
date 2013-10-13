@@ -1,5 +1,9 @@
 package org.shujito.cartonbox.utils;
 
+import java.util.concurrent.RejectedExecutionException;
+
+import org.shujito.cartonbox.Logger;
+
 import android.annotation.TargetApi;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -15,9 +19,16 @@ public class ConcurrentTask
 	public static void execute(AsyncTask<Void, ?, ?> task)
 	{
 		// the tasking thing
-		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-		{ task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR); }
-		else
-		{ task.execute(); }
+		try
+		{
+			if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+			{ task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR); }
+			else
+			{ task.execute(); }
+		}
+		catch(RejectedExecutionException ex)
+		{
+			Logger.e("ConcurrentTask::execute", ex.toString(), ex);
+		}
 	}
 }

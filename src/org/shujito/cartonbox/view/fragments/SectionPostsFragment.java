@@ -55,7 +55,7 @@ public class SectionPostsFragment extends Fragment implements
 	GridView mGvPosts = null;
 	ProgressBar mPbLoading = null;
 	TextView mTvMessage = null;
-	ProgressBar mPbLoadingPend = null;
+	ProgressBar mPbLoadingMore = null;
 	
 	PostsGridAdapter mPostsAdapter = null;
 	
@@ -121,8 +121,8 @@ public class SectionPostsFragment extends Fragment implements
 		this.mTvMessage = (TextView)view.findViewById(R.id.tvMessage);
 		this.mTvMessage.setVisibility(View.GONE);
 		
-		this.mPbLoadingPend = (ProgressBar)view.findViewById(R.id.pbLoadingPend);
-		this.mPbLoadingPend.setVisibility(View.GONE);
+		this.mPbLoadingMore = (ProgressBar)view.findViewById(R.id.pbLoadingPend);
+		this.mPbLoadingMore.setVisibility(View.GONE);
 		
 		if(this.postsApi != null)
 		{
@@ -136,6 +136,8 @@ public class SectionPostsFragment extends Fragment implements
 				this.mGvPosts.setVisibility(View.VISIBLE);
 				this.mPbLoading.setVisibility(View.GONE);
 				this.mTvMessage.setVisibility(View.GONE);
+				// XXX hacky!
+				this.mPostsAdapter.onPostsFetched(this.postsApi.getPosts());
 			}
 		}
 	}
@@ -266,7 +268,7 @@ public class SectionPostsFragment extends Fragment implements
 		this.mGvPosts.setVisibility(View.VISIBLE);
 		this.mPbLoading.setVisibility(View.GONE);
 		this.mTvMessage.setVisibility(View.GONE);
-		this.mPbLoadingPend.setVisibility(View.GONE);
+		this.mPbLoadingMore.setVisibility(View.GONE);
 		
 		if(posts != null && posts.size() == 0)
 		{
@@ -298,7 +300,7 @@ public class SectionPostsFragment extends Fragment implements
 		}
 		else
 		{
-			this.mPbLoadingPend.setVisibility(View.VISIBLE);
+			this.mPbLoadingMore.setVisibility(View.VISIBLE);
 		}
 	}
 	/* OnPostsRequestedListener methods */

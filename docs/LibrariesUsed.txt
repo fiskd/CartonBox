@@ -2,5 +2,7 @@ If you want to compile properly you will need the following libraries:
 
 Action Bar Sherlock:
 http://actionbarsherlock.com/
+PhotoView:
+https://github.com/chrisbanes/PhotoView
 
 I try to update them whenever I get the chance to

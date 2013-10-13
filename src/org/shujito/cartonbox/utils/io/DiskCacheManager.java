@@ -2,19 +2,15 @@ package org.shujito.cartonbox.utils.io;
 
 import java.io.File;
 
+import org.shujito.cartonbox.Logger;
 import org.shujito.cartonbox.R;
-import org.shujito.cartonbox.utils.ConcurrentTask;
+import org.shujito.cartonbox.utils.Formatters;
 
 import android.content.Context;
 import android.preference.PreferenceManager;
 
 public class DiskCacheManager
 {
-	private DiskCacheManager()
-	{
-		
-	}
-	
 	public static File getCacheDirectory(Context context)
 	{
 		if(PreferenceManager.getDefaultSharedPreferences(context).getBoolean(context.getString(R.string.pref_general_cacheexternal_key), false))
@@ -23,12 +19,55 @@ public class DiskCacheManager
 			return context.getCacheDir();
 	}
 	
-	public static void CleanUp(Context context)
+	public static File getCacheFile(Context context, String filename)
 	{
-		if(PreferenceManager.getDefaultSharedPreferences(context).getBoolean(context.getString(R.string.pref_general_clearcacheonexit_key), false))
+		File file = new File(getCacheDirectory(context), filename);
+		
+		return file;
+	}
+	
+	public static void purgeDirectory(File directory, long target)
+	{
+		Logger.i("DiskCacheManager::purgeDirectory", String.format("purging directory '%s' to match %s", directory.getAbsolutePath(), Formatters.humanReadableByteCount(target)));
+		// get files
+		File[] files = directory.listFiles();
+		// get all files' size
+		long dirsize = getDirectorySize(directory);
+		// go though files
+		for(File file : files)
 		{
-			ClearDirectoryTask clearTask = new ClearDirectoryTask(getCacheDirectory(context));
-			ConcurrentTask.execute(clearTask);
+			// check if it was deleted
+			if(file.delete())
+			{
+				// substract
+				dirsize -= file.length();
+				// stop if the size is less than the target size
+				if(dirsize < target)
+				{
+					// yess
+					break;
+				}
+			}
 		}
+	}
+	
+	public static long getDirectorySize(File directory)
+	{
+		// get files
+		File[] files = directory.listFiles();
+		// this will be the total size
+		long size = 0;
+		// go through files
+		for(File file : files)
+		{
+			// check if it is a file
+			if(file.isFile())
+			{
+				// add it to the total size
+				size += file.length();
+			}
+		}
+		// the result is here:
+		return size;
 	}
 }

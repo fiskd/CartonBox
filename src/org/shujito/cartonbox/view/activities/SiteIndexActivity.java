@@ -47,22 +47,6 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 	//
 	boolean dialogShowing = false;
 	
-	ActionBar.TabListener emptyTabListener = new ActionBar.TabListener()
-	{
-		@Override
-		public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft)
-		{
-		}
-		@Override
-		public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft)
-		{
-		}
-		@Override
-		public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft)
-		{
-		}
-	};
-	
 	@Override
 	protected void onCreate(Bundle cirno)
 	{
@@ -269,15 +253,8 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 	@Override
 	public void onPageSelected(int pos)
 	{
-		//Logger.i("SiteIndexActivity::onPageSelected", String.format("page %s", pos));
-		// find the tab
-		ActionBar.Tab tab = this.getSupportActionBar().getTabAt(pos);
-		// remove listener
-		tab.setTabListener(this.emptyTabListener);
-		// select the tab
-		this.getSupportActionBar().getTabAt(pos).select();
-		// put listener back
-		tab.setTabListener(this);
+		//this.getSupportActionBar().getTabAt(pos).select();
+		this.getSupportActionBar().setSelectedNavigationItem(pos);
 	}
 	/* OnPageChangeListener methods */
 	

@@ -11,6 +11,7 @@
 	</string-array>
 	
 	<string-array name="pref_general_cachesize_values">
+		<item>16</item>
 		<item>32</item>
 		<item>64</item>
 		<item>128</item>
@@ -21,6 +22,7 @@
 	</string-array>
 	
 	<string-array name="pref_general_cachesize_entries">
+		<item>16 MB</item>
 		<item>32 MB</item>
 		<item>64 MB</item>
 		<item>128 MB</item>

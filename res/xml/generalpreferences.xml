@@ -20,7 +20,6 @@
 			android:title="@string/pref_general_clearcacheonexit"
 			android:defaultValue="false" />
 		<org.shujito.cartonbox.view.widget.UpdateableListPreference
-			android:enabled="false"
 			android:key="@string/pref_general_cachesize_key"
 			android:title="@string/pref_general_cachesize"
 			android:summary="@string/pref_general_cachesize_desc"
