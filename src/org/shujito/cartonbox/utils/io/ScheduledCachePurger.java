@@ -16,8 +16,8 @@ import android.os.Handler;
 
 public class ScheduledCachePurger implements Runnable, DirectorySizeCallback, OnDirectoryPurgedListener
 {
-	// runs every 60 seconds
-	static final int DELAY_TIME = 10000;
+	// run every 60 seconds
+	static final int DELAY_TIME = 60000;
 	
 	private Handler handler = null;
 	private int preferredSize;
@@ -57,37 +57,44 @@ public class ScheduledCachePurger implements Runnable, DirectorySizeCallback, On
 	@Override
 	public void directorySize(long size)
 	{
-		// snip
-		//long cacheDirectorySize = DiskUtils.getDirectorySize(DiskUtils.getCacheDirectory(CartonBox.getInstance()));
-		// surpassed?
-		if(size > preferredSize)
-		{
-			// work
-			PurgeCacheTask task = new PurgeCacheTask(targetSize);
-			task.setOnDirectoryPurgedListener(this);
-			ConcurrentTask.execute(task);
-		}
-		else
-		{
-			// not enough, run again
-			Logger.i(this.getClass().getSimpleName(), "Purger is tasking!");
-			this.handler.postDelayed(this, DELAY_TIME);
-		}
-	}
-	
-	@Override
-	public void onDirectoryPurged()
-	{
-		// run this again later
-		Logger.i(this.getClass().getSimpleName(), "Purge over!");
-		// can't rely on already removed callbacks by calling stop() once
-		// check and call again
 		if(this.stopped)
 		{
 			this.stop();
 		}
 		else
 		{
+			// snip
+			//long cacheDirectorySize = DiskUtils.getDirectorySize(DiskUtils.getCacheDirectory(CartonBox.getInstance()));
+			// surpassed?
+			if(size > preferredSize)
+			{
+				// work
+				PurgeCacheTask task = new PurgeCacheTask(targetSize);
+				task.setOnDirectoryPurgedListener(this);
+				ConcurrentTask.execute(task);
+			}
+			else
+			{
+				// not enough, run again
+				Logger.i(this.getClass().getSimpleName(), "Purger is tasking!");
+				this.handler.postDelayed(this, DELAY_TIME);
+			}
+		}
+	}
+	
+	@Override
+	public void onDirectoryPurged()
+	{
+		Logger.i(this.getClass().getSimpleName(), "Purge over!");
+		// can't rely on already removed callbacks by calling stop() once
+		// check and call stop() again
+		if(this.stopped)
+		{
+			this.stop();
+		}
+		else
+		{
+			// run this again later
 			this.handler.postDelayed(this, DELAY_TIME);
 		}
 	}
