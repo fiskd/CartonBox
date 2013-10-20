@@ -22,6 +22,7 @@ public class ScheduledCachePurger implements Runnable, DirectorySizeCallback, On
 	private Handler handler = null;
 	private int preferredSize;
 	private int targetSize;
+	private boolean stopped;
 	
 	public ScheduledCachePurger()
 	{
@@ -79,11 +80,21 @@ public class ScheduledCachePurger implements Runnable, DirectorySizeCallback, On
 	{
 		// run this again later
 		Logger.i(this.getClass().getSimpleName(), "Purge over!");
-		this.handler.postDelayed(this, DELAY_TIME);
+		// can't rely on already removed callbacks by calling stop() once
+		// check and call again
+		if(this.stopped)
+		{
+			this.stop();
+		}
+		else
+		{
+			this.handler.postDelayed(this, DELAY_TIME);
+		}
 	}
 	
 	public void stop()
 	{
+		this.stopped = true;
 		this.handler.removeCallbacks(this);
 		Logger.i(this.getClass().getSimpleName(), "Stopping purger!");
 	}
