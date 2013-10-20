@@ -7,7 +7,7 @@ import org.shujito.cartonbox.utils.io.listeners.OnDiskTaskProgressListener;
 
 import android.os.AsyncTask;
 
-public class ClearDirectoryTask extends AsyncTask<Void, Integer, Integer>
+public class ClearDirectoryTask extends AsyncTask<Void, Integer, Void>
 {
 	/* listeners */
 	OnDiskTaskProgressListener onDiskTaskProgressListener = null;
@@ -31,7 +31,7 @@ public class ClearDirectoryTask extends AsyncTask<Void, Integer, Integer>
 	}
 	
 	@Override
-	protected Integer doInBackground(Void... params)
+	protected Void doInBackground(Void... params)
 	{
 		File[] files = this.file.listFiles();
 		int deleted = 0;
@@ -66,7 +66,7 @@ public class ClearDirectoryTask extends AsyncTask<Void, Integer, Integer>
 	}
 	
 	@Override
-	protected void onPostExecute(Integer result)
+	protected void onPostExecute(Void result)
 	{
 		if(this.onDirectoryClearedListener != null)
 			this.onDirectoryClearedListener.onDirectoryCleared();

@@ -2,7 +2,6 @@ package org.shujito.cartonbox.utils;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.InputStream;
 
 import org.shujito.cartonbox.Logger;
 
@@ -32,40 +31,6 @@ public class ImageUtils
 		return sampleSize;
 	}
 	
-	public static Bitmap decodeScaledBitmap(File file, int width, int height)
-	{
-		
-		
-		return null;
-	}
-	
-	public static Bitmap decodeSampledBitmap(byte[] imageData, int width, int height)
-	{
-		// decode with inJustDecodeBounds=true to check dimensions
-		final BitmapFactory.Options options = new BitmapFactory.Options();
-		options.inJustDecodeBounds = true;
-		BitmapFactory.decodeByteArray(imageData, 0, imageData.length, options);
-		
-		// calculate sample size
-		options.inSampleSize = calculateSampleSize(options, width, height);
-		
-		// actually decode the bitmap
-		options.inJustDecodeBounds = false;
-		return BitmapFactory.decodeByteArray(imageData, 0, imageData.length, options);
-	}
-	
-	public static Bitmap decodeSampledBitmap(InputStream imageStream, int width, int height) throws Exception
-	{
-		// decode with inJustDecodeBounds=true to check dimensions
-		final BitmapFactory.Options options = new BitmapFactory.Options();
-		options.inJustDecodeBounds = true;
-		BitmapFactory.decodeStream(imageStream, null, options);
-		options.inSampleSize = calculateSampleSize(options, width, height);
-		options.inJustDecodeBounds = false;
-		Bitmap bmp = BitmapFactory.decodeStream(imageStream, null, options);
-		return bmp;
-	}
-	
 	public static Bitmap decodeSampledBitmap(File file, int width, int height) throws Exception
 	{
 		// decode with inJustDecodeBounds=true to check dimensions
@@ -77,7 +42,25 @@ public class ImageUtils
 		
 		try
 		{
-			return BitmapFactory.decodeStream(new FileInputStream(file), null, options);
+			//return BitmapFactory.decodeStream(new FileInputStream(file), null, options);
+			// try decoding once
+			Bitmap bmp = BitmapFactory.decodeStream(new FileInputStream(file), null, options);
+			// failed, let's try another way
+			if(bmp == null)
+			{
+				FileInputStream fis = new FileInputStream(file);
+				// try with a byte array instead
+				byte[] fileBytes = new byte[(int)file.length()];
+				fis.read(fileBytes);
+				bmp = BitmapFactory.decodeByteArray(fileBytes, 0, fileBytes.length, options);
+				fis.close();
+			}
+			return bmp;
+		}
+		catch(Exception ex)
+		{
+			Logger.e("ImageUtils::decodeSampledBitmap", ex.getMessage(), ex);
+			return null;
 		}
 		catch(OutOfMemoryError ex)
 		{

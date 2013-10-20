@@ -33,6 +33,7 @@ public class DirectorySizeTask extends AsyncTask<Void, Integer, Long>
 	@Override
 	protected Long doInBackground(Void... params)
 	{
+		/*
 		File[] files = this.file.listFiles();
 		long size = 0;
 		int numFiles = files.length;
@@ -46,8 +47,9 @@ public class DirectorySizeTask extends AsyncTask<Void, Integer, Long>
 				this.publishProgress(numFiles, idx);
 			}
 		}
+		//*/
 		
-		return size;
+		return DiskUtils.getDirectorySize(this.file);
 	}
 	
 	@Override

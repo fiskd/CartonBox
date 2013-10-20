@@ -51,6 +51,19 @@ public class Preferences
 		return globalPrefs.getString(context.getString(id), def);
 	}
 	
+	public static void setBool(int id, boolean value)
+	{
+		Context context = CartonBox.getInstance();
+		SharedPreferences globalPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+		globalPrefs
+			// start editing
+			.edit()
+			// collocate
+			.putBoolean(context.getString(id), value)
+			// submit changes
+			.commit();
+	}
+	
 	public static void setInt(int id, int value)
 	{
 		Context context = CartonBox.getInstance();

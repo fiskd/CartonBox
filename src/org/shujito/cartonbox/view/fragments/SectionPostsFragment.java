@@ -202,7 +202,8 @@ public class SectionPostsFragment extends Fragment implements
 	{
 		if(first + visible >= total)
 		{
-			this.postsApi.request();
+			if(this.postsApi != null)
+				this.postsApi.request();
 		}
 	}
 	

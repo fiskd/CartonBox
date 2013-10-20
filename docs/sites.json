@@ -1,5 +1,7 @@
 {
 	"donmai": {
+		"icon": null,
+		"description": null,
 		"url": "http://donmai.us",
 		"type": 2,
 		"posts": "/posts.json",
@@ -9,6 +11,8 @@
 		"tags": "/tags.json"
 	},
 	"danbooru": {
+		"icon": null,
+		"description": null,
 		"url": "http://danbooru.donmai.us",
 		"type": 2,
 		"posts": "/posts.json",
@@ -18,6 +22,8 @@
 		"tags": "/tags.json"
 	},
 	"hijiribe (danbooru mirror)": {
+		"icon": null,
+		"description": null,
 		"url": "http://hijiribe.donmai.us",
 		"type": 2,
 		"posts": "/posts.json",
@@ -27,6 +33,8 @@
 		"tags": "/tags.json"
 	},
 	"safebooru (danbooru safe)": {
+		"icon": null,
+		"description": null,
 		"url": "http://safebooru.donmai.us",
 		"type": 2,
 		"posts": "/posts.json",
@@ -36,6 +44,8 @@
 		"tags": "/tags.json"
 	},
 	"yande.re": {
+		"icon": null,
+		"description": null,
 		"url": "https://yande.re",
 		"type": 1,
 		"posts": "/post/index.json",
@@ -45,6 +55,8 @@
 		"tags": "/tag/index.json"
 	},
 	"gelbooru": {
+		"icon": null,
+		"description": null,
 		"url": "http://gelbooru.com",
 		"type": 3,
 		"posts": "/index.php?page=dapi&s=post&q=index",
@@ -54,6 +66,8 @@
 		"tags": "/index.php?page=dapi&s=tag&q=index"
 	},
 	"One Yukkuri Place": {
+		"icon": null,
+		"description": null,
 		"url": "http://yukkuri.shii.org",
 		"type": 1,
 		"posts": "/post/index.json",
@@ -63,6 +77,8 @@
 		"tags": "/tag/index.json"
 	},
 	"Konachan (R-18)": {
+		"icon": null,
+		"description": null,
 		"url": "http://konachan.com",
 		"type": 1,
 		"posts": "/post/index.json",
@@ -72,6 +88,8 @@
 		"tags": "/tag/index.json"
 	},
 	"Konachan (safe)": {
+		"icon": null,
+		"description": null,
 		"url": "http://konachan.net",
 		"type": 1,
 		"posts": "/post/index.json",
@@ -81,6 +99,8 @@
 		"tags": "/tag/index.json"
 	},
 	"3dbooru (behoimi)": {
+		"icon": null,
+		"description": null,
 		"url": "http://behoimi.org",
 		"type": 1,
 		"posts": "/post/index.json",
@@ -90,6 +110,8 @@
 		"tags": "/tag/index.json"
 	},
 	"e621": {
+		"icon": null,
+		"description": null,
 		"url": "http://e621.net",
 		"type": 1,
 		"posts": "/post/index.json",

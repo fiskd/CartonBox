@@ -16,7 +16,7 @@ import org.shujito.cartonbox.model.db.DownloadsDB;
 import org.shujito.cartonbox.model.db.SitesDB;
 import org.shujito.cartonbox.utils.ConcurrentTask;
 import org.shujito.cartonbox.utils.io.ClearDirectoryTask;
-import org.shujito.cartonbox.utils.io.DiskCacheManager;
+import org.shujito.cartonbox.utils.io.DiskUtils;
 import org.shujito.cartonbox.utils.io.listeners.OnDirectoryClearedListener;
 import org.shujito.cartonbox.utils.io.listeners.OnDiskTaskProgressListener;
 import org.shujito.cartonbox.view.adapters.SitesAdapter;
@@ -37,10 +37,10 @@ import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.GridView;
+import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
@@ -106,6 +106,12 @@ public class MainActivity extends SherlockFragmentActivity
 		
 		if(this.mSitesAdapter != null)
 			this.mSitesAdapter.notifyDataSetChanged();
+	}
+	
+	@Override
+	protected void onPause()
+	{
+		super.onPause();
 	}
 	
 	@Override
@@ -187,7 +193,7 @@ public class MainActivity extends SherlockFragmentActivity
 			// this resource id is used as a notification identifier
 			notman.notify(R.string.app_name, builder.build());
 			
-			ClearDirectoryTask clearDirectory = new ClearDirectoryTask(DiskCacheManager.getCacheDirectory(this));
+			ClearDirectoryTask clearDirectory = new ClearDirectoryTask(DiskUtils.getCacheDirectory(this));
 			clearDirectory.setOnDiskTaskProgress(new OnDiskTaskProgressListener()
 			{
 				@Override

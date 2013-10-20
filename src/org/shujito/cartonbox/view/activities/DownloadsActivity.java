@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.ListView;
 
 import com.actionbarsherlock.app.SherlockListActivity;
+import com.actionbarsherlock.view.MenuItem;
 
 public class DownloadsActivity extends SherlockListActivity
 {
@@ -24,6 +25,8 @@ public class DownloadsActivity extends SherlockListActivity
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		
 		this.adapter = new DownloadsAdapter(this);
 		this.setListAdapter(this.adapter);
 		
@@ -47,5 +50,17 @@ public class DownloadsActivity extends SherlockListActivity
 		Intent ntn = new Intent(Intent.ACTION_VIEW);
 		ntn.setDataAndType(Uri.fromFile(new File(download.getLocation())), "image/*");
 		this.startActivity(ntn);
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item)
+	{
+		if(item.getItemId() == android.R.id.home)
+		{
+			this.finish();
+			return true;
+		}
+		
+		return super.onOptionsItemSelected(item);
 	}
 }

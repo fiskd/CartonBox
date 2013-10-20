@@ -9,7 +9,7 @@ import org.shujito.cartonbox.utils.Formatters;
 import android.content.Context;
 import android.preference.PreferenceManager;
 
-public class DiskCacheManager
+public class DiskUtils
 {
 	public static File getCacheDirectory(Context context)
 	{
@@ -21,14 +21,12 @@ public class DiskCacheManager
 	
 	public static File getCacheFile(Context context, String filename)
 	{
-		File file = new File(getCacheDirectory(context), filename);
-		
-		return file;
+		return new File(getCacheDirectory(context), filename);
 	}
 	
-	public static void purgeDirectory(File directory, long target)
+	public synchronized static void purgeDirectory(File directory, long target)
 	{
-		Logger.i("DiskCacheManager::purgeDirectory", String.format("purging directory '%s' to match %s", directory.getAbsolutePath(), Formatters.humanReadableByteCount(target)));
+		Logger.i("DiskUtils::purgeDirectory", String.format("purging directory '%s' to match %s", directory.getAbsolutePath(), Formatters.humanReadableByteCount(target)));
 		// get files
 		File[] files = directory.listFiles();
 		// get all files' size
@@ -51,7 +49,7 @@ public class DiskCacheManager
 		}
 	}
 	
-	public static long getDirectorySize(File directory)
+	public synchronized static long getDirectorySize(File directory)
 	{
 		// get files
 		File[] files = directory.listFiles();

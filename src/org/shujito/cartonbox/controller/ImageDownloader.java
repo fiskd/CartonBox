@@ -12,7 +12,7 @@ import org.shujito.cartonbox.Logger;
 import org.shujito.cartonbox.controller.listeners.OnDownloadProgressListener;
 import org.shujito.cartonbox.controller.listeners.OnImageFetchedListener;
 import org.shujito.cartonbox.utils.ImageUtils;
-import org.shujito.cartonbox.utils.io.DiskCacheManager;
+import org.shujito.cartonbox.utils.io.DiskUtils;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -123,16 +123,17 @@ public class ImageDownloader extends AsyncTask<Void, Float, Bitmap>
 			// file to open or save
 			//File file = new File(cacheDir, filename);
 			// file in cache dir to open or write into
-			File file =  DiskCacheManager.getCacheFile(this.context, filename);
+			File file =  DiskUtils.getCacheFile(this.context, filename);
 			if(file.exists())
 			{
-				Logger.i(this.getClass().getSimpleName(), String.format("file '%s' already exists", filename));
+				//Logger.i(this.getClass().getSimpleName(), String.format("file '%s' already exists", filename));
 				// there's file, load and that's all for today
 				bmp = ImageUtils.decodeSampledBitmap(file, this.width, this.height);
 				//input.close();
 			}
-			else
-			//if(bmp == null)
+			// TODO: check here, fix
+			//else
+			if(bmp == null)
 			{
 				//Logger.i(this.getClass().getSimpleName(), String.format("'%s' is corrupt or not downloaded", filename));
 				Logger.i(this.getClass().getSimpleName(), String.format("downloading '%s'", filename));

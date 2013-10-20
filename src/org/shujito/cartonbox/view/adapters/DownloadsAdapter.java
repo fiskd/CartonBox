@@ -146,9 +146,16 @@ public class DownloadsAdapter extends BaseAdapter
 				@Override
 				public void onImageFetched(Bitmap b)
 				{
-					cache.addBitmapToMemCache(one.getId(), b);
-					iv.setBackgroundColor(Color.BLACK);
-					iv.setImageBitmap(b);
+					if(b != null)
+					{
+						cache.addBitmapToMemCache(one.getId(), b);
+						iv.setBackgroundColor(Color.BLACK);
+						iv.setImageBitmap(b);
+					}
+					else
+					{
+						iv.setImageBitmap(null);
+					}
 				}
 			});
 			ConcurrentTask.execute(load);

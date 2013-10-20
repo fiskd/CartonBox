@@ -7,6 +7,7 @@ import org.shujito.cartonbox.R;
 import org.shujito.cartonbox.controller.ImageboardPosts;
 import org.shujito.cartonbox.controller.ImageboardTags;
 import org.shujito.cartonbox.controller.listeners.OnErrorListener;
+import org.shujito.cartonbox.utils.ScheduledCachePurger;
 import org.shujito.cartonbox.view.adapters.SiteIndexPageAdapter;
 import org.shujito.cartonbox.view.fragments.SectionPostsFragment;
 import org.shujito.cartonbox.view.fragments.SectionTagsFragment;
@@ -46,6 +47,8 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 	ImageboardTags mTagsApi = null;
 	//
 	boolean dialogShowing = false;
+	// purges cache every X time
+	ScheduledCachePurger schedPurge = null;
 	
 	@Override
 	protected void onCreate(Bundle cirno)
@@ -75,6 +78,8 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 		int page = this.findPage(sectionid);
 		if(page > 0)
 			this.mVpSections.setCurrentItem(page);
+		
+		this.schedPurge = new ScheduledCachePurger();
 	}
 	
 	@Override
@@ -146,13 +151,41 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 			this.dialogShowing = this.getIntent().getBooleanExtra(EXTRA_DIALOGSHOWING, false);
 		}
 		
-		// TODO: dialog saying "give rating!"
-		AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-		dialog.setTitle("Give rating!");
-		dialog.setMessage("You have been using this app for some time, would you like to give a rating?");
-		dialog.setPositiveButton(android.R.string.ok, null);
-		dialog.setNegativeButton("Later", null);
-		//dialog.show();
+		if(this.mPostsApi != null)
+		{
+			String[] alltags = this.mPostsApi.getTags();
+			if(alltags.length > 0)
+			{
+				StringBuilder builder = new StringBuilder();
+				for(String tag : alltags)
+				{
+					builder.append(tag);
+					builder.append(" ");
+				}
+				this.getSupportActionBar().setSubtitle(builder.toString());
+			}
+		}
+		// check if the user had already rated the app
+		boolean rated = Preferences.getBool(R.string.pref_app_rated, false);
+		// check how many times has the user visited this activity
+		int timesVisited = Preferences.getInt(R.string.pref_times_index_visited);
+		// increase
+		Preferences.setInt(R.string.pref_times_index_visited, timesVisited + 1);
+		// more than ten?
+		if(!rated && timesVisited > 10)
+		{
+			//Preferences.setBool(R.string.pref_app_rated, true);
+			// reset
+			Preferences.setInt(R.string.pref_times_index_visited, 0);
+			// start creating the dialog
+			AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+			dialog.setTitle(R.string.ratingdialogtitle);
+			dialog.setMessage(R.string.ratingdialogmessage);
+			// TODO: events
+			dialog.setPositiveButton(android.R.string.yes, null);
+			dialog.setNegativeButton(R.string.later, null);
+			dialog.show();
+		}
 	}
 	
 	@Override
@@ -173,6 +206,7 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 	protected void onDestroy()
 	{
 		super.onDestroy();
+		this.schedPurge.stop();
 		// get rid of this
 		this.mPostsApi = null;
 		this.mTagsApi = null;

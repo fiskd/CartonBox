@@ -66,5 +66,7 @@
 	<string name="pref_ratings_todisplay_explicit_key">org.shujito.cartonbox.pref_ratings_todisplay_explicit_key</string>
 	
 	<string name="pref_previous_version_number">org.shujito.cartonbox.pref_version_number</string>
+	<string name="pref_times_index_visited">org.shujito.cartonbox.pref_times_index_visited</string>
+	<string name="pref_app_rated">org.shujito.cartonbox.pref_app_rated</string>
 	
 </resources>

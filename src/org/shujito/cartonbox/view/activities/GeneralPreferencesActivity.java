@@ -9,7 +9,7 @@ import org.shujito.cartonbox.utils.ConcurrentTask;
 import org.shujito.cartonbox.utils.Formatters;
 import org.shujito.cartonbox.utils.io.ClearDirectoryTask;
 import org.shujito.cartonbox.utils.io.DirectorySizeTask;
-import org.shujito.cartonbox.utils.io.DiskCacheManager;
+import org.shujito.cartonbox.utils.io.DiskUtils;
 import org.shujito.cartonbox.utils.io.listeners.DirectorySizeCallback;
 import org.shujito.cartonbox.utils.io.listeners.OnDirectoryClearedListener;
 import org.shujito.cartonbox.utils.io.listeners.OnDiskTaskProgressListener;
@@ -68,6 +68,7 @@ public class GeneralPreferencesActivity extends SherlockPreferenceActivity
 	protected void onCreate(Bundle cirno)
 	{
 		super.onCreate(cirno);
+		this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		
 		if(Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB)
 		{
@@ -133,7 +134,7 @@ public class GeneralPreferencesActivity extends SherlockPreferenceActivity
 		// put listeners
 		this.prefClearCache.setOnPreferenceClickListener(this);
 		
-		DirectorySizeTask sizeTask = new DirectorySizeTask(DiskCacheManager.getCacheDirectory(this));
+		DirectorySizeTask sizeTask = new DirectorySizeTask(DiskUtils.getCacheDirectory(this));
 		sizeTask.setDirectorySizeCallback(new DirectorySizeCallback()
 		{
 			@Override
@@ -167,6 +168,9 @@ public class GeneralPreferencesActivity extends SherlockPreferenceActivity
 	{
 		switch(item.getItemId())
 		{
+			case android.R.id.home:
+				this.finish();
+				return true;
 			case R.id.googleplay:
 				Intent market = new Intent(Intent.ACTION_VIEW);
 				String marketLink = String.format("market://details?id=%s", this.getPackageName());
@@ -217,7 +221,7 @@ public class GeneralPreferencesActivity extends SherlockPreferenceActivity
 			pd.setCancelable(false);
 			pd.show();
 			
-			ClearDirectoryTask clearDirectory = new ClearDirectoryTask(DiskCacheManager.getCacheDirectory(this));
+			ClearDirectoryTask clearDirectory = new ClearDirectoryTask(DiskUtils.getCacheDirectory(this));
 			clearDirectory.setOnDiskTaskProgress(new OnDiskTaskProgressListener()
 			{
 				@Override
