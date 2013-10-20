@@ -19,7 +19,6 @@ import org.shujito.cartonbox.view.activities.DownloadsActivity;
 import android.app.IntentService;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Environment;
@@ -32,16 +31,6 @@ public class DownloadService extends IntentService
 	public static String EXTRA_DESTINATION = "org.shujito.cartonbox.services.EXTRA_DESTINATION";
 	public static String EXTRA_SOURCE = "org.shujito.cartonbox.services.EXTRA_SOURCE";
 	public static String EXTRA_DIRECTORY = "org.shujito.cartonbox.services.EXTRA_DIRECTORY";
-	
-	public class DownloadProgressReceiver extends BroadcastReceiver
-	{
-		@Override
-		public void onReceive(Context context, Intent intent)
-		{
-		}
-	}
-	
-	DownloadProgressReceiver mDownloadProgressReceiver = null;
 	
 	public DownloadService()
 	{
@@ -100,7 +89,7 @@ public class DownloadService extends IntentService
 			// icon
 			builder.setSmallIcon(android.R.drawable.stat_sys_download);
 			// resource id used as notification id
-			// TODO: should use system millis for multiple notifications,
+			// TODO: should use system millis for multiple notifications
 			// TODO: make it a pref
 			notificationManager.notify(R.string.app_name, builder.build());
 			try

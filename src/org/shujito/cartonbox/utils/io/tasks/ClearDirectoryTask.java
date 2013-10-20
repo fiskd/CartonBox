@@ -1,4 +1,4 @@
-package org.shujito.cartonbox.utils.io;
+package org.shujito.cartonbox.utils.io.tasks;
 
 import java.io.File;
 
@@ -23,17 +23,17 @@ public class ClearDirectoryTask extends AsyncTask<Void, Integer, Void>
 	public OnDirectoryClearedListener getOnDirectoryClearedListener()
 	{ return this.onDirectoryClearedListener; }
 	
-	File file = null;
+	File directory = null;
 	
-	public ClearDirectoryTask(File file)
+	public ClearDirectoryTask(File directory)
 	{
-		this.file = file;
+		this.directory = directory;
 	}
 	
 	@Override
 	protected Void doInBackground(Void... params)
 	{
-		File[] files = this.file.listFiles();
+		File[] files = this.directory.listFiles();
 		int deleted = 0;
 		int numFiles = files.length;
 		

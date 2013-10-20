@@ -7,7 +7,7 @@ import org.shujito.cartonbox.R;
 import org.shujito.cartonbox.controller.ImageboardPosts;
 import org.shujito.cartonbox.controller.ImageboardTags;
 import org.shujito.cartonbox.controller.listeners.OnErrorListener;
-import org.shujito.cartonbox.utils.ScheduledCachePurger;
+import org.shujito.cartonbox.utils.io.ScheduledCachePurger;
 import org.shujito.cartonbox.view.adapters.SiteIndexPageAdapter;
 import org.shujito.cartonbox.view.fragments.SectionPostsFragment;
 import org.shujito.cartonbox.view.fragments.SectionTagsFragment;

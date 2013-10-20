@@ -206,7 +206,7 @@ public class PostsGridAdapter extends BaseAdapter
 						tvloading.setText("whoops");
 						overlay[1] = new BitmapDrawable(context.getResources(), cachedBitmap);
 						// XXX: Let's hack here...
-						notifyDataSetChanged();
+						//notifyDataSetChanged();
 					}
 					else
 					{

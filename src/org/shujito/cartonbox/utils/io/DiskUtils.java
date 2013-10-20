@@ -34,11 +34,12 @@ public class DiskUtils
 		// go though files
 		for(File file : files)
 		{
+			long fileSize = file.length();
 			// check if it was deleted
 			if(file.delete())
 			{
 				// substract
-				dirsize -= file.length();
+				dirsize -= fileSize;
 				// stop if the size is less than the target size
 				if(dirsize < target)
 				{

@@ -114,7 +114,7 @@ public class ImageDownloader extends AsyncTask<Void, Float, Bitmap>
 		// file
 		filename = filename.concat(this.url.substring(thirdslash + 1).replace('/', '-'));
 		
-		Logger.i(this.getClass().getSimpleName(), String.format("from '%s'", filename));
+		//Logger.i(this.getClass().getSimpleName(), String.format("from '%s'", filename));
 		
 		try
 		{
@@ -131,8 +131,7 @@ public class ImageDownloader extends AsyncTask<Void, Float, Bitmap>
 				bmp = ImageUtils.decodeSampledBitmap(file, this.width, this.height);
 				//input.close();
 			}
-			// TODO: check here, fix
-			//else
+			// download the file. corrupted? download again...
 			if(bmp == null)
 			{
 				//Logger.i(this.getClass().getSimpleName(), String.format("'%s' is corrupt or not downloaded", filename));

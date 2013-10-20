@@ -1,7 +1,8 @@
-package org.shujito.cartonbox.utils.io;
+package org.shujito.cartonbox.utils.io.tasks;
 
 import java.io.File;
 
+import org.shujito.cartonbox.utils.io.DiskUtils;
 import org.shujito.cartonbox.utils.io.listeners.DirectorySizeCallback;
 import org.shujito.cartonbox.utils.io.listeners.OnDiskTaskProgressListener;
 
@@ -23,11 +24,11 @@ public class DirectorySizeTask extends AsyncTask<Void, Integer, Long>
 	public DirectorySizeCallback getDirectorySizeCallback()
 	{ return this.directorySizeCallback; }
 	
-	File file = null;
+	File directory = null;
 	
-	public DirectorySizeTask(File file)
+	public DirectorySizeTask(File directory)
 	{
-		this.file = file;
+		this.directory = directory;
 	}
 	
 	@Override
@@ -49,7 +50,7 @@ public class DirectorySizeTask extends AsyncTask<Void, Integer, Long>
 		}
 		//*/
 		
-		return DiskUtils.getDirectorySize(this.file);
+		return DiskUtils.getDirectorySize(this.directory);
 	}
 	
 	@Override

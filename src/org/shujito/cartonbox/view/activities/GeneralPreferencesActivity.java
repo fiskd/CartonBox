@@ -7,12 +7,12 @@ import org.shujito.cartonbox.model.Site;
 import org.shujito.cartonbox.model.db.SitesDB;
 import org.shujito.cartonbox.utils.ConcurrentTask;
 import org.shujito.cartonbox.utils.Formatters;
-import org.shujito.cartonbox.utils.io.ClearDirectoryTask;
-import org.shujito.cartonbox.utils.io.DirectorySizeTask;
 import org.shujito.cartonbox.utils.io.DiskUtils;
 import org.shujito.cartonbox.utils.io.listeners.DirectorySizeCallback;
 import org.shujito.cartonbox.utils.io.listeners.OnDirectoryClearedListener;
 import org.shujito.cartonbox.utils.io.listeners.OnDiskTaskProgressListener;
+import org.shujito.cartonbox.utils.io.tasks.ClearDirectoryTask;
+import org.shujito.cartonbox.utils.io.tasks.DirectorySizeTask;
 import org.shujito.cartonbox.view.BlogNewsDialog;
 import org.shujito.cartonbox.view.fragments.PreferencesFragment;
 
