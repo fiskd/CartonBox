@@ -43,7 +43,7 @@ public class PostDetailDialogFragment extends SherlockDialogFragment
 	{
 		Post post = (Post)this.getArguments().getSerializable(EXTRA_POSTOBJECT);
 		LayoutInflater inf = LayoutInflater.from(this.getActivity());
-		View v = inf.inflate(R.layout.dialog_posttags, null);
+		View v = inf.inflate(R.layout.dialog_listview, null);
 		
 		this.detailAdapter = new PostDetailAdapter(this.getActivity(), post);
 		

@@ -56,6 +56,7 @@ public class MainActivity extends SherlockFragmentActivity
 	Site selectedSite = null;
 	MenuItem itemDownloads = null;
 	boolean anyDownloads = false;
+	boolean anyFavorites = false;
 	
 	@Override
 	protected void onCreate(Bundle cirno)
