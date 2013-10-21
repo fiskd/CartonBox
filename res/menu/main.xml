@@ -5,7 +5,16 @@
 		android:id="@+id/addsite"
 		android:icon="@drawable/ic_action_add"
 		android:showAsAction="always"
-		android:title="@string/addsite" />
+		android:title="@string/addsite" >
+		<menu>
+			<item
+				android:id="@+id/addsite_template"
+				android:title="@string/defaults" />
+			<item
+				android:id="@+id/addsite_custom"
+				android:title="@string/custom" />
+		</menu>
+	</item>
 	
 	<item
 		android:id="@+id/downloads"

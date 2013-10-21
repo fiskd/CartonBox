@@ -21,7 +21,7 @@ import org.shujito.cartonbox.utils.io.listeners.OnDiskTaskProgressListener;
 import org.shujito.cartonbox.utils.io.tasks.ClearDirectoryTask;
 import org.shujito.cartonbox.view.adapters.SitesAdapter;
 import org.shujito.cartonbox.view.fragments.dialogs.AddOrEditSiteDialogFragment;
-import org.shujito.cartonbox.view.fragments.dialogs.AddOrEditSiteDialogFragment.AddSiteDialogCallback;
+import org.shujito.cartonbox.view.fragments.dialogs.listeners.AddSiteDialogCallback;
 
 import android.app.AlertDialog;
 import android.app.NotificationManager;
@@ -131,8 +131,11 @@ public class MainActivity extends SherlockFragmentActivity
 		Logger.i(this.getClass().getSimpleName(), "onOptionsItemSelected");
 		switch(item.getItemId())
 		{
-			case R.id.addsite:
-				this.addSite();
+			case R.id.addsite_template:
+				this.chooseDefaultSite();
+				return true;
+			case R.id.addsite_custom:
+				this.addCustomSite();
 				return true;
 			case R.id.downloads:
 				Intent ntn = new Intent(this, DownloadsActivity.class);
@@ -282,11 +285,15 @@ public class MainActivity extends SherlockFragmentActivity
 	}
 	/* OnItemLongClickListener methods */
 	
-	/* AddSiteDialogCallback methods */
-	private void addSite()
+	private void addCustomSite()
 	{
 		AddOrEditSiteDialogFragment asdf = new AddOrEditSiteDialogFragment();
 		asdf.show(this.getSupportFragmentManager(), AddOrEditSiteDialogFragment.TAG);
+	}
+	
+	private void chooseDefaultSite()
+	{
+		
 	}
 	
 	private void editSite()
@@ -298,6 +305,7 @@ public class MainActivity extends SherlockFragmentActivity
 		asdf.show(this.getSupportFragmentManager(), AddOrEditSiteDialogFragment.TAG);
 	}
 	
+	/* AddSiteDialogCallback methods */
 	@Override
 	public void onOk(Site site)
 	{

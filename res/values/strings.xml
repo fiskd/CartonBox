@@ -35,6 +35,8 @@ You will also need to provide your own display icons, images at 512 x 512 px sho
 	<string name="refresh">Refresh</string>
 	<string name="addsite">Add site</string>
 	<string name="favorite">Favorite</string>
+	<string name="defaults">Defaults</string>
+	<string name="custom">Custom</string>
 	
 	<string name="addsite">Add a site</string>
 	<string name="edit">Edit</string>

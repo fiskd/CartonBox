@@ -3,6 +3,7 @@ package org.shujito.cartonbox.view.fragments.dialogs;
 import org.shujito.cartonbox.Logger;
 import org.shujito.cartonbox.R;
 import org.shujito.cartonbox.model.Site;
+import org.shujito.cartonbox.view.fragments.dialogs.listeners.AddSiteDialogCallback;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -34,12 +35,6 @@ public class AddOrEditSiteDialogFragment extends SherlockDialogFragment
 	public static final String TAG = "org.shujito.cartonbox.view.fragments.dialogs.AddSiteDialogFragment";
 	public static final String EXTRA_SITE = "org.shujito.cartonbox.view.fragments.dialogs.AddSiteDialogFragment.EXTRA_SITE";
 	public static final int REQUEST_CODE = ((R.string.app_name & 0xffff) ^ (R.string.app_name >> 16));
-	
-	public interface AddSiteDialogCallback
-	{
-		public void onOk(Site site);
-		public void onCancel();
-	}
 	
 	AddSiteDialogCallback callback = null;
 	
