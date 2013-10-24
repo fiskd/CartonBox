@@ -2,8 +2,8 @@ package org.shujito.cartonbox.view.adapters;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.shujito.cartonbox.R;
 import org.shujito.cartonbox.controller.ImageLoader;
@@ -12,6 +12,7 @@ import org.shujito.cartonbox.model.Download;
 import org.shujito.cartonbox.model.db.DownloadsDB;
 import org.shujito.cartonbox.utils.BitmapCache;
 import org.shujito.cartonbox.utils.ConcurrentTask;
+import org.shujito.cartonbox.utils.Formatters;
 
 import android.app.Activity;
 import android.content.Context;
@@ -70,53 +71,19 @@ public class DownloadsAdapter extends BaseAdapter
 		if(v == null)
 		{
 			LayoutInflater inf = LayoutInflater.from(this.context);
-			v = inf.inflate(R.layout.download_item, dad, false);
+			v = inf.inflate(R.layout.item_download, dad, false);
 		}
 		
 		final Download one = this.mLsDownloads.get(pos);
 		// the id can be used as time
 		long ago = now - one.getId();
-		int hours = (int)(ago / (60 * 60 * 1000));
-		int minutes = (int)(ago / (60 * 1000)) - (hours * 60);
-		//int seconds = (int)(ago / (1000)) - (hours * 60 * 60) - (minutes * 60);
 		
-		String timeAgo = "";
+		String timeAgo = Formatters.humanReadableTimeElapsed(ago, TimeUnit.DAYS, TimeUnit.SECONDS);
 		
-		if(hours >= 24)
-		{
-			timeAgo = new Date(ago).toString();
-		}
-		else
-		{
-			if(hours > 0 || minutes > 0)
-			{
-				StringBuilder sb = new StringBuilder();
-				if(hours > 0)
-				{
-					// TODO: resources
-					sb.append(String.format("%s hours", hours));
-				}
-				if(minutes > 0)
-				{
-					if(hours > 0)
-					{
-						sb.append(", ");
-					}
-					// TODO: resources
-					sb.append(String.format("%s minutes", minutes));
-				}
-				sb.append(" ago");
-				timeAgo = sb.toString();
-			}
-			else
-			{
-				// TODO: resources
-				timeAgo = "Just now.";
-			}
-		}
+		timeAgo = String.format("%s ago", timeAgo);
 		
 		((TextView)v.findViewById(R.id.tvName)).setText(one.getName());
-		((TextView)v.findViewById(R.id.tvWhen)).setText(timeAgo.toString());
+		((TextView)v.findViewById(R.id.tvWhen)).setText(timeAgo);
 		
 		final ImageView iv = ((ImageView)v.findViewById(R.id.ivPic));
 		

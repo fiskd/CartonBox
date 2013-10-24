@@ -64,7 +64,7 @@ public class BlogListAdapter extends BaseAdapter implements OnXmlResponseReceive
 		if(v == null)
 		{
 			LayoutInflater inf = LayoutInflater.from(this.context);
-			v = inf.inflate(R.layout.blog_item, dad, false);
+			v = inf.inflate(R.layout.item_blog, dad, false);
 		}
 		
 		BlogEntry entry = this.entries.get(pos);

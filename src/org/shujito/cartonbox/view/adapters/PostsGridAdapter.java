@@ -95,7 +95,7 @@ public class PostsGridAdapter extends BaseAdapter
 		if(v == null)
 		{
 			LayoutInflater inf = LayoutInflater.from(this.context);
-			v = inf.inflate(R.layout.post_item_grid, dad, false);
+			v = inf.inflate(R.layout.item_post_grid, dad, false);
 		}
 		
 		// should get reverse index

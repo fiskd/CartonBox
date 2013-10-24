@@ -20,6 +20,7 @@ import android.graphics.drawable.TransitionDrawable;
 import android.os.AsyncTask.Status;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -42,6 +43,7 @@ public class PostViewFragment extends Fragment
 		
 		Fragment fragment = new PostViewFragment();
 		fragment.setArguments(humbleArgs);
+		//fragment.setRetainInstance(true);
 		
 		return fragment;
 	}
@@ -69,13 +71,12 @@ public class PostViewFragment extends Fragment
 	@Override
 	public View onCreateView(LayoutInflater inf, ViewGroup dad, Bundle cirno)
 	{
-		return inf.inflate(R.layout.post_item_pager, null);
+		return inf.inflate(R.layout.item_post_pager, null);
 	}
 	
 	@Override
 	public void onViewCreated(View view, Bundle cirno)
 	{
-		this.setHasOptionsMenu(true);
 		// get post
 		this.post = (Post)this.getArguments().getSerializable(EXTRA_POST);
 		// build the view appearance here
@@ -107,14 +108,14 @@ public class PostViewFragment extends Fragment
 		if(this.post == null)
 			return;
 		
-		//DisplayMetrics displayMetrics = new DisplayMetrics();
-		//this.getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+		DisplayMetrics displayMetrics = new DisplayMetrics();
+		this.getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 		
-		//int width = displayMetrics.widthPixels;
-		//int height = displayMetrics.heightPixels;
+		int width = displayMetrics.widthPixels;
+		int height = displayMetrics.heightPixels;
 		
-		//int whatToUse = width > height ? width : height;
-		int whatToUse = 1280;
+		int whatToUse = width > height ? width : height;
+		//int whatToUse = 1280;
 		
 		this.tvmessage.setVisibility(View.VISIBLE);
 		
@@ -148,10 +149,21 @@ public class PostViewFragment extends Fragment
 			this.llStatusDots.setVisibility(View.GONE);
 		}
 		
+		/* TODO: handle image downloads there
+		ImageDownloaderFragment wf = (ImageDownloaderFragment)this.getChildFragmentManager().findFragmentByTag("Tagg");
+		if(wf == null)
+		{
+			wf = new ImageDownloaderFragment();
+			//this.getFragmentManager().beginTransaction().add(wf, "Tagg").commit();
+			this.getChildFragmentManager().beginTransaction().add(wf, "Tagg").commit();
+		}
+		//*/
+		
 		this.thumbDownloader = new ImageDownloader(this.getActivity(), this.post.getPreviewUrl());
 		this.thumbDownloader.setOnDownloadProgressListener(this);
-		this.thumbDownloader.setWidth(whatToUse);
-		this.thumbDownloader.setHeight(whatToUse);
+		this.thumbDownloader.setWidth(150);
+		this.thumbDownloader.setHeight(150);
+		//*
 		this.thumbDownloader.setOnImageFetchedListener(new OnImageFetchedListener()
 		{
 			@Override
@@ -185,11 +197,6 @@ public class PostViewFragment extends Fragment
 				}
 			}
 		});
-		
-		//if(Preferences.getBool(R.string.pref_content_warning_key) && (post.getRating().equals(Rating.Questionable) || post.getRating().equals(Rating.Explicit)))
-		//{
-		//	ConcurrentTask.execute(this.thumbDownloader);
-		//}
 		
 		if(Preferences.getBool(R.string.pref_content_warning_key, true))
 		{
@@ -247,6 +254,12 @@ public class PostViewFragment extends Fragment
 				}
 			}
 		});
+	}
+	
+	@Override
+	public void onSaveInstanceState(Bundle outState)
+	{
+		super.onSaveInstanceState(outState);
 	}
 	
 	@Override

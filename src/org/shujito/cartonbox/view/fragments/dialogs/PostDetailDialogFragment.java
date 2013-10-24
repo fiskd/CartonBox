@@ -107,13 +107,11 @@ public class PostDetailDialogFragment extends SherlockDialogFragment
 		}
 		Logger.i(this.getClass().getSimpleName(), sb.toString());
 		
-		//*
 		Intent ntn = new Intent(this.getActivity(), SiteIndexActivity.class);
 		ntn.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		ntn.setAction(Intent.ACTION_SEARCH);
 		// XXX: is this hacky?
 		ntn.putExtra(SearchManager.QUERY, sb.toString());
 		this.getActivity().startActivity(ntn);
-		//*/
 	}
 }

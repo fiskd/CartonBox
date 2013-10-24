@@ -86,7 +86,7 @@ public class PostsPagerAdapter extends FragmentPagerAdapter
 			FragmentTransaction fragtrans = fragman.beginTransaction();
 			fragtrans.remove(frag);
 			fragtrans.commit();
-			Logger.i("PostsPagerAdapter::destroyItem", String.format("Destroyed #%s", position));
+			//Logger.i("PostsPagerAdapter::destroyItem", String.format("Destroyed #%s", position));
 		}
 	}
 	

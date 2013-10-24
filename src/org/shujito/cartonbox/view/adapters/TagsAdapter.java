@@ -66,7 +66,7 @@ public class TagsAdapter extends BaseAdapter
 		if(v == null)
 		{
 			LayoutInflater inf = LayoutInflater.from(this.context);
-			v = inf.inflate(R.layout.tag_item, dad, false);
+			v = inf.inflate(R.layout.item_tag, dad, false);
 		}
 		
 		// ah, there we go...

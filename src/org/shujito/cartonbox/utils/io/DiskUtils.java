@@ -17,7 +17,15 @@ public class DiskUtils
 	public static File getCacheDirectory(Context context)
 	{
 		if(PreferenceManager.getDefaultSharedPreferences(context).getBoolean(context.getString(R.string.pref_general_cacheexternal_key), false))
-			return context.getExternalCacheDir();
+		{
+			// TODO: handle availability of external cache on the preference activity
+			File cacheDir = context.getExternalCacheDir();
+			if(cacheDir == null)
+			{
+				cacheDir = context.getCacheDir();
+			}
+			return cacheDir;
+		}
 		else
 			return context.getCacheDir();
 	}

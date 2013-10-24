@@ -118,7 +118,7 @@ public class PostViewActivity extends SherlockFragmentActivity
 					where = where.concat(this.selectedPost.getFileExt());
 					
 					// TODO: pref, download stuff by folder rather than booru_md5.ext
-					// this if is a palceholder, it does nothing actually
+					// this if condition is a palceholder, it does nothing actually
 					if(ntn.equals(null))
 					{
 						saveDir = saveDir.concat("/");

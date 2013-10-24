@@ -167,7 +167,10 @@ public abstract class Imageboard implements
 		{
 			for(OnErrorListener l : this.onErrorListeners)
 			{
-				l.onError(code, result);
+				if(l != null)
+				{
+					l.onError(code, result);
+				}
 			}
 		}
 		this.working = false;

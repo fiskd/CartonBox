@@ -114,7 +114,7 @@ public class PostDetailAdapter extends BaseAdapter
 		if(v == null)
 		{
 			LayoutInflater inf = LayoutInflater.from(this.context);
-			v = inf.inflate(R.layout.detail_item, dad, false);
+			v = inf.inflate(R.layout.item_detail, dad, false);
 		}
 		
 		Detail one = this.details.get(pos);
