@@ -22,9 +22,9 @@ import android.widget.TextView;
 public class TagsAdapter extends BaseAdapter
 	implements OnTagsFetchedListener, Filterable, FilterCallback<List<Tag>>
 {
-	Filter filter = null;
-	Context context = null;
-	List<Tag> tags = null;
+	private Filter filter = null;
+	private Context context = null;
+	private List<Tag> tags = null;
 	
 	public TagsAdapter(Context context)
 	{

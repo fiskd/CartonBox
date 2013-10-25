@@ -47,7 +47,7 @@ public class PostDetailDialogFragment extends SherlockDialogFragment
 		
 		this.detailAdapter = new PostDetailAdapter(this.getActivity(), post);
 		
-		this.lvTags = (ListView)v.findViewById(R.id.lvTags);
+		this.lvTags = (ListView)v.findViewById(R.id.lvList);
 		this.lvTags.setAdapter(detailAdapter);
 		this.lvTags.setOnItemClickListener(this);
 		this.lvTags.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
