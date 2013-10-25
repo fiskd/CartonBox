@@ -4,13 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.shujito.cartonbox.Logger;
-import org.shujito.cartonbox.controller.listeners.OnJsonResponseReceivedListener;
-import org.shujito.cartonbox.controller.listeners.OnRequestListener;
-import org.shujito.cartonbox.controller.listeners.OnTagsFetchedListener;
+import org.shujito.cartonbox.controller.listener.OnRequestListener;
+import org.shujito.cartonbox.controller.listener.OnTagsFetchedListener;
+import org.shujito.cartonbox.controller.task.JsonDownloader;
+import org.shujito.cartonbox.controller.task.listener.OnJsonResponseReceivedListener;
 import org.shujito.cartonbox.model.Site;
 import org.shujito.cartonbox.model.Tag;
 import org.shujito.cartonbox.model.parser.JsonParser;
-import org.shujito.cartonbox.utils.ConcurrentTask;
+import org.shujito.cartonbox.util.ConcurrentTask;
 
 /* tags logic */
 // step 0: config

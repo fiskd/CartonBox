@@ -4,8 +4,9 @@ import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.shujito.cartonbox.controller.listeners.OnErrorListener;
-import org.shujito.cartonbox.controller.listeners.OnRequestListener;
+import org.shujito.cartonbox.controller.listener.OnErrorListener;
+import org.shujito.cartonbox.controller.listener.OnRequestListener;
+import org.shujito.cartonbox.controller.task.Downloader;
 import org.shujito.cartonbox.model.Site;
 
 public abstract class Imageboard implements

@@ -1,5 +1,8 @@
 package org.shujito.cartonbox.controller;
 
+import org.shujito.cartonbox.controller.task.DanbooruOldJsonTagDownloader;
+import org.shujito.cartonbox.controller.task.Downloader;
+import org.shujito.cartonbox.controller.task.JsonDownloader;
 import org.shujito.cartonbox.model.Site;
 
 public class DanbooruOldImageBoardTags extends ImageboardTags

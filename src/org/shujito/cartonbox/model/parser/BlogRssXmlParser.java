@@ -6,12 +6,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.shujito.cartonbox.model.BlogEntry;
-import org.shujito.cartonbox.model.listeners.CustomEndElement;
-import org.shujito.cartonbox.model.listeners.CustomEndElementListener;
-import org.shujito.cartonbox.model.listeners.CustomEndTextElement;
-import org.shujito.cartonbox.model.listeners.CustomEndTextElementListener;
-import org.shujito.cartonbox.model.listeners.CustomStartElement;
-import org.shujito.cartonbox.model.listeners.CustomStartElementListener;
+import org.shujito.cartonbox.model.listener.CustomEndElement;
+import org.shujito.cartonbox.model.listener.CustomEndElementListener;
+import org.shujito.cartonbox.model.listener.CustomEndTextElement;
+import org.shujito.cartonbox.model.listener.CustomEndTextElementListener;
+import org.shujito.cartonbox.model.listener.CustomStartElement;
+import org.shujito.cartonbox.model.listener.CustomStartElementListener;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 

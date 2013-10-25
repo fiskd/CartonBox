@@ -1,11 +1,11 @@
 package org.shujito.cartonbox.view;
 
 import org.shujito.cartonbox.R;
-import org.shujito.cartonbox.controller.BlogRssXmlDownloader;
-import org.shujito.cartonbox.controller.XmlDownloader;
+import org.shujito.cartonbox.controller.task.BlogRssXmlDownloader;
+import org.shujito.cartonbox.controller.task.XmlDownloader;
 import org.shujito.cartonbox.model.BlogEntry;
-import org.shujito.cartonbox.utils.ConcurrentTask;
-import org.shujito.cartonbox.view.adapters.BlogListAdapter;
+import org.shujito.cartonbox.util.ConcurrentTask;
+import org.shujito.cartonbox.view.adapter.BlogListAdapter;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
