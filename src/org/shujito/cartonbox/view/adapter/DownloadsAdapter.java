@@ -137,7 +137,6 @@ public class DownloadsAdapter extends BaseAdapter
 		ConcurrentTask.execute(c);
 	}
 	
-	// XXX: I dislike accesing parent's things directly (e.g. no 'this')
 	class Cleanup extends AsyncTask<Void, Void, List<Download>>
 	{
 		DownloadsAdapter adapter = null;
@@ -145,6 +144,7 @@ public class DownloadsAdapter extends BaseAdapter
 		
 		public Cleanup(DownloadsAdapter adapter)
 		{
+			// XXX: I dislike accesing parent's things directly (e.g. no 'this')
 			this.adapter = adapter;
 		}
 		

@@ -89,8 +89,7 @@ public class DownloadService extends IntentService
 			// icon
 			builder.setSmallIcon(android.R.drawable.stat_sys_download);
 			// resource id used as notification id
-			// TODO: should use system millis for multiple notifications
-			// TODO: make it a pref
+			// TODO: make a pref: should use system millis for multiple notifications
 			notificationManager.notify(R.string.app_name, builder.build());
 			try
 			{

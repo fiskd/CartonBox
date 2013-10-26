@@ -9,7 +9,6 @@ public class SitesJsonParser implements JsonParser<Site>
 {
 	private static String TAG_NAME = "name";
 	private static String TAG_ICON = "icon";
-	// TODO: read
 	private static String TAG_DESCRIPTION = "description";
 	private static String TAG_URL = "url";
 	private static String TAG_TYPE = "type";
@@ -29,7 +28,6 @@ public class SitesJsonParser implements JsonParser<Site>
 	@Override
 	public Site getAtIndex(int index)
 	{
-		// TODO: test, debug
 		JSONObject jobj = this.jsonArray.optJSONObject(index);
 		if(jobj == null) return null;
 		
