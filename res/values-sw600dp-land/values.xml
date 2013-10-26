@@ -4,7 +4,6 @@
 <integer name="posts_section_numcols">6</integer>
 <dimen name="post_item_grid_size">160dp</dimen>
 <bool name="fullscreen">false</bool>
-
 <item name="tags_page_width" type="dimen">33%</item>
 
 </resources>

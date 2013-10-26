@@ -83,6 +83,8 @@ public class Site implements Serializable
 	private String notesApi;
 	private String artistsApi;
 	private String tagsApi;
+	// BLAH
+	private String description;
 	
 	/* constructor */
 	public Site()
@@ -115,6 +117,9 @@ public class Site implements Serializable
 	{ return this.artistsApi; }
 	public String getTagsApi()
 	{ return this.tagsApi; }
+	// BLAH
+	public String getDescription()
+	{ return this.description; }
 
 	/* setters */
 	//*
@@ -177,6 +182,12 @@ public class Site implements Serializable
 	public Site setTagsApi(String s)
 	{
 		this.tagsApi = s;
+		return this;
+	}
+	// BLAH
+	public Site setDescription(String s)
+	{
+		this.description = s;
 		return this;
 	}
 }

@@ -46,9 +46,7 @@ public class BlogListAdapter extends BaseAdapter implements OnXmlResponseReceive
 	public Object getItem(int pos)
 	{
 		if(this.entries != null)
-		{
 			return this.entries.get(pos);
-		}
 		return null;
 	}
 	

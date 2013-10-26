@@ -7,9 +7,11 @@ import org.shujito.cartonbox.model.parser.XmlParser;
 
 public class BlogRssXmlDownloader extends XmlDownloader
 {
-	public BlogRssXmlDownloader(String url)
+	static final String BLOG_ADDRESS = "http://www.shujito.org/tagged/cartonbox/rss";
+	
+	public BlogRssXmlDownloader()
 	{
-		super(url);
+		super(BLOG_ADDRESS);
 	}
 	
 	@Override

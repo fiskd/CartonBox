@@ -4,5 +4,6 @@
 <integer name="posts_section_numcols">5</integer>
 <integer name="main_gvsites_numcols">4</integer>
 <bool name="fullscreen">true</bool>
+<item name="tags_page_width" type="dimen">40%</item>
 
 </resources>

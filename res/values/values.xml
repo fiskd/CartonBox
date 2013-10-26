@@ -3,10 +3,13 @@
 
 <integer name="posts_section_numcols">3</integer>
 <integer name="main_gvsites_numcols">2</integer>
-<dimen name="post_item_grid_size">100dp</dimen>
+<dimen name="item_post_grid_size">100dp</dimen>
 <bool name="fullscreen">false</bool>
 <dimen name="fontsize">24sp</dimen>
-
 <item name="tags_page_width" type="dimen">100%</item>
+
+<dimen name="item_site_icon_size">72dp</dimen>
+<style name="item_site_textappearance_title" parent="@android:style/TextAppearance.Medium"></style>
+<style name="item_site_textappearance_description" parent="@android:style/TextAppearance.Small"></style>
 
 </resources>

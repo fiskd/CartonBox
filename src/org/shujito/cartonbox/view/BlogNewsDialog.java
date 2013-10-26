@@ -27,8 +27,6 @@ import android.widget.ListView;
  */
 public class BlogNewsDialog implements OnItemClickListener
 {
-	static final String BLOG_ADDRESS = "http://www.shujito.org/tagged/cartonbox/rss";
-	
 	Context context;
 	ListView mLvEntries = null;
 	CheckBox mCbxNoshowagain = null;
@@ -52,7 +50,7 @@ public class BlogNewsDialog implements OnItemClickListener
 		View v = inf.inflate(R.layout.dialog_blognews, null);
 		
 		this.mBlogListAdapter = new BlogListAdapter(this.context);
-		this.downloader = new BlogRssXmlDownloader(BLOG_ADDRESS);
+		this.downloader = new BlogRssXmlDownloader();
 		this.downloader.setOnResponseReceivedListener(this.mBlogListAdapter);
 		this.downloader.setOnErrorListener(this.mBlogListAdapter);
 		ConcurrentTask.execute(this.downloader);

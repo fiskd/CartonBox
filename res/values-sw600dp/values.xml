@@ -5,7 +5,9 @@
 <dimen name="post_item_grid_size">150dp</dimen>
 <bool name="fullscreen">false</bool>
 <dimen name="fontsize">48sp</dimen>
-
 <item name="tags_page_width" type="dimen">50%</item>
 
+<dimen name="item_site_icon_size">114dp</dimen>
+<style name="item_site_textappearance_title" parent="@android:style/TextAppearance.Large"></style>
+<style name="item_site_textappearance_description" parent="@android:style/TextAppearance.Medium"></style>
 </resources>

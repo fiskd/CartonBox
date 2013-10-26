@@ -20,6 +20,7 @@ import org.shujito.cartonbox.util.io.listener.OnDirectoryClearedListener;
 import org.shujito.cartonbox.util.io.listener.OnDiskTaskProgressListener;
 import org.shujito.cartonbox.util.io.task.ClearDirectoryTask;
 import org.shujito.cartonbox.view.adapter.SitesAdapter;
+import org.shujito.cartonbox.view.fragment.dialog.AddDefaultSiteDialogFragment;
 import org.shujito.cartonbox.view.fragment.dialog.AddOrEditSiteDialogFragment;
 import org.shujito.cartonbox.view.fragment.dialog.listener.AddSiteDialogCallback;
 
@@ -286,15 +287,16 @@ public class MainActivity extends SherlockFragmentActivity
 	}
 	/* OnItemLongClickListener methods */
 	
-	private void addCustomSite()
-	{
-		AddOrEditSiteDialogFragment asdf = new AddOrEditSiteDialogFragment();
-		asdf.show(this.getSupportFragmentManager(), AddOrEditSiteDialogFragment.TAG);
-	}
-	
 	private void chooseDefaultSite()
 	{
-		
+		AddDefaultSiteDialogFragment adsfg = new AddDefaultSiteDialogFragment();
+		adsfg.show(this.getSupportFragmentManager(), AddDefaultSiteDialogFragment.TAG);
+	}
+	
+	private void addCustomSite()
+	{
+		AddOrEditSiteDialogFragment aoesdf = new AddOrEditSiteDialogFragment();
+		aoesdf.show(this.getSupportFragmentManager(), AddOrEditSiteDialogFragment.TAG);
 	}
 	
 	private void editSite()

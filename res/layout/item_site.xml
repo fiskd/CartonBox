@@ -7,8 +7,8 @@
 	
 	<ImageView
 		android:id="@+id/ivIcon"
-		android:layout_width="72dp"
-		android:layout_height="72dp"
+		android:layout_width="@dimen/item_site_icon_size"
+		android:layout_height="@dimen/item_site_icon_size"
 		android:layout_margin="8dp"
 		android:contentDescription="@string/app_name"
 		android:src="@drawable/icon_unknown" />
@@ -23,13 +23,14 @@
 			android:id="@+id/tvName"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:textAppearance="?android:attr/textAppearanceMedium"
+			android:textAppearance="@style/item_site_textappearance_title"
 			android:text="@string/app_name" />
 		
 		<TextView
 			android:id="@+id/tvDescription"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
+			android:textAppearance="@style/item_site_textappearance_description"
 			android:text="@string/app_name" />
 		
 	</LinearLayout>
