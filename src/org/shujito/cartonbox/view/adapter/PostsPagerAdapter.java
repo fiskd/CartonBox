@@ -10,14 +10,12 @@ import org.shujito.cartonbox.view.fragment.PostViewFragment;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.util.SparseArray;
-import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
 
-public class PostsPagerAdapter extends FragmentPagerAdapter
+public class PostsPagerAdapter extends FragmentStatePagerAdapter
 	implements OnPostsFetchedListener, Filterable, FilterCallback<SparseArray<Post>>
 {
 	/* listeners */
@@ -51,7 +49,8 @@ public class PostsPagerAdapter extends FragmentPagerAdapter
 		return PostViewFragment.create(post);
 	}
 	
-	@Override
+	//*
+	//@Override
 	public long getItemId(int pos)
 	{
 		// get reverse index, like the grid adapter
@@ -63,6 +62,7 @@ public class PostsPagerAdapter extends FragmentPagerAdapter
 		// and return it
 		return key;
 	}
+	//*/
 	
 	@Override
 	public int getCount()
@@ -72,6 +72,7 @@ public class PostsPagerAdapter extends FragmentPagerAdapter
 		return 0;
 	}
 	
+	/*
 	@Override
 	public void destroyItem(ViewGroup container, int position, Object object)
 	{
@@ -89,6 +90,7 @@ public class PostsPagerAdapter extends FragmentPagerAdapter
 			//Logger.i("PostsPagerAdapter::destroyItem", String.format("Destroyed #%s", position));
 		}
 	}
+	//*/
 	
 	@Override
 	public void onPostsFetched(SparseArray<Post> posts)

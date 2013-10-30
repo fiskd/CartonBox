@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
 // TODO: handle image downloads here
+// XXX: I might end removing this
 // source: http://www.androiddesignpatterns.com/2013/04/retaining-objects-across-config-changes.html
 // source: https://github.com/alexjlockwood/worker-fragments/tree/master/src/com/adp/retaintask
 public class ImageDownloaderFragment extends Fragment

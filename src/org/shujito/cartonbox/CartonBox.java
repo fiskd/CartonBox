@@ -21,7 +21,7 @@ public class CartonBox extends Application
 {
 	// application instance, we can access the context everywhere with this
 	private static CartonBox instance = null;
-	
+	// with this rather...
 	public static CartonBox getInstance()
 	{
 		return instance;
@@ -54,7 +54,6 @@ public class CartonBox extends Application
 				{
 					sitesdb.delete(site);
 				}
-				Preferences.defaultSites();
 			}
 			if(version <= 5)
 			{

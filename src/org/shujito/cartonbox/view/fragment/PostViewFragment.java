@@ -11,6 +11,7 @@ import org.shujito.cartonbox.model.Post.Rating;
 import org.shujito.cartonbox.util.ConcurrentTask;
 
 import uk.co.senab.photoview.PhotoView;
+import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
@@ -20,6 +21,7 @@ import android.graphics.drawable.TransitionDrawable;
 import android.os.AsyncTask.Status;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.util.LruCache;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,6 +35,11 @@ public class PostViewFragment extends Fragment
 	implements OnDownloadProgressListener, OnClickListener
 {
 	/* static */
+	public interface PostViewCallback
+	{
+		public LruCache<Long, Bitmap> getCache();
+	}
+	
 	public static String EXTRA_POST = "org.shujito.cartonbox.POST";
 	
 	public static Fragment create(Post post)
@@ -72,6 +79,12 @@ public class PostViewFragment extends Fragment
 	public View onCreateView(LayoutInflater inf, ViewGroup dad, Bundle cirno)
 	{
 		return inf.inflate(R.layout.item_post_pager, null);
+	}
+	
+	@Override
+	public void onAttach(Activity activity)
+	{
+		super.onAttach(activity);
 	}
 	
 	@Override

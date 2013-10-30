@@ -26,6 +26,9 @@ public class ScheduledCachePurger implements Runnable, DirectorySizeCallback, On
 	
 	public ScheduledCachePurger()
 	{
+		// megabytes
+		this.preferredSize = 32;
+		
 		this.handler = new Handler();
 		this.handler.post(this);
 	}
@@ -38,7 +41,10 @@ public class ScheduledCachePurger implements Runnable, DirectorySizeCallback, On
 		// get the maximum cache size from preferences
 		String preferredSizeString = Preferences.getString(R.string.pref_general_cachesize_key);
 		// it is a string, must be parsed
-		this.preferredSize = Integer.valueOf(preferredSizeString);
+		if(preferredSizeString instanceof String)
+		{
+			this.preferredSize = Integer.valueOf(preferredSizeString);
+		}
 		if(this.preferredSize > 0)
 		{
 			// target size will be five megabytes less than the preferred size

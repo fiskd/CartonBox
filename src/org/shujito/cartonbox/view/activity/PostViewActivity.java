@@ -6,6 +6,7 @@ import org.shujito.cartonbox.R;
 import org.shujito.cartonbox.controller.ImageboardPosts;
 import org.shujito.cartonbox.model.Post;
 import org.shujito.cartonbox.service.DownloadService;
+import org.shujito.cartonbox.util.BitmapCache;
 import org.shujito.cartonbox.view.PostsFilter.OnAfterPostsFilterListener;
 import org.shujito.cartonbox.view.adapter.PostsPagerAdapter;
 import org.shujito.cartonbox.view.fragment.dialog.PostDetailDialogFragment;
@@ -35,6 +36,8 @@ public class PostViewActivity extends SherlockFragmentActivity
 	Post selectedPost = null;
 	ViewPager mVpPosts = null;
 	PostsPagerAdapter mPostsAdapter = null;
+	// bitmapcache
+	BitmapCache cache = null;
 	
 	MenuItem
 		itemViewChildren,
@@ -46,6 +49,8 @@ public class PostViewActivity extends SherlockFragmentActivity
 	{
 		super.onCreate(cirno);
 		this.setContentView(R.layout.posts_view);
+		
+		this.cache = new BitmapCache();
 		
 		this.mPostsAdapter = new PostsPagerAdapter(this.getSupportFragmentManager());
 		this.mPostsAdapter.setOnAfterPostsFilterListener(this);

@@ -89,6 +89,9 @@ public class ImageDownloader extends AsyncTask<Void, Float, Bitmap>
 	{
 		if(this.url == null)
 			return null;
+		// proceed only if the url is valid
+		if(!this.url.startsWith("http://") && !this.url.startsWith("https://"))
+			return null;
 		
 		int slashCount = 0;
 		int secondslash = 0;
@@ -134,7 +137,79 @@ public class ImageDownloader extends AsyncTask<Void, Float, Bitmap>
 			// download the file. corrupted? download again...
 			if(bmp == null)
 			{
-				//Logger.i(this.getClass().getSimpleName(), String.format("'%s' is corrupt or not downloaded", filename));
+				/*
+				OutputStream output = null;
+				FileLock lock = null;
+				FileChannel channel = null;
+				try
+				{
+					// create stream from file
+					output = new FileOutputStream(file);
+					// stuff I'm learning...
+					channel = ((FileOutputStream)output).getChannel();
+					// lock it
+					lock = channel.lock();
+					Logger.i(this.getClass().getSimpleName(), String.format("lock: '%s'", lock));
+					// have an url
+					URL url = new URL(this.url);
+					// open it
+					HttpURLConnection httpurlconn = (HttpURLConnection)url.openConnection();
+					// behoimi has hotlinking protection, bypass it with a referer
+					httpurlconn.setRequestProperty("Referer", this.url);
+					// connect now
+					httpurlconn.connect();
+					// get stream size
+					int size = httpurlconn.getContentLength();
+					// put the network stream into a buffer
+					InputStream input = new BufferedInputStream(httpurlconn.getInputStream());
+					//Logger.i(this.getClass().getSimpleName(), String.format("downloading '%s'", filename));
+					try
+					{
+						// stuff we need for the buffer
+						byte[] data = new byte[BUFFER];
+						int total = 0;
+						int bytesRead;
+						// start reading the stream
+						while((bytesRead = input.read(data)) > 0)
+						{
+							if(this.isCancelled())
+							{
+								// PANIC!
+								return null;
+							}
+							total += bytesRead;
+							// progress available only when streamsize is available
+							if(size > 0)
+								this.publishProgress( (float)total / size );
+							// writting...
+							output.write(data, 0, bytesRead);
+						}
+					}
+					finally
+					{
+						if(output != null)
+						{
+							output.flush();
+							output.close();
+						}
+					}
+				}
+				catch(OverlappingFileLockException ex)
+				{
+					Logger.e(this.getClass().getSimpleName(), ex.getMessage(), ex);
+					// already locked, it's being downloaded, wait for it then
+				}
+				finally
+				{
+					// release lock
+					if(lock != null && lock.isValid())
+						lock.release();
+				}
+				// at this point the file has been finally downloaded
+				bmp = ImageUtils.decodeSampledBitmap(file, this.width, this.height);
+				//*/
+				
+				//*
 				Logger.i(this.getClass().getSimpleName(), String.format("downloading '%s'", filename));
 				int size = 0;
 				// no file, download and then save
@@ -190,6 +265,7 @@ public class ImageDownloader extends AsyncTask<Void, Float, Bitmap>
 				//Logger.i(this.getClass().getSimpleName(), String.format("success! '%s'", filename));
 				bmp = ImageUtils.decodeSampledBitmap(file, this.width, this.height);
 				//imageStream.close();
+				//*/
 			}
 		}
 		catch(OutOfMemoryError ex)

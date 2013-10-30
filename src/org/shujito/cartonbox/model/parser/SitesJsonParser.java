@@ -8,7 +8,8 @@ import org.shujito.cartonbox.model.Site;
 public class SitesJsonParser implements JsonParser<Site>
 {
 	private static String TAG_NAME = "name";
-	private static String TAG_ICON = "icon";
+	private static String TAG_ICON_WEB = "icon_web";
+	private static String TAG_ICON_FILE = "icon_file";
 	private static String TAG_DESCRIPTION = "description";
 	private static String TAG_URL = "url";
 	private static String TAG_TYPE = "type";
@@ -34,7 +35,8 @@ public class SitesJsonParser implements JsonParser<Site>
 		Site s = new Site()
 			.setId(System.currentTimeMillis())
 			.setName(jobj.optString(TAG_NAME))
-			.setIcon(jobj.optString(TAG_ICON))
+			.setIconWeb(jobj.optString(TAG_ICON_WEB))
+			.setIconFile(jobj.optString(TAG_ICON_FILE))
 			.setUrl(jobj.optString(TAG_URL))
 			.setType(Site.Type.fromInt(jobj.optInt(TAG_TYPE)))
 			.setPostsApi(jobj.optString(TAG_POSTS))

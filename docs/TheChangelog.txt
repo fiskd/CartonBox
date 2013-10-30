@@ -5,6 +5,7 @@ The Changelog
 -Maximum cache size now works (purges periodically if the limit is reached)
 -can now navigate back in prefs and downloads with the home icon on the actionbar
 -bugfixes
+-default sites list, select one or more of the available site presets
 
 0.6
 -custom sites! which means adding, deleting, and editing, you can also customize the icon.

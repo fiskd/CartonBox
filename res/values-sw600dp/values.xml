@@ -2,7 +2,7 @@
 <resources>
 
 <integer name="posts_section_numcols">4</integer>
-<dimen name="post_item_grid_size">150dp</dimen>
+<dimen name="item_post_grid_size">150dp</dimen>
 <bool name="fullscreen">false</bool>
 <dimen name="fontsize">48sp</dimen>
 <item name="tags_page_width" type="dimen">50%</item>

@@ -10,11 +10,6 @@ public class Preferences
 	public static final String SITE_USERNAME = "org.shujito.cartonbox.SITE_USERNAME";
 	public static final String SITE_PASSWORD = "org.shujito.cartonbox.SITE_PASSWORD";
 	
-	@Deprecated
-	public static void defaultSites()
-	{
-	}
-	
 	public static boolean getBool(int id)
 	{
 		return getBool(id, false);

@@ -64,7 +64,7 @@ public class SitesAdapter extends BaseAdapter
 		Drawable dw = this.drawables.get(one.getId());
 		if(dw == null)
 		{
-			dw = Drawable.createFromPath(one.getIcon());
+			dw = Drawable.createFromPath(one.getIconFile());
 			if(dw == null)
 			{
 				dw = this.context.getResources().getDrawable(R.drawable.icon_unknown);

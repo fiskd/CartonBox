@@ -28,9 +28,9 @@ import android.widget.TextView;
 
 public class DownloadsAdapter extends BaseAdapter
 {
-	Context context = null;
-	List<Download> mLsDownloads = null;
-	BitmapCache cache = null;
+	private Context context = null;
+	private List<Download> mLsDownloads = null;
+	private BitmapCache cache = null;
 	
 	public DownloadsAdapter(Context context)
 	{

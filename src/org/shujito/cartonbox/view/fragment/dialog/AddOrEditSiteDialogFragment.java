@@ -58,13 +58,8 @@ public class AddOrEditSiteDialogFragment extends SherlockDialogFragment
 	public void onAttach(Activity activity)
 	{
 		super.onAttach(activity);
-		try
-		{
-			this.callback = (AddSiteDialogCallback)activity;
-		}
-		catch(Exception ex)
-		{
-		}
+		if(activity instanceof AddSiteDialogCallback)
+		{ this.callback = (AddSiteDialogCallback)activity; }
 	}
 	
 	@Override
@@ -118,15 +113,16 @@ public class AddOrEditSiteDialogFragment extends SherlockDialogFragment
 				
 				this.spSiteType.setSelection(siteval);
 				
-				if(site.getIcon() != null)
+				if(site.getIconFile() != null)
 				{
-					this.btnAddIcon.setImageURI(Uri.parse(site.getIcon()));
-					this.iconFilePath = site.getIcon();
+					this.btnAddIcon.setImageURI(Uri.parse(site.getIconFile()));
+					this.iconFilePath = site.getIconFile();
 				}
 			}
 		}
 		
 		return new AlertDialog.Builder(this.getActivity())
+			.setInverseBackgroundForced(true)
 			.setTitle(R.string.addsite)
 			.setView(v)
 			.setPositiveButton(android.R.string.ok, null)
@@ -210,7 +206,7 @@ public class AddOrEditSiteDialogFragment extends SherlockDialogFragment
 					site.setName(siteName);
 					site.setUrl(siteUrl);
 					// it's raw
-					site.setIcon(this.iconFilePath);
+					site.setIconFile(this.iconFilePath);
 					
 					if(this.callback != null)
 						this.callback.onOk(site);

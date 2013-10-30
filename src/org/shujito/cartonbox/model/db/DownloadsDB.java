@@ -1,8 +1,5 @@
 package org.shujito.cartonbox.model.db;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.shujito.cartonbox.model.Download;
 
 import android.content.ContentValues;
@@ -25,11 +22,12 @@ public class DownloadsDB extends DB<Download>
 	/* constructor */
 	public DownloadsDB(Context context)
 	{
-		super(context, DB_NAME, VERSION);
+		super(context, DB_NAME, VERSION, TABLE_DOWNLOADS, KEY_ID, KEY_ID, true);
 	}
 	
 	/* meth */
-	private ContentValues fromRecord(Download record)
+	@Override
+	protected ContentValues fromRecord(Download record)
 	{
 		ContentValues values = new ContentValues();
 		values.put(KEY_ID, record.getId());
@@ -38,8 +36,9 @@ public class DownloadsDB extends DB<Download>
 		values.put(KEY_LOCATION, record.getLocation());
 		return values;
 	}
-
-	private Download fromCursor(Cursor cursor)
+	
+	@Override
+	protected Download fromCursor(Cursor cursor)
 	{
 		Download download = new Download()
 			.setId(cursor.getLong(cursor.getColumnIndex(KEY_ID)))
@@ -60,120 +59,17 @@ public class DownloadsDB extends DB<Download>
 				{ SQL_TEXT, KEY_SOURCE },
 				{ SQL_TEXT, KEY_LOCATION }
 			};
-
-		this.createTable(db, fields, TABLE_DOWNLOADS);
+		
+		this.createTable(db, fields);
 	}
 	
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
 	{
-		db.execSQL(String.format(SQL_DROP, TABLE_DOWNLOADS));
-		this.onCreate(db);
 	}
 	
-	@Override
-	public boolean add(Download record)
+	public boolean delete(Download download)
 	{
-		SQLiteDatabase db = this.getWritableDatabase();
-		// insert entry
-		long inserted = db.insert(TABLE_DOWNLOADS, null, this.fromRecord(record));
-		db.close();
-		return inserted > 0;
-	}
-	
-	@Override
-	public Download get(int id)
-	{
-		SQLiteDatabase db = this.getReadableDatabase();
-		
-		Cursor cursor = db.query(
-				TABLE_DOWNLOADS,
-				new String[] { }, // KEY_URL, KEY_NAME, KEY_POSTS_API, KEY_POOLS_API, KEY_COMMENTS_API, KEY_NOTES_API, KEY_ARTISTS_API, KEY_TAGS_API },
-				String.format("%s=?", KEY_ID),
-				new String[]{ String.valueOf(id) },
-				null,
-				null,
-				null //String.format("%s ASC", KEY_NAME)
-			);
-		
-		if(cursor != null && cursor.moveToFirst())
-		{
-			Download site = this.fromCursor(cursor);
-			return site;
-		}
-		
-		return null;
-	}
-	
-	@Override
-	public List<Download> getAll()
-	{
-		SQLiteDatabase db = this.getReadableDatabase();
-		List<Download> sites = new ArrayList<Download>();
-		
-		Cursor cursor = db.query(
-				TABLE_DOWNLOADS,
-				new String[] { },
-				null,
-				null,
-				null,
-				null,
-				null //String.format("%s ASC", KEY_ID)
-			);
-		
-		if(cursor.moveToFirst())
-		{
-			while(true)
-			{
-				Download site = this.fromCursor(cursor);
-				sites.add(site);
-				
-				if(!cursor.moveToNext())
-					break;
-			}
-		}
-		
-		db.close();
-		return sites;
-	}
-	
-	@Override
-	public int getCount()
-	{
-		SQLiteDatabase db = this.getReadableDatabase();
-		
-		Cursor cursor = db.query(TABLE_DOWNLOADS, new String[]{ KEY_NAME }, null, null, null, null, null);
-		
-		int count = cursor.getCount();
-		cursor.close();
-		db.close();
-		return count;
-	}
-	
-	@Override
-	public boolean update(Download record)
-	{
-		SQLiteDatabase db = this.getWritableDatabase();
-		int rowsAffected = db.update(
-				TABLE_DOWNLOADS,
-				this.fromRecord(record),
-				String.format("%s=?", KEY_ID),
-				new String[]{ String.valueOf(record.getId()) }
-			);
-		db.close();
-		return rowsAffected > 0;
-	}
-	
-	@Override
-	public boolean delete(Download record)
-	{
-		SQLiteDatabase db = this.getWritableDatabase();
-		int affectedRows = db.delete(
-				TABLE_DOWNLOADS,
-				String.format("%s=?", KEY_ID),
-				new String[]{ String.valueOf(record.getId()) }
-			);
-		db.close();
-		return affectedRows > 0;
+		return this.delete(download, download.getId());
 	}
 }

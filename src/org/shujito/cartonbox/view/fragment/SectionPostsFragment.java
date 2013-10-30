@@ -65,15 +65,9 @@ public class SectionPostsFragment extends Fragment implements
 	{
 		Logger.i("SectionPostsFragment::onAttach", "overly attached fragment");
 		super.onAttach(activity);
-		try
-		{
-			// try to get the listener from the activity
-			this.onFragmentAttachedListener = (OnFragmentAttachedListener)activity;
-		}
-		catch(Exception ex)
-		{
-			Logger.e("SectionPostsFragment::onAttach", "Couldn't get listener from the activity this is attached to");
-		}
+		// get the listener from the activity
+		if(activity instanceof OnFragmentAttachedListener)
+		{ this.onFragmentAttachedListener = (OnFragmentAttachedListener)activity; }
 	}
 	
 	@Override

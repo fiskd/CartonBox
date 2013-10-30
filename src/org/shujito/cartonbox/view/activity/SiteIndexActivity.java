@@ -18,8 +18,10 @@ import org.shujito.cartonbox.view.listener.TagListItemSelectedCallback;
 
 import android.app.AlertDialog;
 import android.app.SearchManager;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -33,7 +35,7 @@ import com.actionbarsherlock.view.MenuItem;
 
 public class SiteIndexActivity extends SherlockFragmentActivity implements
 	OnPageChangeListener, ActionBar.TabListener, OnFragmentAttachedListener,
-	TagListItemSelectedCallback, OnErrorListener, LoginDialogCallback
+	TagListItemSelectedCallback, OnErrorListener, LoginDialogCallback, DialogInterface.OnClickListener
 {
 	public static String EXTRA_SECTIONPAGE = "org.shujito.cartonbox.SECTIONPAGE";
 	public static String EXTRA_DIALOGSHOWING = "org.shujito.cartonbox.DIALOGSHOWING";
@@ -181,8 +183,7 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 			AlertDialog.Builder dialog = new AlertDialog.Builder(this);
 			dialog.setTitle(R.string.ratingdialogtitle);
 			dialog.setMessage(R.string.ratingdialogmessage);
-			// TODO: events
-			dialog.setPositiveButton(android.R.string.yes, null);
+			dialog.setPositiveButton(android.R.string.yes, this);
 			dialog.setNegativeButton(R.string.later, null);
 			dialog.show();
 		}
@@ -436,5 +437,17 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 		}
 		
 		return -1;
+	}
+	
+	@Override
+	public void onClick(DialogInterface dialog, int which)
+	{
+		// set that the app has been rated
+		Preferences.setBool(R.string.pref_app_rated, true);
+		// launch google play
+		Intent market = new Intent(Intent.ACTION_VIEW);
+		String marketLink = String.format("market://details?id=%s", this.getPackageName());
+		market.setData(Uri.parse(marketLink));
+		this.startActivity(market);
 	}
 }

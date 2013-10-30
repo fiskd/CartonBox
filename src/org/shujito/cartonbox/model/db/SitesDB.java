@@ -1,8 +1,5 @@
 package org.shujito.cartonbox.model.db;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.shujito.cartonbox.model.Site;
 
 import android.content.ContentValues;
@@ -36,17 +33,18 @@ public class SitesDB extends DB<Site>
 	/* constructor */
 	public SitesDB(Context context)
 	{
-		super(context, DB_NAME, VERSION);
+		super(context, DB_NAME, VERSION, TABLE_SITES, KEY_ID, KEY_NAME, true);
 	}
 	
 	/* meth */
-	private ContentValues fromRecord(Site record)
+	@Override
+	protected ContentValues fromRecord(Site record)
 	{
 		ContentValues values = new ContentValues();
 		values.put(KEY_ID, record.getId());
 		values.put(KEY_URL, record.getUrl());
 		values.put(KEY_TYPE, record.getType().getValue());
-		values.put(KEY_ICON, record.getIcon());
+		values.put(KEY_ICON, record.getIconFile());
 		values.put(KEY_NAME, record.getName());
 		values.put(KEY_POST_VIEW_API, record.getPostViewApi());
 		values.put(KEY_POSTS_API, record.getPostsApi());
@@ -58,7 +56,8 @@ public class SitesDB extends DB<Site>
 		return values;
 	}
 	
-	private Site fromCursor(Cursor cursor)
+	@Override
+	protected Site fromCursor(Cursor cursor)
 	{
 		// Good, now THIS looks DRY
 		int iType = cursor.getInt(cursor.getColumnIndex(KEY_TYPE));
@@ -75,7 +74,7 @@ public class SitesDB extends DB<Site>
 			.setId(cursor.getLong(cursor.getColumnIndex(KEY_ID)))
 			.setUrl(cursor.getString(cursor.getColumnIndex(KEY_URL)))
 			.setType(type)
-			.setIcon(cursor.getString(cursor.getColumnIndex(KEY_ICON)))
+			.setIconFile(cursor.getString(cursor.getColumnIndex(KEY_ICON)))
 			.setName(cursor.getString(cursor.getColumnIndex(KEY_NAME)))
 			.setPostViewApi(cursor.getString(cursor.getColumnIndex(KEY_POST_VIEW_API)))
 			.setPostsApi(cursor.getString(cursor.getColumnIndex(KEY_POSTS_API)))
@@ -108,7 +107,7 @@ public class SitesDB extends DB<Site>
 				{ SQL_TEXT, KEY_TAGS_API }
 			};
 		
-		this.createTable(db, fields, TABLE_SITES);
+		this.createTable(db, fields);
 	}
 	
 	@Override
@@ -118,110 +117,13 @@ public class SitesDB extends DB<Site>
 		this.onCreate(db);
 	}
 	
-	@Override
-	public boolean add(Site record)
+	public boolean delete(Site site)
 	{
-		SQLiteDatabase db = this.getWritableDatabase();
-		// insert entry
-		long inserted = db.insert(TABLE_SITES, null, this.fromRecord(record));
-		db.close();
-		return inserted > 0;
+		return this.delete(site, site.getId());
 	}
 	
-	@Override
-	public Site get(int id)
+	public void update(Site site)
 	{
-		SQLiteDatabase db = this.getReadableDatabase();
-		
-		Cursor cursor = db.query(
-				TABLE_SITES,
-				new String[] { }, // KEY_URL, KEY_NAME, KEY_POSTS_API, KEY_POOLS_API, KEY_COMMENTS_API, KEY_NOTES_API, KEY_ARTISTS_API, KEY_TAGS_API },
-				String.format("%s=?", KEY_ID),
-				new String[]{ String.valueOf(id) },
-				null,
-				null,
-				String.format("%s ASC", KEY_NAME)
-			);
-		
-		if(cursor != null && cursor.moveToFirst())
-		{
-			Site site = this.fromCursor(cursor);
-			return site;
-		}
-		
-		return null;
-	}
-	
-	@Override
-	public List<Site> getAll()
-	{
-		SQLiteDatabase db = this.getReadableDatabase();
-		List<Site> sites = new ArrayList<Site>();
-		
-		Cursor cursor = db.query(
-				TABLE_SITES,
-				new String[] { },
-				null,
-				null,
-				null,
-				null,
-				String.format("%s ASC", KEY_NAME)
-			);
-		
-		if(cursor.moveToFirst())
-		{
-			while(true)
-			{
-				Site site = this.fromCursor(cursor);
-				sites.add(site);
-				
-				if(!cursor.moveToNext())
-					break;
-			}
-		}
-		
-		db.close();
-		return sites;
-	}
-	
-	@Override
-	public int getCount()
-	{
-		SQLiteDatabase db = this.getReadableDatabase();
-		
-		//Cursor cursor = db.rawQuery("SELECT * FROM ?", new String[]{ TABLE_SITES });
-		Cursor cursor = db.query(TABLE_SITES, new String[]{ KEY_NAME }, null, null, null, null, null);
-		
-		int count = cursor.getCount();
-		cursor.close();
-		db.close();
-		return count;
-	}
-	
-	@Override
-	public boolean update(Site record)
-	{
-		SQLiteDatabase db = this.getWritableDatabase();
-		int rowsAffected = db.update(
-				TABLE_SITES,
-				this.fromRecord(record),
-				String.format("%s=?", KEY_ID),
-				new String[]{ String.valueOf(record.getId()) }
-			);
-		db.close();
-		return rowsAffected > 0;
-	}
-	
-	@Override
-	public boolean delete(Site record)
-	{
-		SQLiteDatabase db = this.getWritableDatabase();
-		int affectedRows = db.delete(
-				TABLE_SITES,
-				String.format("%s=?", KEY_ID),
-				new String[]{ String.valueOf(record.getId()) }
-			);
-		db.close();
-		return affectedRows > 0;
+		this.update(site, site.getId());
 	}
 }

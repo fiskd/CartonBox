@@ -24,7 +24,7 @@ You also need to specify the type of booru board you are going to add; currently
 
 You will also need to provide your own display icons, images at 512 x 512 px should look fine."</string>
 	
-	<string name="nosites">You don\'t have sites added.</string>
+	<string name="nosites">No booru sites</string>
 	
 	<string name="notbooru">This is either not a supported booru site, not a booru site at all, or a bad configured booru site, did you change the type of board when adding this site?</string>
 	<string name="configureit">This site\'s type is not configured correctly, go back and change that.</string>

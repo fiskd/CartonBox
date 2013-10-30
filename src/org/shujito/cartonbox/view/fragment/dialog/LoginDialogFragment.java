@@ -40,13 +40,8 @@ public class LoginDialogFragment extends SherlockDialogFragment
 	public void onAttach(Activity activity)
 	{
 		super.onAttach(activity);
-		try
-		{
-			this.mLoginDialogCallback = (LoginDialogCallback)activity;
-		}
-		catch(Exception ex)
-		{
-		}
+		if(activity instanceof LoginDialogCallback)
+		{ this.mLoginDialogCallback = (LoginDialogCallback)activity; }
 	}
 	
 	@Override

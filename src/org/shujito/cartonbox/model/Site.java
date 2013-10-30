@@ -73,7 +73,8 @@ public class Site implements Serializable
 	/* fields */
 	private long id;
 	private Type type;
-	private String icon;
+	private String iconWeb;
+	private String iconFile;
 	private String name;
 	private String url;
 	private String postViewApi;
@@ -97,8 +98,10 @@ public class Site implements Serializable
 	{ return this.id; }
 	public Type getType()
 	{ return this.type; }
-	public String getIcon()
-	{ return this.icon; }
+	public String getIconWeb()
+	{ return this.iconWeb; }
+	public String getIconFile()
+	{ return this.iconFile; }
 	public String getName()
 	{ return this.name; }
 	public String getUrl()
@@ -134,9 +137,14 @@ public class Site implements Serializable
 		this.type = e;
 		return this;
 	}
-	public Site setIcon(String icon)
+	public Site setIconWeb(String icon)
 	{
-		this.icon = icon;
+		this.iconWeb = icon;
+		return this;
+	}
+	public Site setIconFile(String iconFile)
+	{
+		this.iconFile = iconFile;
 		return this;
 	}
 	public Site setName(String s)

@@ -3,6 +3,7 @@ package org.shujito.cartonbox.view.adapter;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.shujito.cartonbox.Logger;
 import org.shujito.cartonbox.R;
 import org.shujito.cartonbox.controller.listener.OnErrorListener;
 import org.shujito.cartonbox.controller.task.ImageDownloader;
@@ -10,6 +11,7 @@ import org.shujito.cartonbox.controller.task.listener.OnImageFetchedListener;
 import org.shujito.cartonbox.controller.task.listener.OnJsonResponseReceivedListener;
 import org.shujito.cartonbox.model.Site;
 import org.shujito.cartonbox.model.parser.JsonParser;
+import org.shujito.cartonbox.util.BitmapCache;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -24,11 +26,13 @@ public class DefaultSitesAdapter extends BaseAdapter implements OnJsonResponseRe
 {
 	private Context context = null;
 	private List<Site> entries = null;
+	private BitmapCache cache = null;
 	
 	public DefaultSitesAdapter(Context context)
 	{
 		this.context = context;
 		this.entries = new ArrayList<Site>();
+		this.cache = new BitmapCache();
 	}
 	
 	@Override
@@ -62,17 +66,32 @@ public class DefaultSitesAdapter extends BaseAdapter implements OnJsonResponseRe
 			v = inf.inflate(R.layout.item_site, dad, false);
 		}
 		
+		final Site site = this.entries.get(pos);
+		
 		final ImageView ivIcon = (ImageView)v.findViewById(R.id.ivIcon);
 		final TextView tvName = (TextView)v.findViewById(R.id.tvName);
 		final TextView tvDescription = (TextView)v.findViewById(R.id.tvDescription);
 		
-		Site site = this.entries.get(pos);
-		if(site != null)
+		tvName.setText(site.getName());
+		tvDescription.setText(site.getDescription());
+		
+		Bitmap cached = this.cache.getBitmapFromMemCache(site.getId());
+		if(cached != null)
 		{
-			tvName.setText(site.getName());
-			tvDescription.setText(site.getDescription());
+			ivIcon.setImageBitmap(cached);
+		}
+		else
+		{
+			ImageDownloader downloader = new ImageDownloader(this.context, site.getIconWeb());
+			if(ivIcon.getTag() instanceof ImageDownloader)
+			{
+				ImageDownloader attached = (ImageDownloader)ivIcon.getTag();
+				attached.setOnImageFetchedListener(null);
+			}
 			
-			ImageDownloader downloader = new ImageDownloader(this.context, site.getIcon());
+			ivIcon.setTag(downloader);
+			ivIcon.setImageResource(R.drawable.icon_unknown);
+			
 			downloader.setWidth(ivIcon.getWidth());
 			downloader.setHeight(ivIcon.getHeight());
 			downloader.setOnImageFetchedListener(new OnImageFetchedListener()
@@ -82,10 +101,20 @@ public class DefaultSitesAdapter extends BaseAdapter implements OnJsonResponseRe
 				{
 					if(b != null)
 					{
-						ivIcon.setImageBitmap(b);
+						try
+						{
+							cache.addBitmapToMemCache(site.getId(), b);
+							ivIcon.setImageBitmap(b);
+						}
+						catch(Exception ex)
+						{
+							Logger.e(this.getClass().getSimpleName(), ex.getMessage(), ex);
+						}
 					}
 				}
 			});
+			//ConcurrentTask.execute(downloader);
+			//downloader.execute();
 		}
 		
 		return v;
@@ -104,6 +133,11 @@ public class DefaultSitesAdapter extends BaseAdapter implements OnJsonResponseRe
 		int index = 0;
 		while((site = (Site)jp.getAtIndex(index)) != null)
 		{
+			//*
+			try
+			{ Thread.sleep(10); }
+			catch(Exception ex) { }
+			//*/
 			index++;
 			this.entries.add(site);
 		}

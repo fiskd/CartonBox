@@ -59,15 +59,11 @@ public class SectionTagsFragment extends Fragment implements
 		Logger.i("SectionTagsFragment::onAttach", "overly attached fragment");
 		super.onAttach(activity);
 		
-		try
+		if(activity instanceof OnFragmentAttachedListener)
 		{ this.onFragmentAttachedListener = (OnFragmentAttachedListener)activity; }
-		catch(Exception ex)
-		{ Logger.e("SectionTagsFragment::onAttach", "Couldn't get OnFragmentAttachedListener from the activity this fragment is attached to"); }
 		
-		try
+		if(activity instanceof TagListItemSelectedCallback)
 		{ this.tagListItemSelectedCallback = (TagListItemSelectedCallback)activity; }
-		catch(Exception ex)
-		{ Logger.e("SectionTagsFragment::onAttach", "Couldn't get TagListItemSelectedCallback from the activity this fragment is attached to"); }
 	}
 	
 	@Override

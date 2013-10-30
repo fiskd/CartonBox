@@ -25,12 +25,18 @@ public class BitmapCache
 	
 	public void addBitmapToMemCache(long key, Bitmap bitmap)
 	{
-		if(this.bitmaps.get(key) == null)
-			this.bitmaps.put(key, bitmap);
+		synchronized(bitmap)
+		{
+			if(this.bitmaps.get(key) == null)
+				this.bitmaps.put(key, bitmap);
+		}
 	}
 	
 	public Bitmap getBitmapFromMemCache(long key)
 	{
-		return this.bitmaps.get(key);
+		synchronized(bitmaps)
+		{
+			return this.bitmaps.get(key);
+		}
 	}
 }
