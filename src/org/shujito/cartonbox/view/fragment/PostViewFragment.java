@@ -22,7 +22,6 @@ import android.os.AsyncTask.Status;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.util.LruCache;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -121,14 +120,14 @@ public class PostViewFragment extends Fragment
 		if(this.post == null)
 			return;
 		
-		DisplayMetrics displayMetrics = new DisplayMetrics();
-		this.getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+		//DisplayMetrics displayMetrics = new DisplayMetrics();
+		//this.getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 		
-		int width = displayMetrics.widthPixels;
-		int height = displayMetrics.heightPixels;
+		//int width = displayMetrics.widthPixels;
+		//int height = displayMetrics.heightPixels;
 		
-		int whatToUse = width > height ? width : height;
-		//int whatToUse = 1280;
+		//int whatToUse = width > height ? width : height;
+		int whatToUse = 1280;
 		
 		this.tvmessage.setVisibility(View.VISIBLE);
 		

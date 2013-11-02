@@ -4,9 +4,9 @@ import org.shujito.cartonbox.model.parser.DanbooruJsonResponseParser;
 import org.shujito.cartonbox.model.parser.DanbooruJsonTagsParser;
 import org.shujito.cartonbox.model.parser.JsonParser;
 
-public class DanbooruJsonTagDownloader extends JsonDownloader
+public class DanbooruJsonTagsDownloader extends JsonDownloader
 {
-	public DanbooruJsonTagDownloader(String url)
+	public DanbooruJsonTagsDownloader(String url)
 	{
 		super(url);
 	}

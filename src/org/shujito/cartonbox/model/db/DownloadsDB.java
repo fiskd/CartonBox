@@ -7,7 +7,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-public class DownloadsDB extends DB<Download>
+public final class DownloadsDB extends DB<Download>
 {
 	static final String DB_NAME = "downloads.db3";
 	static final int VERSION = 0x00000001;

@@ -1,11 +1,11 @@
 package org.shujito.cartonbox.controller;
 
-import org.shujito.cartonbox.controller.task.DanbooruOldJsonTagDownloader;
+import org.shujito.cartonbox.controller.task.DanbooruOldJsonTagsDownloader;
 import org.shujito.cartonbox.controller.task.Downloader;
 import org.shujito.cartonbox.controller.task.JsonDownloader;
 import org.shujito.cartonbox.model.Site;
 
-public class DanbooruOldImageBoardTags extends ImageboardTags
+public final class DanbooruOldImageBoardTags extends ImageboardTags
 {
 	public static final String API_TAGS_NAME = "name=%s";
 	public static final String API_TAGS_TYPE = "type=%s";
@@ -19,7 +19,7 @@ public class DanbooruOldImageBoardTags extends ImageboardTags
 	@Override
 	public Downloader<?> createDownloader()
 	{
-		JsonDownloader downloader = new DanbooruOldJsonTagDownloader(this.buildTagsUrl());
+		JsonDownloader downloader = new DanbooruOldJsonTagsDownloader(this.buildTagsUrl());
 		downloader.setOnResponseReceivedListener(this);
 		downloader.setOnErrorListener(this);
 		//downloader.setOnAccessDeniedListener(this);

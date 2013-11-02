@@ -10,7 +10,7 @@ import org.shujito.cartonbox.model.Post;
 import org.shujito.cartonbox.model.Post.Rating;
 import org.shujito.cartonbox.model.Tag;
 
-public class DanbooruJsonPostParser implements JsonParser<Post>
+public class DanbooruJsonPostsParser implements JsonParser<Post>
 {
 	private static final String TAG_ID = "id";
 	private static final String TAG_PARENT_ID = "parent_id";
@@ -45,7 +45,7 @@ public class DanbooruJsonPostParser implements JsonParser<Post>
 	
 	private JSONArray jsonarray = null;
 	
-	public DanbooruJsonPostParser(String s) throws JSONException
+	public DanbooruJsonPostsParser(String s) throws JSONException
 	{
 		this.jsonarray = new JSONArray(s);
 	}

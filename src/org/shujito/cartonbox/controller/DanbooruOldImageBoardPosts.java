@@ -1,11 +1,11 @@
 package org.shujito.cartonbox.controller;
 
-import org.shujito.cartonbox.controller.task.DanbooruOldJsonPostDownloader;
+import org.shujito.cartonbox.controller.task.DanbooruOldJsonPostsDownloader;
 import org.shujito.cartonbox.controller.task.Downloader;
 import org.shujito.cartonbox.controller.task.JsonDownloader;
 import org.shujito.cartonbox.model.Site;
 
-public class DanbooruOldImageBoardPosts extends ImageboardPosts
+public final class DanbooruOldImageBoardPosts extends ImageboardPosts
 {
 	public DanbooruOldImageBoardPosts(Site site)
 	{
@@ -15,7 +15,7 @@ public class DanbooruOldImageBoardPosts extends ImageboardPosts
 	@Override
 	public Downloader<?> createDownloader()
 	{
-		JsonDownloader downloader = new DanbooruOldJsonPostDownloader(this.buildPostsUrl());
+		JsonDownloader downloader = new DanbooruOldJsonPostsDownloader(this.buildPostsUrl());
 		downloader.setOnResponseReceivedListener(this);
 		downloader.setOnErrorListener(this);
 		//downloader.setOnAccessDeniedListener(this);

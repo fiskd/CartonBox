@@ -19,7 +19,7 @@ public class BlogRssXmlDownloader extends XmlDownloader
 	{
 		return new BlogRssXmlParser(is);
 	}
-
+	
 	@Override
 	public XmlParser<?> parseError(InputStream is) throws Exception
 	{

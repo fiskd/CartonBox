@@ -261,6 +261,10 @@ public class MainActivity extends SherlockFragmentActivity
 			tagsApi.setUsername(username);
 			tagsApi.setPassword(password);
 		}
+		else if(currentSite.getType() == Site.Type.Gelbooru)
+		{
+			
+		}
 		
 		// set apis on the apis class
 		if(postsApi != null)

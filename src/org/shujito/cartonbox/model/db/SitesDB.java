@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 // so useful:
 // http://www.androidhive.info/2011/11/android-sqlite-database-tutorial/
-public class SitesDB extends DB<Site>
+public final class SitesDB extends DB<Site>
 {
 	/* static */
 	static final String DB_NAME = "sites.db3";
