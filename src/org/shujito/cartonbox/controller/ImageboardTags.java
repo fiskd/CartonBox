@@ -3,14 +3,10 @@ package org.shujito.cartonbox.controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.shujito.cartonbox.Logger;
 import org.shujito.cartonbox.controller.listener.OnRequestListener;
 import org.shujito.cartonbox.controller.listener.OnTagsFetchedListener;
-import org.shujito.cartonbox.controller.task.JsonDownloader;
-import org.shujito.cartonbox.controller.task.listener.OnJsonResponseReceivedListener;
 import org.shujito.cartonbox.model.Site;
 import org.shujito.cartonbox.model.Tag;
-import org.shujito.cartonbox.model.parser.JsonParser;
 import org.shujito.cartonbox.util.ConcurrentTask;
 
 /* tags logic */
@@ -21,8 +17,7 @@ import org.shujito.cartonbox.util.ConcurrentTask;
 // step 2b: download
 // step 3: give result
 // step 4: gather tags
-public abstract class ImageboardTags extends Imageboard implements
-	OnJsonResponseReceivedListener
+public abstract class ImageboardTags extends Imageboard
 {
 	/* listener */
 	List<OnTagsFetchedListener> onTagsFetchedListeners = null;
@@ -45,7 +40,7 @@ public abstract class ImageboardTags extends Imageboard implements
 	
 	/* Constructor */
 	
-	public ImageboardTags(Site site)
+	protected ImageboardTags(Site site)
 	{
 		super(site);
 	}
@@ -105,85 +100,9 @@ public abstract class ImageboardTags extends Imageboard implements
 		}
 	}
 	
-	@Override
-	public void onResponseReceived(JsonParser<?> jp)
-	{
-		List<Tag> tags = this.processParser(jp);
-		
-		// talk to the listeners
-		for(OnTagsFetchedListener l : this.onTagsFetchedListeners)
-		{
-			if(l != null)
-				l.onTagsFetchedListener(tags);
-		}
-		
-		// not working anymore
-		this.working = false;
-	}
 	
-	private List<Tag> processParser(JsonParser<?> jp)
-	{
-		if(jp == null)
-			return null;
-		
-		Tag tag = null;
-		// place tags here
-		List<Tag> tags = new ArrayList<Tag>();
-		// iterate...
-		while((tag = (Tag)jp.getAtIndex(tags.size())) != null)
-		{
-			// we don't need anything complex here, we're just looking for tags
-			tags.add(tag);
-		}
-		return tags;
-	}
+	public abstract String buildTagsUrl();
 	
-	// this thing is very hacky, I hope to remove
-	// this sometime... (it is unused as of now)
-	public List<Tag> requestSynchronous(String query)
-	{
-		// backup the query so nothing breaks later on
-		String backup = this.getQuery();
-		this.setQuery(query);
-		// make a downloader
-		JsonDownloader jdown = (JsonDownloader)this.createDownloader();
-		// damn these two troublemakers...
-		jdown.setOnErrorListener(null);
-		jdown.setOnResponseReceivedListener(null);
-		// put the query back in
-		this.setQuery(backup);
-		ConcurrentTask.execute(jdown);
-		JsonParser<?> parser = null;
-		try
-		{
-			parser = jdown.get();
-		}
-		catch(Exception ex)
-		{
-			Logger.e("TagsFilter::performFiltering", ex.getMessage(), ex);
-			return null;
-		}
-		
-		return processParser(parser);
-	}
-	
-	public String buildTagsUrl()
-	{
-		StringBuilder url = new StringBuilder();
-		
-		url.append(this.site.getUrl());
-		url.append(this.site.getTagsApi());
-		
-		url.append("?");
-		
-		if(this.username != null && this.password != null)
-		{
-			url.append(String.format(API_LOGIN, this.username));
-			url.append("&");
-			url.append(String.format(API_PASSWORD_HASH, this.password));
-			url.append("&");
-		}
-		
-		return url.toString();
-	}
+	// XXX: hacky
+	public abstract List<Tag> requestSynchronous(String query);
 }

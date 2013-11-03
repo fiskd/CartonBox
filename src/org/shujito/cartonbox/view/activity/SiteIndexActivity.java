@@ -137,8 +137,6 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 		if(this.mTagsApi == null)
 			this.mTagsApi = CartonBox.getInstance().getApis().getImageboardTags();
 		
-		this.getSupportActionBar().setTitle(this.mPostsApi.getSite().getName());
-		
 		if(this.mPostsApi == null || this.mTagsApi == null)
 		{
 			// close the activity
@@ -155,6 +153,7 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 		
 		if(this.mPostsApi != null)
 		{
+			this.getSupportActionBar().setTitle(this.mPostsApi.getSite().getName());
 			String[] alltags = this.mPostsApi.getTags();
 			if(alltags.length > 0)
 			{

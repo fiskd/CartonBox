@@ -5,7 +5,7 @@ import org.shujito.cartonbox.controller.task.Downloader;
 import org.shujito.cartonbox.controller.task.JsonDownloader;
 import org.shujito.cartonbox.model.Site;
 
-public final class DanbooruImageBoardPosts extends ImageboardPosts
+public final class DanbooruImageBoardPosts extends ImageboardJsonPosts
 {
 	public DanbooruImageBoardPosts(Site site)
 	{

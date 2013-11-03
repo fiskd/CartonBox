@@ -6,10 +6,8 @@ import java.util.List;
 import org.shujito.cartonbox.Logger;
 import org.shujito.cartonbox.controller.listener.OnPostsFetchedListener;
 import org.shujito.cartonbox.controller.listener.OnRequestListener;
-import org.shujito.cartonbox.controller.task.listener.OnJsonResponseReceivedListener;
 import org.shujito.cartonbox.model.Post;
 import org.shujito.cartonbox.model.Site;
-import org.shujito.cartonbox.model.parser.JsonParser;
 import org.shujito.cartonbox.util.ConcurrentTask;
 import org.shujito.cartonbox.util.URLEncoder;
 
@@ -24,8 +22,7 @@ import android.util.SparseArray;
 // step 2c: filters
 // step 3: give result
 // step 4: gather posts
-public abstract class ImageboardPosts extends Imageboard implements
-	OnJsonResponseReceivedListener
+public abstract class ImageboardPosts extends Imageboard
 {
 	/* Listener */
 	List<OnPostsFetchedListener> onPostsFetchedListeners = null;
@@ -134,42 +131,6 @@ public abstract class ImageboardPosts extends Imageboard implements
 		}
 	}
 	
-	@Override
-	public void onResponseReceived(JsonParser<?> jp)
-	{
-		Post post = null;
-		int index = 0;
-		while((post = (Post)jp.getAtIndex(index)) != null)
-		{
-			index++;
-			if(!"swf".equals(post.getFileExt()))
-			{
-				this.posts.append(post.getId(), post);
-				post.setSite(this.site);
-			}
-		}
-		
-		if(index < this.postsPerPage)
-		{
-			this.doneDownloadingPosts = true;
-			Logger.i("ImageboardApi::onResponseReceived", "I'm done downloading, nothing more to load...");
-		}
-		
-		if(this.onPostsFetchedListeners != null)
-		{
-			for(OnPostsFetchedListener l : this.onPostsFetchedListeners)
-			{
-				if(l != null)
-					l.onPostsFetched(this.posts);
-			}
-		}
-		
-		// increase page
-		this.page++;
-		// I'm done
-		this.working= false;
-	}
-	
 	public String buildTags()
 	{
 		String tags = null;
@@ -187,33 +148,5 @@ public abstract class ImageboardPosts extends Imageboard implements
 		return tags;
 	}
 	
-	protected String buildPostsUrl()
-	{
-		StringBuilder url = new StringBuilder();
-		
-		url.append(this.site.getUrl());
-		url.append(this.site.getPostsApi());
-		
-		url.append("?");
-		
-		if(this.username != null && this.password != null)
-		{
-			url.append(String.format(API_LOGIN, this.username));
-			url.append("&");
-			url.append(String.format(API_PASSWORD_HASH, this.password));
-			url.append("&");
-		}
-		
-		url.append(String.format(API_PAGE, this.page));
-		url.append("&");
-		url.append(String.format(API_LIMIT, this.postsPerPage));
-		
-		if(this.tags != null && this.tags.size() > 0)
-		{
-			url.append("&");
-			url.append(String.format(API_TAGS, this.buildTags()));
-		}
-		
-		return url.toString();
-	}
+	protected abstract String buildPostsUrl();
 }

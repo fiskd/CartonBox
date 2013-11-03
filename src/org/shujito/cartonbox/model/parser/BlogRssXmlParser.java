@@ -63,6 +63,7 @@ public class BlogRssXmlParser implements XmlParser<BlogEntry>,
 		pubdate.setEndTextElementListener(new CustomEndTextElement(PUBDATE, this));
 		category.setEndTextElementListener(new CustomEndTextElement(CATEGORY, this));
 		
+		// start parsing
 		Xml.parse(is, Encoding.UTF_8, root.getContentHandler());
 		entry = null;
 	}

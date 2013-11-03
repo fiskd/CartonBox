@@ -8,6 +8,8 @@ import org.shujito.cartonbox.controller.DanbooruImageBoardPosts;
 import org.shujito.cartonbox.controller.DanbooruImageBoardTags;
 import org.shujito.cartonbox.controller.DanbooruOldImageBoardPosts;
 import org.shujito.cartonbox.controller.DanbooruOldImageBoardTags;
+import org.shujito.cartonbox.controller.GelbooruImageboardPosts;
+import org.shujito.cartonbox.controller.GelbooruImageboardTags;
 import org.shujito.cartonbox.controller.ImageboardApis;
 import org.shujito.cartonbox.controller.ImageboardPosts;
 import org.shujito.cartonbox.controller.ImageboardTags;
@@ -263,7 +265,8 @@ public class MainActivity extends SherlockFragmentActivity
 		}
 		else if(currentSite.getType() == Site.Type.Gelbooru)
 		{
-			
+			postsApi = new GelbooruImageboardPosts(currentSite);
+			tagsApi = new GelbooruImageboardTags(currentSite);
 		}
 		
 		// set apis on the apis class

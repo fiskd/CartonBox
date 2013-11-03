@@ -5,7 +5,7 @@ import org.shujito.cartonbox.controller.task.Downloader;
 import org.shujito.cartonbox.controller.task.JsonDownloader;
 import org.shujito.cartonbox.model.Site;
 
-public final class DanbooruImageBoardTags extends ImageboardTags
+public final class DanbooruImageBoardTags extends ImageboardJsonTags
 {
 	public static final String API_TAGS_NAME_MATCHES = "search[name_matches]=%s";
 	public static final String API_TAGS_CATEGORY = "search[category]=%s";

@@ -5,7 +5,7 @@ import org.shujito.cartonbox.controller.task.Downloader;
 import org.shujito.cartonbox.controller.task.JsonDownloader;
 import org.shujito.cartonbox.model.Site;
 
-public final class DanbooruOldImageBoardTags extends ImageboardTags
+public final class DanbooruOldImageBoardTags extends ImageboardJsonTags
 {
 	public static final String API_TAGS_NAME = "name=%s";
 	public static final String API_TAGS_TYPE = "type=%s";

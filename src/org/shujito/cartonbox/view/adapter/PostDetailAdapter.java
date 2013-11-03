@@ -62,6 +62,9 @@ public class PostDetailAdapter extends BaseAdapter
 	
 	public PostDetailAdapter(Context contex, Post post)
 	{
+		if(post == null)
+			return;
+		
 		this.details = new ArrayList<Detail>();
 		this.context = contex;
 		
