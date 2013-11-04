@@ -14,16 +14,16 @@
 	<string-array name="sitetypes">
 		<item>Danbooru 1.18.x</item>
 		<item>Danbooru 2.x</item>
-		<!--
 		<item>Gelbooru 0.2.x</item>
+		<!--
 		-->
 	</string-array>
 	
 	<integer-array name="sitetypesids">
 		<item>1</item>
 		<item>2</item>
-		<!--
 		<item>3</item>
+		<!--
 		-->
 	</integer-array>
 	
