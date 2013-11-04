@@ -15,11 +15,9 @@ public abstract class Imageboard implements
 	OnErrorListener
 {
 	/* Static */
+	public static final String API_TAGS = "tags=%s";
 	
 	public static final String API_KEY = "api_key=%s";
-	public static final String API_LIMIT = "limit=%d";
-	public static final String API_PAGE = "page=%d";
-	public static final String API_TAGS = "tags=%s";
 	public static final String API_LOGIN = "login=%s";
 	public static final String API_PASSWORD_HASH = "password_hash=%s";
 	public static final String API_DANBOORU_PASSWORD = "choujin-steiner--%s--";

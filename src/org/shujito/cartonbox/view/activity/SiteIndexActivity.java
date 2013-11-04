@@ -140,7 +140,7 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 		if(this.mPostsApi == null || this.mTagsApi == null)
 		{
 			// close the activity
-			this.finish();
+			//this.finish();
 		}
 		else
 		{
@@ -385,7 +385,7 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 	public void onFinishEditLogin(String username, String password)
 	{
 		//Toast.makeText(this, String.format("username:%s password:%s", username, password), Toast.LENGTH_SHORT).show();
-		if(this.mPostsApi != null)
+		if(this.mPostsApi != null && this.mTagsApi != null)
 		{
 			this.mPostsApi.setUsername(username);
 			this.mPostsApi.setPassword(password);

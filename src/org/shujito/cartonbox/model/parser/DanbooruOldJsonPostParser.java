@@ -82,6 +82,9 @@ public class DanbooruOldJsonPostParser implements JsonParser<Post>
 		// and then etc...)
 		for(String tag : tagString)
 		{
+			// split error, ignore there
+			if(tag.isEmpty()) continue;
+			
 			tags.add(new Tag()
 				.setCategory(Category.General)
 				.setName(tag));

@@ -64,6 +64,7 @@ public class Site implements Serializable
 		{
 			return new Site()
 				.setType(type)
+				.setPostViewApi("/index.php?page=post&s=view&id=")
 				.setPostsApi("/index.php?page=dapi&s=post&q=index")
 				.setTagsApi("/index.php?page=dapi&s=tag&q=index");
 		}

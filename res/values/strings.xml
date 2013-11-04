@@ -55,7 +55,7 @@ You will also need to provide your own display icons, images at 512 x 512 px sho
 	<string name="searchposts">Search posts</string>
 	<string name="searchpools">Search pools</string>
 	<string name="searchartists">Search artists</string>
-	<string name="searchstuff">Search stuff</string>
+	<string name="searchstuff">keywords</string>
 	
 	<string name="ratingdialogtitle">Give rating!</string>
 	<string name="ratingdialogmessage">You have been using this app for some time, would you like to give a rating?</string>

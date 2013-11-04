@@ -12,6 +12,9 @@ import org.shujito.cartonbox.model.parser.XmlParser;
 public abstract class ImageboardXmlPosts extends ImageboardPosts
 	implements OnXmlResponseReceivedListener
 {
+	public static final String API_LIMIT = "limit=%d";
+	public static final String API_PAGE = "pid=%d";
+	
 	protected ImageboardXmlPosts(Site site)
 	{
 		super(site);
@@ -56,6 +59,21 @@ public abstract class ImageboardXmlPosts extends ImageboardPosts
 	@Override
 	protected String buildPostsUrl()
 	{
-		return null;
+		StringBuilder url = new StringBuilder();
+		
+		url.append(this.site.getUrl());
+		url.append(this.site.getPostsApi());
+		url.append("&");
+		
+		if(this.tags.size() > 0)
+		{
+			url.append(String.format(API_TAGS, this.buildTags()));
+		}
+		
+		url.append(String.format(API_PAGE, this.page));
+		url.append("&");
+		url.append(String.format(API_LIMIT, this.postsPerPage));
+		
+		return url.toString();
 	}
 }

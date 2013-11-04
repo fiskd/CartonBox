@@ -10,6 +10,9 @@ import org.shujito.cartonbox.model.parser.JsonParser;
 public abstract class ImageboardJsonPosts extends ImageboardPosts
 	implements OnJsonResponseReceivedListener
 {
+	public static final String API_LIMIT = "limit=%d";
+	public static final String API_PAGE = "page=%d";
+	
 	protected ImageboardJsonPosts(Site site)
 	{
 		super(site);

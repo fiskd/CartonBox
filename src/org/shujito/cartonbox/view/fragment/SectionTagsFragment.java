@@ -196,7 +196,7 @@ public class SectionTagsFragment extends Fragment implements
 		}
 	}
 	/* OnErrorListener methods */
-
+	
 	@Override
 	public void onRequest()
 	{
