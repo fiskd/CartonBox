@@ -12,6 +12,7 @@ import org.shujito.cartonbox.controller.task.listener.OnJsonResponseReceivedList
 import org.shujito.cartonbox.model.Site;
 import org.shujito.cartonbox.model.parser.JsonParser;
 import org.shujito.cartonbox.util.BitmapCache;
+import org.shujito.cartonbox.util.ConcurrentTask;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -113,7 +114,7 @@ public class DefaultSitesAdapter extends BaseAdapter implements OnJsonResponseRe
 					}
 				}
 			});
-			//ConcurrentTask.execute(downloader);
+			ConcurrentTask.execute(downloader);
 			//downloader.execute();
 		}
 		

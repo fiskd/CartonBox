@@ -83,7 +83,7 @@ public class AddDefaultSiteDialogFragment extends SherlockDialogFragment
 		Site site = (Site)this.defaultSitesAdapter.getItem(pos);
 		if(this.callback != null)
 		{
-			// TODO: download picture
+			// TODO: download image
 			this.callback.onOk(site);
 			this.dismiss();
 		}

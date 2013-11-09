@@ -1,14 +1,19 @@
 package org.shujito.cartonbox.view.adapter;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
+import org.shujito.cartonbox.Logger;
 import org.shujito.cartonbox.R;
+import org.shujito.cartonbox.controller.task.ImageDownloader;
+import org.shujito.cartonbox.controller.task.listener.OnImageFetchedListener;
 import org.shujito.cartonbox.model.Site;
 import org.shujito.cartonbox.model.db.SitesDB;
+import org.shujito.cartonbox.util.BitmapCache;
+import org.shujito.cartonbox.util.ConcurrentTask;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
@@ -22,7 +27,8 @@ public class SitesAdapter extends BaseAdapter
 {
 	Context context = null;
 	List<Site> mLsSites = null;
-	Map<Long, Drawable> drawables = null;
+	private BitmapCache cache = null;
+	//Map<Long, Drawable> drawables = null;
 	//Map<Long, SoftReference<Drawable>> softDrawables = null;
 	int width;
 	int numCols;
@@ -40,7 +46,8 @@ public class SitesAdapter extends BaseAdapter
 		
 		this.numCols = this.context.getResources().getInteger(R.integer.main_gvsites_numcols);
 		
-		this.drawables = new HashMap<Long, Drawable>();
+		this.cache = new BitmapCache();
+		//this.drawables = new HashMap<Long, Drawable>();
 		//this.softDrawables = new HashMap<Long, SoftReference<Drawable>>();
 		
 		this.refreshSites();
@@ -57,55 +64,74 @@ public class SitesAdapter extends BaseAdapter
 			v = new TextView(this.context);
 		}
 		
-		Site one = this.mLsSites.get(pos);
+		final Site one = this.mLsSites.get(pos);
 		if(one == null)
 			return v; // get out quick
 		
-		Drawable dw = this.drawables.get(one.getId());
-		if(dw == null)
-		{
-			dw = Drawable.createFromPath(one.getIconFile());
-			if(dw == null)
-			{
-				dw = this.context.getResources().getDrawable(R.drawable.icon_unknown);
-				/*
-				Bitmap b = Bitmap.createBitmap(512, 512, Bitmap.Config.ARGB_8888);
-				Canvas c = new Canvas(b);
-				
-				String first = one.getName();
-				int color = 0xff000000;
-				if(first.length() > 0)
-					color |= first.charAt(0) << 16;
-				if(first.length() > 1)
-					color |= first.charAt(1) << 8;
-				if(first.length() > 2)
-					color |= first.charAt(2);
-				
-				Paint paint = new Paint();
-				paint.setColor(color);
-				paint.setStyle(Paint.Style.FILL);
-				c.drawPaint(paint);
-				
-				paint.setColor(0xff000000);
-				
-				c.scale(8, 8);
-				//c.translate(128, 128);
-				
-				c.drawText(first.substring(0, 2), 0, 0, paint);
-				
-				dw = new BitmapDrawable(this.context.getResources(), b);
-				//*/
-			}
-			dw.setBounds(0, 0, this.width / this.numCols, this.width / this.numCols);
-			this.drawables.put(one.getId(), dw);
-		}
+		final TextView tv = (TextView)v;
 		
-		((TextView)v).setTextAppearance(this.context, android.R.style.TextAppearance_Medium);
-		//((TextView)v).setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.icon_unknown, 0, 0);
-		((TextView)v).setCompoundDrawables(null, dw, null, null);
-		((TextView)v).setText(one.getName());
-		//((TextView)v).setText(this.sites[pos]);
-		((TextView)v).setGravity(Gravity.CENTER);
+		tv.setTextAppearance(this.context, android.R.style.TextAppearance_Medium);
+		//tv.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.icon_unknown, 0, 0);
+		tv.setText(one.getName());
+		//tv.setText(this.sites[pos]);
+		tv.setGravity(Gravity.CENTER);
+		
+		Bitmap cached = this.cache.getBitmapFromMemCache(one.getId());
+		if(cached != null)
+		{
+			Drawable dw = new BitmapDrawable(this.context.getResources(), cached);
+			dw.setBounds(0, 0, 256, 256);
+			tv.setCompoundDrawables(null, dw, null, null);
+		}
+		else
+		{
+			Drawable dw = this.context.getResources().getDrawable(R.drawable.icon_unknown);
+			dw.setBounds(0, 0, 256, 256);
+			tv.setCompoundDrawables(null, dw, null, null);
+			
+			if(one.getIconFile() != null && one.getIconFile().startsWith("/"))
+			{
+				// load from file
+			}
+			else
+			{
+				// load from web
+				ImageDownloader downloader = new ImageDownloader(this.context, one.getIconFile());
+				
+				if(tv.getTag() instanceof ImageDownloader)
+				{
+					ImageDownloader attached = (ImageDownloader)tv.getTag();
+					attached.setOnImageFetchedListener(null);
+				}
+				
+				tv.setTag(downloader);
+				
+				downloader.setWidth(256);
+				downloader.setHeight(256);
+				downloader.setOnImageFetchedListener(new OnImageFetchedListener()
+				{
+					@Override
+					public void onImageFetched(Bitmap b)
+					{
+						if(b != null)
+						{
+							try
+							{
+								cache.addBitmapToMemCache(one.getId(), b);
+								Drawable dw = new BitmapDrawable(context.getResources(), b);
+								dw.setBounds(0, 0, 256, 256);
+								tv.setCompoundDrawables(null, dw, null, null);
+							}
+							catch(Exception ex)
+							{
+								Logger.e(this.getClass().getSimpleName(), ex.getMessage(), ex);
+							}
+						}
+					}
+				});
+				ConcurrentTask.execute(downloader);
+			}
+		}
 		
 		return v;
 	}
@@ -150,6 +176,7 @@ public class SitesAdapter extends BaseAdapter
 	{
 		SitesDB sites = new SitesDB(this.context);
 		this.mLsSites = sites.getAll();
-		this.drawables.clear();
+		//this.drawables.clear();
+		this.cache.clear();
 	}
 }

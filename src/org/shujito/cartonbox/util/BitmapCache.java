@@ -39,4 +39,9 @@ public class BitmapCache
 			return this.bitmaps.get(key);
 		}
 	}
+	
+	public void clear()
+	{
+		this.bitmaps.evictAll();
+	}
 }
