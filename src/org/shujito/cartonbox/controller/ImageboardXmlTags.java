@@ -33,6 +33,12 @@ public abstract class ImageboardXmlTags extends ImageboardTags
 	}
 	
 	@Override
+	public void setQuery(String query)
+	{
+		this.query = query;
+	}
+	
+	@Override
 	public List<Tag> requestSynchronous(String query)
 	{
 		return null;

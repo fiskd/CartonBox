@@ -173,7 +173,7 @@ public class SiteIndexActivity extends SherlockFragmentActivity implements
 		// increase
 		Preferences.setInt(R.string.pref_times_index_visited, timesVisited + 1);
 		// more than ten?
-		if(!rated && timesVisited > 10)
+		if(!rated && timesVisited > 20)
 		{
 			//Preferences.setBool(R.string.pref_app_rated, true);
 			// reset

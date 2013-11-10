@@ -64,15 +64,15 @@ public abstract class ImageboardXmlPosts extends ImageboardPosts
 		url.append(this.site.getUrl());
 		url.append(this.site.getPostsApi());
 		url.append("&");
-		
-		if(this.tags.size() > 0)
-		{
-			url.append(String.format(API_TAGS, this.buildTags()));
-		}
-		
 		url.append(String.format(API_PAGE, this.page));
 		url.append("&");
 		url.append(String.format(API_LIMIT, this.postsPerPage));
+
+		if(this.tags.size() > 0)
+		{
+			url.append("&");
+			url.append(String.format(API_TAGS, this.buildTags()));
+		}
 		
 		return url.toString();
 	}

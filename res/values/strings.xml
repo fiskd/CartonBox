@@ -18,11 +18,7 @@
 	<string name="help">Help</string>
 	<string name="icons">Sample icons</string>
 	
-	<string name="help_msg">"This dialog helps you add custom sites, put a name and the url of the booru site (gelbooru sites don\'t work at the moment).
-
-You also need to specify the type of booru board you are going to add; currently *.donmai.us boorus are of the Danbooru 2.x type, other boorus (except for gelbooru, safebooru and the boorus at booru.org, which all are gelbooru) should be of the danbooru 1.18.x type (some examples: behoimi, one yukkuri place, yande.re, konachan, although yande.re definitely will not work).
-
-You will also need to provide your own display icons, images at 512 x 512 px should look fine."</string>
+	<string name="help_msg">"This dialog helps you add custom sites, put a name and the url of the booru site.\n\nYou also need to specify the type of booru board you are going to add; currently *.donmai.us boorus are of the Danbooru 2.x type, other boorus should be of the danbooru 1.18.x type (some examples: behoimi, one yukkuri place, yande.re, konachan, although yande.re definitely will not work) or of the Gelbooru type (like Gelbooru and Safebooru.org, booru.org sites might work, these weren't tested though).\n\nIt is optional to provide your own display icons, images at 512 x 512 px should look fine."</string>
 	
 	<string name="nosites">No booru sites</string>
 	
@@ -89,7 +85,7 @@ You will also need to provide your own display icons, images at 512 x 512 px sho
 	<string name="download_complete">Download Complete</string>
 	<string name="couldnotblog">Couldn\'t connect to blog</string>
 	<string name="trylater">Don\'t worry, try again later</string>
-	<string name="postblocked">Post blocked\ntap to download manually</string>
+	<string name="postblocked">Post blocked\ntap to show</string>
 	
 	<string name="empty">This part is not available yet&#8230; but it will be! I hope.\n\nRead this while I actually work on the rest.</string>
 	
@@ -126,7 +122,7 @@ You will also need to provide your own display icons, images at 512 x 512 px sho
 	<string name="pref_content_localfilter">Local filtering</string>
 	<string name="pref_content_localfilter_desc">Good if you want to search for more than two tags with limited accounts</string>
 	<string name="pref_content_warning">Content warning</string>
-	<string name="pref_content_warning_desc">Displays \'Post blocked\' when accesing a post with a high rating</string>
+	<string name="pref_content_warning_desc">Displays \'Post blocked\' when accesing a post with unsafe content</string>
 	<string name="pref_content_showdeletedposts">Show deleted posts</string>
 	<string name="pref_content_showflaggedposts">Show flagged posts</string>
 	

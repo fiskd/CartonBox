@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">CartonBox</string>
+	<string name="googleplay">Ver en la tienda</string>
+	<string name="news">Noticias</string>
+	<string name="privacy">Política de privacidad (en)</string>
+	
+	<string name="login_details">Detalles de autenticación</string>
+	<string name="login_message">Ciertos servidores booru requieren de un usuario y una contraseña para acceso externo.</string>
+	
+	<string name="username">Nombre de usuario</string>
+	<string name="password">Contraseña</string>
+	
+	<string name="notempty">¡Este campo no puede estar vacío!</string>
+	<string name="enteravalidurl">Deberías ingresar un enlace válido</string>
+	<string name="enterusername">Ingresa tu nombre</string>
+	<string name="enterpassword">Ingresa tu contraseña</string>
+	<string name="help">Ayuda</string>
+	<string name="icons">Iconos de ejemplo</string>
+	
+	<string name="help_msg">Este dialogo te ayuda a agregar sitios personalizados, da un nombre y el enlace del sitio.\n\nNecesitas especificar el tipo de sitio que vas a a gregar; hasta ahora los sitios *.donmai.us son del tipo Danbooru 2.x, otros boorus deben ser del tipo danboory 1.18.x (por ejemplo: behoimi, one yukkuri place, yande.re, konachan, aunque yande.re definitivamente no funcionará).\n\nEs opcional poner un icono para mostrar, está bien utilizar imágenes de 512 x 512 pixeles.</string>
+	
+	<string name="nosites">Sin sitios</string>
+	
+	<string name="notbooru">Este no es un sitio compatible, o no es un sitio booru, o está mal configurado, ¿Cambiaste el tipo al agregar el sitio?</string>
+	<string name="configureit">El tipo para este sitio no está configurado correctamente, regresa y cambia eso.</string>
+	
+	<string name="settings">Configuración</string>
+	<string name="search">Búsqueda</string>
+	<string name="reset">Restablecer búsqueda</string>
+	<string name="refresh">Actualizar</string>
+	<string name="addsite">Agregar sitio</string>
+	<string name="favorite">Favorito</string>
+	<string name="defaults">Preconfigurados</string>
+	<string name="custom">Personalizados</string>
+	
+	<string name="addsite">Agregar sitio</string>
+	<string name="edit">Editar</string>
+	<string name="remove">Quitar</string>
+	<string name="surewanttoremove">¿Seguro que quieres quitar este sitio?</string>
+	<string name="incompatiblefilesource">Fuente de archivo no compatible</string>
+	
+	<string name="save">Guardar</string>
+	<string name="browser">Abrir en navegador</string>
+	<string name="details">Detalles</string>
+	<string name="viewparent">Padre</string>
+	<string name="viewchildren">Hijo</string>
+	<string name="viewpools">Pools que contienen este post</string>
+	
+	<string name="searchtags">Buscar tags</string>
+	<string name="searchposts">Buscar posts</string>
+	<string name="searchpools">Buscar pools</string>
+	<string name="searchartists">Buscar artists</string>
+	<string name="searchstuff">palabras</string>
+	
+	<string name="ratingdialogtitle">¡Califícame!</string>
+	<string name="ratingdialogmessage">Has estado utilizando esta app por un tiempo ¿Quisieras dar una puntuación?</string>
+	<string name="later">Luego</string>
+	
+	<string name="notavailable">No disponible aún</string>
+	<string name="noshowagain">No mostrar otra vez</string>
+	
+	<string name="sitename">Nombre</string>
+	<string name="sitetype">Tipo</string>
+	
+	<string name="siteauthdetails">Proveer detalles de ingreso</string>
+	
+	<string name="sitedanbooru2">Danbooru 2.x</string>
+	<string name="sitedanbooru1">Danbooru 1.18.x</string>
+	<string name="sitegelbooru">Gelbooru 0.2.x</string>
+	<string name="sitecustomize">Personalizar</string>
+	
+	<string name="no_posts">¡No hay posts!</string>
+	<string name="no_tags">¡No hay tags!</string>
+	
+	<string name="downloads">Ver descargas</string>
+	<string name="downloading">Descargando&#8230;</string>
+	<string name="already_downloaded">Ya descargado</string>
+	<string name="loading">Cargando&#8230;</string>
+	<string name="loading_sample">Descargando vista previa&#8230;</string>
+	<string name="loading_preview">Descargando miniatura&#8230;</string>
+	<string name="download_failed">Descarga fallida</string>
+	<string name="download_started">Descarga iniciada</string>
+	<string name="download_complete">Descarga completa</string>
+	<string name="couldnotblog">No se pudo conectar al blog</string>
+	<string name="trylater">No te preocupes, prueba de nuevo después.</string>
+	<string name="postblocked">Post bloqueado\Toca para mostrar</string>
+	
+	<string name="pref_header_general">Opciones generales</string>
+	<string name="pref_header_content">Personalizar contenido</string>
+	<string name="pref_header_blacklist">Asignar listas negras</string>
+	<string name="pref_header_ratings">Mostrar ratings</string>
+	
+	<string name="pref_header_summary_general">General settings</string>
+	<string name="pref_header_summary_content">Customize content</string>
+	<string name="pref_header_summary_blacklist">Set blacklists</string>
+	<string name="pref_header_summary_ratings">Display ratings</string>
+	
+	<string name="pref_sites">Sitios</string>
+	
+	<string name="pref_general">General</string>
+	<string name="pref_general_download_folder">Carpeta de descargas</string>
+	<string name="pref_general_download_folder_dialogmsg">Las imágenes descargadas serán guardadas en éste directorio.</string>
+	<string name="pref_general_cacheexternal">Cache en SD/Externo</string>
+	<string name="pref_general_cachesize">Tamaño mínimo de caché</string>
+	<string name="pref_general_cachesize_desc">Actualmente %s</string>
+	<string name="pref_general_clearcache">Limpiar caché</string>
+	<string name="pref_general_clearcache_desc">Uso de cache: %s</string>
+	<string name="pref_general_clearcache_desc_empty">Caché vacío</string>
+	<string name="pref_general_clearcache_calc">Calculando&#8230;</string>
+	<string name="pref_general_clearcacheonexit">Limpiar cache al salir</string>
+	<string name="pref_general_clearcacheonexit_clearing">Limpiando caché&#8230;</string>
+	
+	<string name="pref_content">Contenido</string>
+	<string name="pref_content_postsperpage">Posts por página</string>
+	<string name="pref_content_postsperpage_desc">Currently %s</string>
+	<string name="pref_content_poolsperpage">Pools por página</string>
+	<string name="pref_content_poolpostsperpage">Posts en pools por página</string>
+	<string name="pref_content_localfilter">Filtrado local</string>
+	<string name="pref_content_localfilter_desc">Conveniente para buscar más de dos tags en sitios con cuentas limitadas.</string>
+	<string name="pref_content_warning">Advertencia de contenido</string>
+	<string name="pref_content_warning_desc">Muestra \'Post bloqueado\' al accesar posts con contenido inseguro.</string>
+	<string name="pref_content_showdeletedposts">Mostrar posts borrados</string>
+	<string name="pref_content_showflaggedposts">Mostrar posts marcados</string>
+	
+	<string name="pref_blacklist">Lista negras</string>
+	<string name="pref_blacklist_enabled">Habilitar</string>
+	<string name="pref_blacklist_tags">Lista de tags</string>
+	<string name="pref_blacklist_tags_desc">Posts que contengan éstos tags no serán mostrados</string>
+	<string name="pref_blacklist_tags_dialogmsg">Post con las siguientes combinaciones de tags no serán mostrados. Separa las combinaciones en una nueva línea.</string>
+	<string name="pref_blacklist_hide">Esconder posts</string>
+	<string name="pref_blacklist_hide_desc_on">Posts en lista negra se mostrarán</string>
+	<string name="pref_blacklist_hide_desc_off">Posts en lista negra no se mostrarán</string>
+	
+	<string name="pref_ratings">Filtro de contenido</string>
+	<string name="pref_ratings_todisplay">Rangos por mostrar</string>
+	<string name="pref_ratings_todisplay_desc">Rango de posts que quieres que sean mostrados</string>
+	
+	<string name="pref_ratings_todisplay_safe">Safe</string>
+	<string name="pref_ratings_todisplay_questionable">Questionable</string>
+	<string name="pref_ratings_todisplay_explicit">Explicit</string>
+	
+	<string name="pref_ratings_hide">Esconder posts</string>
+	<string name="pref_ratings_hide_desc_on">Posts filtrados se mostrarán</string>
+	<string name="pref_ratings_hide_desc_off">Posts filtrados no se mostrarán</string>
+	
+	<string name="section_posts">Posts</string>
+	<string name="section_pools">Pools</string>
+	<string name="section_tags">Tags</string>
+	<string name="section_artists">Artistas</string>
+	<string name="section_comments">Comentarios</string>
+	<string name="section_notes">Notas</string>
+</resources>
