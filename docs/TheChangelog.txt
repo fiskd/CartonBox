@@ -1,5 +1,7 @@
 The Changelog
 
+1.0
+
 0.7
 -image zooming (pinch, double tap)
 -Maximum cache size now works (purges periodically if the limit is reached)

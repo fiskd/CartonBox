@@ -40,8 +40,8 @@ public class DiskUtils
 		Logger.i("DiskUtils::purgeDirectory", String.format("purging directory '%s' to match %s", directory.getAbsolutePath(), Formatters.humanReadableByteCount(target)));
 		// get files
 		File[] files = directory.listFiles();
-		long unsortedFirstLastModification = files[0].lastModified();
-		long unsortedLastLastModification = files[files.length - 1].lastModified();
+		//long unsortedFirstLastModification = files[0].lastModified();
+		//long unsortedLastLastModification = files[files.length - 1].lastModified();
 		// sort files
 		Arrays.sort(files, new Comparator<File>()
 		{
@@ -54,8 +54,8 @@ public class DiskUtils
 				return (int)difference;
 			}
 		});
-		long sortedFirstLastModification = files[0].lastModified();
-		long sortedLastLastModification = files[files.length - 1].lastModified();
+		//long sortedFirstLastModification = files[0].lastModified();
+		//long sortedLastLastModification = files[files.length - 1].lastModified();
 
 		Logger.i("DiskUtils::purgeDirectory", String.format("First file, unsorted: %s", new Date(unsortedFirstLastModification).toString()));
 		Logger.i("DiskUtils::purgeDirectory", String.format("Last file, unsorted: %s", new Date(unsortedLastLastModification).toString()));
