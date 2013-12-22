@@ -3,7 +3,6 @@ package org.shujito.cartonbox.util.io;
 import java.io.File;
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.Date;
 
 import org.shujito.cartonbox.Logger;
 import org.shujito.cartonbox.R;
@@ -54,13 +53,13 @@ public class DiskUtils
 				return (int)difference;
 			}
 		});
+		
 		//long sortedFirstLastModification = files[0].lastModified();
 		//long sortedLastLastModification = files[files.length - 1].lastModified();
-
-		Logger.i("DiskUtils::purgeDirectory", String.format("First file, unsorted: %s", new Date(unsortedFirstLastModification).toString()));
-		Logger.i("DiskUtils::purgeDirectory", String.format("Last file, unsorted: %s", new Date(unsortedLastLastModification).toString()));
-		Logger.i("DiskUtils::purgeDirectory", String.format("First file, sorted: %s", new Date(sortedFirstLastModification).toString()));
-		Logger.i("DiskUtils::purgeDirectory", String.format("Last file, sorted: %s", new Date(sortedLastLastModification).toString()));
+		//Logger.i("DiskUtils::purgeDirectory", String.format("First file, unsorted: %s", new Date(unsortedFirstLastModification).toString()));
+		//Logger.i("DiskUtils::purgeDirectory", String.format("Last file, unsorted: %s", new Date(unsortedLastLastModification).toString()));
+		//Logger.i("DiskUtils::purgeDirectory", String.format("First file, sorted: %s", new Date(sortedFirstLastModification).toString()));
+		//Logger.i("DiskUtils::purgeDirectory", String.format("Last file, sorted: %s", new Date(sortedLastLastModification).toString()));
 		
 		// get all files' size
 		long dirsize = getDirectorySize(directory);

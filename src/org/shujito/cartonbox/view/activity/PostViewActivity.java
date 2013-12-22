@@ -12,6 +12,7 @@ import org.shujito.cartonbox.view.adapter.PostsPagerAdapter;
 import org.shujito.cartonbox.view.fragment.dialog.PostDetailDialogFragment;
 
 import android.annotation.TargetApi;
+import android.app.SearchManager;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -166,11 +167,29 @@ public class PostViewActivity extends SherlockFragmentActivity
 				return true;
 			case R.id.viewparent:
 				// TODO: make it work
-				Toast.makeText(this, this.getString(R.string.notavailable), Toast.LENGTH_SHORT).show();
+				//Toast.makeText(this, this.getString(R.string.notavailable), Toast.LENGTH_SHORT).show();
+				if(this.selectedPost != null)
+				{
+					Intent ntn = new Intent(this, SiteIndexActivity.class);
+					ntn.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+					ntn.setAction(Intent.ACTION_SEARCH);
+					// XXX: is this hacky?
+					ntn.putExtra(SearchManager.QUERY, String.format("id:%s", this.selectedPost.getParentId()));
+					this.startActivity(ntn);
+				}
 				return true;
 			case R.id.viewchildren:
 				// TODO: make it work
-				Toast.makeText(this, this.getString(R.string.notavailable), Toast.LENGTH_SHORT).show();
+				//Toast.makeText(this, this.getString(R.string.notavailable), Toast.LENGTH_SHORT).show();
+				if(this.selectedPost != null)
+				{
+					Intent ntn = new Intent(this, SiteIndexActivity.class);
+					ntn.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+					ntn.setAction(Intent.ACTION_SEARCH);
+					// XXX: is this hacky?
+					ntn.putExtra(SearchManager.QUERY, String.format("parent:%s", this.selectedPost.getId()));
+					this.startActivity(ntn);
+				}
 				return true;
 			case R.id.viewpools:
 				// TODO: make it work
